@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.saleGrid6",
+  "values": {
+    "color.surface": "#FBFAF8",
+    "color.text": "#1F1F1F",
+    "color.theme": "#9D1D20",
+    "color.buttonText": "#FFFFFF",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+    "radius.image": "4px"
+  },
+  "migration": {
+    "source": "默认主题演示.html",
+    "legacyBodySha256": "9bccaadc95686cc9a99bc60c707d127942ed1abf3ecdbae90f4e64b75e7b760e",
+    "migratedAt": "2026-08-06"
+  }
+}

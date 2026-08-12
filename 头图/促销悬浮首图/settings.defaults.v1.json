@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.promotionalOverlay",
+  "values": {
+    "color.theme": "#9D1D20",
+    "color.themeText": "#FFFFFF",
+    "color.heroFallback": "#E9E4DC",
+    "color.logoBadge": "#A79689",
+    "color.logoBadgeTransparent": "rgba(167, 150, 137, 0.70)",
+    "color.panelFallback": "#F4F1EC",
+    "color.panelTransparent": "rgba(247, 244, 239, 0.88)",
+    "color.heading": "#1E1D1B",
+    "color.body": "#2B2825",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+    "spacing.promotion": "0",
+    "spacing.logoTop": "48px",
+    "spacing.panelBottom": "32px",
+    "background.position": "center center",
+    "logo.maxWidth": "80px",
+    "panel.maxWidth": "472px",
+    "panel.padding": "26px 28px 30px",
+    "cta.maxWidth": "252px",
+    "radius.button": "0px"
+  }
+}

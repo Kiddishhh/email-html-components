@@ -1,0 +1,8 @@
+/* gift.rewardGrid2 component style source.
+ * This file is inlined by the email generator; do not add @media, @import,
+ * CSS variables, Flex/Grid, positioning, shadows, or global selectors.
+ */
+.freshine-double-gift-vertical { width:100%; border-collapse:collapse; }
+.freshine-reward-image-row { width:100%; padding:0; text-align:center; }
+.freshine-reward-image-row img { display:block; width:100%; height:auto; border:0; outline:none; text-decoration:none; }
+.freshine-reward-image-gap { height:4px; font-size:0; line-height:0; }

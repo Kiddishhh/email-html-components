@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "footer.warm",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.background": {
+      "type": "string",
+      "default": "#652a0d",
+      "themeable": true,
+      "skillPrompt": true
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "themeable": true
+    },
+    "color.link": {
+      "type": "string",
+      "default": "#0094EB",
+      "themeable": true
+    },
+    "font.body": {
+      "type": "string",
+      "default": "Montserrat, Arial, Helvetica, sans-serif",
+      "themeable": true
+    },
+    "space.sectionX": {
+      "type": "string",
+      "default": "24px",
+      "themeable": true
+    },
+    "space.sectionY": {
+      "type": "string",
+      "default": "12px",
+      "themeable": true
+    },
+    "space.block": {
+      "type": "string",
+      "default": "12px",
+      "themeable": true
+    },
+    "social.size": {
+      "type": "string",
+      "default": "24px",
+      "themeable": true
+    },
+    "content.width": {
+      "type": "string",
+      "default": "382px",
+      "themeable": true
+    }
+  },
+  "additionalProperties": false
+}

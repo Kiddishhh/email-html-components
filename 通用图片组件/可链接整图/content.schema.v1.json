@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.clickableFullWidth",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "image.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "image.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "image.linkUrl": {
+      "type": "url",
+      "role": "link-target",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    }
+  },
+  "additionalProperties": false
+}

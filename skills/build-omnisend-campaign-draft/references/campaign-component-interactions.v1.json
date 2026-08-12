@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "interactions": [
+    {
+      "componentKey": "hero.promotionalOverlay",
+      "interactionReference": "component-interactions.zh-CN.md#2-heropromotionaloverlay-促销悬浮首图",
+      "allowedSources": ["shopify.themeSnapshot", "user.publicHttpsImage", "user.localImage"],
+      "requiredStages": ["selectSalePage", "parseSalePage", "collectHeroImage", "completionCard"],
+      "completion": { "card": true, "previews": ["desktop", "mobile"] }
+    },
+    {
+      "componentKey": "collection.saleGrid6",
+      "interactionReference": "component-interactions.zh-CN.md#3-collectionsalegrid6-六宫格夏季促销",
+      "allowedSources": ["shopify.collectionProducts", "user.copy"],
+      "requiredStages": ["collectCopy", "injectProducts", "completionCard"],
+      "completion": { "card": true, "previews": ["desktop", "mobile"] }
+    },
+    {
+      "componentKey": "image.clickableFullWidth",
+      "interactionReference": "component-interactions.zh-CN.md#4-imageclickablefullwidth-可链接整图",
+      "allowedSources": ["user.publicHttpsImage", "user.localImage"],
+      "requiredStages": ["collectImage", "inspectImage", "completionCard"],
+      "completion": { "card": true, "previews": ["desktop", "mobile"] }
+    },
+    {
+      "componentKey": "gift.rewardGrid2",
+      "interactionReference": "component-interactions.zh-CN.md#5-giftrewardgrid2-双赠品奖励卡",
+      "allowedSources": ["component.localDefaultSnapshot"],
+      "requiredStages": ["loadDefaultSnapshot", "completionCard"],
+      "completion": { "card": true, "previews": ["desktop", "mobile"] }
+    },
+    {
+      "componentKey": "location.showroomCard",
+      "interactionReference": "component-interactions.zh-CN.md#6-locationshowroomcard-展厅地址卡",
+      "allowedSources": ["component.localDefaultSnapshot"],
+      "requiredStages": ["loadDefaultSnapshot", "completionCard"],
+      "completion": { "card": true, "previews": ["desktop", "mobile"] }
+    },
+    {
+      "componentKey": "footer.warm",
+      "interactionReference": "component-interactions.zh-CN.md#7-footerwarm-品牌信息页脚",
+      "allowedSources": ["component.localDefaultSnapshot", "user.color"],
+      "requiredStages": ["confirmBackground", "loadDefaultSnapshot", "completionCard"],
+      "completion": { "card": true, "previews": ["desktop", "mobile"] }
+    }
+  ]
+}

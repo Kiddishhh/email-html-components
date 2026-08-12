@@ -1,0 +1,62 @@
+{
+  "data": {
+    "collectionByHandle": {
+      "handle": "summer-sale",
+      "products": {
+        "nodes": [
+          {
+            "title": "First Curtain",
+            "handle": "first-curtain",
+            "onlineStoreUrl": null,
+            "featuredImage": { "url": "https://cdn.example.com/first.webp", "altText": null, "width": 1200, "height": 1200 },
+            "media": { "nodes": [{ "alt": null, "image": { "url": "https://cdn.example.com/first.webp", "width": 1200, "height": 1200 } }] },
+            "variants": { "nodes": [
+              { "availableForSale": false, "price": { "amount": "10.00" }, "compareAtPrice": { "amount": "20.00" } },
+              { "availableForSale": true, "price": { "amount": "50.00" }, "compareAtPrice": { "amount": "100.00" } }
+            ] }
+          },
+          {
+            "title": "Second Curtain",
+            "handle": "second-curtain",
+            "onlineStoreUrl": "https://freshinelife.com/products/second-curtain",
+            "featuredImage": { "url": "https://cdn.example.com/second.webp", "altText": "Second curtain", "width": 1200, "height": 1200 },
+            "media": { "nodes": [{ "alt": "Second curtain", "image": { "url": "https://cdn.example.com/second.webp", "width": 1200, "height": 1200 } }] },
+            "variants": { "nodes": [{ "availableForSale": true, "price": { "amount": "50.00" }, "compareAtPrice": { "amount": "50.00" } }] }
+          },
+          {
+            "title": "Third Curtain",
+            "handle": "third-curtain",
+            "onlineStoreUrl": "https://freshinelife.com/products/third-curtain",
+            "featuredImage": { "url": "https://cdn.example.com/third.webp", "altText": "Third curtain", "width": 1200, "height": 1200 },
+            "media": { "nodes": [{ "alt": "Third curtain", "image": { "url": "https://cdn.example.com/third.webp", "width": 1200, "height": 1200 } }] },
+            "variants": { "nodes": [{ "availableForSale": true, "price": { "amount": "40.00" }, "compareAtPrice": null }] }
+          },
+          {
+            "title": "Fourth Curtain",
+            "handle": "fourth-curtain",
+            "onlineStoreUrl": "https://freshinelife.com/products/fourth-curtain",
+            "featuredImage": { "url": "https://cdn.example.com/fourth.webp", "altText": "Fourth curtain", "width": 1200, "height": 1200 },
+            "media": { "nodes": [{ "alt": "Fourth curtain", "image": { "url": "https://cdn.example.com/fourth.webp", "width": 1200, "height": 1200 } }] },
+            "variants": { "nodes": [{ "availableForSale": true, "price": { "amount": "60.00" }, "compareAtPrice": { "amount": "75.00" } }] }
+          },
+          {
+            "title": "Fifth Curtain",
+            "handle": "fifth-curtain",
+            "onlineStoreUrl": "https://freshinelife.com/products/fifth-curtain",
+            "featuredImage": { "url": "https://cdn.example.com/fifth.webp", "altText": "Fifth curtain", "width": 1200, "height": 1200 },
+            "media": { "nodes": [{ "alt": "Fifth curtain", "image": { "url": "https://cdn.example.com/fifth.webp", "width": 1200, "height": 1200 } }] },
+            "variants": { "nodes": [{ "availableForSale": true, "price": { "amount": "80.00" }, "compareAtPrice": { "amount": "100.00" } }] }
+          },
+          {
+            "title": "Sixth Curtain",
+            "handle": "sixth-curtain",
+            "onlineStoreUrl": "https://freshinelife.com/products/sixth-curtain",
+            "featuredImage": { "url": "https://cdn.example.com/sixth.webp", "altText": "Sixth curtain", "width": 1200, "height": 1200 },
+            "media": { "nodes": [{ "alt": "Sixth curtain", "image": { "url": "https://cdn.example.com/sixth.webp", "width": 1200, "height": 1200 } }] },
+            "variants": { "nodes": [{ "availableForSale": true, "price": { "amount": "90.00" }, "compareAtPrice": { "amount": "120.00" } }] }
+          }
+        ]
+      }
+    }
+  }
+}

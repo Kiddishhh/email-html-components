@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "location.showroomCard",
+  "fixture": "default-showroom-content",
+  "values": {
+    "showroom.title": "Freshine Has A Showroom In The California",
+    "showroom.image.url": "https://freshinelife.com/cdn/shop/files/19_31649520-2344-44ea-96e0-1c0cac3bf113.webp?v=1761903578&width=1096&height=648&crop=center",
+    "showroom.image.alt": "Freshine California showroom with curtain samples and consultation table",
+    "showroom.image.clickUrl": "https://freshinelife.com/pages/contact",
+    "showroom.address.line1": "43 Corporate Park, Irvine, CA 92606, United States",
+    "showroom.address.line2": "(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)"
+  }
+}

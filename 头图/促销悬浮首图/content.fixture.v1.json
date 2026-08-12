@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.promotionalOverlay",
+  "fixture": "memorial-day-overlay-reference-demo",
+  "localReferenceAsset": "assets/default-background.reference.png",
+  "values": {
+    "promotion.text": "Unlock $100 Off Your First Order At Freshine.",
+    "promotion.linkText": "SIGN UP",
+    "promotion.url": "https://freshinelife.com/",
+    "hero.backgroundImage.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Amara-Linen-Curtains-LightBeig1038-1-6.webp?v=1765519015",
+    "hero.backgroundImage.alt": "Warm modern living room with floor-to-ceiling sheer curtains",
+    "hero.logo.url": "asset://hero-logo-white",
+    "hero.logo.alt": "White FreShine wordmark",
+    "hero.logo.clickUrl": "https://freshinelife.com/",
+    "hero.eyebrow": "Memorial Day Sale",
+    "hero.title": "UP TO 65% OFF",
+    "hero.subtitle": "EXTRA $600 OFF & UP TO 20% OFF SITEWIDE",
+    "hero.cta.text": "SHOP NOW",
+    "hero.cta.url": "https://freshinelife.com/pages/freshine-sale"
+  }
+}

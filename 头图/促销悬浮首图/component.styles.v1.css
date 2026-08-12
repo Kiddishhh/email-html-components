@@ -1,0 +1,11 @@
+/* hero.promotionalOverlay component style source.
+ * The final Omnisend fragment must inline these rules.
+ * Do not add media queries, CSS variables, absolute positioning, Flex, Grid, or external fonts.
+ */
+.freshine-component { width:100%; border-collapse:collapse; }
+.freshine-overlay-hero-background { display:block; height:120vw; max-height:722px; min-height:560px; background-position:center center; background-repeat:no-repeat; background-size:cover; }
+.freshine-overlay-hero-logo-badge { border-radius:53px; }
+.freshine-overlay-hero-logo { display:block; width:80px; height:auto; }
+.freshine-promotional-overlay-hero [data-freshine-slot="promotion.text"],
+.freshine-promotional-overlay-hero [data-freshine-slot="promotion.linkText"] { font-size:14px; line-height:20px; }
+.freshine-overlay-hero-panel { width:100%; max-width:472px; }

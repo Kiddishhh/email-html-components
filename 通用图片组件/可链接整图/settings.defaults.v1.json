@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.clickableFullWidth",
+  "values": {
+    "color.surface": "#FFFFFF",
+    "spacing.outer": "0",
+    "image.maxWidth": "600px"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.clickableFullWidth",
+  "fixture": "default-review-collage-demo",
+  "localPreviewAsset": "assets/default-review-collage.png",
+  "values": {
+    "image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Elara_89850_scene_15.webp?v=1755009943",
+    "image.alt": "Customer review collage featuring Uilana Grabiuc",
+    "image.linkUrl": "https://freshinelife.com/"
+  }
+}

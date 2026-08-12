@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.promotionalOverlay",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "promotion.text": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.linkText": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "hero.backgroundImage.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" },
+    "hero.backgroundImage.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.logo.url": { "type": "url", "role": "image-source", "required": true, "skillPrompt": false },
+    "hero.logo.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": false },
+    "hero.logo.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": false },
+    "hero.eyebrow": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.title": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

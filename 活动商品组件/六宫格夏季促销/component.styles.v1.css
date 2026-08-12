@@ -1,0 +1,7 @@
+/* collection.saleGrid6 component style source.
+ * This file is inlined by build-email-template.v1.mjs; do not add @media, @import, CSS variables, or unsafe layout properties.
+ */
+.freshine-component { width:100%; border-collapse:collapse; }
+.freshine-sale-stack { display:inline-table; width:100%; max-width:250px; vertical-align:top; }
+.freshine-sale-image-table { width:100%; height:236px; }
+.freshine-sale-image-cell { width:100%; height:236px; }

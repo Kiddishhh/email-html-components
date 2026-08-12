@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "location.showroomCard",
+  "injectionMode": "full-component-rerender",
+  "promptPolicy": "use-defaults-unless-user-requests-change",
+  "properties": {
+    "showroom.title": {
+      "type": "text",
+      "required": true,
+      "editable": true,
+      "skillPrompt": false
+    },
+    "showroom.image.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "editable": true,
+      "skillPrompt": false
+    },
+    "showroom.image.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "editable": true,
+      "skillPrompt": false
+    },
+    "showroom.image.clickUrl": {
+      "type": "url",
+      "role": "link-target",
+      "protocol": "https",
+      "required": true,
+      "editable": true,
+      "skillPrompt": false
+    },
+    "showroom.address.line1": {
+      "type": "text",
+      "required": true,
+      "editable": true,
+      "skillPrompt": false
+    },
+    "showroom.address.line2": {
+      "type": "text",
+      "required": true,
+      "editable": true,
+      "skillPrompt": false
+    }
+  },
+  "additionalProperties": false
+}

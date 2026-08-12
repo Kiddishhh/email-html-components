@@ -1,0 +1,38 @@
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="{{settings.color.surface}}" style="width:100%;border-collapse:collapse;background-color:{{settings.color.surface}};">
+  <tr>
+    <td align="center" valign="top" bgcolor="{{settings.color.surface}}" style="background-color:{{settings.color.surface}};text-align:center;vertical-align:top;">
+      <table class="freshine-component freshine-showroom-card" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="{{settings.color.surface}}" style="width:100%;max-width:{{settings.content.maxWidth}};border-collapse:collapse;margin:0 auto;background-color:{{settings.color.surface}};">
+        <tr>
+          <td align="center" style="padding:36px 26px 0;color:{{settings.color.text}};text-align:center;">
+            <!-- FRESHINE_SLOT_START:showroom.title -->
+            <span data-freshine-slot="showroom.title" style="display:inline-block;max-width:460px;color:{{settings.color.text}};font-family:{{settings.font.heading}};font-size:26px;font-weight:500;line-height:37px;text-align:center;word-break:break-word;overflow-wrap:anywhere;">{{content.showroom.title}}</span>
+            <!-- FRESHINE_SLOT_END:showroom.title -->
+          </td>
+        </tr>
+        <tr>
+          <td height="16" style="height:16px;font-size:0;line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:0 26px;text-align:center;">
+            <!-- FRESHINE_SLOT_START:showroom.image -->
+            <a href="{{content.showroom.image.clickUrl}}" data-freshine-href-slot="showroom.image.clickUrl" target="_blank" style="display:block;text-decoration:none;">
+              <img class="freshine-showroom-image" src="{{content.showroom.image.url}}" alt="{{content.showroom.image.alt}}" width="548" height="324" data-freshine-slot="showroom.image" style="display:block;width:100%;max-width:{{settings.image.maxWidth}};height:auto;border:0;outline:none;text-decoration:none;">
+            </a>
+            <!-- FRESHINE_SLOT_END:showroom.image -->
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:28px 26px 39px;color:{{settings.color.text}};text-align:center;">
+            <!-- FRESHINE_SLOT_START:showroom.address.line1 -->
+            <span data-freshine-slot="showroom.address.line1" style="display:inline-block;max-width:480px;color:{{settings.color.text}};font-family:{{settings.font.body}};font-size:16px;font-weight:400;line-height:25px;text-align:center;word-break:break-word;overflow-wrap:anywhere;">{{content.showroom.address.line1}}</span>
+            <!-- FRESHINE_SLOT_END:showroom.address.line1 -->
+            <br>
+            <!-- FRESHINE_SLOT_START:showroom.address.line2 -->
+            <span data-freshine-slot="showroom.address.line2" style="display:inline-block;max-width:480px;color:{{settings.color.text}};font-family:{{settings.font.body}};font-size:16px;font-weight:400;line-height:25px;text-align:center;word-break:break-word;overflow-wrap:anywhere;">{{content.showroom.address.line2}}</span>
+            <!-- FRESHINE_SLOT_END:showroom.address.line2 -->
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

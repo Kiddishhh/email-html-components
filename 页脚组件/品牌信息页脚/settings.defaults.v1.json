@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "footer.warm",
+  "values": {
+    "color.background": "#652a0d",
+    "color.text": "#FFFFFF",
+    "color.link": "#0094EB",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "space.sectionX": "24px",
+    "space.sectionY": "12px",
+    "space.block": "12px",
+    "social.size": "24px",
+    "content.width": "382px"
+  },
+  "migration": {
+    "source": "默认主题演示.html",
+    "legacyBodySha256": "7f69defd4b21961231ff7bbe84367ddb4ca772af4199cdbaef32a9e574efd1b6",
+    "migratedAt": "2026-08-06"
+  }
+}

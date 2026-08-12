@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "canvas": {
+    "backgroundColor": "#FBFAF8",
+    "outerBackgroundColor": "#FFFFFF",
+    "contentWidth": 600,
+    "mobileTargetWidth": 375,
+    "verticalPadding": 0
+  },
+  "output": "build/campaign-six-components.static-safe.html",
+  "previewOutput": "build/campaign-six-components.local-preview.html",
+  "assets": {
+    "hero-background": {
+      "path": "头图/促销悬浮首图/assets/default-background.reference.png",
+      "name": "promotional-overlay-hero-background.png"
+    },
+    "hero-logo-white": {
+      "path": "头图/促销悬浮首图/assets/default-logo-white.png",
+      "name": "freshine-logo-white.png"
+    },
+    "review-collage": {
+      "path": "通用图片组件/可链接整图/assets/default-review-collage.png",
+      "name": "customer-review-collage.png"
+    },
+    "gift-pillow-cover": {
+      "path": "赠品与权益组件/双赠品奖励卡/assets/default-pillow-cover.png",
+      "name": "free-gift-pillow-cover.png"
+    },
+    "gift-eye-mask": {
+      "path": "赠品与权益组件/双赠品奖励卡/assets/default-eye-mask.png",
+      "name": "free-gift-eye-mask.png"
+    }
+  },
+  "components": [
+    {
+      "name": "促销悬浮首图",
+      "directory": "头图/促销悬浮首图",
+      "componentKey": "hero.promotionalOverlay",
+      "content": {
+        "promotion.text": "Unlock $100 Off Your First Order At Freshine.",
+        "promotion.linkText": "SIGN UP",
+        "promotion.url": "https://freshinelife.com/",
+        "hero.backgroundImage.url": "asset://hero-background",
+        "hero.backgroundImage.alt": "Warm modern living room with floor-to-ceiling sheer curtains",
+        "hero.logo.url": "asset://hero-logo-white",
+        "hero.logo.alt": "White FreShine wordmark",
+        "hero.logo.clickUrl": "https://freshinelife.com/",
+        "hero.eyebrow": "Memorial Day Sale",
+        "hero.title": "UP TO 65% OFF",
+        "hero.subtitle": "EXTRA $600 OFF & UP TO 20% OFF SITEWIDE",
+        "hero.cta.text": "SHOP NOW",
+        "hero.cta.url": "https://freshinelife.com/pages/freshine-sale"
+      },
+      "settings": {
+        "color.theme": "#9D1D20",
+        "color.themeText": "#FFFFFF",
+        "color.heroFallback": "#E9E4DC",
+        "color.logoBadge": "#A79689",
+        "color.logoBadgeTransparent": "rgba(167, 150, 137, 0.70)",
+        "color.panelFallback": "#F4F1EC",
+        "color.panelTransparent": "rgba(247, 244, 239, 0.88)",
+        "color.heading": "#1E1D1B",
+        "color.body": "#2B2825",
+        "font.heading": "Lora, Georgia, Times New Roman, serif",
+        "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+        "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+        "spacing.promotion": "0",
+        "spacing.logoTop": "48px",
+        "spacing.panelBottom": "32px",
+        "background.position": "center center",
+        "logo.maxWidth": "80px",
+        "panel.maxWidth": "472px",
+        "panel.padding": "26px 28px 30px",
+        "cta.maxWidth": "252px",
+        "radius.button": "0px"
+      }
+    },
+    {
+      "name": "六宫格夏季促销",
+      "directory": "活动商品组件/六宫格夏季促销",
+      "componentKey": "collection.saleGrid6",
+      "content": {
+        "saleItems[0].image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Long-Linen-Curtains-for-Large-Windows-8823-5-1-main.webp?v=1768734839",
+        "saleItems[0].image.alt": "Bright living room framed by sheer custom curtains",
+        "saleItems[0].discountLabel": "SAVE 50%",
+        "saleItems[1].image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Amara-Linen-Curtains-LightBeig1038-1-6.webp?v=1765519015",
+        "saleItems[1].image.alt": "Light linen curtains in a sunlit modern room",
+        "saleItems[1].discountLabel": "SAVE 50%",
+        "saleItems[2].image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Elara_89850_scene_15.webp?v=1755009943",
+        "saleItems[2].image.alt": "Layered curtains in a warm contemporary bedroom",
+        "saleItems[2].discountLabel": "SAVE 65%",
+        "saleItems[3].image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-1_detail_1.webp?v=1772012081",
+        "saleItems[3].image.alt": "Close view of Freshine curtain fabric and hardware",
+        "saleItems[3].discountLabel": "SAVE 15%",
+        "saleItems[4].image.url": "https://review-images.judge.me/freshine/1768135641__1__original.webp?quality=80&width=1024",
+        "saleItems[4].image.alt": "Floor-to-ceiling sheer curtains in a real home",
+        "saleItems[4].discountLabel": "SAVE 18%",
+        "saleItems[5].image.url": "https://review-images.judge.me/freshine/1775171798__1775171774492-img_3196__original.jpeg?quality=80&width=1024",
+        "saleItems[5].image.alt": "Custom curtains in a bright customer bedroom",
+        "saleItems[5].discountLabel": "SAVE 50%",
+        "saleCollection.title": "Refresh Your Home for Summer",
+        "saleCollection.body": "Refresh Your Home This Summer With Beautifully Crafted Custom Curtains, Tailored For Timeless Style, Everyday Comfort, And A Perfect Fit For Every Window.",
+        "saleCollection.cta.text": "SHOP NOW",
+        "saleCollection.cta.url": "https://freshinelife.com/collections/curtains",
+        "saleItems[0].image.clickUrl": "https://freshinelife.com/collections/linen-curtains",
+        "saleItems[1].image.clickUrl": "https://freshinelife.com/collections/linen-curtains",
+        "saleItems[2].image.clickUrl": "https://freshinelife.com/collections/curtains",
+        "saleItems[3].image.clickUrl": "https://freshinelife.com/collections/curtain-hardware",
+        "saleItems[4].image.clickUrl": "https://freshinelife.com/collections/sheer-curtains",
+        "saleItems[5].image.clickUrl": "https://freshinelife.com/collections/curtains"
+      },
+      "settings": {
+        "color.surface": "#FBFAF8",
+        "color.text": "#1F1F1F",
+        "color.theme": "#9D1D20",
+        "color.buttonText": "#FFFFFF",
+        "font.heading": "Lora, Georgia, Times New Roman, serif",
+        "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+        "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+        "radius.image": "4px"
+      }
+    },
+    {
+      "name": "评论整图链接",
+      "directory": "通用图片组件/可链接整图",
+      "componentKey": "image.clickableFullWidth",
+      "content": {
+        "image.url": "asset://review-collage",
+        "image.alt": "Customer review collage featuring Uilana Grabiuc",
+        "image.linkUrl": "https://freshinelife.com/"
+      },
+      "settings": {
+        "color.surface": "#FFFFFF",
+        "spacing.outer": "0",
+        "image.maxWidth": "600px"
+      }
+    },
+    {
+      "name": "双赠品奖励卡",
+      "directory": "赠品与权益组件/双赠品奖励卡",
+      "componentKey": "gift.rewardGrid2",
+      "content": {
+        "reward.items[0].image.url": "asset://gift-pillow-cover",
+        "reward.items[0].image.alt": "Random pillow cover gift",
+        "reward.items[1].image.url": "asset://gift-eye-mask",
+        "reward.items[1].image.alt": "Silk eye mask gift",
+        "reward.title": "Free Gifts – Limited Time!",
+        "reward.rules[0]": "Spend $359+ And Get Free Eye Mask",
+        "reward.rules[1]": "Spend $599+ And Get Free Pillow Cover",
+        "reward.items[0].url": "https://freshinelife.com/collections/curtains",
+        "reward.items[1].url": "https://freshinelife.com/collections/curtains"
+      },
+      "settings": {
+        "color.surface": "#FBFAF8",
+        "color.text": "#1F1D1B",
+        "font.heading": "Lora, Georgia, Times New Roman, serif",
+        "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+        "spacing.header": "26px 28px 0",
+        "spacing.content": "20px 19px 26px",
+        "spacing.imageGap": "4px",
+        "radius.image": "0px"
+      }
+    },
+    {
+      "name": "展厅地址卡",
+      "directory": "赠品与权益组件/展厅地址卡",
+      "componentKey": "location.showroomCard",
+      "content": {
+        "showroom.title": "Freshine Has A Showroom In The California",
+        "showroom.image.url": "https://freshinelife.com/cdn/shop/files/19_31649520-2344-44ea-96e0-1c0cac3bf113.webp?v=1761903578&width=1096&height=648&crop=center",
+        "showroom.image.alt": "Freshine California showroom with curtain samples and consultation table",
+        "showroom.image.clickUrl": "https://freshinelife.com/pages/contact",
+        "showroom.address.line1": "43 Corporate Park, Irvine, CA 92606, United States",
+        "showroom.address.line2": "(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)"
+      },
+      "settings": {
+        "color.surface": "#FFFFFF",
+        "color.text": "#1F1F1F",
+        "font.heading": "Lora, Georgia, Times New Roman, serif",
+        "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+        "content.maxWidth": "600px",
+        "image.maxWidth": "548px"
+      }
+    },
+    {
+      "name": "品牌信息页脚",
+      "directory": "页脚组件/品牌信息页脚",
+      "componentKey": "footer.warm",
+      "content": {
+        "footer.brand": "Freshine Curtains",
+        "footer.address.line1": "43 Corporate Park\u00a0",
+        "footer.address.line2": "\u00a0Suite 208 \u00a0",
+        "footer.address.line3": "Irvine, CA \u00a092606",
+        "footer.address.line4": "United States",
+        "footer.address.disclaimer": "(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)",
+        "footer.address.line5": "+1 (949) 691-6598",
+        "footer.contact": "support@freshinelife.com",
+        "footer.contactUrl": "mailto:support@freshinelife.com",
+        "footer.copyright": "©2024 Freshine. All Rights Reserived.",
+        "footer.legalBrand": "Freshine",
+        "footer.social.instagramUrl": "https://www.instagram.com/freshinecurtains/",
+        "footer.social.pinterestUrl": "https://www.pinterest.com/freshinecurtains/",
+        "footer.social.youtubeUrl": "https://www.youtube.com/@freshinecurtains/shorts",
+        "footer.social.tiktokUrl": "https://www.tiktok.com/@freshinecurtains",
+        "footer.image.1.url": "https://preview.soundestlink.com/dynamicImage/social/instagram/48/24/default?raw=true",
+        "footer.image.1.alt": "instagram",
+        "footer.image.2.url": "https://preview.soundestlink.com/dynamicImage/social/pinterest/48/24/default?raw=true",
+        "footer.image.2.alt": "pinterest",
+        "footer.image.3.url": "https://preview.soundestlink.com/dynamicImage/social/youtube/48/24/default?raw=true",
+        "footer.image.3.alt": "youtube",
+        "footer.image.4.url": "https://preview.soundestlink.com/dynamicImage/social/tiktok/48/24/default?raw=true",
+        "footer.image.4.alt": "tiktok"
+      },
+      "settings": {
+        "color.background": "#652a0d",
+        "color.text": "#FFFFFF",
+        "color.link": "#0094EB",
+        "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+        "space.sectionX": "24px",
+        "space.sectionY": "12px",
+        "space.block": "12px",
+        "social.size": "24px",
+        "content.width": "382px"
+      }
+    }
+  ]
+}

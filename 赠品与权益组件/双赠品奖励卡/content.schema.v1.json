@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "gift.rewardGrid2",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "reward.title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.rules[0]": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.rules[1]": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.items[0].image.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.items[0].image.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.items[0].url": {
+      "type": "url",
+      "role": "link-target",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.items[1].image.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.items[1].image.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "reward.items[1].url": {
+      "type": "url",
+      "role": "link-target",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    }
+  },
+  "additionalProperties": false
+}

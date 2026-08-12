@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "slots": [
+    {
+      "id": "hero",
+      "label": "首图",
+      "order": 1,
+      "required": true,
+      "candidateComponentKeys": ["hero.promotionalOverlay"]
+    },
+    {
+      "id": "sale-grid",
+      "label": "促销多商品栏",
+      "order": 2,
+      "required": true,
+      "candidateComponentKeys": ["collection.saleGrid6"]
+    },
+    {
+      "id": "clickable-image",
+      "label": "整图链接",
+      "order": 3,
+      "required": true,
+      "candidateComponentKeys": ["image.clickableFullWidth"]
+    },
+    {
+      "id": "gift",
+      "label": "赠品",
+      "order": 4,
+      "required": true,
+      "candidateComponentKeys": ["gift.rewardGrid2"]
+    },
+    {
+      "id": "location",
+      "label": "地址",
+      "order": 5,
+      "required": true,
+      "candidateComponentKeys": ["location.showroomCard"]
+    },
+    {
+      "id": "footer",
+      "label": "页脚",
+      "order": 6,
+      "required": true,
+      "terminal": true,
+      "candidateComponentKeys": ["footer.warm"]
+    }
+  ]
+}

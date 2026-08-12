@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.promotionalOverlay",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.theme": { "type": "string", "default": "#9D1D20", "themeable": true, "skillPrompt": true },
+    "color.themeText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
+    "color.heroFallback": { "type": "string", "default": "#E9E4DC", "themeable": true, "skillPrompt": false },
+    "color.logoBadge": { "type": "string", "default": "#A79689", "themeable": true, "skillPrompt": true },
+    "color.logoBadgeTransparent": { "type": "string", "default": "rgba(167, 150, 137, 0.70)", "themeable": true, "skillPrompt": true },
+    "color.panelFallback": { "type": "string", "default": "#F4F1EC", "themeable": true, "skillPrompt": false },
+    "color.panelTransparent": { "type": "string", "default": "rgba(247, 244, 239, 0.88)", "themeable": true, "skillPrompt": false },
+    "color.heading": { "type": "string", "default": "#1E1D1B", "themeable": true, "skillPrompt": false },
+    "color.body": { "type": "string", "default": "#2B2825", "themeable": true, "skillPrompt": false },
+    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": true, "skillPrompt": false },
+    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "font.action": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "spacing.promotion": { "type": "string", "default": "0", "themeable": true, "skillPrompt": false },
+    "spacing.logoTop": { "type": "string", "default": "48px", "themeable": true, "skillPrompt": false },
+    "spacing.panelBottom": { "type": "string", "default": "32px", "themeable": true, "skillPrompt": false },
+    "background.position": { "type": "string", "default": "center center", "themeable": true, "skillPrompt": false },
+    "logo.maxWidth": { "type": "string", "default": "80px", "themeable": true, "skillPrompt": false },
+    "panel.maxWidth": { "type": "string", "default": "472px", "themeable": true, "skillPrompt": false },
+    "panel.padding": { "type": "string", "default": "26px 28px 30px", "themeable": true, "skillPrompt": false },
+    "cta.maxWidth": { "type": "string", "default": "252px", "themeable": true, "skillPrompt": false },
+    "radius.button": { "type": "string", "default": "0px", "themeable": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

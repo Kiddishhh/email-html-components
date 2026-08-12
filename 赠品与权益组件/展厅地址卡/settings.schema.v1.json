@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "location.showroomCard",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": true },
+    "color.text": { "type": "string", "default": "#1F1F1F", "themeable": true, "skillPrompt": false },
+    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": true, "skillPrompt": false },
+    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "content.maxWidth": { "type": "string", "default": "600px", "themeable": true, "skillPrompt": false },
+    "image.maxWidth": { "type": "string", "default": "548px", "themeable": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

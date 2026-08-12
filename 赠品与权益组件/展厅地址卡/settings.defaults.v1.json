@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "location.showroomCard",
+  "values": {
+    "color.surface": "#FFFFFF",
+    "color.text": "#1F1F1F",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "content.maxWidth": "600px",
+    "image.maxWidth": "548px"
+  }
+}

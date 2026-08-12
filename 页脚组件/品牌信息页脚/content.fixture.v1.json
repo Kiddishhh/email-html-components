@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "footer.warm",
+  "fixture": "default-theme-demo",
+  "values": {
+    "footer.brand": "Freshine Curtains",
+    "footer.address.line1": "43 Corporate Park ",
+    "footer.address.line2": " Suite 208  ",
+    "footer.address.line3": "Irvine, CA  92606",
+    "footer.address.line4": "United States",
+    "footer.address.disclaimer": "(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)",
+    "footer.address.line5": "+1 (949) 691-6598",
+    "footer.contact": "support@freshinelife.com",
+    "footer.contactUrl": "mailto:support@freshinelife.com",
+    "footer.copyright": "©2024 Freshine. All Rights Reserived.",
+    "footer.legalBrand": "Freshine",
+    "footer.social.instagramUrl": "https://www.instagram.com/freshinecurtains/",
+    "footer.social.pinterestUrl": "https://www.pinterest.com/freshinecurtains/",
+    "footer.social.youtubeUrl": "https://www.youtube.com/@freshinecurtains/shorts",
+    "footer.social.tiktokUrl": "https://www.tiktok.com/@freshinecurtains",
+    "footer.image.1.url": "https://preview.soundestlink.com/dynamicImage/social/instagram/48/24/default?raw=true",
+    "footer.image.1.alt": "instagram",
+    "footer.image.2.url": "https://preview.soundestlink.com/dynamicImage/social/pinterest/48/24/default?raw=true",
+    "footer.image.2.alt": "pinterest",
+    "footer.image.3.url": "https://preview.soundestlink.com/dynamicImage/social/youtube/48/24/default?raw=true",
+    "footer.image.3.alt": "youtube",
+    "footer.image.4.url": "https://preview.soundestlink.com/dynamicImage/social/tiktok/48/24/default?raw=true",
+    "footer.image.4.alt": "tiktok"
+  }
+}

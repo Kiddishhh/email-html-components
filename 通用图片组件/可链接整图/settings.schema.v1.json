@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.clickableFullWidth",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "spacing.outer": {
+      "type": "string",
+      "default": "0",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "image.maxWidth": {
+      "type": "string",
+      "default": "600px",
+      "themeable": true,
+      "skillPrompt": false
+    }
+  },
+  "additionalProperties": false
+}

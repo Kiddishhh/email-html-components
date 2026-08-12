@@ -1,0 +1,50 @@
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="{{settings.color.surface}}" style="width:100%;border-collapse:collapse;background-color:{{settings.color.surface}};">
+  <tr>
+    <td align="center" valign="top" bgcolor="{{settings.color.surface}}" style="background-color:{{settings.color.surface}};text-align:center;vertical-align:top;">
+      <table class="freshine-component freshine-double-gift-vertical" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="{{settings.color.surface}}" style="width:100%;border-collapse:collapse;margin:0 auto;background-color:{{settings.color.surface}};">
+        <tr>
+          <td class="freshine-reward-head" align="center" style="padding:{{settings.spacing.header}};color:{{settings.color.text}};text-align:center;">
+            <!-- FRESHINE_SLOT_START:reward.title -->
+            <span data-freshine-slot="reward.title" style="display:inline-block;max-width:100%;color:{{settings.color.text}};font-family:{{settings.font.heading}};font-size:26px;font-weight:400;line-height:36px;text-align:center;word-break:break-word;overflow-wrap:anywhere;">{{content.reward.title}}</span>
+            <!-- FRESHINE_SLOT_END:reward.title -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;"><tr><td height="10" style="height:10px;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+            <!-- FRESHINE_SLOT_START:reward.rules[0] -->
+            <span data-freshine-slot="reward.rules[0]" style="display:inline-block;max-width:100%;color:{{settings.color.text}};font-family:{{settings.font.body}};font-size:15px;font-weight:400;line-height:22px;text-align:center;word-break:break-word;overflow-wrap:anywhere;">{{content.reward.rules[0]}}</span>
+            <!-- FRESHINE_SLOT_END:reward.rules[0] -->
+            <br>
+            <!-- FRESHINE_SLOT_START:reward.rules[1] -->
+            <span data-freshine-slot="reward.rules[1]" style="display:inline-block;max-width:100%;color:{{settings.color.text}};font-family:{{settings.font.body}};font-size:15px;font-weight:400;line-height:22px;text-align:center;word-break:break-word;overflow-wrap:anywhere;">{{content.reward.rules[1]}}</span>
+            <!-- FRESHINE_SLOT_END:reward.rules[1] -->
+          </td>
+        </tr>
+        <tr>
+          <td class="freshine-reward-content" align="center" style="padding:{{settings.spacing.content}};text-align:center;">
+            <table role="presentation" width="544" cellpadding="0" cellspacing="0" border="0" align="center" style="width:100%;max-width:544px;border-collapse:collapse;margin:0 auto;">
+              <tr>
+                <td class="freshine-reward-image-row" align="center" style="padding:0;text-align:center;">
+                  <!-- FRESHINE_SLOT_START:reward.items[0].image -->
+                  <a href="{{content.reward.items[0].url}}" data-freshine-href-slot="reward.items[0].url" target="_blank" style="display:block;text-decoration:none;">
+                    <img src="{{content.reward.items[0].image.url}}" alt="{{content.reward.items[0].image.alt}}" width="544" height="348" data-freshine-slot="reward.items[0].image" style="display:block;width:100%;height:auto;border:0;border-radius:{{settings.radius.image}};outline:none;text-decoration:none;">
+                  </a>
+                  <!-- FRESHINE_SLOT_END:reward.items[0].image -->
+                </td>
+              </tr>
+              <tr>
+                <td class="freshine-reward-image-gap" height="4" style="height:{{settings.spacing.imageGap}};font-size:0;line-height:0;">&nbsp;</td>
+              </tr>
+              <tr>
+                <td class="freshine-reward-image-row" align="center" style="padding:0;text-align:center;">
+                  <!-- FRESHINE_SLOT_START:reward.items[1].image -->
+                  <a href="{{content.reward.items[1].url}}" data-freshine-href-slot="reward.items[1].url" target="_blank" style="display:block;text-decoration:none;">
+                    <img src="{{content.reward.items[1].image.url}}" alt="{{content.reward.items[1].image.alt}}" width="544" height="348" data-freshine-slot="reward.items[1].image" style="display:block;width:100%;height:auto;border:0;border-radius:{{settings.radius.image}};outline:none;text-decoration:none;">
+                  </a>
+                  <!-- FRESHINE_SLOT_END:reward.items[1].image -->
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

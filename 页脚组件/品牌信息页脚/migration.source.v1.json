@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "migrationMode": "one-time-import",
+  "sourceName": "new FOOT",
+  "sourceID": "68fccc3f9541e9f7ebc479eb",
+  "sourceUpdatedAt": "2026-03-20T07:03:55.12Z",
+  "snapshotSha256": "3ad37be6d08df643504014c1ab9fa7a218e8920e91099849270637d5f77a4d67",
+  "runtimeDependency": false
+}
