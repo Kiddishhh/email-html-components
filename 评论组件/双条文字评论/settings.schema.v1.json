@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.textList2",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#FDFCFB", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": true },
+    "color.primaryText": { "type": "string", "default": "#252321", "themeable": false, "skillPrompt": false },
+    "color.secondaryText": { "type": "string", "default": "#89756F", "themeable": false, "skillPrompt": false },
+    "color.divider": { "type": "string", "default": "#DEDAD6", "themeable": false, "skillPrompt": false },
+    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": false, "skillPrompt": false },
+    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": false, "skillPrompt": false },
+    "content.maxWidth": { "type": "string", "default": "600px", "themeable": false, "skillPrompt": false },
+    "spacing.horizontal": { "type": "string", "default": "24px", "themeable": false, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

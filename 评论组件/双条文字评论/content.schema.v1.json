@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.textList2",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "star.image.url": { "type": "url", "role": "fixed-image-source", "protocol": "https", "required": true, "editable": false, "skillPrompt": false },
+    "summary.ratingText": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "summary.reviewCountText": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.1.author": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.1.date": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.1.title": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.1.body": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.2.author": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.2.date": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.2.title": { "type": "text", "required": true, "editable": true, "skillPrompt": false },
+    "review.2.body": { "type": "text", "required": true, "editable": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

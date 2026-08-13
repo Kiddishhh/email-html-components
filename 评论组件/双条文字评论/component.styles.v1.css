@@ -1,0 +1,7 @@
+/* review.textList2 component style source. */
+.freshine-component { width:100%; border-collapse:collapse; }
+.freshine-review-list-2 { width:100%; border-collapse:collapse; }
+.freshine-review-summary-star { display:block; width:17px; height:auto; border:0; outline:none; }
+.freshine-review-item-star { display:block; width:13px; height:auto; border:0; outline:none; }
+.freshine-review-title { display:block; }
+.freshine-review-body { display:block; }

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.textList2",
+  "fixture": "default-two-review-demo",
+  "values": {
+    "star.image.url": "asset://review-star",
+    "summary.ratingText": "4.8 / 5",
+    "summary.reviewCountText": "200+ reviews",
+    "review.1.author": "Sarah M",
+    "review.1.date": "Aug 2, 2026",
+    "review.1.title": "Exactly What Our Living Room Needed",
+    "review.1.body": "The linen blend drapes beautifully and the custom sizing was spot on. Customer service walked me through the entire measurement process — couldn't be happier with the result.",
+    "review.2.author": "James K",
+    "review.2.date": "Jul 28, 2026",
+    "review.2.title": "Quiet Luxury, Really Well Made",
+    "review.2.body": "Ordered pinch-pleat panels for our bedroom bay window. The fabric has this beautiful natural texture and the light filtering is perfect. Worth every penny."
+  },
+  "localReferenceAssets": {
+    "review-star": "assets/review-star.png"
+  }
+}

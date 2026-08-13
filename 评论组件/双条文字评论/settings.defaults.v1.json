@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.textList2",
+  "values": {
+    "color.surface": "#FDFCFB",
+    "color.primaryText": "#252321",
+    "color.secondaryText": "#89756F",
+    "color.divider": "#DEDAD6",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "content.maxWidth": "600px",
+    "spacing.horizontal": "24px"
+  }
+}
