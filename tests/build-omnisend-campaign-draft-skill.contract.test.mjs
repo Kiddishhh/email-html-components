@@ -44,17 +44,71 @@ test('skill records the approved campaign workflow and safety gates', async () =
   const skill = await read('SKILL.md');
 
   assert.match(skill, /^---\nname: build-omnisend-campaign-draft\n/m);
-  assert.match(skill, /hero\.promotionalOverlay/);
-  assert.match(skill, /collection\.saleGrid6/);
-  assert.match(skill, /image\.clickableFullWidth/);
-  assert.match(skill, /gift\.rewardGrid2/);
-  assert.match(skill, /location\.showroomCard/);
-  assert.match(skill, /footer\.warm/);
-  assert.match(skill, /footer\.warm.*必须.*最后/);
+  assert.match(skill, /componentKey/);
+  assert.match(skill, /campaign-component-interactions\.v1\.json/);
+  assert.match(skill, /用户.*提供.*组件.*顺序|组件.*顺序.*用户.*提供/s);
+  assert.match(skill, /不得.*固定.*顺序|不预置.*顺序/s);
   assert.match(skill, /禁止.*发送|不得.*发送/);
   assert.match(skill, /最终.*确认/);
   assert.match(skill, /本地.*预览/);
   assert.match(skill, /内容哈希/);
+});
+
+test('active campaign references follow the current component directory layout', async () => {
+  const registry = JSON.parse(readFileSync(join(workspaceRoot, '组件清单.json'), 'utf8'));
+  const readWorkspace = (relativePath) => readFileSync(join(workspaceRoot, relativePath), 'utf8');
+  const expected = {
+    'collection.saleGrid6': {
+      category: '活动商品组件',
+      directory: '活动商品组件/六宫格折扣商品组件'
+    },
+    'image.clickableFullWidth': {
+      category: '评论组件',
+      directory: '评论组件/可链接整图'
+    },
+    'image.benefitsStrip3': {
+      category: '赠品与权益组件',
+      directory: '赠品与权益组件/三项权益整图'
+    },
+    'gift.rewardGrid2': {
+      category: '赠品与权益组件',
+      directory: '赠品与权益组件/双赠品奖励卡'
+    },
+    'location.showroomCard': {
+      category: '地址组件',
+      directory: '地址组件/展厅地址卡'
+    }
+  };
+
+  for (const [componentKey, contract] of Object.entries(expected)) {
+    const entry = registry.find((candidate) => candidate.componentKey === componentKey);
+    assert.ok(entry, `${componentKey} must remain registered`);
+    assert.equal(entry.分类, contract.category);
+    for (const relativePath of Object.values(entry.路径)) {
+      assert.ok(relativePath.startsWith(`${contract.directory}/`), `${componentKey}: stale path ${relativePath}`);
+    }
+  }
+
+  const skill = await read('SKILL.md');
+  const readme = readWorkspace('README.md');
+  const index = readWorkspace('组件索引.md');
+  const composition = JSON.parse(readWorkspace('compositions/hero-grid-review-gifts-location.default.v1.json'));
+
+  assert.match(skill, /组件路径.*单一事实来源.*组件清单\.json|组件清单\.json.*单一事实来源/s);
+  assert.match(skill, /不得.*硬编码.*历史目录/);
+  for (const { directory } of Object.values(expected)) {
+    assert.match(readme, new RegExp(directory.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(index, new RegExp(directory.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+  assert.deepEqual(
+    composition.components
+      .filter(({ componentKey }) => Object.hasOwn(expected, componentKey))
+      .map(({ componentKey, directory }) => [componentKey, directory]),
+    Object.entries(expected)
+      .filter(([componentKey]) => componentKey !== 'image.benefitsStrip3')
+      .map(([componentKey, { directory }]) => [componentKey, directory])
+  );
+  assert.equal(composition.assets['review-image-default'].path, '评论组件/可链接整图/assets/default-review-ix.jpg');
 });
 
 test('campaign metadata collection explains its three fields in Chinese', async () => {
@@ -98,7 +152,7 @@ test('references preserve the approved interaction and Shopify contracts', async
 test('sale grid presents default-injected content as an editable current-settings card', async () => {
   const interactions = await read('references/component-interactions.zh-CN.md');
 
-  assert.match(interactions, /CTA.*默认.*推荐 Collection.*完整 URL/);
+  assert.match(interactions, /CTA.*保留.*输入.*Page.*Collection.*URL/);
   assert.match(interactions, /`SHOP NOW`.*默认文字/);
   assert.match(interactions, /默认注入.*卡片/);
   assert.match(interactions, /卡片.*商品图片.*Alt.*商品详情链接.*折扣标签.*CTA/);
@@ -129,7 +183,7 @@ test('clickable image uses the confirmed review-friendly geometry and one comple
 
   assert.match(interactions, /image\.clickableFullWidth/);
   assert.match(interactions, /600px.*全宽.*零外边距.*1200\s*[x×]\s*2186px.*600\s*[x×]\s*1093px.*375\s*[x×]\s*683px/s);
-  assert.match(interactions, /先提示.*尺寸.*再.*图片链接/);
+  assert.match(interactions, /默认图.*用户.*主动提出替换/);
   assert.match(interactions, /公开 HTTPS.*本地图片路径/);
   assert.match(interactions, /Alt.*实际图片内容/);
   assert.match(interactions, /https:\/\/freshinelife\.com\//);
@@ -196,19 +250,166 @@ test('Shopify access is strictly read-only', async () => {
   assert.match(shopify, /read_online_store_pages.*read_content|read_content.*read_online_store_pages/);
 });
 
-test('campaign structure validates the six fixed slots and interaction-ready styles', async () => {
+test('campaign structure validates a user-ordered registered-component selection contract', async () => {
   const result = spawnSync(process.execPath, [validator], { cwd: workspaceRoot, encoding: 'utf8' });
 
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const structure = JSON.parse(await read('references/campaign-structure.v1.json'));
-  assert.deepEqual(structure.slots.map(({ id }) => id), [
-    'hero',
-    'sale-grid',
-    'clickable-image',
-    'gift',
-    'location',
-    'footer'
+  assert.deepEqual(structure, {
+    schemaVersion: 2,
+    selection: 'user-ordered-registered-components'
+  });
+  assert.match(result.stdout, /"selection":\s*"user-ordered-registered-components"/);
+});
+
+test('campaign validation rejects a malformed flexible selection contract', () => {
+  const fixtureRoot = mkdtempSync(join(tmpdir(), 'freshine-campaign-structure-'));
+  const structurePath = join(fixtureRoot, 'campaign-structure.v1.json');
+  writeFileSync(structurePath, JSON.stringify({ schemaVersion: 2, selection: 'slots' }, null, 2));
+
+  const result = spawnSync(process.execPath, [validator, '--structure', structurePath], { cwd: workspaceRoot, encoding: 'utf8' });
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /selection.*user-ordered-registered-components/);
+});
+
+test('countdown hero is a selectable hero style with one completion confirmation and deterministic theme derivation', async () => {
+  const skill = await read('SKILL.md');
+  const interactions = await read('references/component-interactions.zh-CN.md');
+  const safety = await read('references/workflow-and-safety.zh-CN.md');
+  const structure = JSON.parse(await read('references/campaign-structure.v1.json'));
+  const interactionIndex = JSON.parse(await read('references/campaign-component-interactions.v1.json'));
+  const indexedInteraction = interactionIndex.interactions.find(({ componentKey }) => componentKey === 'hero.countdownOverlay');
+
+  assert.equal(structure.selection, 'user-ordered-registered-components');
+  assert.ok(indexedInteraction, 'countdown hero must have a machine-readable interaction contract');
+  assert.match(indexedInteraction.interactionReference, /component-interactions\.zh-CN\.md#8-herocountdownoverlay-/);
+
+  for (const document of [skill, interactions, safety]) {
+    assert.match(document, /hero\.countdownOverlay/);
+    assert.match(document, /600\s*[×x]\s*778/);
+    assert.match(document, /600\s*[×x]\s*722/);
+    assert.match(document, /1200\s*[×x]\s*1443/);
+    assert.match(document, /Lora.*Regular.*400.*50px.*64px.*0px.*居中/s);
+    assert.match(document, /Montserrat.*14px.*21px/s);
+    assert.match(document, /SIGN UP.*color\.navigationRight/s);
+    assert.match(document, /SHOP NOW.*color\.theme/s);
+    assert.match(document, /#725A4B/);
+    assert.match(document, /#97866D/);
+    assert.match(document, /reference-default/);
+    assert.match(document, /35%.*65%.*#F4F1EC/s);
+    assert.match(document, /单独.*修改.*左侧导航|左侧导航.*单独.*修改/s);
+    assert.match(document, /120vw.*560px.*722px/s);
+    assert.match(document, /375px.*560px.*616px/s);
+    assert.match(document, /600px.*722px.*375px.*560px/s);
+    assert.match(document, /460px.*375px.*355px/s);
+    assert.match(document, /460px.*520px.*375px.*(?:325px|自然高度)/s);
+    assert.match(document, /Logo.*108px.*分隔.*220px.*CTA.*200\s*[×x]\s*44px/s);
+    assert.match(document, /countdown\.title.*Only 3 Days Left/s);
+    assert.match(document, /280px.*自然换行/s);
+    assert.doesNotMatch(document, /countdown\.titleLine[12]/);
+    assert.match(document, /内部|字体|Logo|CTA/);
+    assert.doesNotMatch(document, /375px.*36px.*44px/s);
+    assert.match(document, /一次.*确认/);
+  }
+
+  assert.match(skill, /derive-countdown-theme\.mjs/);
+  assert.match(skill, /hero\.promotionalOverlay.*Shopify.*hero\.countdownOverlay.*不得.*Shopify/s);
+});
+
+test('countdown hero 2 reuses the locked Shopify activity and collects one ratio-safe image before one completion confirmation', async () => {
+  const structure = JSON.parse(await read('references/campaign-structure.v1.json'));
+  const interactionIndex = JSON.parse(await read('references/campaign-component-interactions.v1.json'));
+  const interaction = interactionIndex.interactions.find(({ componentKey }) => componentKey === 'hero.countdownOverlay2');
+
+  assert.equal(structure.selection, 'user-ordered-registered-components');
+  assert.ok(interaction, 'countdown hero 2 must have a machine-readable interaction contract');
+  assert.deepEqual(interaction.allowedSources, [
+    'shopify.themeSnapshot',
+    'component.localDefaultSnapshot',
+    'user.publicHttpsImage',
+    'user.localImage',
+    'user.copy',
+    'user.color'
   ]);
+  assert.deepEqual(interaction.requiredStages, [
+    'selectSalePage',
+    'parseSalePage',
+    'collectHeroImage',
+    'completionCard'
+  ]);
+  assert.deepEqual(interaction.imageCollection, {
+    required: true,
+    displaySize: { width: 540, height: 540 },
+    recommendedSize: { width: 1200, height: 1200 },
+    sources: ['componentDefault', 'localPath', 'publicHttps'],
+    ratioMismatch: 'centerCropDerivativeWithoutOverwrite'
+  });
+  assert.deepEqual(interaction.activityMapping, {
+    'slideshow-v2.subheading': 'hero.eyebrow',
+    'slideshow-v2.heading': 'hero.title',
+    'slideshow-v2.description': 'hero.subtitle',
+    selectedPageUrl: 'hero.cta.url'
+  });
+  assert.deepEqual(interaction.editing, {
+    defaultFields: 'completionCardEditable',
+    benefitCount: 3,
+    benefitOrder: 'fixed',
+    countdownMode: 'staticEditable',
+    confirmationCount: 1
+  });
+  assert.deepEqual(interaction.colors, {
+    action: 'inheritGlobalOrComponentDefault',
+    bodySurface: 'inheritGlobalOrComponentDefault',
+    offerSurface: 'componentDefaultUnlessUserChanges',
+    promotionBar: 'componentDefaultUnlessUserChanges'
+  });
+  assert.deepEqual(interaction.completion, { card: true, previews: ['desktop', 'mobile'] });
+});
+
+test('countdown hero 2 is delivered as standalone HTML while screenshots remain validation evidence', async () => {
+  const skill = await read('SKILL.md');
+  const safety = await read('references/workflow-and-safety.zh-CN.md');
+  const interactions = await read('references/component-interactions.zh-CN.md');
+  const management = await readFile(new URL('../头图/倒计时头图2/COMPONENT_MANAGEMENT.zh-CN.v1.md', import.meta.url), 'utf8');
+  const demo = await readFile(new URL('../头图/倒计时头图2/效果演示.html', import.meta.url), 'utf8');
+
+  assert.match(demo, /^<!doctype html>/i);
+  assert.match(demo, /<meta name="viewport"/i);
+  assert.match(demo, /freshine-countdown-overlay-2-hero/);
+  assert.doesNotMatch(demo, /\{\{(?:content|settings)\./);
+  assert.match(management, /`component\.template\.v1\.html`.*HTML.*片段/s);
+  assert.match(management, /`效果演示\.html`.*完整.*HTML/s);
+  assert.match(skill, /最终交付.*完整 HTML.*截图.*验收证据.*不得代替/s);
+  assert.match(safety, /本地预览 HTML.*正式交付.*截图.*不得代替/s);
+  assert.match(interactions, /确认后.*生成.*完整 HTML.*截图.*验收证据/s);
+});
+
+test('countdown hero 2 documents the confirmed supporting-copy typography without changing benefit labels', async () => {
+  const skill = await read('SKILL.md');
+  const interactions = await read('references/component-interactions.zh-CN.md');
+  const management = await readFile(new URL('../头图/倒计时头图2/COMPONENT_MANAGEMENT.zh-CN.v1.md', import.meta.url), 'utf8');
+
+  for (const document of [skill, interactions, management]) {
+    assert.match(document, /顶部促销.*14px.*20px/s);
+    assert.match(document, /主标题下.*14px.*21px/s);
+    assert.match(document, /底部.*14px.*20px/s);
+    assert.match(document, /三项权益.*12px.*15px/s);
+  }
+});
+
+test('campaign validation rejects a malformed countdown hero 2 image contract', async () => {
+  const fixtureRoot = mkdtempSync(join(tmpdir(), 'freshine-campaign-interactions-'));
+  const interactions = JSON.parse(await read('references/campaign-component-interactions.v1.json'));
+  const interaction = interactions.interactions.find(({ componentKey }) => componentKey === 'hero.countdownOverlay2');
+  interaction.imageCollection.recommendedSize.height = 900;
+  const interactionPath = join(fixtureRoot, 'campaign-component-interactions.v1.json');
+  writeFileSync(interactionPath, JSON.stringify(interactions, null, 2));
+
+  const result = spawnSync(process.execPath, [validator, '--interactions', interactionPath], { cwd: workspaceRoot, encoding: 'utf8' });
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /hero\.countdownOverlay2.*recommendedSize.*1200.*1200/s);
 });
 
 test('campaign validation rejects a selectable component without its real demo', () => {
@@ -227,41 +428,42 @@ test('campaign validation rejects a component whose content Schema key drifted',
   assert.match(result.stderr, /hero\.promotionalOverlay.*content Schema.*hero\.wrongKey/u);
 });
 
-test('Skill uses the Campaign contracts to select six fixed slots one at a time', async () => {
+test('Skill uses the Campaign contracts to select the user-provided component list one at a time', async () => {
   const skill = await read('SKILL.md');
   const interactions = await read('references/component-interactions.zh-CN.md');
 
   assert.match(skill, /campaign-structure\.v1\.json/);
   assert.match(skill, /campaign-component-interactions\.v1\.json/);
-  assert.match(skill, /首图.*促销多商品栏.*整图链接.*赠品.*地址.*页脚/s);
-  assert.match(skill, /每次.*一个区段.*样式/);
+  assert.match(skill, /用户.*提供.*组件.*顺序|组件.*顺序.*用户.*提供/s);
+  assert.match(skill, /每次.*一个组件/);
   assert.match(interactions, /gift\.rewardGrid2/);
   assert.match(interactions, /location\.showroomCard/);
   assert.match(interactions, /footer\.warm/);
   assert.match(interactions, /预约与收件限制说明.*国家.*电话/s);
 });
 
-test('Skill invokes the tested Shopify scripts in their locked-data order', async () => {
+test('Skill documents the tested Shopify import scripts and their current Page or Collection behavior', async () => {
   const skill = await read('SKILL.md');
   const interactions = await read('references/component-interactions.zh-CN.md');
 
   assert.match(skill, /list-sale-activities\.mjs/);
   assert.match(skill, /fetch-sale-activity\.mjs/);
   assert.match(skill, /fetch-sale-grid\.mjs/);
-  assert.match(skill, /锁定.*推荐 Collection.*fetch-sale-grid\.mjs/s);
+  assert.match(skill, /fetch-activity-page-sale-grid\.mjs/);
+  assert.match(skill, /Page.*Collection.*输入 URL.*CTA/s);
   assert.match(skill, /选定.*展示.*subheading.*heading.*description/s);
   assert.match(interactions, /选定.*展示.*subheading.*heading.*description/s);
   assert.match(interactions, /不新增.*确认/);
 });
 
-test('workflow reference preserves the fixed six-slot selection boundary', async () => {
+test('workflow reference preserves user-directed component selection without fixed slots', async () => {
   const safety = await read('references/workflow-and-safety.zh-CN.md');
 
   assert.match(safety, /campaign-structure\.v1\.json/);
   assert.match(safety, /campaign-component-interactions\.v1\.json/);
-  assert.match(safety, /首图.*促销多商品栏.*整图链接.*赠品.*地址.*页脚/s);
-  assert.match(safety, /每次.*一个区段.*样式/);
-  assert.doesNotMatch(safety, /前五个.*可选.*可排序/);
+  assert.match(safety, /用户.*提供.*组件.*顺序|组件.*顺序.*用户.*提供/s);
+  assert.match(safety, /每次.*一个组件/);
+  assert.doesNotMatch(safety, /footer\.warm.*唯一.*最后/);
 });
 
 test('Shopify contract records homepage-slide activity discovery without menu or all-Page scans', async () => {
@@ -367,4 +569,36 @@ test('project state keeps final confirmation separate from the remote draft stat
 
   assert.equal(state.finalConfirmation.status, 'confirmed');
   assert.equal(state.finalConfirmation.remoteStatus, 'draft');
+});
+
+test('the three-benefit strip is a selectable non-linked image style with its confirmed interaction contract', async () => {
+  const skill = await read('SKILL.md');
+  const interactionsDocument = await read('references/component-interactions.zh-CN.md');
+  const structure = JSON.parse(await read('references/campaign-structure.v1.json'));
+  const interactionIndex = JSON.parse(await read('references/campaign-component-interactions.v1.json'));
+  const interaction = interactionIndex.interactions.find(({ componentKey }) => componentKey === 'image.benefitsStrip3');
+
+  assert.equal(structure.selection, 'user-ordered-registered-components');
+  assert.ok(interaction, 'three-benefit strip must be registered in the interaction index');
+  assert.deepEqual(interaction.allowedSources, [
+    'component.localDefaultSnapshot',
+    'user.publicHttpsImage',
+    'user.localImage',
+    'user.color'
+  ]);
+  assert.deepEqual(interaction.requiredStages, [
+    'loadDefaultSnapshot',
+    'collectOrConfirmImage',
+    'inspectImage',
+    'confirmBackground',
+    'completionCard'
+  ]);
+  assert.deepEqual(interaction.completion, { card: true, previews: ['desktop', 'mobile'] });
+  for (const document of [skill, interactionsDocument]) {
+    assert.match(document, /image\.benefitsStrip3/);
+    assert.match(document, /默认.*保留.*三项权益图/s);
+    assert.match(document, /图片内部.*不可.*拆分/s);
+    assert.match(document, /整张图片不绑定链接/);
+    assert.match(document, /600px.*375px/s);
+  }
 });

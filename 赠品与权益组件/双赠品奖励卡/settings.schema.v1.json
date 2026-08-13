@@ -22,9 +22,45 @@
       "themeable": true,
       "skillPrompt": false
     },
+    "font.headingSize": {
+      "type": "string",
+      "default": "26px",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.headingWeight": {
+      "type": "string",
+      "default": "400",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.headingLineHeight": {
+      "type": "string",
+      "default": "36px",
+      "themeable": true,
+      "skillPrompt": false
+    },
     "font.body": {
       "type": "string",
       "default": "Montserrat, Arial, Helvetica, sans-serif",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.bodySize": {
+      "type": "string",
+      "default": "15px",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.bodyWeight": {
+      "type": "string",
+      "default": "400",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.bodyLineHeight": {
+      "type": "string",
+      "default": "22px",
       "themeable": true,
       "skillPrompt": false
     },

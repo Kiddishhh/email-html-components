@@ -18,17 +18,17 @@
       "path": "头图/促销悬浮首图/assets/default-logo-white.png",
       "name": "freshine-logo-white.png"
     },
-    "review-collage": {
-      "path": "通用图片组件/可链接整图/assets/default-review-collage.png",
-      "name": "customer-review-collage.png"
+    "review-image-default": {
+      "path": "评论组件/可链接整图/assets/default-review-ix.jpg",
+      "name": "customer-review-ix.jpg"
     },
     "gift-pillow-cover": {
-      "path": "赠品与权益组件/双赠品奖励卡/assets/default-pillow-cover.png",
-      "name": "free-gift-pillow-cover.png"
+      "path": "赠品与权益组件/双赠品奖励卡/assets/default-pillow-cover.jpg",
+      "name": "free-gift-pillow-cover.jpg"
     },
     "gift-eye-mask": {
-      "path": "赠品与权益组件/双赠品奖励卡/assets/default-eye-mask.png",
-      "name": "free-gift-eye-mask.png"
+      "path": "赠品与权益组件/双赠品奖励卡/assets/default-eye-mask.jpg",
+      "name": "free-gift-eye-mask.jpg"
     }
   },
   "components": [
@@ -77,7 +77,7 @@
     },
     {
       "name": "六宫格夏季促销",
-      "directory": "活动商品组件/六宫格夏季促销",
+      "directory": "活动商品组件/六宫格折扣商品组件",
       "componentKey": "collection.saleGrid6",
       "content": {
         "saleItems[0].image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Long-Linen-Curtains-for-Large-Windows-8823-5-1-main.webp?v=1768734839",
@@ -122,11 +122,11 @@
     },
     {
       "name": "评论整图链接",
-      "directory": "通用图片组件/可链接整图",
+      "directory": "评论组件/可链接整图",
       "componentKey": "image.clickableFullWidth",
       "content": {
-        "image.url": "asset://review-collage",
-        "image.alt": "Customer review collage featuring Uilana Grabiuc",
+        "image.url": "asset://review-image-default",
+        "image.alt": "Customer review collage featuring three Freshine curtain reviews",
         "image.linkUrl": "https://freshinelife.com/"
       },
       "settings": {
@@ -154,7 +154,13 @@
         "color.surface": "#FBFAF8",
         "color.text": "#1F1D1B",
         "font.heading": "Lora, Georgia, Times New Roman, serif",
+        "font.headingSize": "26px",
+        "font.headingWeight": "400",
+        "font.headingLineHeight": "36px",
         "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+        "font.bodySize": "15px",
+        "font.bodyWeight": "400",
+        "font.bodyLineHeight": "22px",
         "spacing.header": "26px 28px 0",
         "spacing.content": "20px 19px 26px",
         "spacing.imageGap": "4px",
@@ -163,7 +169,7 @@
     },
     {
       "name": "展厅地址卡",
-      "directory": "赠品与权益组件/展厅地址卡",
+      "directory": "地址组件/展厅地址卡",
       "componentKey": "location.showroomCard",
       "content": {
         "showroom.title": "Freshine Has A Showroom In The California",

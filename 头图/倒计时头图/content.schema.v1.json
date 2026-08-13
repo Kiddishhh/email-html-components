@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownOverlay",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "navigation.text": { "type": "text", "required": true, "skillPrompt": true },
+    "navigation.linkText": { "type": "text", "required": true, "skillPrompt": true },
+    "navigation.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "hero.backgroundImage.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" },
+    "hero.backgroundImage.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "brand.logo.url": { "type": "url", "role": "image-source", "required": true, "skillPrompt": false },
+    "brand.logo.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": false },
+    "brand.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "decoration.dividerImage.url": { "type": "url", "role": "image-source", "required": true, "skillPrompt": false },
+    "decoration.dividerImage.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": false },
+    "countdown.title": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

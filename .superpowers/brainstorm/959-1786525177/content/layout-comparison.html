@@ -1,0 +1,85 @@
+<style>
+  #freshine-layout-comparison { color:#2a2521; }
+  #freshine-layout-comparison .intro { margin-bottom:20px; }
+  #freshine-layout-comparison .freshine-layout-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; align-items:start; }
+  #freshine-layout-comparison .freshine-layout-option { border:1px solid #d7cec3; border-radius:14px; background:#f7f3ed; padding:14px; cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+  #freshine-layout-comparison .freshine-layout-option:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(76,55,42,.10); }
+  #freshine-layout-comparison .freshine-layout-option.selected { border-color:#9d1d20; box-shadow:0 0 0 2px rgba(157,29,32,.18); }
+  #freshine-layout-comparison .freshine-layout-label { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; font-family:Arial,sans-serif; }
+  #freshine-layout-comparison .freshine-layout-label strong { font-size:15px; font-weight:500; }
+  #freshine-layout-comparison .freshine-layout-label span { color:#776b63; font-size:12px; }
+  #freshine-layout-comparison .freshine-email { width:100%; max-width:300px; margin:0 auto; overflow:hidden; background:#f1ede5; color:#23201e; box-shadow:0 6px 20px rgba(55,44,36,.12); font-family:Arial,Helvetica,sans-serif; }
+  #freshine-layout-comparison .freshine-logo { height:30px; display:flex; align-items:center; justify-content:center; color:#6f2919; font:italic 500 16px Georgia,serif; background:#f4f0e9; }
+  #freshine-layout-comparison .freshine-promo { display:grid; grid-template-columns:3fr 1fr; height:34px; color:#fff; font-size:7px; letter-spacing:.15px; }
+  #freshine-layout-comparison .freshine-promo div { display:flex; align-items:center; justify-content:center; background:#b29e92; }
+  #freshine-layout-comparison .freshine-promo a { display:flex; align-items:center; justify-content:center; color:#fff; background:#a28c80; text-decoration:underline; }
+  #freshine-layout-comparison .freshine-head { text-align:center; padding:23px 10px 20px; }
+  #freshine-layout-comparison .freshine-event { font:500 15px Georgia,serif; margin-bottom:8px; }
+  #freshine-layout-comparison .freshine-discount { font:500 32px Georgia,serif; letter-spacing:.8px; line-height:1.05; white-space:nowrap; }
+  #freshine-layout-comparison .freshine-description { margin-top:10px; font-size:7px; }
+  #freshine-layout-comparison .freshine-image { width:90%; margin:0 auto; overflow:hidden; background:#dcd5c9; }
+  #freshine-layout-comparison .freshine-image img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 49%; }
+  #freshine-layout-comparison .freshine-offer { width:90%; margin:0 auto; text-align:center; background:#ded8ca; }
+  #freshine-layout-comparison .freshine-countdown { font:500 18px Georgia,serif; padding-top:18px; }
+  #freshine-layout-comparison .freshine-benefits { display:flex; justify-content:center; align-items:center; gap:8px; padding:13px 6px; font-size:6.5px; font-weight:600; white-space:nowrap; }
+  #freshine-layout-comparison .freshine-benefits i { width:1px; height:13px; background:#5e554e; }
+  #freshine-layout-comparison .freshine-button { display:inline-block; min-width:142px; padding:10px 12px; background:#ad1f22; color:#fff; font-size:8px; border-radius:2px; }
+  #freshine-layout-comparison .freshine-note { padding:12px 0 17px; font-size:7px; color:#55504b; }
+  #freshine-layout-comparison .freshine-layout-a .freshine-image { height:275px; }
+  #freshine-layout-comparison .freshine-layout-a .freshine-offer { padding-bottom:0; }
+  #freshine-layout-comparison .freshine-layout-b .freshine-head { padding:18px 10px 15px; }
+  #freshine-layout-comparison .freshine-layout-b .freshine-image { height:235px; width:100%; }
+  #freshine-layout-comparison .freshine-layout-b .freshine-offer { width:100%; }
+  #freshine-layout-comparison .freshine-layout-b .freshine-countdown { padding-top:16px; }
+  #freshine-layout-comparison .freshine-layout-b .freshine-note { padding-bottom:15px; }
+  #freshine-layout-comparison .freshine-layout-c .freshine-head { padding:16px 10px 14px; }
+  #freshine-layout-comparison .freshine-layout-c .freshine-image { width:84%; height:210px; }
+  #freshine-layout-comparison .freshine-layout-c .freshine-offer { width:84%; }
+  #freshine-layout-comparison .freshine-layout-c .freshine-countdown { padding-top:14px; font-size:16px; }
+  #freshine-layout-comparison .freshine-layout-c .freshine-benefits { padding:10px 4px; gap:6px; font-size:6px; }
+  #freshine-layout-comparison .freshine-layout-c .freshine-button { min-width:132px; padding:9px 10px; }
+  #freshine-layout-comparison .freshine-layout-c .freshine-note { padding:10px 0 14px; }
+  #freshine-layout-comparison .freshine-caption { margin:12px 2px 0; color:#665d56; font-size:12px; line-height:1.45; }
+  @media (max-width:780px) { #freshine-layout-comparison .freshine-layout-grid { grid-template-columns:1fr; } #freshine-layout-comparison .freshine-email { max-width:360px; } }
+</style>
+<div id="freshine-layout-comparison">
+  <div class="intro">
+    <h2>选择 600px 头图的整体节奏</h2>
+    <p class="subtitle">三种方案保留设计稿全部元素，仅压缩纵向比例。点击一项即可选择。</p>
+  </div>
+  <div class="freshine-layout-grid">
+    <div class="freshine-layout-option" data-choice="a" onclick="toggleSelect(this)">
+      <div class="freshine-layout-label"><strong>A · 编辑感留白</strong><span>约 1040px 高</span></div>
+      <div class="freshine-email freshine-layout-a">
+        <div class="freshine-logo">FreShine</div>
+        <div class="freshine-promo"><div>Unlock $100 Off Your First Order at Freshine</div><a>SIGN UP</a></div>
+        <div class="freshine-head"><div class="freshine-event">Winter Comfort Event</div><div class="freshine-discount">UP TO 65% OFF</div><div class="freshine-description">Extra $600 OFF &amp; UP TO 20% OFF SITEWIDE</div></div>
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+        <div class="freshine-offer"><div class="freshine-countdown">ONLY 3 DAYS!</div><div class="freshine-benefits"><span>UP TO 65% OFF</span><i></i><span>Free Gift On $699+</span><i></i><span>Free Shipping</span></div><span class="freshine-button">Shop the Holiday Sale &gt;&gt;</span><div class="freshine-note">Limited Time Offer</div></div>
+      </div>
+      <p class="freshine-caption">最接近原稿，保留侧边留白和较大的主视觉；完整但仍偏长。</p>
+    </div>
+    <div class="freshine-layout-option" data-choice="b" onclick="toggleSelect(this)">
+      <div class="freshine-layout-label"><strong>B · 平衡紧凑（推荐）</strong><span>约 920px 高</span></div>
+      <div class="freshine-email freshine-layout-b">
+        <div class="freshine-logo">FreShine</div>
+        <div class="freshine-promo"><div>Unlock $100 Off Your First Order at Freshine</div><a>SIGN UP</a></div>
+        <div class="freshine-head"><div class="freshine-event">Winter Comfort Event</div><div class="freshine-discount">UP TO 65% OFF</div><div class="freshine-description">Extra $600 OFF &amp; UP TO 20% OFF SITEWIDE</div></div>
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+        <div class="freshine-offer"><div class="freshine-countdown">ONLY 3 DAYS!</div><div class="freshine-benefits"><span>UP TO 65% OFF</span><i></i><span>Free Gift On $699+</span><i></i><span>Free Shipping</span></div><span class="freshine-button">Shop the Holiday Sale &gt;&gt;</span><div class="freshine-note">Limited Time Offer</div></div>
+      </div>
+      <p class="freshine-caption">图片和权益区全宽衔接，层次清楚，邮件首屏高度适中。</p>
+    </div>
+    <div class="freshine-layout-option" data-choice="c" onclick="toggleSelect(this)">
+      <div class="freshine-layout-label"><strong>C · 极简首屏</strong><span>约 820px 高</span></div>
+      <div class="freshine-email freshine-layout-c">
+        <div class="freshine-logo">FreShine</div>
+        <div class="freshine-promo"><div>Unlock $100 Off Your First Order at Freshine</div><a>SIGN UP</a></div>
+        <div class="freshine-head"><div class="freshine-event">Winter Comfort Event</div><div class="freshine-discount">UP TO 65% OFF</div><div class="freshine-description">Extra $600 OFF &amp; UP TO 20% OFF SITEWIDE</div></div>
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+        <div class="freshine-offer"><div class="freshine-countdown">ONLY 3 DAYS!</div><div class="freshine-benefits"><span>UP TO 65% OFF</span><i></i><span>Free Gift On $699+</span><i></i><span>Free Shipping</span></div><span class="freshine-button">Shop the Holiday Sale &gt;&gt;</span><div class="freshine-note">Limited Time Offer</div></div>
+      </div>
+      <p class="freshine-caption">最短、进入后续商品区最快，但主图感染力和促销呼吸感略弱。</p>
+    </div>
+  </div>
+</div>

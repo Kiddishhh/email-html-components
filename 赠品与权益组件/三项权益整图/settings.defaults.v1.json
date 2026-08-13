@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsStrip3",
+  "values": {
+    "color.surface": "#F7F3F0",
+    "spacing.outer": "0",
+    "image.maxWidth": "600px"
+  }
+}

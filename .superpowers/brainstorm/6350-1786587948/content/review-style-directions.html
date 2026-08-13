@@ -1,0 +1,180 @@
+<style>
+  .review-board { max-width: 1220px; margin: 0 auto; }
+  .review-board .intro { margin-bottom: 28px; }
+  .review-board .intro h2 { margin-bottom: 8px; }
+  .review-board .intro p { max-width: 780px; }
+  .review-options { display: grid; gap: 28px; }
+  .review-option { border: 2px solid #e8e3dd; border-radius: 18px; background: #fff; overflow: hidden; cursor: pointer; transition: .18s ease; }
+  .review-option:hover { border-color: #03b985; box-shadow: 0 12px 28px rgba(30, 42, 36, .08); }
+  .review-option.selected { border-color: #03b985; box-shadow: 0 0 0 4px rgba(3,185,133,.12); }
+  .option-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 22px 16px; border-bottom: 1px solid #eee8e2; }
+  .option-heading h3 { margin: 0 0 5px; }
+  .option-heading p { margin: 0; color: #736c66; }
+  .recommend { flex: none; color: #087b5b; background: #e4f8f1; border: 1px solid #b9eadb; border-radius: 999px; padding: 7px 11px; font-size: 12px; font-weight: 700; letter-spacing: .03em; }
+  .preview-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(310px, .56fr); gap: 20px; padding: 22px; background: #f3f1ee; align-items: start; }
+  .device { min-width: 0; }
+  .device-label { margin: 0 0 9px; color: #7c746d; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .email-frame { background: #d9d5d0; border-radius: 12px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05); }
+  .email-frame.desktop { width: 100%; }
+  .email-frame.mobile { max-width: 375px; margin: 0 auto; }
+  .email { width: 100%; box-sizing: border-box; background: #fdfcfb; color: #222; }
+  .email * { box-sizing: border-box; }
+  .summary { text-align: center; }
+  .star-row { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+  .star-row img { display: block; width: 17px; height: auto; }
+  .star-row.small img { width: 13px; }
+  .summary-copy { margin-top: 10px; font: 700 17px/1.35 Arial, Helvetica, sans-serif; letter-spacing: .01em; }
+  .rule { height: 1px; background: #ddd9d4; }
+  .review-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; color: #88766f; font: 400 14px/1.4 Arial, Helvetica, sans-serif; }
+  .review-title { margin: 12px 0 0; color: #252321; font: 400 18px/1.4 Georgia, 'Times New Roman', serif; }
+  .review-body { margin: 12px 0 0; color: #89756f; font: 400 15px/1.46 Arial, Helvetica, sans-serif; }
+
+  .reference-email { padding: 48px 27px 38px; }
+  .reference-email .summary { padding-bottom: 27px; }
+  .reference-email .review { padding: 20px 0 18px; }
+  .reference-email .review:last-child { padding-bottom: 0; }
+
+  .editorial-email { padding: 38px 30px 34px; background: #f7f3ed; }
+  .editorial-email .topline { display: table; width: 100%; padding-bottom: 23px; }
+  .editorial-email .eyebrow { display: table-cell; vertical-align: middle; color: #6c615b; font: 700 11px/1.4 Arial, Helvetica, sans-serif; letter-spacing: .16em; }
+  .editorial-email .score { display: table-cell; vertical-align: middle; text-align: right; }
+  .editorial-email .score strong { display: block; font: 700 16px/1.25 Arial, Helvetica, sans-serif; }
+  .editorial-email .review-card { margin-top: 14px; padding: 20px 21px 22px; background: #fff; border: 1px solid #e1d9d1; border-radius: 4px; }
+  .editorial-email .review-title { font-size: 19px; }
+  .editorial-email .review-body { color: #776a64; }
+
+  .compact-email { padding: 32px 27px 30px; background: #fff; }
+  .compact-email .summary-band { display: table; width: 100%; padding: 16px 18px; background: #eaf8f3; }
+  .compact-email .summary-band .stars { display: table-cell; vertical-align: middle; }
+  .compact-email .summary-band .summary-copy { display: table-cell; vertical-align: middle; margin: 0; text-align: right; font-size: 15px; }
+  .compact-email .reviews-grid { display: table; width: 100%; table-layout: fixed; margin-top: 20px; }
+  .compact-email .review-cell { display: table-cell; width: 50%; vertical-align: top; padding: 0 17px 0 0; }
+  .compact-email .review-cell + .review-cell { padding: 0 0 0 17px; border-left: 1px solid #dedbd7; }
+  .compact-email .review-title { font-size: 17px; margin-top: 10px; }
+  .compact-email .review-body { font-size: 14px; line-height: 1.45; }
+  .compact-email .review-meta { gap: 7px; font-size: 12px; }
+
+  .mobile .reference-email { padding: 34px 20px 30px; }
+  .mobile .reference-email .summary { padding-bottom: 21px; }
+  .mobile .reference-email .review { padding: 18px 0 17px; }
+  .mobile .review-title { font-size: 17px; }
+  .mobile .review-body { font-size: 14px; line-height: 1.5; }
+  .mobile .editorial-email { padding: 28px 19px 26px; }
+  .mobile .editorial-email .topline { display: block; }
+  .mobile .editorial-email .eyebrow, .mobile .editorial-email .score { display: block; text-align: left; }
+  .mobile .editorial-email .score { margin-top: 10px; }
+  .mobile .editorial-email .review-card { padding: 18px 17px 19px; }
+  .mobile .compact-email { padding: 24px 18px 26px; }
+  .mobile .compact-email .summary-band, .mobile .compact-email .summary-band .stars, .mobile .compact-email .summary-band .summary-copy { display: block; text-align: center; }
+  .mobile .compact-email .summary-band .summary-copy { margin-top: 8px; }
+  .mobile .compact-email .reviews-grid, .mobile .compact-email .review-cell { display: block; width: 100%; }
+  .mobile .compact-email .review-cell { padding: 0 0 18px; }
+  .mobile .compact-email .review-cell + .review-cell { padding: 18px 0 0; border-left: 0; border-top: 1px solid #dedbd7; }
+
+  @media (max-width: 900px) {
+    .preview-pair { grid-template-columns: 1fr; }
+    .option-heading { align-items: flex-start; }
+  }
+</style>
+
+<div class="review-board">
+  <div class="intro">
+    <h2>客户评论组件：选择样式方向</h2>
+    <p class="subtitle">三版都固定展示“总评分 + 两条评论”，使用你提供的绿色星形图标。请重点比较信息层级、留白和移动端阅读节奏。</p>
+  </div>
+
+  <div class="review-options options">
+    <div class="review-option option" data-choice="reference-faithful" onclick="toggleSelect(this)">
+      <div class="option-heading">
+        <div>
+          <h3>A · 参考图忠实版</h3>
+          <p>结构、留白、分割线和字体层级最接近参考图。</p>
+        </div>
+        <span class="recommend">推荐</span>
+      </div>
+      <div class="preview-pair">
+        <div class="device">
+          <p class="device-label">Desktop · 600px</p>
+          <div class="email-frame desktop">
+            <div class="email reference-email">
+              <div class="summary">
+                <span class="star-row"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span>
+                <div class="summary-copy">4.8 / 5 · 200+ reviews</div>
+              </div>
+              <div class="rule"></div>
+              <div class="review">
+                <div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>Sarah M · Aug 2, 2026</span></div>
+                <h4 class="review-title">Exactly What Our Living Room Needed</h4>
+                <p class="review-body">The linen blend drapes beautifully and the custom sizing was spot on. Customer service walked me through the entire measurement process — couldn't be happier with the result.</p>
+              </div>
+              <div class="rule"></div>
+              <div class="review">
+                <div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>James K · Jul 28, 2026</span></div>
+                <h4 class="review-title">Quiet Luxury, Really Well Made</h4>
+                <p class="review-body">Ordered pinch-pleat panels for our bedroom bay window. The fabric has this beautiful natural texture and the light filtering is perfect. Worth every penny.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="device">
+          <p class="device-label">Mobile · 375px</p>
+          <div class="email-frame mobile">
+            <div class="email reference-email">
+              <div class="summary"><span class="star-row"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><div class="summary-copy">4.8 / 5 · 200+ reviews</div></div>
+              <div class="rule"></div>
+              <div class="review"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>Sarah M · Aug 2, 2026</span></div><h4 class="review-title">Exactly What Our Living Room Needed</h4><p class="review-body">The linen blend drapes beautifully and the custom sizing was spot on. Customer service walked me through the entire measurement process.</p></div>
+              <div class="rule"></div>
+              <div class="review"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>James K · Jul 28, 2026</span></div><h4 class="review-title">Quiet Luxury, Really Well Made</h4><p class="review-body">The fabric has this beautiful natural texture and the light filtering is perfect. Worth every penny.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-option option" data-choice="editorial-cards" onclick="toggleSelect(this)">
+      <div class="option-heading">
+        <div><h3>B · 亚麻编辑卡片版</h3><p>延续项目的亚麻编辑风，用浅暖底色和独立白色评论卡增强层次。</p></div>
+      </div>
+      <div class="preview-pair">
+        <div class="device">
+          <p class="device-label">Desktop · 600px</p>
+          <div class="email-frame desktop"><div class="email editorial-email">
+            <div class="topline"><span class="eyebrow">CUSTOMER REVIEWS</span><span class="score"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><strong>4.8 / 5 · 200+</strong></span></div>
+            <div class="review-card"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>Sarah M · Aug 2, 2026</span></div><h4 class="review-title">Exactly What Our Living Room Needed</h4><p class="review-body">The linen blend drapes beautifully and the custom sizing was spot on. Customer service walked me through the entire measurement process — couldn't be happier with the result.</p></div>
+            <div class="review-card"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>James K · Jul 28, 2026</span></div><h4 class="review-title">Quiet Luxury, Really Well Made</h4><p class="review-body">Ordered pinch-pleat panels for our bedroom bay window. The fabric has this beautiful natural texture and the light filtering is perfect.</p></div>
+          </div></div>
+        </div>
+        <div class="device">
+          <p class="device-label">Mobile · 375px</p>
+          <div class="email-frame mobile"><div class="email editorial-email">
+            <div class="topline"><span class="eyebrow">CUSTOMER REVIEWS</span><span class="score"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><strong>4.8 / 5 · 200+</strong></span></div>
+            <div class="review-card"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>Sarah M · Aug 2, 2026</span></div><h4 class="review-title">Exactly What Our Living Room Needed</h4><p class="review-body">The linen blend drapes beautifully and the custom sizing was spot on.</p></div>
+            <div class="review-card"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>James K · Jul 28, 2026</span></div><h4 class="review-title">Quiet Luxury, Really Well Made</h4><p class="review-body">The fabric has a beautiful natural texture and the light filtering is perfect.</p></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-option option" data-choice="compact-two-column" onclick="toggleSelect(this)">
+      <div class="option-heading">
+        <div><h3>C · 紧凑双栏版</h3><p>桌面端两条评论并排，移动端恢复单列；邮件更短，但长文空间较小。</p></div>
+      </div>
+      <div class="preview-pair">
+        <div class="device">
+          <p class="device-label">Desktop · 600px</p>
+          <div class="email-frame desktop"><div class="email compact-email">
+            <div class="summary-band"><span class="stars"><span class="star-row"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span></span><span class="summary-copy">4.8 / 5 · 200+ reviews</span></div>
+            <div class="reviews-grid"><div class="review-cell"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>Sarah M · Aug 2</span></div><h4 class="review-title">Exactly What Our Living Room Needed</h4><p class="review-body">The linen blend drapes beautifully and the custom sizing was spot on. Customer service guided us through measuring.</p></div><div class="review-cell"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>James K · Jul 28</span></div><h4 class="review-title">Quiet Luxury, Really Well Made</h4><p class="review-body">The fabric has a beautiful natural texture and the light filtering is perfect. Worth every penny.</p></div></div>
+          </div></div>
+        </div>
+        <div class="device">
+          <p class="device-label">Mobile · 375px</p>
+          <div class="email-frame mobile"><div class="email compact-email">
+            <div class="summary-band"><span class="stars"><span class="star-row"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span></span><span class="summary-copy">4.8 / 5 · 200+ reviews</span></div>
+            <div class="reviews-grid"><div class="review-cell"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>Sarah M · Aug 2</span></div><h4 class="review-title">Exactly What Our Living Room Needed</h4><p class="review-body">The linen blend drapes beautifully and the custom sizing was spot on.</p></div><div class="review-cell"><div class="review-meta"><span class="star-row small"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"><img src="/files/review-star.png"></span><span>James K · Jul 28</span></div><h4 class="review-title">Quiet Luxury, Really Well Made</h4><p class="review-body">The fabric has a beautiful natural texture and the light filtering is perfect.</p></div></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

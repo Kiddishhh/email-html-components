@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownOverlay",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.navigationLeft": { "type": "string", "default": "#97866D", "themeable": true, "skillPrompt": true },
+    "color.navigationRight": { "type": "string", "default": "#725A4B", "themeable": true, "skillPrompt": true },
+    "color.navigationText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
+    "color.heroFallback": { "type": "string", "default": "#E9E4DC", "themeable": true, "skillPrompt": false },
+    "color.panelFallback": { "type": "string", "default": "#F4F1EC", "themeable": true, "skillPrompt": false },
+    "color.panelTransparent": { "type": "string", "default": "rgba(247, 244, 239, 0.88)", "themeable": true, "skillPrompt": false },
+    "color.heading": { "type": "string", "default": "#1E1D1B", "themeable": true, "skillPrompt": false },
+    "color.body": { "type": "string", "default": "#2B2825", "themeable": true, "skillPrompt": false },
+    "color.theme": { "type": "string", "default": "#725A4B", "themeable": true, "skillPrompt": true },
+    "color.themeText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
+    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": true, "skillPrompt": false },
+    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "font.action": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "background.position": { "type": "string", "default": "center center", "themeable": true, "skillPrompt": false },
+    "content.maxWidth": { "type": "string", "default": "600px", "themeable": true, "skillPrompt": false },
+    "panel.maxWidth": { "type": "string", "default": "460px", "themeable": true, "skillPrompt": false },
+    "panel.padding": { "type": "string", "default": "28px 24px 28px", "themeable": true, "skillPrompt": false },
+    "brand.logoWidth": { "type": "string", "default": "108px", "themeable": true, "skillPrompt": false },
+    "decoration.dividerWidth": { "type": "string", "default": "220px", "themeable": true, "skillPrompt": false },
+    "cta.maxWidth": { "type": "string", "default": "200px", "themeable": true, "skillPrompt": false },
+    "cta.height": { "type": "string", "default": "44px", "themeable": true, "skillPrompt": false },
+    "radius.button": { "type": "string", "default": "0px", "themeable": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

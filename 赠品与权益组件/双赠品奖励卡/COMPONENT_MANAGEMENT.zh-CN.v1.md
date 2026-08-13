@@ -19,13 +19,15 @@
 - `content.fixture.v1.json`：公开 HTTPS 默认测试数据，供 Skill 初始化完整内容快照；拼接器不会自动读取。
 - `settings.schema.v1.json`：可替换背景色及高级样式参数。
 - `settings.defaults.v1.json`：默认主题设置，供 Skill 初始化完整设置快照；拼接器不会自动补缺失字段。
-- `assets/default-pillow-cover.png`：参考稿上方完整图片，仅供本地演示。
-- `assets/default-eye-mask.png`：参考稿下方完整图片，仅供本地演示。
+- `assets/default-pillow-cover.jpg`：默认上方随机抱枕套赠品图（1088×696px），用于本地演示与默认快照。
+- `assets/default-eye-mask.jpg`：默认下方真丝眼罩赠品图（1088×696px），用于本地演示与默认快照。
 - `效果演示.html`：使用默认文案、背景色和本地参考图片生成的浏览器效果；不能直接作为 Omnisend Custom HTML 片段导入。
 
-## 后续 Skill 应收集的内容
+## 后续 Skill 使用方式
 
-Skill 默认按以下顺序询问：
+Skill 默认载入 `效果演示.html` 对应的完整内容与设置快照，不读取 Shopify，也不逐字段询问标题、规则、图片、链接或背景色。当前编辑器不开放该组件的独立字段；用户未主动提出修改时，直接使用效果演示默认内容并在完成卡片与双端预览中一次确认。
+
+若未来开放单独修改，以下字段仍是完整快照的字段来源：
 
 1. 顶部标题 `reward.title`。
 2. 第一条活动规则 `reward.rules[0]`。
@@ -61,13 +63,19 @@ Skill 默认按以下顺序询问：
 | `color.surface` | `#FBFAF8` | Skill 默认询问，可替换整个组件背景 |
 | `color.text` | `#1F1D1B` | 高级设置，控制标题和规则文字 |
 | `font.heading` | `Lora, Georgia, Times New Roman, serif` | 标题字体及邮件安全回退 |
+| `font.headingSize` | `26px` | 标题字号 |
+| `font.headingWeight` | `400` | 标题字重 |
+| `font.headingLineHeight` | `36px` | 标题行高 |
 | `font.body` | `Montserrat, Arial, Helvetica, sans-serif` | 规则字体及邮件安全回退 |
+| `font.bodySize` | `15px` | 规则字号 |
+| `font.bodyWeight` | `400` | 规则字重 |
+| `font.bodyLineHeight` | `22px` | 规则行高 |
 | `spacing.header` | `26px 28px 0` | 顶部文案区间距 |
 | `spacing.content` | `20px 19px 26px` | 图片区域外边距，与参考稿的 430px 画布比例一致 |
 | `spacing.imageGap` | `4px` | 上下图片间距 |
 | `radius.image` | `0px` | 图片圆角渐进增强，默认直角 |
 
-修改默认值时，需要同时更新 `settings.defaults.v1.json` 的 `values` 与 `settings.schema.v1.json` 对应字段的 `default`。
+修改组件库默认值时，需要同时更新 `settings.defaults.v1.json` 的 `values` 与 `settings.schema.v1.json` 对应字段的 `default`。当前编辑器不将上述字号、字重与行高作为单封邮件的独立字段开放。
 
 制作单封邮件时，Skill 应把确认后的全部内容和设置写入 composition 实例；不要回写 fixture/defaults。只有需要永久调整组件库默认演示时，才同步更新 fixture/defaults、Schema、效果演示和本说明。
 

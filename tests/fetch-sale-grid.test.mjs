@@ -56,6 +56,15 @@ test('normalizes a Shopify CLI response that returns collectionByHandle at the t
   assert.equal(result.items.length, 6);
 });
 
+test('identifies a missing collection by its handle before attempting variant pagination', () => {
+  assert.throws(
+    () => resolveSaleGridVariants({ data: { collectionByHandle: null } }, () => {
+      throw new Error('variant pagination should not run');
+    }, 'summer-sale'),
+    /sale-grid collection not found: summer-sale/
+  );
+});
+
 test('uses the first product image by media position instead of featuredImage', () => {
   const payload = payloadWithPrimaryMedia();
   payload.data.collectionByHandle.products.nodes[0].featuredImage.url = 'https://cdn.example.com/not-the-product-page-first-image.webp';

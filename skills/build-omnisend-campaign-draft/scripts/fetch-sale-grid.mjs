@@ -40,8 +40,9 @@ function hasAvailableVariant(product) {
   return product?.variants?.nodes?.some(({ availableForSale }) => availableForSale) === true;
 }
 
-export function resolveSaleGridVariants(payload, fetchProductVariantPage) {
+export function resolveSaleGridVariants(payload, fetchProductVariantPage, collectionHandle = '<unknown>') {
   const collection = graphQlRoot(payload)?.collectionByHandle;
+  if (!collection) throw new Error(`sale-grid collection not found: ${collectionHandle}`);
   const products = collection?.products?.nodes;
   if (!Array.isArray(products)) throw new Error('sale-grid collection has no products');
   for (const product of products) {
@@ -133,7 +134,7 @@ function saleGridProductVariantsGraphQlQuery() {
   }`;
 }
 
-function loadPayload(options) {
+export function loadSaleGridPayload(options) {
   if (options.fixture) return JSON.parse(readFileSync(options.fixture, 'utf8'));
   const argv = ['shopify', 'store', 'execute', '--query', saleGridGraphQlQuery(), '--variables', JSON.stringify({ handle: options.collectionHandle })];
   if (options.store) argv.push('--store', options.store);
@@ -141,10 +142,10 @@ function loadPayload(options) {
   return resolveSaleGridVariants(payload, ({ productId, after }) => JSON.parse(runReadonlyShopify([
     'shopify', 'store', 'execute', '--query', saleGridProductVariantsGraphQlQuery(),
     '--variables', JSON.stringify({ id: productId, after }), '--store', options.store
-  ])));
+  ])), options.collectionHandle);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const options = parseSaleGridArgs(process.argv.slice(2));
-  console.log(JSON.stringify(normalizeSaleGrid(loadPayload(options), options.collectionHandle), null, 2));
+  console.log(JSON.stringify(normalizeSaleGrid(loadSaleGridPayload(options), options.collectionHandle), null, 2));
 }

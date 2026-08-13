@@ -2,25 +2,32 @@
 
 这是 Freshine 用于制作 Omnisend Campaign 草稿的邮件安全 HTML 组件库。项目把组件源码、完整内容/设置快照、Shopify 只读数据脚本、本地预览和 Omnisend Draft-only 上传固定在一套可测试流程中。
 
-## 六个活动组件
+## 活跃 Campaign 组件
 
-| 顺序 | 组件 | `componentKey` | 源码目录 |
+| 分类 | 组件 | `componentKey` | 源码目录 |
 | --- | --- | --- | --- |
-| 1 | 促销悬浮首图 | `hero.promotionalOverlay` | `头图/促销悬浮首图/` |
-| 2 | 六宫格夏季促销 | `collection.saleGrid6` | `活动商品组件/六宫格夏季促销/` |
-| 3 | 可链接整图 | `image.clickableFullWidth` | `通用图片组件/可链接整图/` |
-| 4 | 双赠品奖励卡 | `gift.rewardGrid2` | `赠品与权益组件/双赠品奖励卡/` |
-| 5 | 展厅地址卡 | `location.showroomCard` | `赠品与权益组件/展厅地址卡/` |
-| 6 | 品牌信息页脚 | `footer.warm` | `页脚组件/品牌信息页脚/` |
+| 头图 | 促销悬浮首图 | `hero.promotionalOverlay` | `头图/促销悬浮首图/` |
+| 头图 | 倒计时头图 | `hero.countdownOverlay` | `头图/倒计时头图/` |
+| 头图 | 倒计时头图2 | `hero.countdownOverlay2` | `头图/倒计时头图2/` |
+| 活动商品组件 | 六宫格夏季促销 | `collection.saleGrid6` | `活动商品组件/六宫格折扣商品组件/` |
+| 评论组件 | 可链接整图 | `image.clickableFullWidth` | `评论组件/可链接整图/` |
+| 赠品与权益组件 | 三项权益整图 | `image.benefitsStrip3` | `赠品与权益组件/三项权益整图/` |
+| 赠品与权益组件 | 双赠品奖励卡 | `gift.rewardGrid2` | `赠品与权益组件/双赠品奖励卡/` |
+| 地址组件 | 展厅地址卡 | `location.showroomCard` | `地址组件/展厅地址卡/` |
+| 页脚组件 | 品牌信息页脚 | `footer.warm` | `页脚组件/品牌信息页脚/` |
 
 活动路径的单一事实来源是 [`组件清单.json`](组件清单.json)。每个组件包含模板、内联 CSS 来源、内容 Schema、设置 Schema、fixture、defaults、中文管理说明和供样式选择直接打开的 `效果演示.html`。
+
+编辑器允许从上述任一已注册组件开始，自由添加、重复、删除和排序；分类只用于筛选样式，不规定组件的数量、顺序或必选项。`compositions/hero-grid-review-gifts-location.default.v1.json` 仅是一个六组件默认示例，不是固定 Campaign 结构。
+
+`review.textList2`（`评论组件/双条文字评论/`）已注册并可在编辑器中预览，但尚未具备 Campaign 交互契约；在补齐契约前，Skill 不会将它组装进 Campaign。
 
 ## 目录结构
 
 ```text
 .
 ├── build-email-template.v1.mjs       # 确定性邮件拼接器
-├── 组件清单.json                      # 六组件注册表与路径
+├── 组件清单.json                      # 组件注册表与路径
 ├── 组件索引.md                        # 组件维护入口
 ├── compositions/                     # 显式完整快照示例
 ├── skills/build-omnisend-campaign-draft/
@@ -51,7 +58,7 @@ fixture/defaults 初始参考
 
 需要 Node.js 20 或更高版本，无第三方 npm 依赖。
 
-先验证组件注册表、六区段结构、交互索引、Schema 和效果演示页：
+先验证组件注册表、自由选择契约、交互索引、Schema 和效果演示页：
 
 ```bash
 node skills/build-omnisend-campaign-draft/scripts/validate-campaign-contracts.mjs
@@ -83,7 +90,7 @@ done
 
 ## Campaign Skill
 
-入口是 [`skills/build-omnisend-campaign-draft/SKILL.md`](skills/build-omnisend-campaign-draft/SKILL.md)。工作流固定为六个区段，每次只确认一个区段和一个组件，最后把整封邮件确认绑定到静态 HTML SHA-256。
+入口是 [`skills/build-omnisend-campaign-draft/SKILL.md`](skills/build-omnisend-campaign-draft/SKILL.md)。工作流按用户选择的组件顺序逐个确认；组件可重复且不要求首图、商品或页脚，最后把整封邮件确认绑定到静态 HTML SHA-256。
 
 样式选择必须直接展示对应组件目录的 `效果演示.html`。正文背景色只写入组件 `settings`，不得修改邮件 `canvas`；页脚背景色独立确认。首图本地背景资源会相对于实际预览文件解析，最终上传时替换为公开 HTTPS URL。
 
@@ -96,7 +103,7 @@ Skill 只允许：
 - `shopify theme list`
 - 把文件拉取到新临时目录的 `shopify theme pull`
 
-禁止 GraphQL mutation、REST 写请求、`--allow-mutations` 及 Theme push、publish、delete、dev、share。首页活动只读取在线主题首页 `slideshow-v2`；选定 slide 后只读取它链接的一个 Page。六宫格只读取锁定 Collection 的前六个商品，每个商品先读 8 个变体，仅在没有可售变体时继续分页。
+禁止 GraphQL mutation、REST 写请求、`--allow-mutations` 及 Theme push、publish、delete、dev、share。首页活动只读取在线主题首页 `slideshow-v2`；选定 slide 后只读取它链接的一个 Page。编辑器中的“shopify商品导入”可输入 Freshine Page 或 Collection URL：Page 从对应线上主题模板的首个启用 `products-grid-v2` 解析商品来源，Collection 直接读取；两者都保留输入 URL 作为六宫格 CTA。六宫格只读取来源 Collection 的前六个商品，每个商品先读 8 个变体，仅在没有可售变体时继续分页。
 
 ## Omnisend Draft-only 边界
 

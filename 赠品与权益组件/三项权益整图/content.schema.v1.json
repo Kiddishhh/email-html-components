@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsStrip3",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "image.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "image.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "image.linkUrl": {
+      "type": "url",
+      "role": "legacy-link-target",
+      "protocol": "https",
+      "required": false,
+      "skillPrompt": false,
+      "deprecated": true
+    }
+  },
+  "additionalProperties": false
+}

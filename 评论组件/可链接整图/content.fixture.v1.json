@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.clickableFullWidth",
+  "fixture": "review-ix-default-demo",
+  "localPreviewAsset": "assets/default-review-ix.jpg",
+  "values": {
+    "image.url": "asset://review-image-default",
+    "image.alt": "Customer review collage featuring three Freshine curtain reviews",
+    "image.linkUrl": "https://freshinelife.com/"
+  }
+}
