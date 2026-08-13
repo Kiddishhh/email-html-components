@@ -94,6 +94,8 @@
 
 `settings.schema.v1.json` 和 `settings.defaults.v1.json` 必须保持默认值一致。`color.surface` 必须校验为完整六位十六进制色号；无效或缩写色号在生成前直接拒绝，不自动猜测或补全。
 
+当前拼接器不会执行设置字段的 Schema `pattern`。为落实上述生成前校验，本阶段对 `build-email-template.v1.mjs` 增加通用的可选 pattern 校验：只有字段定义显式包含 `pattern` 时才构造正则并校验对应设置值；pattern 本身无效时报告组件 Schema 错误，值不匹配时报告具体设置字段错误。现有未声明 pattern 的组件保持原行为。
+
 ## 邮件结构与响应式约束
 
 组件模板必须是一个独立、单一根 `<table>` 的 Omnisend 正文片段，不包含 `DOCTYPE`、`html`、`head`、`body`、外部样式表、脚本、表单、iframe 或退订区。布局仅使用 presentation table、`tr`、`td`、`span`、`img` 和必要的文本节点。
@@ -121,6 +123,7 @@
 - `组件清单.json`：以唯一 `componentKey` 登记通用组件及全部文件路径；
 - `组件索引.md`：新增“评论组件”分类和真实效果演示入口；
 - `README.md`：把新组件列入通用组件库，并明确它尚未加入 Campaign Skill；
+- `build-email-template.v1.mjs`：支持设置字段声明的可选 Schema `pattern` 校验；
 - `tests/build-email-template.v1.test.mjs`：增加组件渲染与邮件安全契约测试；
 - 适合通用注册表的现有契约测试：验证路径、Schema、fixture、defaults 和效果演示完整性。
 
@@ -155,6 +158,7 @@
 - 模板固定渲染 15 个使用同一 URL 的装饰性星形图片；
 - 组件不包含 `<a>`、CTA、链接字段或点击行为；
 - `color.surface` 接受完整 `#RRGGBB`，拒绝缩写、缺少 `#`、非十六进制字符和其他格式；
+- 拼接器仅对显式声明 `pattern` 的设置字段执行正则校验，并清楚区分无效 Schema pattern 与设置值不匹配；
 - 默认 fixture 的 `asset://review-star` 可在本地预览模式解析；
 - 最终构建在星形仍为本地资产时停止，不输出包含 `asset://` 或相对图片路径的正式 HTML；
 - 输出为单一根表格，不包含脚本、iframe、表单、Flex、Grid、定位、外部 CSS、文档级标签或未解析占位符；
