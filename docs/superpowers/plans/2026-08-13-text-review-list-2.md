@@ -432,7 +432,7 @@ test('the two-review list is registered generally without becoming a Campaign Sk
   assert.deepEqual(fixture.localReferenceAssets, { 'review-star': 'assets/review-star.png' });
   assert.equal(settingsSchema.properties['color.surface'].pattern, '^#[0-9A-Fa-f]{6}$');
   assert.equal((template.match(/content\.star\.image\.url/g) ?? []).length, 15);
-  assert.equal((demo.match(/\.\/assets\/review-star\.png/g) ?? []).length, 15);
+  assert.equal((demo.match(/(?:\.\/)?assets\/review-star\.png/g) ?? []).length, 15);
   assert.doesNotMatch(template, /<a\b|href=|cta/i);
   assert.doesNotMatch(demo, /\{\{(?:content|settings)\./);
   assert.match(management, /尚未加入.*Campaign Skill/s);
