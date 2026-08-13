@@ -1,10 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-const root = '/Users/ww/Desktop/邮件营销运营/邮件html组件';
+const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const builder = `${root}/build-email-template.v1.mjs`;
 const componentDirectory = `${root}/通用图片组件/可链接整图`;
 const fixture = JSON.parse(readFileSync(`${componentDirectory}/content.fixture.v1.json`, 'utf8'));
@@ -172,10 +174,10 @@ test('builds a validated upload source with registered local assets deferred for
   assert.match(output, /src="asset:\/\/review-collage"/);
 });
 
-test('the active registry resolves exactly the six Campaign components', () => {
+test('the registry preserves the six fixed Campaign components while allowing optional components', () => {
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
 
-  assert.deepEqual(registry.map(({ componentKey }) => componentKey), campaignComponentKeys);
+  assert.deepEqual(registry.slice(0, campaignComponentKeys.length).map(({ componentKey }) => componentKey), campaignComponentKeys);
   for (const entry of registry) {
     for (const relativePath of Object.values(entry.路径)) {
       assert.equal(existsSync(`${root}/${relativePath}`), true, `${entry.componentKey}: missing ${relativePath}`);
@@ -348,4 +350,191 @@ test('clickable image defaults to a 600px full-bleed canvas while preserving per
   assert.match(heroTemplate, /freshine-promotional-overlay-hero"[^>]*width="100%"/);
   assert.equal(current.settings['spacing.outer'], '0');
   assert.equal(current.settings['image.maxWidth'], '600px');
+});
+
+const textReviewDirectory = `${root}/评论组件/双条文字评论`;
+
+function makeTextReviewComposition(name, {
+  directory = textReviewDirectory,
+  background = '#FDFCFB',
+  content = {}
+} = {}) {
+  const textReviewFixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const textReviewDefaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const output = `/private/tmp/${name}.html`;
+  const previewOutput = `/private/tmp/${name}.local-preview.html`;
+  const path = `/private/tmp/${name}.composition.json`;
+  writeFileSync(path, JSON.stringify({
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FDFCFB',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output,
+    previewOutput,
+    assets: {
+      'review-star': {
+        path: '评论组件/双条文字评论/assets/review-star.png',
+        name: 'review-star.png'
+      }
+    },
+    components: [{
+      name: '双条文字评论',
+      directory,
+      componentKey: 'review.textList2',
+      content: { ...textReviewFixture.values, ...content },
+      settings: { ...textReviewDefaults.values, 'color.surface': background }
+    }]
+  }, null, 2));
+  return { output, previewOutput, path };
+}
+
+test('the text review list renders fifteen fixed decorative stars without links or unresolved slots', () => {
+  const { previewOutput, path } = makeTextReviewComposition('text-review-list-2-render', { background: '#EAF8F3' });
+  const result = run(path, '--preview-local-assets');
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(previewOutput, 'utf8');
+  assert.equal((html.match(/class="freshine-review-summary-star"/g) ?? []).length, 5);
+  assert.equal((html.match(/class="freshine-review-item-star"/g) ?? []).length, 10);
+  assert.equal((html.match(/alt=""/g) ?? []).length, 15);
+  assert.match(html, /background-color:#EAF8F3/);
+  assert.doesNotMatch(html, /<a\b|\bCTA\b/i);
+  assert.doesNotMatch(html, /\{\{(?:content|settings)\./);
+});
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+for (const [index, key] of [
+  'summary.ratingText',
+  'summary.reviewCountText',
+  'review.1.author',
+  'review.1.date',
+  'review.1.title',
+  'review.1.body',
+  'review.2.author',
+  'review.2.date',
+  'review.2.title',
+  'review.2.body'
+].entries()) {
+  test(`the text review list escapes ${key} only inside its matching slot`, () => {
+    const token = `editable-${String(index + 1).padStart(2, '0')}`;
+    const raw = `${token} & <${key}>`;
+    const escaped = `${token} &amp; &lt;${key}&gt;`;
+    const { previewOutput, path } = makeTextReviewComposition(`text-review-list-2-${token}`, { content: { [key]: raw } });
+    const result = run(path, '--preview-local-assets');
+
+    assert.equal(result.status, 0, result.stderr || result.stdout);
+    const html = readFileSync(previewOutput, 'utf8');
+    const slotPattern = new RegExp(`<!-- FRESHINE_SLOT_START:${escapeRegex(key)} -->([\\s\\S]*?)<!-- FRESHINE_SLOT_END:${escapeRegex(key)} -->`);
+    const slot = html.match(slotPattern)?.[1];
+    assert.ok(slot?.includes(escaped), `${key}: escaped value must render in its matching slot`);
+    assert.equal((html.match(new RegExp(token, 'g')) ?? []).length, 1);
+    assert.equal(html.includes(raw), false);
+  });
+}
+
+for (const [label, background] of [
+  ['short hex', '#FFF'],
+  ['missing hash', 'FDFCFB'],
+  ['non-hex digit', '#FDFCFZ'],
+  ['rgba function', 'rgba(253,252,251,1)'],
+  ['trailing newline', '#FDFCFB\n']
+]) {
+  test(`the text review list rejects ${label} as a full #RRGGBB surface color`, () => {
+    const { path } = makeTextReviewComposition(`text-review-list-2-invalid-surface-${label.replaceAll(' ', '-')}`, { background });
+    const result = run(path, '--preview-local-assets');
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /review\.textList2: settings\.color\.surface (?:does not match pattern|contains unsafe characters)/);
+  });
+}
+
+test('the assembler reports an invalid settings Schema pattern separately from a bad value', () => {
+  const tempRoot = mkdtempSync(join(tmpdir(), 'freshine-review-pattern-'));
+  const tempDirectory = join(tempRoot, '双条文字评论');
+  cpSync(textReviewDirectory, tempDirectory, { recursive: true });
+  const schemaPath = join(tempDirectory, 'settings.schema.v1.json');
+  const schema = JSON.parse(readFileSync(schemaPath, 'utf8'));
+  schema.properties['color.surface'].pattern = '[';
+  writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
+  const { path } = makeTextReviewComposition('text-review-list-2-invalid-pattern', { directory: tempDirectory });
+  const result = run(path, '--preview-local-assets');
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /review\.textList2: settings schema color\.surface has invalid pattern/);
+});
+
+test('the text review list accepts an absolute HTTPS star image in a final build', () => {
+  const { output, path } = makeTextReviewComposition('text-review-list-2-public-https-star', {
+    content: { 'star.image.url': 'https://cdn.example.com/review-star.png' }
+  });
+  const result = run(path);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(readFileSync(output, 'utf8'), /src="https:\/\/cdn\.example\.com\/review-star\.png"/);
+});
+
+for (const [label, value] of [
+  ['hostname-less HTTPS', 'https:'],
+  ['mailto', 'mailto:star@example.com'],
+  ['telephone', 'tel:123']
+]) {
+  test(`the text review list rejects ${label} for a URL field declaring protocol https`, () => {
+    const { path } = makeTextReviewComposition(`text-review-list-2-invalid-star-${label.replaceAll(' ', '-')}`, {
+      content: { 'star.image.url': value }
+    });
+    const result = run(path);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /review\.textList2: content\.star\.image\.url must be an absolute https URL/);
+  });
+}
+
+test('URL fields without a protocol declaration retain the existing https, mailto, and tel behavior', () => {
+  const tempRoot = mkdtempSync(join(tmpdir(), 'freshine-review-no-protocol-'));
+  const tempDirectory = join(tempRoot, '双条文字评论');
+  cpSync(textReviewDirectory, tempDirectory, { recursive: true });
+  const schemaPath = join(tempDirectory, 'content.schema.v1.json');
+  const schema = JSON.parse(readFileSync(schemaPath, 'utf8'));
+  delete schema.properties['star.image.url'].protocol;
+  writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
+
+  for (const [label, value] of [
+    ['https', 'https://cdn.example.com/review-star.png'],
+    ['mailto', 'mailto:star@example.com'],
+    ['tel', 'tel:123']
+  ]) {
+    const { path } = makeTextReviewComposition(`text-review-list-2-no-protocol-${label}`, {
+      directory: tempDirectory,
+      content: { 'star.image.url': value }
+    });
+    const result = run(path);
+    assert.equal(result.status, 0, `${label}: ${result.stderr || result.stdout}`);
+  }
+});
+
+test('the final text review build still blocks its registered asset until upload', () => {
+  const { path } = makeTextReviewComposition('text-review-list-2-final-local-star');
+  const result = run(path);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /local asset review-star must be uploaded before final build/);
+});
+
+test('the two-review list is registered generally without becoming a Campaign Skill candidate', () => {
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const entries = registry.filter(({ componentKey }) => componentKey === 'review.textList2');
+  const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
+  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
+  const template = readFileSync(`${textReviewDirectory}/component.template.v1.html`, 'utf8');
+  const demo = readFileSync(`${textReviewDirectory}/效果演示.html`, 'utf8');
+
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].输出宽度, 600);
+  assert.equal((template.match(/content\.star\.image\.url/g) ?? []).length, 15);
+  assert.equal((demo.match(/(?:\.\/)?assets\/review-star\.png/g) ?? []).length, 15);
+  assert.doesNotMatch(template, /<a\b|href=|cta/i);
+  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('review.textList2'), false);
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'review.textList2'), false);
 });

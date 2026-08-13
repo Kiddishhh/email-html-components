@@ -17,6 +17,15 @@ function escapeText(value) { return String(value).replaceAll('&', '&amp;').repla
 function escapeAttribute(value) { return escapeText(value).replaceAll('"', '&quot;'); }
 function write(path, value) { mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, value, 'utf8'); }
 function validUrl(value) { return /^(https:|mailto:|tel:)/.test(value); }
+function validDeclaredProtocolUrl(value, protocol) {
+  if (typeof protocol !== 'string' || !protocol) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === `${protocol}:` && (protocol !== 'https' || Boolean(url.hostname));
+  } catch {
+    return false;
+  }
+}
 
 function validateExactKeys(value, allowed, scope) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(`${scope} must be an object`);
@@ -88,6 +97,10 @@ function validateContent(values, schema, componentKey, localAssetKeys = new Set(
     if (typeof values[key] !== 'string') throw new Error(`${componentKey}: content.${key} must be text`);
     const allowedRegisteredLocalImage = (previewLocalAssets || deferLocalAssets) && definition.role?.endsWith('image-source') && localAssetKeys.has(key);
     if (definition.type === 'url' && !validUrl(values[key]) && !allowedRegisteredLocalImage) throw new Error(`${componentKey}: content.${key} has unsafe URL`);
+    if (definition.type === 'url' && definition.protocol !== undefined && !allowedRegisteredLocalImage && !validDeclaredProtocolUrl(values[key], definition.protocol)) {
+      if (definition.protocol === 'https') throw new Error(`${componentKey}: content.${key} must be an absolute https URL`);
+      throw new Error(`${componentKey}: content.${key} must use the ${definition.protocol} protocol`);
+    }
   }
 }
 
@@ -97,9 +110,22 @@ function validateSettings(values, schema, componentKey) {
   const unknown = Object.keys(values).filter((key) => !(key in schema.properties));
   if (missing.length) throw new Error(`${componentKey}: missing settings keys: ${missing.join(', ')}`);
   if (unknown.length) throw new Error(`${componentKey}: unknown settings keys: ${unknown.join(', ')}`);
-  for (const key of Object.keys(schema.properties)) {
-    if (typeof values[key] !== 'string') throw new Error(`${componentKey}: settings.${key} must be text`);
-    if (/["'<> {};]/.test(values[key].replaceAll(' ', ''))) throw new Error(`${componentKey}: settings.${key} contains unsafe characters`);
+  for (const [key, definition] of Object.entries(schema.properties)) {
+    const value = values[key];
+    if (typeof value !== 'string') throw new Error(`${componentKey}: settings.${key} must be text`);
+    if (/["'<> {};]/.test(value.replaceAll(' ', ''))) throw new Error(`${componentKey}: settings.${key} contains unsafe characters`);
+    if (definition.pattern !== undefined) {
+      if (typeof definition.pattern !== 'string' || definition.pattern.length === 0) {
+        throw new Error(`${componentKey}: settings schema ${key} has invalid pattern`);
+      }
+      let matcher;
+      try {
+        matcher = new RegExp(definition.pattern);
+      } catch {
+        throw new Error(`${componentKey}: settings schema ${key} has invalid pattern`);
+      }
+      if (!matcher.test(value)) throw new Error(`${componentKey}: settings.${key} does not match pattern`);
+    }
   }
 }
 
