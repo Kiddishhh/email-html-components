@@ -25,3 +25,14 @@
 ## Concerns
 
 The allowlist intentionally requires the exact three style1 mobile selectors and declarations expected by the responsive implementation. Any additional selector, declaration, at-rule, style attribute, or style block is rejected.
+
+## Review fixes
+
+- `build-email-template.v1.mjs`: reject CSS comments before parsing and require the three distinct allowlisted selectors exactly once.
+- `tests/build-email-template.v1.test.mjs`: cover altered declarations, duplicate/missing selectors, and injected comments.
+
+Focused verification: `node --test --test-name-pattern='product style1 responsive' tests/build-email-template.v1.test.mjs` — PASS (1 test); `git diff --check` — PASS.
+
+Full verification: `node --test` — PASS (101 tests, 0 failures).
+
+Fix commit: `909f246a87e7810442578778464bacb91d24a14d`.
