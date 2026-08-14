@@ -23,9 +23,9 @@
 
 ## 设置与维护
 
-默认表面色为 `#F8F5F1`，主图最大宽度为 548px，小图外框宽度为 205px，叠加距离为 96px。修改任何字段、默认素材或比例时，必须同步模板、CSS、Schema、fixture/defaults、效果演示、注册表、索引、README 和测试。
+默认表面色为 `#F8F5F1`，主图最大宽度为 548px；下半区使用 42px 内容边距，小图外框宽度为 213px，叠加距离为 10px，右侧与底部 6px 阴影底板。修改任何字段、默认素材或比例时，必须同步模板、CSS、Schema、fixture/defaults、效果演示、注册表、索引、README 和测试。
 
-默认文字规范：标题为 Montserrat SemiBold（600）、30px、150% 行高、0px 字间距、左对齐；副标题为 Montserrat Regular（400）、22px、150% 行高、0px 字间距、左对齐。邮件客户端未安装 Montserrat 时会回退至 Arial / Helvetica / sans-serif。
+默认文字规范：标题为 Montserrat SemiBold（600）、22px、150% 行高、0px 字间距、左对齐；副标题为 Montserrat Regular（400）、17px、150% 行高、0px 字间距、左对齐；CTA 为 Montserrat Medium（500）、16px、15px 行高、0px 字间距、文字居中。邮件客户端未安装 Montserrat 时会回退至 Arial / Helvetica / sans-serif。
 
 ## Skill 边界
 

@@ -51,8 +51,9 @@
   assert.match(template, /width="548"/);
   assert.match(template, /margin-top:-\{\{settings\.spacing\.detailOverlap\}\}/);
   assert.match(template, /padding:0 \{\{settings\.spacing\.detailShadow\}\} \{\{settings\.spacing\.detailShadow\}\} 0/);
-  assert.equal(defaults.values['spacing.detailOverlap'], '96px');
-  assert.equal(defaults.values['spacing.detailShadow'], '8px');
+  assert.equal(defaults.values['spacing.contentHorizontal'], '42px');
+  assert.equal(defaults.values['spacing.detailOverlap'], '10px');
+  assert.equal(defaults.values['spacing.detailShadow'], '6px');
   assert.doesNotMatch(template, /box-shadow|position\s*:/i);
   assert.equal(fixture.values['product.mainImage.url'], 'asset://product-main');
   assert.equal(fixture.values['product.detailImage.url'], 'asset://product-detail');
@@ -163,18 +164,19 @@
         "font.body": "Montserrat,Arial,Helvetica,sans-serif",
     "content.maxWidth": "600px",
     "image.mainWidth": "548px",
-    "image.detailWidth": "205px",
+    "image.detailWidth": "213px",
     "spacing.horizontal": "26px",
-    "spacing.detailOverlap": "96px",
-    "spacing.detailShadow": "8px"
+    "spacing.contentHorizontal": "42px",
+    "spacing.detailOverlap": "10px",
+    "spacing.detailShadow": "6px"
   }
   ```
 
 - [ ] **Step 4: 实现单根 table 模板与 CSS 来源**
 
-  模板必须由一个 `table.freshine-product-style1` 根节点开始。顶行置入主图链接，使用 `width="548"`、`width:100%;max-width:{{settings.image.mainWidth}};height:auto`。下行用左右两列：左列标题（Montserrat SemiBold 600，30px/150%、0px 字间距、左对齐）、副标题（Montserrat Regular 400，22px/150%、0px 字间距、左对齐）与 48px 高边框按钮；右列用内嵌灰褐表格和 `padding:0 {{settings.spacing.detailShadow}} {{settings.spacing.detailShadow}} 0` 形成右下投影。
+  模板必须由一个 `table.freshine-product-style1` 根节点开始。顶行置入主图，使用 `width="548"`、`width:100%;max-width:{{settings.image.mainWidth}};height:auto`。下行使用 42px 内容边距和 59% / 41% 两列：左列标题（Montserrat SemiBold 600，22px/150%、0px 字间距、左对齐）、副标题（Montserrat Regular 400，17px/150%、0px 字间距、左对齐）与 46px 高边框按钮；CTA 使用 Montserrat Medium 500、16px、15px 行高、0px 字间距、文字居中。右列用内嵌灰褐表格和 `padding:0 {{settings.spacing.detailShadow}} {{settings.spacing.detailShadow}} 0` 形成右下投影。
 
-  小图容器在右列使用 `style="padding-top:{{settings.spacing.detailOverlap}};margin-top:-{{settings.spacing.detailOverlap}};"`，图片前置 8px 白边。CTA 以 `<a href="{{content.product.cta.url}}">` 包裹文字，图片均以 `<a>` 包裹。CSS 只列出允许的 `width`、`max-width`、`border-collapse`、`display`、`height`、`border` 和 `outline` 声明，且不使用 `box-shadow`、`position` 或媒体查询。
+  小图容器在右列使用 `style="margin-top:-{{settings.spacing.detailOverlap}};"`，图片前置 5px 白边。CTA 以 `<a href="{{content.product.cta.url}}">` 包裹文字。CSS 只列出允许的 `width`、`max-width`、`border-collapse`、`display`、`height`、`border` 和 `outline` 声明，且不使用 `box-shadow`、`position` 或媒体查询。
 
 - [ ] **Step 5: 运行两项红灯测试并确认转绿**
 
@@ -279,8 +281,8 @@
   ```js
   assert.match(readFileSync(previewOutput, 'utf8'), /data-freshine-slot="product.title"/);
   assert.match(readFileSync(previewOutput, 'utf8'), /href="https:\/\/freshinelife\.com\/collections\/sheer-curtains"/);
-  assert.match(readFileSync(previewOutput, 'utf8'), /margin-top:-96px/);
-  assert.match(readFileSync(previewOutput, 'utf8'), /padding:0 8px 8px 0/);
+  assert.match(readFileSync(previewOutput, 'utf8'), /margin-top:-10px/);
+  assert.match(readFileSync(previewOutput, 'utf8'), /padding:0 6px 6px 0/);
   assert.doesNotMatch(readFileSync(previewOutput, 'utf8'), /box-shadow|position\s*:/i);
   ```
 

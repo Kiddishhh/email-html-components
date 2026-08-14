@@ -11,9 +11,10 @@
     "font.body": "Montserrat,Arial,Helvetica,sans-serif",
     "content.maxWidth": "600px",
     "image.mainWidth": "548px",
-    "image.detailWidth": "205px",
+    "image.detailWidth": "213px",
     "spacing.horizontal": "26px",
-    "spacing.detailOverlap": "96px",
-    "spacing.detailShadow": "8px"
+    "spacing.contentHorizontal": "42px",
+    "spacing.detailOverlap": "10px",
+    "spacing.detailShadow": "6px"
   }
 }

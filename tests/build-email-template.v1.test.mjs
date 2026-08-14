@@ -67,10 +67,11 @@ const productStyle1Settings = {
   'font.body': 'Montserrat,Arial,Helvetica,sans-serif',
   'content.maxWidth': '600px',
   'image.mainWidth': '548px',
-  'image.detailWidth': '205px',
+  'image.detailWidth': '213px',
   'spacing.horizontal': '26px',
-  'spacing.detailOverlap': '96px',
-  'spacing.detailShadow': '8px'
+  'spacing.contentHorizontal': '42px',
+  'spacing.detailOverlap': '10px',
+  'spacing.detailShadow': '6px'
 };
 
 function makeProductStyle1Composition(name, mutate = () => {}) {
@@ -142,17 +143,22 @@ test('product style1 source exposes two replaceable image fields and the table-s
   assert.equal(contentSchema.properties['product.cta.url'].protocol, 'https');
   assert.equal(productFixture.values['product.mainImage.url'], 'asset://product-main');
   assert.equal(productFixture.values['product.detailImage.url'], 'asset://product-detail');
-  assert.equal(productDefaults.values['spacing.detailOverlap'], '96px');
-  assert.equal(productDefaults.values['spacing.detailShadow'], '8px');
+  assert.equal(productDefaults.values['spacing.contentHorizontal'], '42px');
+  assert.equal(productDefaults.values['spacing.detailOverlap'], '10px');
+  assert.equal(productDefaults.values['spacing.detailShadow'], '6px');
+  assert.equal(productDefaults.values['image.detailWidth'], '213px');
   assert.equal(productDefaults.values['font.body'], 'Montserrat,Arial,Helvetica,sans-serif');
   assert.match(template, /width="548"/);
-  assert.match(template, /<td width="58%" align="left" valign="top" style="width:58%;/);
-  assert.match(template, /<td width="42%" align="right" valign="top" style="width:42%;/);
-  assert.match(template, /width="278" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:278px;/);
+  assert.match(template, /padding:53px \{\{settings\.spacing\.horizontal\}\} 0/);
+  assert.match(template, /padding:0 \{\{settings\.spacing\.contentHorizontal\}\};/);
+  assert.match(template, /<td width="59%" align="left" valign="top" style="width:59%;/);
+  assert.match(template, /<td width="41%" align="right" valign="top" style="width:41%;/);
+  assert.match(template, /width="194" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:194px;/);
   assert.match(template, /margin-top:-\{\{settings\.spacing\.detailOverlap\}\}/);
   assert.match(template, /padding:0 \{\{settings\.spacing\.detailShadow\}\} \{\{settings\.spacing\.detailShadow\}\} 0/);
-  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:30px;font-weight:600;line-height:150%;letter-spacing:0px;text-align:left/);
-  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:22px;font-weight:400;line-height:150%;letter-spacing:0px;text-align:left/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:22px;font-weight:600;line-height:150%;letter-spacing:0px;text-align:left/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:17px;font-weight:400;line-height:150%;letter-spacing:0px;text-align:left/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:16px;font-weight:500;line-height:15px;letter-spacing:0px;text-align:center/);
   assert.doesNotMatch(template, /box-shadow|position\s*:/i);
 });
 
@@ -164,8 +170,8 @@ test('product style1 local assets resolve together in a preview', () => {
   const preview = readFileSync(composition.previewOutput, 'utf8');
   assert.match(preview, /default-main-image\.png/);
   assert.match(preview, /default-detail-image\.png/);
-  assert.match(preview, /margin-top:-96px/);
-  assert.match(preview, /padding:0 8px 8px 0/);
+  assert.match(preview, /margin-top:-10px/);
+  assert.match(preview, /padding:0 6px 6px 0/);
   assert.doesNotMatch(preview, /box-shadow|position\s*:/i);
 });
 
