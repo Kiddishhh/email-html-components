@@ -25,6 +25,8 @@
 
 默认表面色为 `#F8F5F1`，主图最大宽度为 548px，小图外框宽度为 205px，叠加距离为 96px。修改任何字段、默认素材或比例时，必须同步模板、CSS、Schema、fixture/defaults、效果演示、注册表、索引、README 和测试。
 
+默认文字规范：标题为 Montserrat SemiBold（600）、30px、150% 行高、0px 字间距、左对齐；副标题为 Montserrat Regular（400）、22px、150% 行高、0px 字间距、左对齐。邮件客户端未安装 Montserrat 时会回退至 Arial / Helvetica / sans-serif。
+
 ## Skill 边界
 
 尚未加入 Campaign Skill。待用户确认最终样式，并另行确认数据来源、字段映射、失败处理和完成卡片后，才可注册到 Campaign 的交互结构中。

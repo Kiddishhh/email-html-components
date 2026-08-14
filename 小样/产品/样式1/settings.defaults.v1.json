@@ -8,7 +8,7 @@
     "color.action": "#242424",
     "color.detailFrame": "#FFFFFF",
     "color.detailShadow": "#D8D1CA",
-    "font.body": "Arial,Helvetica,sans-serif",
+    "font.body": "Montserrat,Arial,Helvetica,sans-serif",
     "content.maxWidth": "600px",
     "image.mainWidth": "548px",
     "image.detailWidth": "205px",

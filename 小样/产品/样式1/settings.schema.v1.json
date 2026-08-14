@@ -10,7 +10,7 @@
     "color.action": { "type": "string", "default": "#242424", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
     "color.detailFrame": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
     "color.detailShadow": { "type": "string", "default": "#D8D1CA", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "font.body": { "type": "string", "default": "Arial,Helvetica,sans-serif", "themeable": true, "skillPrompt": false, "pattern": "^[A-Za-z,-]+$" },
+    "font.body": { "type": "string", "default": "Montserrat,Arial,Helvetica,sans-serif", "themeable": true, "skillPrompt": false, "pattern": "^[A-Za-z,-]+$" },
     "content.maxWidth": { "type": "string", "default": "600px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
     "image.mainWidth": { "type": "string", "default": "548px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
     "image.detailWidth": { "type": "string", "default": "205px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },

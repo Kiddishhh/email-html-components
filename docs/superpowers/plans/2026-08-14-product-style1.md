@@ -160,7 +160,7 @@
     "color.action": "#242424",
     "color.detailFrame": "#FFFFFF",
     "color.detailShadow": "#D8D1CA",
-    "font.body": "Arial,Helvetica,sans-serif",
+        "font.body": "Montserrat,Arial,Helvetica,sans-serif",
     "content.maxWidth": "600px",
     "image.mainWidth": "548px",
     "image.detailWidth": "205px",
@@ -172,7 +172,7 @@
 
 - [ ] **Step 4: 实现单根 table 模板与 CSS 来源**
 
-  模板必须由一个 `table.freshine-product-style1` 根节点开始。顶行置入主图链接，使用 `width="548"`、`width:100%;max-width:{{settings.image.mainWidth}};height:auto`。下行用左右两列：左列标题（30px/36px，确保默认标题单行）、副标题（22px/31px）与 48px 高边框按钮；右列用内嵌灰褐表格和 `padding:0 {{settings.spacing.detailShadow}} {{settings.spacing.detailShadow}} 0` 形成右下投影。
+  模板必须由一个 `table.freshine-product-style1` 根节点开始。顶行置入主图链接，使用 `width="548"`、`width:100%;max-width:{{settings.image.mainWidth}};height:auto`。下行用左右两列：左列标题（Montserrat SemiBold 600，30px/150%、0px 字间距、左对齐）、副标题（Montserrat Regular 400，22px/150%、0px 字间距、左对齐）与 48px 高边框按钮；右列用内嵌灰褐表格和 `padding:0 {{settings.spacing.detailShadow}} {{settings.spacing.detailShadow}} 0` 形成右下投影。
 
   小图容器在右列使用 `style="padding-top:{{settings.spacing.detailOverlap}};margin-top:-{{settings.spacing.detailOverlap}};"`，图片前置 8px 白边。CTA 以 `<a href="{{content.product.cta.url}}">` 包裹文字，图片均以 `<a>` 包裹。CSS 只列出允许的 `width`、`max-width`、`border-collapse`、`display`、`height`、`border` 和 `outline` 声明，且不使用 `box-shadow`、`position` 或媒体查询。
 
