@@ -11,6 +11,7 @@ const workspaceRoot = process.cwd();
 const forbiddenTags = /<\/?(?:!doctype|html|head|body|link|style|script|div|iframe|font|video|audio|object|embed|form|input|button|canvas|svg)\b/i;
 const forbiddenCss = /(?:box-shadow|display\s*:\s*(?:flex|grid)|position\s*:\s*(?:absolute|fixed|sticky)|@media|@import|@font-face|--[\w-]+\s*:)/i;
 const allowedCssProperties = new Set(['background-color', 'background-position', 'background-repeat', 'background-size', 'border', 'border-collapse', 'border-radius', 'color', 'display', 'font-family', 'font-size', 'font-weight', 'height', 'line-height', 'margin', 'max-height', 'max-width', 'min-height', 'min-width', 'object-fit', 'outline', 'padding', 'text-align', 'text-decoration', 'vertical-align', 'width']);
+const responsiveStyleComponentKey = 'product.sampleStyle1';
 
 function readJson(path) { return JSON.parse(readFileSync(path, 'utf8')); }
 function escapeText(value) { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'); }
@@ -157,6 +158,36 @@ function inlineComponentCss(html, rules) {
   });
 }
 
+function validateResponsiveStyle(html, componentKey) {
+  const styleTags = [...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)];
+  if (!styleTags.length) return html;
+  if (componentKey !== responsiveStyleComponentKey || styleTags.length !== 1 || styleTags[0][0].match(/<style\b[^>]*>/i)?.[0] !== '<style>') {
+    throw new Error(`${componentKey}: rendered unsafe HTML`);
+  }
+
+  const source = styleTags[0][1].replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').trim();
+  const rulePattern = /^@media only screen and \(max-width:375px\)\s*\{([\s\S]*)\}$/i;
+  const mediaBody = source.match(rulePattern)?.[1];
+  if (!mediaBody) throw new Error(`${componentKey}: rendered unsafe HTML`);
+  const compactMediaBody = mediaBody.replace(/\s+/g, '');
+  const rules = [...compactMediaBody.matchAll(/(\.[a-z][\w-]*)\{([^{}]*)\}/gi)];
+  if (rules.length !== 3 || rules.reduce((total, rule) => total + rule[0].length, 0) !== compactMediaBody.length) {
+    throw new Error(`${componentKey}: rendered unsafe HTML`);
+  }
+  const allowedRules = new Map([
+    ['.freshine-product-style1-desktop-detail', 'display:none!important'],
+    ['.freshine-product-style1-mobile-detail', 'display:block!important'],
+    ['.freshine-product-style1-copy', 'width:100%!important']
+  ]);
+  for (const [, selector, declarations] of rules) {
+    const normalizedDeclarations = declarations.replace(/\s+/g, '').replace(/;$/, '');
+    if (allowedRules.get(selector.toLowerCase()) !== normalizedDeclarations.toLowerCase()) {
+      throw new Error(`${componentKey}: rendered unsafe HTML`);
+    }
+  }
+  return html.replace(styleTags[0][0], '');
+}
+
 function renderComponent(instance) {
   validateExactKeys(instance, ['name', 'directory', 'componentKey', 'content', 'settings'], 'component instance');
   const base = instance.directory;
@@ -179,7 +210,8 @@ function renderComponent(instance) {
   for (const match of html.matchAll(/<a\b([^>]*)>/gi)) {
     if (!/\bhref="(?:(?:https:|mailto:|tel:)|\[\[unsubscribe_link\]\])/i.test(match[1])) throw new Error(`${instance.componentKey}: incomplete or unsafe link`);
   }
-  if (/\{\{[^}]+\}\}/.test(html) || forbiddenTags.test(html) || forbiddenCss.test(html)) throw new Error(`${instance.componentKey}: rendered unsafe HTML`);
+  const safeHtml = validateResponsiveStyle(html, instance.componentKey);
+  if (/\{\{[^}]+\}\}/.test(safeHtml) || forbiddenTags.test(safeHtml) || forbiddenCss.test(safeHtml)) throw new Error(`${instance.componentKey}: rendered unsafe HTML`);
   return `<!-- 组件：${instance.name} -->\n${html.trim()}\n<!-- /组件：${instance.name} -->`;
 }
 
@@ -189,7 +221,8 @@ const sections = composition.components.map(renderComponent).join('\n');
 const { backgroundColor, outerBackgroundColor, contentWidth, verticalPadding } = composition.canvas;
 const output = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${outerBackgroundColor}" style="width:100%;border-collapse:collapse;background-color:${outerBackgroundColor};"><tr><td align="center" valign="top" bgcolor="${outerBackgroundColor}" style="padding:0;background-color:${outerBackgroundColor};"><table role="presentation" width="${contentWidth}" cellpadding="0" cellspacing="0" border="0" bgcolor="${backgroundColor}" style="width:100%;max-width:${contentWidth}px;border-collapse:collapse;background-color:${backgroundColor};"><tr><td align="center" valign="top" bgcolor="${backgroundColor}" style="padding:${verticalPadding}px 0;background-color:${backgroundColor};">\n${sections}\n<p style="margin:0;padding:0;font-size:0;line-height:0;"></p>\n</td></tr></table></td></tr></table>\n`;
 
-if (forbiddenTags.test(output) || forbiddenCss.test(output) || !output.trim()) throw new Error('Output failed safe-email validation');
+const outputForSafety = output.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '');
+if (forbiddenTags.test(outputForSafety) || forbiddenCss.test(outputForSafety) || !output.trim()) throw new Error('Output failed safe-email validation');
 if (!previewLocalAssets) write(composition.output, output);
 const preview = `<!doctype html>
 <html lang="en">

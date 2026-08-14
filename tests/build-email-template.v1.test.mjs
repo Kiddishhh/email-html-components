@@ -175,6 +175,36 @@ test('product style1 local assets resolve together in a preview', () => {
   assert.doesNotMatch(preview, /box-shadow|position\s*:/i);
 });
 
+test('product style1 responsive CSS is narrowly allowlisted', () => {
+  const tempRoot = mkdtempSync(join(tmpdir(), 'freshine-product-style1-responsive-'));
+  const directory = join(tempRoot, '样式1');
+  cpSync(productStyle1Directory, directory, { recursive: true });
+  const responsiveCss = `
+<style>
+@media only screen and (max-width:375px) {
+  .freshine-product-style1-desktop-detail { display: none !important; }
+  .freshine-product-style1-mobile-detail { display: block !important; }
+  .freshine-product-style1-copy { width: 100% !important; }
+}
+</style>`;
+  const templatePath = join(directory, 'component.template.v1.html');
+  writeFileSync(templatePath, `${readFileSync(templatePath, 'utf8')}${responsiveCss}`);
+  const { composition, path } = makeProductStyle1Composition('product-style1-responsive-allowlisted', (value) => {
+    value.components[0].directory = directory;
+  });
+  const result = run(path, '--preview-local-assets');
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const preview = readFileSync(composition.previewOutput, 'utf8');
+  assert.match(preview, /@media only screen and \(max-width:375px\)/);
+  assert.match(preview, /\.freshine-product-style1-mobile-detail/);
+
+  writeFileSync(templatePath, `${readFileSync(templatePath, 'utf8').replace('width: 100% !important;', 'color: red;')}`);
+  const unsafe = run(path, '--preview-local-assets');
+  assert.notEqual(unsafe.status, 0);
+  assert.match(unsafe.stderr, /product\.sampleStyle1: rendered unsafe HTML/);
+});
+
 test('product style1 final builds reject the pending local main image upload', () => {
   const { path } = makeProductStyle1Composition('product-style1-final-local-assets');
   const result = run(path);
