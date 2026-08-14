@@ -95,7 +95,7 @@ CTA URL 固定为选定首页 slide 链接的活动页，并展示完整 URL 和
 
 ### 默认注入内容卡片与 CTA
 
-底部 CTA 默认使用推荐 Collection 的完整 URL：根据 `handle` 生成 `https://freshinelife.com/collections/{handle}`。`SHOP NOW` 是 CTA 的默认文字。这两项都是当前设置，不是不可修改的固定值。
+底部 CTA 默认使用推荐 Collection 的完整 URL：根据 `handle` 生成 `https://freshinelife.com/collections/{handle}`。`SHOP NOW` 是 CTA 的默认文字。这两项都是当前设置，不是不可修改的固定值。CTA 外层固定左右各 57px 内边距（`padding:8px 57px 42px`），使其按钮左右边缘与两列商品图片的外边缘对齐；该几何规则不作为用户可选项。
 
 默认注入完成后，用一张“当前设置”卡片展示。卡片必须同时展示六个商品图片、Alt、商品详情链接、折扣标签以及 CTA 默认文字和完整 URL；标记回退链接和隐藏折扣标签的商品。提示用户查看卡片并主动指出需要修改的项目；不逐项追问，用户未提出修改的内容保留当前设置。
 

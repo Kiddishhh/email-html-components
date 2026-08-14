@@ -395,6 +395,21 @@ test('all six sale cards use identical centered wrappers and symmetric spacing',
   assert.doesNotMatch(template, /padding:0 14px 20px 0|padding:0 0 20px 14px/);
 });
 
+test('the sale grid CTA aligns with the outer edges of the two desktop product images', () => {
+  const directory = `${root}/活动商品组件/六宫格夏季促销`;
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
+  const skill = readFileSync(`${root}/skills/build-omnisend-campaign-draft/SKILL.md`, 'utf8');
+  const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
+
+  assert.match(template, /<td style="padding:8px 57px 42px;">/);
+  assert.match(demo, /<td style="padding:8px 57px 42px;">/);
+  assert.match(management, /CTA.*左右各\s*57px.*两列商品图片.*外边缘/s);
+  assert.match(skill, /collection\.saleGrid6.*CTA.*左右各\s*57px.*两列商品图片.*外边缘/s);
+  assert.match(interactions, /CTA.*左右各\s*57px.*两列商品图片.*外边缘/s);
+});
+
 test('clickable image defaults to a 600px full-bleed canvas while preserving per-instance overrides', () => {
   const directory = `${root}/通用图片组件/可链接整图`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
