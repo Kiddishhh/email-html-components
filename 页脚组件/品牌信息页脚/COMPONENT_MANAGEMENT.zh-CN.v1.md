@@ -47,12 +47,15 @@ Skill 默认只主动询问 `color.background`；其他页脚样式仍使用 V1 
 
 ## Brand Assets 链接维护
 
-四个社交图标的组件库默认目标地址保存在 `content.fixture.v1.json` 的以下数据字段中；Skill 将它们复制到本次 composition 完整快照，模板只读取实例字段，不写死业务链接：
+七个社交图标的组件库默认目标地址保存在 `content.fixture.v1.json` 的以下数据字段中；Skill 将它们复制到本次 composition 完整快照，模板只读取实例字段，不写死业务链接。新增 Facebook、WhatsApp、Threads 后，展示顺序固定为 YouTube、Instagram、Facebook、TikTok、Pinterest、WhatsApp、Threads：
 
 - `footer.social.instagramUrl`
 - `footer.social.pinterestUrl`
 - `footer.social.youtubeUrl`
 - `footer.social.tiktokUrl`
+- `footer.social.facebookUrl`
+- `footer.social.whatsappUrl`
+- `footer.social.threadsUrl`
 
 默认数据由 `new FOOT` 一次性迁移而来，其中 YouTube 地址包含 `/shorts`。迁移后如账号发生变化，需要更新组件库默认值时修改 fixture，并确保后续 composition 使用更新后的完整快照；不再修改 Saved Universal Layout。单封邮件临时变化只写入本次 composition，不回写 fixture。邮箱链接由 `footer.contactUrl` 管理；退订链接必须继续使用 Omnisend 的 `[[unsubscribe_link]]`，不能替换成普通网址。
 
@@ -75,6 +78,9 @@ Skill 默认只主动询问 `color.background`；其他页脚样式仍使用 V1 
 - `footer.social.pinterestUrl`：HTTPS 链接或图片地址，必填。
 - `footer.social.youtubeUrl`：HTTPS 链接或图片地址，必填。
 - `footer.social.tiktokUrl`：HTTPS 链接或图片地址，必填。
+- `footer.social.facebookUrl`：HTTPS 链接或图片地址，必填。
+- `footer.social.whatsappUrl`：HTTPS 链接或图片地址，必填。
+- `footer.social.threadsUrl`：HTTPS 链接或图片地址，必填。
 - `footer.image.1.url`：HTTPS 链接或图片地址，必填。
 - `footer.image.1.alt`：纯文本，必填。
 - `footer.image.2.url`：HTTPS 链接或图片地址，必填。
@@ -83,6 +89,12 @@ Skill 默认只主动询问 `color.background`；其他页脚样式仍使用 V1 
 - `footer.image.3.alt`：纯文本，必填。
 - `footer.image.4.url`：HTTPS 链接或图片地址，必填。
 - `footer.image.4.alt`：纯文本，必填。
+- `footer.image.5.url`：Facebook 图标 HTTPS 地址，必填。
+- `footer.image.5.alt`：纯文本，必填。
+- `footer.image.6.url`：WhatsApp 图标 HTTPS 地址，必填。
+- `footer.image.6.alt`：纯文本，必填。
+- `footer.image.7.url`：Threads 图标 HTTPS 地址，必填。
+- `footer.image.7.alt`：纯文本，必填。
 
 文案按纯文本处理；不要放入 HTML 标签。网页和图片必须使用公开可访问的 `https://` 地址，邮箱使用 `mailto:`，图片必须保留有意义的 alt 文本。
 
@@ -92,7 +104,7 @@ Skill 默认只主动询问 `color.background`；其他页脚样式仍使用 V1 
 2. 改颜色、字体、间距、圆角等高频值时，改 settings，不要复制出新的内联 style。
 3. 改表格层级、增加图片或 CTA 时，同时更新模板、content schema、fixture 和本说明文档。
 4. 禁止在模板或 CSS 中新增 `div`、`style`、`link`、脚本、外部字体、`box-shadow`、Flex/Grid 或媒体查询。
-5. 四枚社交图标的默认尺寸由 `social.size` 管理，HTML 的兼容宽高属性保持 `24 × 24`；不要用通用图片规则覆盖其尺寸。
+5. 七枚社交图标的默认尺寸由 `social.size` 管理，HTML 的兼容宽高属性保持 `24 × 24`；不要用通用图片规则覆盖其尺寸。
 6. `Unsubscribe` 使用唯一受保护的 `[[unsubscribe_link]]`，并保留 `data-translation-key="unsubscribe"` 与 `target="_blank"`。不得修改、转义、复制或替换为其他 ESP 的退订变量。
 7. 如果把该组件放入已经自带原生页脚的 Branded 邮件布局，应关闭其中一个页脚，避免重复公司信息和退订链接。
 

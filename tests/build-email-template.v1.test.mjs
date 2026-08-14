@@ -340,6 +340,45 @@ test('the footer uses the approved refined warm hierarchy in component, demo, an
   assert.match(interactions, /精致暖棕信息层级/);
 });
 
+test('the footer renders seven social icons in the approved display order with complete default links', () => {
+  const directory = `${root}/页脚组件/品牌信息页脚`;
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const schema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const composition = JSON.parse(readFileSync(`${root}/compositions/hero-grid-review-gifts-location.default.v1.json`, 'utf8'));
+  const defaultFooter = composition.components.find(({ componentKey }) => componentKey === 'footer.warm');
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
+  const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
+
+  const orderedSlots = [
+    'footer.social.youtubeUrl',
+    'footer.social.instagramUrl',
+    'footer.social.facebookUrl',
+    'footer.social.tiktokUrl',
+    'footer.social.pinterestUrl',
+    'footer.social.whatsappUrl',
+    'footer.social.threadsUrl'
+  ];
+  const positions = orderedSlots.map((slot) => template.indexOf(`data-freshine-href-slot="${slot}"`));
+
+  assert.ok(positions.every((position) => position >= 0));
+  assert.ok(positions.every((position, index) => index === 0 || positions[index - 1] < position));
+  for (const key of ['footer.social.facebookUrl', 'footer.social.whatsappUrl', 'footer.social.threadsUrl', 'footer.image.5.url', 'footer.image.6.url', 'footer.image.7.url']) {
+    assert.ok(schema.properties[key], `${key} must be declared in the full content snapshot`);
+    assert.ok(key in fixture.values, `${key} must be present in the default fixture`);
+    assert.ok(key in defaultFooter.content, `${key} must be present in the default composition`);
+  }
+  assert.equal(fixture.values['footer.social.facebookUrl'], 'https://www.facebook.com/freshinecurtains/');
+  assert.equal(fixture.values['footer.social.threadsUrl'], 'https://www.threads.com/@freshinecurtains');
+  assert.equal(fixture.values['footer.social.whatsappUrl'], 'https://api.whatsapp.com/send/?phone=17477171985&text=Hello&type=phone_number&app_absent=0');
+  assert.match(demo, /facebook\.com\/freshinecurtains/);
+  assert.match(demo, /threads\.com\/@freshinecurtains/);
+  assert.match(demo, /api\.whatsapp\.com\/send/);
+  assert.match(management, /Facebook、WhatsApp、Threads/);
+  assert.match(interactions, /七个社交媒体链接及图标/);
+});
+
 test('all six sale cards use identical centered wrappers and symmetric spacing', () => {
   const directory = `${root}/活动商品组件/六宫格夏季促销`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');

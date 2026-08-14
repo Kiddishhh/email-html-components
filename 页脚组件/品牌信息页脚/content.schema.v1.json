@@ -63,6 +63,18 @@
       "type": "url",
       "required": true
     },
+    "footer.social.facebookUrl": {
+      "type": "url",
+      "required": true
+    },
+    "footer.social.whatsappUrl": {
+      "type": "url",
+      "required": true
+    },
+    "footer.social.threadsUrl": {
+      "type": "url",
+      "required": true
+    },
     "footer.image.1.url": {
       "type": "url",
       "role": "image-source",
@@ -99,6 +111,36 @@
       "required": true
     },
     "footer.image.4.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true
+    },
+    "footer.image.5.url": {
+      "type": "url",
+      "role": "image-source",
+      "required": true
+    },
+    "footer.image.5.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true
+    },
+    "footer.image.6.url": {
+      "type": "url",
+      "role": "image-source",
+      "required": true
+    },
+    "footer.image.6.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true
+    },
+    "footer.image.7.url": {
+      "type": "url",
+      "role": "image-source",
+      "required": true
+    },
+    "footer.image.7.alt": {
       "type": "text",
       "role": "image-alt",
       "required": true
