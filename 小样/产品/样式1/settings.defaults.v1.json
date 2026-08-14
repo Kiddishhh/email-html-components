@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.sampleStyle1",
+  "values": {
+    "color.surface": "#F8F5F1",
+    "color.title": "#242424",
+    "color.subtitle": "#303033",
+    "color.action": "#242424",
+    "color.detailFrame": "#FFFFFF",
+    "color.detailShadow": "#D8D1CA",
+    "font.body": "Arial,Helvetica,sans-serif",
+    "content.maxWidth": "600px",
+    "image.mainWidth": "548px",
+    "image.detailWidth": "205px",
+    "spacing.horizontal": "26px",
+    "spacing.detailOverlap": "96px",
+    "spacing.detailShadow": "8px"
+  }
+}

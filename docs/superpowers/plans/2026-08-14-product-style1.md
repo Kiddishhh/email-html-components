@@ -37,12 +37,9 @@
   const productStyle1Directory = `${root}/小样/产品/样式1`;
   ```
 
-  新测试读取 `组件清单.json`、content schema、settings schema、fixture、defaults、template、demo 和管理说明，并断言：
+  新测试读取 content schema、settings schema、fixture、defaults 与 template，并断言：
 
   ```js
-  assert.equal(entry.componentKey, 'product.sampleStyle1');
-  assert.equal(entry.输出宽度, 600);
-  assert.equal(entry.移动端断点, 375);
   assert.deepEqual(Object.keys(contentSchema.properties), [
     'product.mainImage.url', 'product.mainImage.alt',
     'product.detailImage.url', 'product.detailImage.alt',
@@ -57,8 +54,8 @@
   assert.equal(defaults.values['spacing.detailOverlap'], '96px');
   assert.equal(defaults.values['spacing.detailShadow'], '8px');
   assert.doesNotMatch(template, /box-shadow|position\s*:/i);
-  assert.match(demo, /375px/);
-  assert.match(management, /尚未加入 Campaign Skill/);
+  assert.equal(fixture.values['product.mainImage.url'], 'asset://product-main');
+  assert.equal(fixture.values['product.detailImage.url'], 'asset://product-detail');
   ```
 
 - [ ] **Step 2: 运行测试，确认因目录尚不存在而失败**
@@ -124,7 +121,7 @@
 
 - [ ] **Step 1: 从用户提供的参考稿生成两份默认预览素材**
 
-  在组件目录创建 `assets/`。保留原截图不作为邮件图片；从 `样式IX.png` 提取主视觉和材质图，分别输出为 `default-main-image.png` 与 `default-detail-image.png`。先以 `sips` 建立裁切，再用 `sips -g pixelWidth -g pixelHeight` 记录主图约 784×778、小图约 284×284；若裁切坐标有一像素偏差，以视觉检查为准微调，但不得包含标题、CTA 或截图外框。
+  在组件目录创建 `assets/`。保留原截图不作为邮件图片；从 `样式IX.png` 提取主视觉和材质图，分别输出为 `default-main-image.png` 与 `default-detail-image.png`。先以 `sips` 建立裁切，再用 `sips -g pixelWidth -g pixelHeight` 记录主图 784×764、小图 284×284；主图裁切在小图出现前停止，不得包含标题、CTA 或截图外框。
 
 - [ ] **Step 2: 实现内容契约和默认 fixture**
 
@@ -175,13 +172,13 @@
 
 - [ ] **Step 4: 实现单根 table 模板与 CSS 来源**
 
-  模板必须由一个 `table.freshine-product-style1` 根节点开始。顶行置入主图链接，使用 `width="548"`、`width:100%;max-width:{{settings.image.mainWidth}};height:auto`。下行用左右两列：左列标题（34px/41px）、副标题（22px/31px）与 48px 高边框按钮；右列用内嵌灰褐表格和 `padding:0 {{settings.spacing.detailShadow}} {{settings.spacing.detailShadow}} 0` 形成右下投影。
+  模板必须由一个 `table.freshine-product-style1` 根节点开始。顶行置入主图链接，使用 `width="548"`、`width:100%;max-width:{{settings.image.mainWidth}};height:auto`。下行用左右两列：左列标题（30px/36px，确保默认标题单行）、副标题（22px/31px）与 48px 高边框按钮；右列用内嵌灰褐表格和 `padding:0 {{settings.spacing.detailShadow}} {{settings.spacing.detailShadow}} 0` 形成右下投影。
 
   小图容器在右列使用 `style="padding-top:{{settings.spacing.detailOverlap}};margin-top:-{{settings.spacing.detailOverlap}};"`，图片前置 8px 白边。CTA 以 `<a href="{{content.product.cta.url}}">` 包裹文字，图片均以 `<a>` 包裹。CSS 只列出允许的 `width`、`max-width`、`border-collapse`、`display`、`height`、`border` 和 `outline` 声明，且不使用 `box-shadow`、`position` 或媒体查询。
 
 - [ ] **Step 5: 运行两项红灯测试并确认转绿**
 
-  Run: `node --test tests/build-email-template.v1.test.mjs --test-name-pattern "product style1"`
+  Run: `node --test tests/build-email-template.v1.test.mjs --test-name-pattern "product style1 source|product style1 local"`
 
   Expected: PASS，预览可解析两张本地素材；最终静态构建拒绝未上传的 `asset://product-main`。
 
@@ -204,7 +201,25 @@
 - Consumes: Task 2 的组件目录和 `product.sampleStyle1` Schema。
 - Produces: 可从通用组件清单、索引和真实演示页发现的组件；Campaign Skill 保持不变。
 
-- [ ] **Step 1: 扩展注册表但不扩展 Campaign 结构**
+- [ ] **Step 1: 写入会失败的登记、演示与 Campaign 隔离测试**
+
+  在 `tests/build-email-template.v1.test.mjs` 增加 `product style1 is registered generally without becoming a Campaign Skill candidate`。读取注册表、demo、管理说明、Campaign 结构与交互索引，断言：
+
+  ```js
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].输出宽度, 600);
+  assert.equal(entries[0].移动端断点, 375);
+  assert.match(demo, /375px/);
+  assert.match(management, /尚未加入 Campaign Skill/);
+  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleStyle1'), false);
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleStyle1'), false);
+  ```
+
+  Run: `node --test tests/build-email-template.v1.test.mjs --test-name-pattern "registered generally"`
+
+  Expected: FAIL，因为注册表尚无该组件且演示/说明页不存在。
+
+- [ ] **Step 2: 扩展注册表但不扩展 Campaign 结构**
 
   在 `组件清单.json` 末尾追加：
 
@@ -233,15 +248,15 @@
 
   不修改 `skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`、`campaign-component-interactions.v1.json` 或 `SKILL.md`。
 
-- [ ] **Step 2: 创建真实效果演示页**
+- [ ] **Step 3: 创建真实效果演示页**
 
   演示页包含 HTML 文档壳、600px 外壳和组件的完整默认渲染；图片仅引用当前目录 `./assets/default-main-image.png` 和 `./assets/default-detail-image.png`，不使用替代示意图。页面在外壳说明文本中显示“桌面：600px / 移动检查：375px”，并以 `width:100%;max-width:600px` 保持窄屏可检查。
 
-- [ ] **Step 3: 创建中文管理说明并同步索引/README**
+- [ ] **Step 4: 创建中文管理说明并同步索引/README**
 
   管理说明明确列出八个可替换字段、两图本地预览资产、最终 HTTPS 上传要求、600/375 布局、表格投影和无增强回退，以及“尚未加入 Campaign Skill，待样式确认后再注册”。在 `组件索引.md` 增加“小样/产品”章节和三条链接；在 README 的通用组件说明补充该组件并说明它不属于当前 Campaign 六组件。
 
-- [ ] **Step 4: 运行注册表与 Campaign 隔离测试**
+- [ ] **Step 5: 运行注册表与 Campaign 隔离测试**
 
   Run: `node --test tests/build-email-template.v1.test.mjs --test-name-pattern "product style1"`
 
