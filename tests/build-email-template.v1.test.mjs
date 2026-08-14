@@ -308,7 +308,36 @@ test('the footer renders its appointment disclaimer as an address-style line bef
   assert.equal(fixture.values['footer.address.disclaimer'], '(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)');
   assert.equal(defaultFooter.content['footer.address.disclaimer'], '(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)');
   assert.ok(countryPosition < disclaimerPosition && disclaimerPosition < phonePosition, 'the disclaimer must stay between country and phone');
-  assert.match(template, /data-freshine-slot="footer\.address\.disclaimer" style="color:\{\{settings\.color\.text\}\};font-family:\{\{settings\.font\.body\}\};font-size:13px;font-weight:400;line-height:1\.5;text-align:center;"/);
+  assert.match(template, /data-freshine-slot="footer\.address\.disclaimer" style="color:#F1D9C7;font-family:\{\{settings\.font\.body\}\};font-size:11px;font-weight:400;line-height:17px;text-align:center;"/);
+});
+
+test('the footer uses the approved refined warm hierarchy in component, demo, and Skill references', () => {
+  const directory = `${root}/页脚组件/品牌信息页脚`;
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const schema = JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8'));
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
+  const skill = readFileSync(`${root}/skills/build-omnisend-campaign-draft/SKILL.md`, 'utf8');
+  const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
+
+  assert.match(template, /max-width:\{\{settings\.content\.width\}\}/);
+  assert.match(template, /font-size:17px;font-weight:600;line-height:22px/);
+  assert.match(template, /height="1" bgcolor="#8B552C"/);
+  assert.match(template, /padding:0 5px/);
+  assert.match(template, /color:\{\{settings\.color\.link\}\}[^>]*text-decoration:underline/);
+  assert.match(template, /href="\[\[unsubscribe_link\]\]"/);
+  assert.equal(defaults.values['color.link'], '#F4D8A7');
+  assert.equal(defaults.values['space.sectionY'], '32px');
+  assert.equal(defaults.values['content.width'], '440px');
+  assert.equal(schema.properties['color.link'].default, '#F4D8A7');
+  assert.equal(schema.properties['space.sectionY'].default, '32px');
+  assert.equal(schema.properties['content.width'].default, '440px');
+  assert.match(demo, /max-width:440px/);
+  assert.match(management, /440px/);
+  assert.match(management, /#F4D8A7/);
+  assert.match(skill, /精致暖棕信息层级/);
+  assert.match(interactions, /精致暖棕信息层级/);
 });
 
 test('all six sale cards use identical centered wrappers and symmetric spacing', () => {

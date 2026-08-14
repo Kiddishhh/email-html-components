@@ -214,13 +214,13 @@
       "settings": {
         "color.background": "#652a0d",
         "color.text": "#FFFFFF",
-        "color.link": "#0094EB",
+        "color.link": "#F4D8A7",
         "font.body": "Montserrat, Arial, Helvetica, sans-serif",
         "space.sectionX": "24px",
-        "space.sectionY": "12px",
-        "space.block": "12px",
+        "space.sectionY": "32px",
+        "space.block": "14px",
         "social.size": "24px",
-        "content.width": "382px"
+        "content.width": "440px"
       }
     }
   ]
