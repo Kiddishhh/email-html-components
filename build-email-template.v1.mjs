@@ -165,7 +165,9 @@ function validateResponsiveStyle(html, componentKey) {
     throw new Error(`${componentKey}: rendered unsafe HTML`);
   }
 
-  const source = styleTags[0][1].replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').trim();
+  const styleSource = styleTags[0][1];
+  if (/\/\*[\s\S]*?\*\//.test(styleSource)) throw new Error(`${componentKey}: rendered unsafe HTML`);
+  const source = styleSource.replace(/\s+/g, ' ').trim();
   const rulePattern = /^@media only screen and \(max-width:375px\)\s*\{([\s\S]*)\}$/i;
   const mediaBody = source.match(rulePattern)?.[1];
   if (!mediaBody) throw new Error(`${componentKey}: rendered unsafe HTML`);
@@ -179,6 +181,10 @@ function validateResponsiveStyle(html, componentKey) {
     ['.freshine-product-style1-mobile-detail', 'display:block!important'],
     ['.freshine-product-style1-copy', 'width:100%!important']
   ]);
+  const selectors = rules.map(([, selector]) => selector.toLowerCase());
+  if (new Set(selectors).size !== allowedRules.size || selectors.some((selector) => !allowedRules.has(selector))) {
+    throw new Error(`${componentKey}: rendered unsafe HTML`);
+  }
   for (const [, selector, declarations] of rules) {
     const normalizedDeclarations = declarations.replace(/\s+/g, '').replace(/;$/, '');
     if (allowedRules.get(selector.toLowerCase()) !== normalizedDeclarations.toLowerCase()) {

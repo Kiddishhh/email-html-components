@@ -188,7 +188,8 @@ test('product style1 responsive CSS is narrowly allowlisted', () => {
 }
 </style>`;
   const templatePath = join(directory, 'component.template.v1.html');
-  writeFileSync(templatePath, `${readFileSync(templatePath, 'utf8')}${responsiveCss}`);
+  const validTemplate = `${readFileSync(templatePath, 'utf8')}${responsiveCss}`;
+  writeFileSync(templatePath, validTemplate);
   const { composition, path } = makeProductStyle1Composition('product-style1-responsive-allowlisted', (value) => {
     value.components[0].directory = directory;
   });
@@ -199,10 +200,16 @@ test('product style1 responsive CSS is narrowly allowlisted', () => {
   assert.match(preview, /@media only screen and \(max-width:375px\)/);
   assert.match(preview, /\.freshine-product-style1-mobile-detail/);
 
-  writeFileSync(templatePath, `${readFileSync(templatePath, 'utf8').replace('width: 100% !important;', 'color: red;')}`);
-  const unsafe = run(path, '--preview-local-assets');
-  assert.notEqual(unsafe.status, 0);
-  assert.match(unsafe.stderr, /product\.sampleStyle1: rendered unsafe HTML/);
+  for (const [label, mutate] of [
+    ['declaration', (value) => value.replace('width: 100% !important;', 'color: red;')],
+    ['duplicate selector', (value) => value.replace('.freshine-product-style1-mobile-detail', '.freshine-product-style1-desktop-detail')],
+    ['comment', (value) => value.replace('@media only screen', '/* injected */ @media only screen')]
+  ]) {
+    writeFileSync(templatePath, mutate(validTemplate));
+    const unsafe = run(path, '--preview-local-assets');
+    assert.notEqual(unsafe.status, 0, `${label}: unsafe responsive CSS must fail`);
+    assert.match(unsafe.stderr, /product\.sampleStyle1: rendered unsafe HTML/);
+  }
 });
 
 test('product style1 final builds reject the pending local main image upload', () => {
