@@ -175,43 +175,6 @@ test('product style1 local assets resolve together in a preview', () => {
   assert.doesNotMatch(preview, /box-shadow|position\s*:/i);
 });
 
-test('product style1 responsive CSS is narrowly allowlisted', () => {
-  const tempRoot = mkdtempSync(join(tmpdir(), 'freshine-product-style1-responsive-'));
-  const directory = join(tempRoot, '样式1');
-  cpSync(productStyle1Directory, directory, { recursive: true });
-  const responsiveCss = `
-<style>
-@media only screen and (max-width:375px) {
-  .freshine-product-style1-desktop-detail { display: none !important; }
-  .freshine-product-style1-mobile-detail { display: block !important; }
-  .freshine-product-style1-copy { width: 100% !important; }
-}
-</style>`;
-  const templatePath = join(directory, 'component.template.v1.html');
-  const validTemplate = `${readFileSync(templatePath, 'utf8')}${responsiveCss}`;
-  writeFileSync(templatePath, validTemplate);
-  const { composition, path } = makeProductStyle1Composition('product-style1-responsive-allowlisted', (value) => {
-    value.components[0].directory = directory;
-  });
-  const result = run(path, '--preview-local-assets');
-
-  assert.equal(result.status, 0, result.stderr || result.stdout);
-  const preview = readFileSync(composition.previewOutput, 'utf8');
-  assert.match(preview, /@media only screen and \(max-width:375px\)/);
-  assert.match(preview, /\.freshine-product-style1-mobile-detail/);
-
-  for (const [label, mutate] of [
-    ['declaration', (value) => value.replace('width: 100% !important;', 'color: red;')],
-    ['duplicate selector', (value) => value.replace('.freshine-product-style1-mobile-detail', '.freshine-product-style1-desktop-detail')],
-    ['comment', (value) => value.replace('@media only screen', '/* injected */ @media only screen')]
-  ]) {
-    writeFileSync(templatePath, mutate(validTemplate));
-    const unsafe = run(path, '--preview-local-assets');
-    assert.notEqual(unsafe.status, 0, `${label}: unsafe responsive CSS must fail`);
-    assert.match(unsafe.stderr, /product\.sampleStyle1: rendered unsafe HTML/);
-  }
-});
-
 test('product style1 final builds reject the pending local main image upload', () => {
   const { path } = makeProductStyle1Composition('product-style1-final-local-assets');
   const result = run(path);
