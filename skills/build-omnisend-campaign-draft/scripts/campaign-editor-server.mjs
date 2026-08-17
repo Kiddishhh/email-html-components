@@ -206,6 +206,13 @@ function safeDraftAssetRequestPath(workspaceRoot, slug, requestedPath) {
   return resolvedPath;
 }
 
+function safeEditorRequestPath(workspaceRoot, requestedPath) {
+  const editorDirectory = join(resolve(workspaceRoot), 'skills', 'build-omnisend-campaign-draft', 'editor');
+  const resolvedPath = resolve(editorDirectory, requestedPath);
+  if (!isWithin(editorDirectory, resolvedPath)) throw new Error('editor path is invalid');
+  return resolvedPath;
+}
+
 function sendDraftFile(response, path) {
   if (!existsSync(path) || !statSync(path).isFile()) {
     writeJson(response, 404, { error: 'not found' });
@@ -217,6 +224,12 @@ function sendDraftFile(response, path) {
 
 async function handleEditorRequest({ request, response, workspaceRoot, bootstrap, demoDirectories }) {
   const url = new URL(request.url, `http://${APPROVED_HOST}`);
+  if (request.method === 'GET' && (url.pathname === '/' || url.pathname.startsWith('/editor/'))) {
+    const requestedPath = url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname.slice('/editor/'.length));
+    sendDraftFile(response, safeEditorRequestPath(workspaceRoot, requestedPath));
+    return;
+  }
+
   if (request.method === 'GET' && url.pathname === '/api/bootstrap') {
     writeJson(response, 200, bootstrap);
     return;

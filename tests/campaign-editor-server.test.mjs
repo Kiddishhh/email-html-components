@@ -16,6 +16,8 @@ import {
 
 const workspaceRoot = fileURLToPath(new URL('../', import.meta.url));
 const startScript = fileURLToPath(new URL('../skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs', import.meta.url));
+const editorIndex = fileURLToPath(new URL('../skills/build-omnisend-campaign-draft/editor/index.html', import.meta.url));
+const editorApp = fileURLToPath(new URL('../skills/build-omnisend-campaign-draft/editor/app.js', import.meta.url));
 const defaultComposition = JSON.parse(readFileSync(join(workspaceRoot, 'compositions/hero-grid-review-gifts-location.default.v1.json'), 'utf8'));
 const validProjectState = {
   campaign: {
@@ -30,6 +32,20 @@ const validProjectState = {
   },
   components: []
 };
+
+test('static editor provides local image inputs and fixed desktop and mobile previews without remote Campaign actions', () => {
+  const html = readFileSync(editorIndex, 'utf8');
+  const app = readFileSync(editorApp, 'utf8');
+
+  assert.match(html, /data-editor-preview="desktop"/);
+  assert.match(html, /data-editor-preview="mobile"/);
+  assert.match(html, /type="file"[^>]*accept="image\/jpeg,image\/png,image\/gif,image\/webp"/);
+  assert.match(app, /\/api\/bootstrap/);
+  assert.match(app, /default-logo-white\.png/);
+  const invalidationFunction = app.match(/function invalidateConfirmation\(\)\s*\{[\s\S]*?\n\}/)?.[0] ?? '';
+  assert.match(invalidationFunction, /editor\.lastPreviewHtml = null;/);
+  assert.doesNotMatch(`${html}\n${app}`, /api\.omnisend\.com|\/send|publish|schedule|activate/);
+});
 
 test('scoped draft helpers reject unsafe paths and keep persisted drafts and images under the draft directory', () => {
   const temporaryWorkspace = mkdtempSync(join(tmpdir(), 'freshine-campaign-editor-draft-'));
@@ -217,6 +233,25 @@ test('editor server is loopback-only and returns the validated bootstrap', async
       'location',
       'footer'
     ]);
+  } finally {
+    await editor.close();
+  }
+});
+
+test('editor server serves the local editor application and its static assets', async () => {
+  const editor = await createCampaignEditorServer({ workspaceRoot, port: 0 });
+  try {
+    const page = await fetch(editor.url);
+    assert.equal(page.status, 200);
+    assert.match(await page.text(), /data-editor-preview="desktop"/);
+
+    const app = await fetch(new URL('editor/app.js', editor.url));
+    assert.equal(app.status, 200);
+    assert.match(await app.text(), /\/api\/bootstrap/);
+
+    const styles = await fetch(new URL('editor/styles.css', editor.url));
+    assert.equal(styles.status, 200);
+    assert.match(styles.headers.get('content-type'), /^text\/css/);
   } finally {
     await editor.close();
   }
