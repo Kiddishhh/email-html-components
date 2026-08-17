@@ -140,13 +140,48 @@ test('editor routes persist scoped binary assets and generate only a local six-c
     const previewHtml = await renderedPreview.text();
     assert.match(previewHtml, /Freshine Email Local Preview/);
     assert.match(previewHtml, new RegExp(`assets/${basename(asset.localPath)}`));
+    assert.doesNotMatch(previewHtml, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
 
     const renderedAsset = await fetch(new URL(`drafts/${slug}/assets/${basename(asset.localPath)}`, editor.url));
     assert.equal(renderedAsset.status, 200);
     assert.equal(await renderedAsset.text(), 'png-data');
+
+    const traversal = await fetch(new URL(`drafts/${slug}/assets/..%2fproject-state.v1.json`, editor.url));
+    assert.equal(traversal.status, 400);
   } finally {
     await editor.close();
     rmSync(draftDirectory, { recursive: true, force: true });
+  }
+});
+
+test('editor preview rejects a state that references a local asset from another draft', async () => {
+  const slug = `cross-draft-preview-${process.pid}`;
+  const otherSlug = `other-draft-${process.pid}`;
+  const editor = await createCampaignEditorServer({ workspaceRoot, port: 0 });
+
+  try {
+    const savedAsset = await fetch(new URL(`api/drafts/${otherSlug}/assets`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'image/png', 'X-Filename': 'other-draft.png' },
+      body: Buffer.from('other-draft-png')
+    });
+    assert.equal(savedAsset.status, 201);
+    const otherDraftAsset = await savedAsset.json();
+
+    const saved = await fetch(new URL(`api/drafts/${slug}`, editor.url), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state: completePreviewState(otherDraftAsset) })
+    });
+    assert.equal(saved.status, 200);
+
+    const preview = await fetch(new URL(`api/drafts/${slug}/preview`, editor.url), { method: 'POST' });
+    assert.equal(preview.status, 400);
+    assert.match((await preview.json()).error, /asset.*draft/i);
+  } finally {
+    await editor.close();
+    rmSync(join(workspaceRoot, 'campaign-drafts', slug), { recursive: true, force: true });
+    rmSync(join(workspaceRoot, 'campaign-drafts', otherSlug), { recursive: true, force: true });
   }
 });
 

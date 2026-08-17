@@ -149,6 +149,7 @@ function previewComposition(workspaceRoot, slug, state) {
     throw new Error('draft preview requires exactly six complete snapshots in approved order');
   }
   const draftDirectory = safeDraftPath(workspaceRoot, slug);
+  validateDraftAssetPaths(workspaceRoot, slug, state.campaign.assets);
   return {
     schemaVersion: 1,
     canvas: state.campaign.canvas,
@@ -157,6 +158,23 @@ function previewComposition(workspaceRoot, slug, state) {
     assets: state.campaign.assets ?? {},
     components: state.components
   };
+}
+
+function validateDraftAssetPaths(workspaceRoot, slug, assets) {
+  if (assets === undefined) return;
+  if (!assets || typeof assets !== 'object' || Array.isArray(assets)) throw new Error('draft assets must be an object');
+  const assetDirectory = join(safeDraftPath(workspaceRoot, slug), 'assets');
+  for (const asset of Object.values(assets)) {
+    if (!asset || typeof asset.path !== 'string' || !isWithin(assetDirectory, resolve(workspaceRoot, asset.path))) {
+      throw new Error('draft asset must stay inside this draft assets directory');
+    }
+  }
+}
+
+function removeExternalPreviewFontLinks(previewPath) {
+  const preview = readFileSync(previewPath, 'utf8');
+  const localOnlyPreview = preview.replace(/<link\b[^>]*https:\/\/fonts\.(?:googleapis|gstatic)\.com[^>]*>\s*/gi, '');
+  writeFileSync(previewPath, localOnlyPreview, 'utf8');
 }
 
 function generateLocalPreview(workspaceRoot, slug) {
@@ -169,6 +187,7 @@ function generateLocalPreview(workspaceRoot, slug) {
     '--preview-local-assets'
   ], { cwd: workspaceRoot, encoding: 'utf8' });
   if (result.status !== 0) throw new Error((result.stderr || result.stdout || 'local preview generation failed').trim());
+  removeExternalPreviewFontLinks(join(draftDirectory, 'campaign.local-preview.html'));
   return `/drafts/${slug}/preview`;
 }
 
@@ -176,6 +195,13 @@ function safeDraftRequestPath(workspaceRoot, slug, requestedPath) {
   const draftDirectory = safeDraftPath(workspaceRoot, slug);
   const resolvedPath = resolve(draftDirectory, requestedPath);
   if (!isWithin(draftDirectory, resolvedPath)) throw new Error('draft path is invalid');
+  return resolvedPath;
+}
+
+function safeDraftAssetRequestPath(workspaceRoot, slug, requestedPath) {
+  const assetDirectory = join(safeDraftPath(workspaceRoot, slug), 'assets');
+  const resolvedPath = resolve(assetDirectory, requestedPath);
+  if (!isWithin(assetDirectory, resolvedPath)) throw new Error('draft asset path is invalid');
   return resolvedPath;
 }
 
@@ -240,7 +266,7 @@ async function handleEditorRequest({ request, response, workspaceRoot, bootstrap
 
   const assetMatch = url.pathname.match(/^\/drafts\/([^/]+)\/assets\/(.+)$/);
   if (request.method === 'GET' && assetMatch) {
-    sendDraftFile(response, safeDraftRequestPath(workspaceRoot, decodeURIComponent(assetMatch[1]), join('assets', decodeURIComponent(assetMatch[2]))));
+    sendDraftFile(response, safeDraftAssetRequestPath(workspaceRoot, decodeURIComponent(assetMatch[1]), decodeURIComponent(assetMatch[2])));
     return;
   }
 
