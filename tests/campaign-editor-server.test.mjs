@@ -154,7 +154,7 @@ test('editor routes persist scoped binary assets and generate only a local six-c
   }
 });
 
-test('editor preview rejects a state that references a local asset from another draft', async () => {
+test('editor persistence rejects a state that references a local asset from another draft', async () => {
   const slug = `cross-draft-preview-${process.pid}`;
   const otherSlug = `other-draft-${process.pid}`;
   const editor = await createCampaignEditorServer({ workspaceRoot, port: 0 });
@@ -173,11 +173,9 @@ test('editor preview rejects a state that references a local asset from another 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ state: completePreviewState(otherDraftAsset) })
     });
-    assert.equal(saved.status, 200);
-
-    const preview = await fetch(new URL(`api/drafts/${slug}/preview`, editor.url), { method: 'POST' });
-    assert.equal(preview.status, 400);
-    assert.match((await preview.json()).error, /asset.*draft/i);
+    assert.equal(saved.status, 400);
+    assert.match((await saved.json()).error, /asset.*draft/i);
+    assert.equal(existsSync(join(workspaceRoot, 'campaign-drafts', slug, 'project-state.v1.json')), false);
   } finally {
     await editor.close();
     rmSync(join(workspaceRoot, 'campaign-drafts', slug), { recursive: true, force: true });

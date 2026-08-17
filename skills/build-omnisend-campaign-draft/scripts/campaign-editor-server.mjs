@@ -57,6 +57,7 @@ export function safeDraftPath(workspaceRoot, slug) {
 
 export function writeDraft({ workspaceRoot, slug, state }) {
   if (!state || typeof state !== 'object' || Array.isArray(state)) throw new Error('draft state must be an object');
+  validateDraftAssetPaths(workspaceRoot, slug, state.campaign?.assets);
   const draftDirectory = safeDraftPath(workspaceRoot, slug);
   mkdirSync(draftDirectory, { recursive: true });
   const draftPath = join(draftDirectory, 'project-state.v1.json');
