@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Freshine Campaign Editor</title>
+  <link rel="stylesheet" href="/editor/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div><span class="eyebrow">FRESHINE</span><h1>Campaign Editor</h1></div>
+    <label>Campaign 名称 <input id="campaign-name" value="未命名 Campaign"></label>
+    <button id="new-campaign" class="button primary">新建草稿</button>
+    <button id="upload-omnisend-draft" class="button">上传 Omnisend 草稿</button>
+  </header>
+  <main class="workspace" hidden>
+    <aside class="sidebar">
+      <section class="component-picker"><h2>添加组件</h2><p>先选结构，再选择该结构下的样式；可重复添加。</p><label>结构<select id="structure-select"><option value="">选择结构</option></select></label><label>样式<select id="style-select" disabled><option value="">先选择结构</option></select></label><button id="add-selected-component" class="button primary" disabled>添加此组件</button></section>
+      <section><h2>当前结构</h2><div id="structure" class="structure"></div></section>
+    </aside>
+    <section class="preview-pane">
+      <div class="preview-toolbar"><strong>实时预览</strong><div><button data-width="600" class="device active">桌面 600px</button><button data-width="375" class="device">移动 375px</button></div></div>
+      <div id="preview-stage" class="preview-stage"><p>从左侧添加组件后，预览会自动生成。</p></div>
+    </section>
+    <aside class="inspector">
+      <div class="inspector-heading"><div><h2>内容编辑</h2><p id="inspector-empty">选择当前结构中的组件以编辑默认内容。</p></div><span id="confirm-state" class="confirm-state" hidden></span></div>
+      <div id="component-actions" class="component-actions" hidden></div>
+      <form id="field-form" hidden></form>
+    </aside>
+  </main>
+  <script type="module" src="/editor/app.js"></script>
+</body>
+</html>

@@ -5,6 +5,18 @@ description: Use when creating, resuming, previewing, or uploading a Freshine co
 
 # Build Omnisend Campaign Draft
 
+## 默认入口：可视化编辑器
+
+创建、恢复或调整 Campaign 时，默认启动旧版本地编辑器：
+
+```bash
+node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
+```
+
+在浏览器打开 `http://127.0.0.1:4173`。编辑器从 `组件清单.json` 读取所有已注册组件及其目录内的 `效果演示.html`、默认完整快照和 Schema；用户可以自由添加、重复、拖拽排序或删除任意组件，不预置固定结构。每个新实例使用组件当前默认值，可编辑已开放字段，并实时生成 600px / 375px 预览。
+
+顶部“上传 Omnisend 草稿”是旧版编辑器唯一新增入口：先确认全部组件，填写 Campaign 名称、Subject 与可选 Preheader，生成并逐字确认静态 HTML SHA-256；随后在启动编辑器的终端中运行时输入 Omnisend API Key。密钥不进入浏览器、参数、环境变量或文件；上传固定委托 `scripts/upload-omnisend-draft.mjs`，只创建或更新 `draft`，不得发送、排期或发布。浏览器不可用时，以下固定六区段流程仍可作为 CLI 降级方案。
+
 ## 核心原则
 
 先逐组件收集并锁定完整快照，再用确定性拼接器生成 HTML。必须先提供本地桌面端与移动端预览，并取得绑定内容哈希的最终确认；只能创建或更新未发送的 Omnisend Campaign 草稿。

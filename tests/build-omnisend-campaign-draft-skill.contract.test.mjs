@@ -241,6 +241,17 @@ test('Skill uses the Campaign contracts to select six fixed slots one at a time'
   assert.match(interactions, /预约与收件限制说明.*国家.*电话/s);
 });
 
+test('Skill defaults to the legacy free-form visual editor and its Draft-only upload flow', async () => {
+  const skill = await read('SKILL.md');
+
+  assert.match(skill, /默认入口：可视化编辑器/);
+  assert.match(skill, /start-campaign-editor\.mjs 4173/);
+  assert.match(skill, /组件清单\.json.*所有已注册组件/s);
+  assert.match(skill, /自由添加、重复、拖拽排序或删除/s);
+  assert.match(skill, /上传 Omnisend 草稿/);
+  assert.match(skill, /终端.*API Key/s);
+});
+
 test('Skill invokes the tested Shopify scripts in their locked-data order', async () => {
   const skill = await read('SKILL.md');
   const interactions = await read('references/component-interactions.zh-CN.md');

@@ -144,6 +144,11 @@ function loadPayload(options) {
   ])));
 }
 
+export function loadSaleGridPayload({ collectionHandle, count = '6', store = DEFAULT_SHOPIFY_STORE }) {
+  const options = parseSaleGridArgs(['--collection-handle', collectionHandle, '--count', String(count), '--store', store]);
+  return loadPayload(options);
+}
+
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const options = parseSaleGridArgs(process.argv.slice(2));
   console.log(JSON.stringify(normalizeSaleGrid(loadPayload(options), options.collectionHandle), null, 2));
