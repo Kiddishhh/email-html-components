@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -13,6 +13,13 @@ const IMAGE_EXTENSIONS = new Map([
   ['image/png', new Set(['.png'])],
   ['image/gif', new Set(['.gif'])],
   ['image/webp', new Set(['.webp'])]
+]);
+const IMAGE_MIME_BY_EXTENSION = new Map([
+  ['.jpeg', 'image/jpeg'],
+  ['.jpg', 'image/jpeg'],
+  ['.png', 'image/png'],
+  ['.gif', 'image/gif'],
+  ['.webp', 'image/webp']
 ]);
 const scriptDirectory = fileURLToPath(new URL('.', import.meta.url));
 
@@ -141,6 +148,27 @@ function readDraft(workspaceRoot, slug) {
   return readJson(join(safeDraftPath(workspaceRoot, slug), 'project-state.v1.json'));
 }
 
+function sha256(value) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function remoteDraftIds(state) {
+  const campaignID = state?.finalConfirmation?.campaignID ?? state?.draftUploadReceipt?.campaignID;
+  const contentID = state?.finalConfirmation?.contentID ?? state?.draftUploadReceipt?.contentID;
+  return campaignID && contentID ? { campaignID, contentID } : {};
+}
+
+function stateWithoutClientConfirmation(workspaceRoot, slug, state) {
+  let previous = null;
+  try { previous = readDraft(workspaceRoot, slug); } catch {}
+  const { finalConfirmation: _confirmation, assets: _uploadAssets, draftUploadReceipt: _receipt, ...editableState } = state;
+  const ids = remoteDraftIds(previous);
+  return {
+    ...editableState,
+    finalConfirmation: Object.keys(ids).length ? { status: 'pending', ...ids } : null
+  };
+}
+
 function previewComposition(workspaceRoot, slug, state) {
   const expectedComponentKeys = loadEditorBootstrap(workspaceRoot).components.map(({ componentKey }) => componentKey);
   if (!state?.campaign || typeof state.campaign !== 'object' || Array.isArray(state.campaign) || !Array.isArray(state.components)) {
@@ -158,6 +186,14 @@ function previewComposition(workspaceRoot, slug, state) {
     previewOutput: relative(workspaceRoot, join(draftDirectory, 'campaign.local-preview.html')),
     assets: state.campaign.assets ?? {},
     components: state.components
+  };
+}
+
+function staticSafeComposition(workspaceRoot, slug, state) {
+  const composition = previewComposition(workspaceRoot, slug, state);
+  return {
+    ...composition,
+    previewOutput: relative(workspaceRoot, join(safeDraftPath(workspaceRoot, slug), 'campaign.static-safe.inspection.html'))
   };
 }
 
@@ -192,6 +228,77 @@ function generateLocalPreview(workspaceRoot, slug) {
   return `/drafts/${slug}/preview`;
 }
 
+function uploadAssetsFor(workspaceRoot, slug, assets = {}) {
+  const draftDirectory = safeDraftPath(workspaceRoot, slug);
+  return Object.fromEntries(Object.entries(assets).map(([assetId, asset]) => {
+    const absolutePath = resolve(workspaceRoot, asset.path);
+    const mimeType = IMAGE_MIME_BY_EXTENSION.get(extname(absolutePath).toLowerCase());
+    if (!mimeType) throw new Error(`draft asset ${assetId} has an unsupported image type`);
+    return [assetId, {
+      localPath: relative(draftDirectory, absolutePath),
+      name: asset.name,
+      mimeType
+    }];
+  }));
+}
+
+function generateStaticSafeConfirmation(workspaceRoot, slug) {
+  const draftDirectory = safeDraftPath(workspaceRoot, slug);
+  const currentState = readDraft(workspaceRoot, slug);
+  const compositionPath = join(draftDirectory, 'composition.static-safe.v1.json');
+  writeFileSync(compositionPath, `${JSON.stringify(staticSafeComposition(workspaceRoot, slug, currentState), null, 2)}\n`, 'utf8');
+  const result = spawnSync(process.execPath, [
+    join(workspaceRoot, 'build-email-template.v1.mjs'),
+    compositionPath,
+    '--defer-local-assets'
+  ], { cwd: workspaceRoot, encoding: 'utf8' });
+  if (result.status !== 0) throw new Error((result.stderr || result.stdout || 'static-safe HTML generation failed').trim());
+
+  const htmlPath = join(draftDirectory, 'campaign.static-safe.html');
+  const confirmedStaticHtmlSha256 = sha256(readFileSync(htmlPath));
+  const ids = remoteDraftIds(currentState);
+  const previousReceipt = currentState.draftUploadReceipt?.confirmedStaticHtmlSha256 === confirmedStaticHtmlSha256
+    ? currentState.draftUploadReceipt
+    : undefined;
+  const confirmedState = {
+    ...currentState,
+    assets: uploadAssetsFor(workspaceRoot, slug, currentState.campaign?.assets),
+    finalConfirmation: { status: 'confirmed', confirmedStaticHtmlSha256, ...ids }
+  };
+  if (previousReceipt) confirmedState.draftUploadReceipt = previousReceipt;
+  else delete confirmedState.draftUploadReceipt;
+  writeDraft({ workspaceRoot, slug, state: confirmedState });
+  return { confirmedStaticHtmlSha256 };
+}
+
+function sanitizeDraftReceipt(receipt) {
+  if (typeof receipt?.campaignID !== 'string' || !receipt.campaignID
+    || typeof receipt?.contentID !== 'string' || !receipt.contentID
+    || receipt?.status !== 'draft') {
+    throw new Error('Draft uploader returned an invalid receipt');
+  }
+  return { campaignID: receipt.campaignID, contentID: receipt.contentID, status: 'draft' };
+}
+
+export function runFixedDraftUploader({ workspaceRoot, projectPath, htmlPath }) {
+  const result = spawnSync(process.execPath, [
+    join(workspaceRoot, 'skills/build-omnisend-campaign-draft/scripts/upload-omnisend-draft.mjs'),
+    '--project', projectPath,
+    '--html', htmlPath
+  ], {
+    cwd: workspaceRoot,
+    encoding: 'utf8',
+    stdio: ['inherit', 'pipe', 'inherit']
+  });
+  if (result.status !== 0) throw new Error('Draft upload failed; see the server terminal for details');
+  try {
+    return sanitizeDraftReceipt(JSON.parse(result.stdout.trim()));
+  } catch (error) {
+    if (error instanceof SyntaxError) throw new Error('Draft uploader returned unreadable output');
+    throw error;
+  }
+}
+
 function safeDraftRequestPath(workspaceRoot, slug, requestedPath) {
   const draftDirectory = safeDraftPath(workspaceRoot, slug);
   const resolvedPath = resolve(draftDirectory, requestedPath);
@@ -222,7 +329,7 @@ function sendDraftFile(response, path) {
   response.end(readFileSync(path));
 }
 
-async function handleEditorRequest({ request, response, workspaceRoot, bootstrap, demoDirectories }) {
+async function handleEditorRequest({ request, response, workspaceRoot, bootstrap, demoDirectories, draftUploader }) {
   const url = new URL(request.url, `http://${APPROVED_HOST}`);
   if (request.method === 'GET' && (url.pathname === '/' || url.pathname.startsWith('/editor/'))) {
     const requestedPath = url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname.slice('/editor/'.length));
@@ -245,13 +352,14 @@ async function handleEditorRequest({ request, response, workspaceRoot, bootstrap
     return;
   }
 
-  const apiMatch = url.pathname.match(/^\/api\/drafts\/([^/]+)(?:\/(assets|preview))?$/);
+  const apiMatch = url.pathname.match(/^\/api\/drafts\/([^/]+)(?:\/(assets|preview|confirm|upload))?$/);
   if (apiMatch) {
     const slug = decodeURIComponent(apiMatch[1]);
     const action = apiMatch[2];
     if (request.method === 'PUT' && !action) {
       const body = JSON.parse((await readRequestBody(request)).toString('utf8'));
-      const draftPath = writeDraft({ workspaceRoot, slug, state: body.state });
+      const state = stateWithoutClientConfirmation(workspaceRoot, slug, body.state);
+      const draftPath = writeDraft({ workspaceRoot, slug, state });
       writeJson(response, 200, { draftPath: relative(workspaceRoot, draftPath) });
       return;
     }
@@ -268,6 +376,45 @@ async function handleEditorRequest({ request, response, workspaceRoot, bootstrap
     }
     if (request.method === 'POST' && action === 'preview') {
       writeJson(response, 200, { previewUrl: generateLocalPreview(workspaceRoot, slug) });
+      return;
+    }
+    if (request.method === 'POST' && action === 'confirm') {
+      const body = JSON.parse((await readRequestBody(request)).toString('utf8'));
+      if (body.confirmed !== true) {
+        writeJson(response, 400, { error: 'explicit static HTML confirmation is required' });
+        return;
+      }
+      writeJson(response, 200, generateStaticSafeConfirmation(workspaceRoot, slug));
+      return;
+    }
+    if (request.method === 'POST' && action === 'upload') {
+      const body = JSON.parse((await readRequestBody(request)).toString('utf8'));
+      const state = readDraft(workspaceRoot, slug);
+      if (body.confirmedStaticHtmlSha256 !== state.finalConfirmation?.confirmedStaticHtmlSha256) {
+        writeJson(response, 409, { error: 'final confirmation does not match current static HTML' });
+        return;
+      }
+      if (!/^[a-f0-9]{64}$/.test(body.confirmedStaticHtmlSha256)) {
+        writeJson(response, 409, { error: 'final confirmation does not match current static HTML' });
+        return;
+      }
+      if (state.draftUploadReceipt?.confirmedStaticHtmlSha256 === body.confirmedStaticHtmlSha256) {
+        writeJson(response, 200, sanitizeDraftReceipt(state.draftUploadReceipt));
+        return;
+      }
+      const draftDirectory = safeDraftPath(workspaceRoot, slug);
+      const projectPath = join(draftDirectory, 'project-state.v1.json');
+      const htmlPath = join(draftDirectory, 'campaign.static-safe.html');
+      if (!existsSync(htmlPath) || sha256(readFileSync(htmlPath)) !== body.confirmedStaticHtmlSha256) {
+        writeJson(response, 409, { error: 'final confirmation does not match current static HTML' });
+        return;
+      }
+      const receipt = sanitizeDraftReceipt(await draftUploader({ workspaceRoot, projectPath, htmlPath }));
+      const persistedState = readDraft(workspaceRoot, slug);
+      persistedState.finalConfirmation = { ...persistedState.finalConfirmation, campaignID: receipt.campaignID, contentID: receipt.contentID };
+      persistedState.draftUploadReceipt = { ...receipt, confirmedStaticHtmlSha256: body.confirmedStaticHtmlSha256 };
+      writeDraft({ workspaceRoot, slug, state: persistedState });
+      writeJson(response, 200, receipt);
       return;
     }
   }
@@ -287,7 +434,7 @@ async function handleEditorRequest({ request, response, workspaceRoot, bootstrap
   writeJson(response, 404, { error: 'not found' });
 }
 
-export async function createCampaignEditorServer({ workspaceRoot, host = APPROVED_HOST, port = 0 }) {
+export async function createCampaignEditorServer({ workspaceRoot, host = APPROVED_HOST, port = 0, draftUploader = runFixedDraftUploader }) {
   if (host !== APPROVED_HOST) throw new Error(`Campaign editor must bind to ${APPROVED_HOST}`);
 
   const root = resolve(workspaceRoot);
@@ -298,7 +445,7 @@ export async function createCampaignEditorServer({ workspaceRoot, host = APPROVE
   });
 
   const server = createServer((request, response) => {
-    handleEditorRequest({ request, response, workspaceRoot: root, bootstrap, demoDirectories }).catch((error) => {
+    handleEditorRequest({ request, response, workspaceRoot: root, bootstrap, demoDirectories, draftUploader }).catch((error) => {
       if (!response.headersSent) writeJson(response, 400, { error: error.message });
       else response.destroy(error);
     });

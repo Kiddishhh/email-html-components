@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join, relative, resolve } from 'node:path';
@@ -16,6 +17,7 @@ import {
 
 const workspaceRoot = fileURLToPath(new URL('../', import.meta.url));
 const startScript = fileURLToPath(new URL('../skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs', import.meta.url));
+const serverScript = fileURLToPath(new URL('../skills/build-omnisend-campaign-draft/scripts/campaign-editor-server.mjs', import.meta.url));
 const editorIndex = fileURLToPath(new URL('../skills/build-omnisend-campaign-draft/editor/index.html', import.meta.url));
 const editorApp = fileURLToPath(new URL('../skills/build-omnisend-campaign-draft/editor/app.js', import.meta.url));
 const defaultComposition = JSON.parse(readFileSync(join(workspaceRoot, 'compositions/hero-grid-review-gifts-location.default.v1.json'), 'utf8'));
@@ -36,15 +38,28 @@ const validProjectState = {
 test('static editor provides local image inputs and fixed desktop and mobile previews without remote Campaign actions', () => {
   const html = readFileSync(editorIndex, 'utf8');
   const app = readFileSync(editorApp, 'utf8');
+  const server = readFileSync(serverScript, 'utf8');
 
   assert.match(html, /data-editor-preview="desktop"/);
   assert.match(html, /data-editor-preview="mobile"/);
   assert.match(html, /type="file"[^>]*accept="image\/jpeg,image\/png,image\/gif,image\/webp"/);
   assert.match(app, /\/api\/bootstrap/);
   assert.match(app, /default-logo-white\.png/);
+  assert.match(html, /data-confirm-static-html/);
+  assert.match(html, /data-upload-draft[^>]*disabled/);
+  assert.match(app, /\/confirm/);
+  assert.match(app, /\/upload/);
   const invalidationFunction = app.match(/function invalidateConfirmation\(\)\s*\{[\s\S]*?\n\}/)?.[0] ?? '';
   assert.match(invalidationFunction, /editor\.lastPreviewHtml = null;/);
+  assert.match(invalidationFunction, /elements\.uploadDraft\.disabled = true;/);
   assert.doesNotMatch(`${html}\n${app}`, /api\.omnisend\.com|\/send|publish|schedule|activate/);
+  assert.doesNotMatch(server, /\/send|\/publish|\/schedule|\/activate/);
+});
+
+test('editor starter preserves terminal input for the server-side runtime API key prompt', () => {
+  const starter = readFileSync(startScript, 'utf8');
+
+  assert.match(starter, /stdio:\s*\['inherit',\s*'pipe',\s*'pipe'\]/);
 });
 
 test('scoped draft helpers reject unsafe paths and keep persisted drafts and images under the draft directory', () => {
@@ -164,6 +179,132 @@ test('editor routes persist scoped binary assets and generate only a local six-c
 
     const traversal = await fetch(new URL(`drafts/${slug}/assets/..%2fproject-state.v1.json`, editor.url));
     assert.equal(traversal.status, 400);
+  } finally {
+    await editor.close();
+    rmSync(draftDirectory, { recursive: true, force: true });
+  }
+});
+
+test('explicit confirmation generates and hashes static-safe HTML separately from the local preview', async () => {
+  const slug = `static-confirmation-${process.pid}`;
+  const draftDirectory = join(workspaceRoot, 'campaign-drafts', slug);
+  const editor = await createCampaignEditorServer({ workspaceRoot, port: 0 });
+
+  try {
+    const savedAsset = await fetch(new URL(`api/drafts/${slug}/assets`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'image/png', 'X-Filename': 'editor-image.png' },
+      body: Buffer.from('png-data')
+    });
+    const asset = await savedAsset.json();
+    const state = completePreviewState(asset);
+    const saved = await fetch(new URL(`api/drafts/${slug}`, editor.url), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state: { ...state, finalConfirmation: { status: 'confirmed', confirmedStaticHtmlSha256: 'client-forged' } } })
+    });
+    assert.equal(saved.status, 200);
+    assert.equal(JSON.parse(readFileSync(join(draftDirectory, 'project-state.v1.json'), 'utf8')).finalConfirmation, null);
+
+    const preview = await fetch(new URL(`api/drafts/${slug}/preview`, editor.url), { method: 'POST' });
+    assert.equal(preview.status, 200);
+    const localPreviewBeforeConfirmation = readFileSync(join(draftDirectory, 'campaign.local-preview.html'), 'utf8');
+
+    const confirmation = await fetch(new URL(`api/drafts/${slug}/confirm`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmed: true })
+    });
+    assert.equal(confirmation.status, 200);
+    const payload = await confirmation.json();
+    assert.deepEqual(Object.keys(payload), ['confirmedStaticHtmlSha256']);
+    assert.match(payload.confirmedStaticHtmlSha256, /^[a-f0-9]{64}$/);
+
+    const staticHtml = readFileSync(join(draftDirectory, 'campaign.static-safe.html'), 'utf8');
+    assert.equal(createHash('sha256').update(staticHtml).digest('hex'), payload.confirmedStaticHtmlSha256);
+    assert.doesNotMatch(staticHtml, /Freshine Email Local Preview/);
+    assert.equal(readFileSync(join(draftDirectory, 'campaign.local-preview.html'), 'utf8'), localPreviewBeforeConfirmation);
+    const persisted = JSON.parse(readFileSync(join(draftDirectory, 'project-state.v1.json'), 'utf8'));
+    assert.deepEqual(persisted.finalConfirmation, {
+      status: 'confirmed',
+      confirmedStaticHtmlSha256: payload.confirmedStaticHtmlSha256
+    });
+  } finally {
+    await editor.close();
+    rmSync(draftDirectory, { recursive: true, force: true });
+  }
+});
+
+test('Draft upload rejects stale confirmation and calls the fixed uploader once for the exact confirmed hash', async () => {
+  const slug = `confirmed-upload-${process.pid}`;
+  const draftDirectory = join(workspaceRoot, 'campaign-drafts', slug);
+  const calls = [];
+  const draftUploader = (options) => {
+    calls.push(options);
+    return { campaignID: 'campaign-1', contentID: 'content-1', status: 'draft', ignored: 'not exposed' };
+  };
+  const editor = await createCampaignEditorServer({ workspaceRoot, port: 0, draftUploader });
+
+  try {
+    const savedAsset = await fetch(new URL(`api/drafts/${slug}/assets`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'image/png', 'X-Filename': 'editor-image.png' },
+      body: Buffer.from('png-data')
+    });
+    const asset = await savedAsset.json();
+    await fetch(new URL(`api/drafts/${slug}`, editor.url), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state: completePreviewState(asset) })
+    });
+
+    const unconfirmed = await fetch(new URL(`api/drafts/${slug}/upload`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmedStaticHtmlSha256: 'stale' })
+    });
+    assert.equal(unconfirmed.status, 409);
+    assert.match((await unconfirmed.json()).error, /confirmation/i);
+    assert.equal(calls.length, 0);
+
+    const confirmation = await fetch(new URL(`api/drafts/${slug}/confirm`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmed: true })
+    });
+    const { confirmedStaticHtmlSha256 } = await confirmation.json();
+
+    const stale = await fetch(new URL(`api/drafts/${slug}/upload`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmedStaticHtmlSha256: 'stale' })
+    });
+    assert.equal(stale.status, 409);
+    assert.match((await stale.json()).error, /confirmation/i);
+    assert.equal(calls.length, 0);
+
+    const upload = await fetch(new URL(`api/drafts/${slug}/upload`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmedStaticHtmlSha256 })
+    });
+    assert.equal(upload.status, 200);
+    assert.deepEqual(await upload.json(), { campaignID: 'campaign-1', contentID: 'content-1', status: 'draft' });
+    assert.equal(calls.length, 1);
+    assert.deepEqual(calls[0], {
+      workspaceRoot: resolve(workspaceRoot),
+      projectPath: join(draftDirectory, 'project-state.v1.json'),
+      htmlPath: join(draftDirectory, 'campaign.static-safe.html')
+    });
+
+    const repeated = await fetch(new URL(`api/drafts/${slug}/upload`, editor.url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmedStaticHtmlSha256 })
+    });
+    assert.equal(repeated.status, 200);
+    assert.deepEqual(await repeated.json(), { campaignID: 'campaign-1', contentID: 'content-1', status: 'draft' });
+    assert.equal(calls.length, 1);
   } finally {
     await editor.close();
     rmSync(draftDirectory, { recursive: true, force: true });

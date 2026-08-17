@@ -20,10 +20,11 @@
         <nav aria-label="Campaign 组件" data-editor-components></nav>
         <section class="confirmation-card" aria-labelledby="confirmation-title">
           <h2 id="confirmation-title">最终内容确认</h2>
-          <label class="checkbox-label"><input type="checkbox" data-final-confirmation disabled>最终静态 HTML 确认</label>
-          <p data-confirmation-status>此阶段仅生成本地预览；最终静态 HTML 确认将在后续安全步骤中启用。</p>
+          <label class="checkbox-label"><input type="checkbox" data-final-confirmation data-confirm-static-html disabled>确认以服务器新生成的静态 HTML 作为最终内容</label>
+          <p data-confirmation-status>本地预览生成后才能确认；预览 HTML 不会用于上传。</p>
         </section>
-        <p class="draft-upload-note" aria-live="polite">Draft 上传在此界面中不可用。</p>
+        <button class="secondary-button" type="button" data-upload-draft disabled>上传 Omnisend 草稿</button>
+        <p class="draft-upload-note" aria-live="polite" data-upload-receipt>确认前不可上传。API Key 只会在启动编辑器的终端内询问。</p>
       </aside>
 
       <section class="editor-panel fields-panel" aria-label="Component fields" data-editor-panel="fields">

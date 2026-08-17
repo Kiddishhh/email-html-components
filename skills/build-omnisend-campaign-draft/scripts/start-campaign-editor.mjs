@@ -57,7 +57,7 @@ function startDetachedServer(port) {
   ], {
     cwd: workspaceRoot,
     detached: true,
-    stdio: ['ignore', 'pipe', 'pipe']
+    stdio: ['inherit', 'pipe', 'pipe']
   });
   child.unref();
 

@@ -22,7 +22,9 @@ const elements = {
   previewFrames: document.querySelectorAll('[data-editor-preview]'),
   refreshPreview: document.querySelector('[data-refresh-preview]'),
   slug: document.querySelector('#draft-slug'),
-  status: document.querySelector('[data-editor-status]')
+  status: document.querySelector('[data-editor-status]'),
+  uploadDraft: document.querySelector('[data-upload-draft]'),
+  uploadReceipt: document.querySelector('[data-upload-receipt]')
 };
 
 const editor = {
@@ -31,7 +33,8 @@ const editor = {
   selectedIndex: 0,
   saveTimer: null,
   lastPreviewHtml: null,
-  previewVersion: 0
+  previewVersion: 0,
+  confirmedStaticHtmlSha256: null
 };
 
 window.editorState = {
@@ -41,6 +44,7 @@ window.editorState = {
   finalConfirmation: null
 };
 elements.confirmation.disabled = true;
+elements.uploadDraft.disabled = true;
 
 function setStatus(message, state = 'ready') {
   elements.status.textContent = message;
@@ -203,9 +207,12 @@ function renderFields() {
 function invalidateConfirmation() {
   editor.previewVersion += 1;
   editor.lastPreviewHtml = null;
+  editor.confirmedStaticHtmlSha256 = null;
   elements.confirmation.disabled = true;
+  elements.uploadDraft.disabled = true;
   window.editorState.finalConfirmation = null;
   elements.confirmation.checked = false;
+  elements.uploadReceipt.textContent = '确认前不可上传。API Key 只会在启动编辑器的终端内询问。';
   elements.confirmationStatus.textContent = '字段已更改，请在新预览生成后重新确认。';
 }
 
@@ -239,13 +246,71 @@ async function saveAndPreview() {
     if (previewVersion !== editor.previewVersion) return;
     elements.previewFrames.forEach((frame) => { frame.src = cacheBustedPreview; });
     editor.lastPreviewHtml = previewHtml;
-    elements.confirmationStatus.textContent = '本地预览已更新。最终静态 HTML 确认将在后续安全步骤中启用。';
+    elements.confirmation.disabled = false;
+    elements.confirmationStatus.textContent = '本地预览已更新。勾选后，服务器会另行生成并哈希静态 HTML。';
     setStatus('本地预览已更新。');
   } catch (error) {
     if (previewVersion !== editor.previewVersion) return;
     editor.lastPreviewHtml = null;
     elements.confirmation.disabled = true;
+    elements.uploadDraft.disabled = true;
     elements.confirmation.checked = false;
+    setStatus(error.message, 'error');
+  }
+}
+
+async function confirmStaticHtml() {
+  if (!elements.confirmation.checked) {
+    invalidateConfirmation();
+    try { await saveState(); } catch (error) { setStatus(error.message, 'error'); }
+    return;
+  }
+  try {
+    elements.confirmation.disabled = true;
+    elements.uploadDraft.disabled = true;
+    setStatus('正在由服务器生成最终静态 HTML 并计算内容哈希…');
+    const response = await fetch(`/api/drafts/${encodeURIComponent(window.editorState.slug)}/confirm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmed: true })
+    });
+    if (!response.ok) throw new Error((await response.json()).error ?? '最终静态 HTML 无法确认。');
+    const { confirmedStaticHtmlSha256 } = await response.json();
+    editor.confirmedStaticHtmlSha256 = confirmedStaticHtmlSha256;
+    window.editorState.finalConfirmation = { status: 'confirmed', confirmedStaticHtmlSha256 };
+    elements.confirmationStatus.textContent = `已确认静态 HTML：${confirmedStaticHtmlSha256}`;
+    elements.uploadReceipt.textContent = '可上传 Omnisend Draft；API Key 将在启动编辑器的终端内询问。';
+    elements.uploadDraft.disabled = false;
+    setStatus('最终静态 HTML 已确认，可上传 Omnisend 草稿。');
+  } catch (error) {
+    editor.confirmedStaticHtmlSha256 = null;
+    window.editorState.finalConfirmation = null;
+    elements.confirmation.checked = false;
+    elements.uploadDraft.disabled = true;
+    setStatus(error.message, 'error');
+  } finally {
+    elements.confirmation.disabled = editor.lastPreviewHtml === null;
+  }
+}
+
+async function uploadDraft() {
+  if (!editor.confirmedStaticHtmlSha256) return;
+  try {
+    elements.uploadDraft.disabled = true;
+    elements.uploadReceipt.textContent = '请在启动编辑器的终端中输入 Omnisend API Key…';
+    setStatus('等待终端中的 API Key，并执行 Draft-only 上传与回读验证…');
+    const response = await fetch(`/api/drafts/${encodeURIComponent(window.editorState.slug)}/upload`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmedStaticHtmlSha256: editor.confirmedStaticHtmlSha256 })
+    });
+    if (!response.ok) throw new Error((await response.json()).error ?? 'Omnisend 草稿上传失败。');
+    const receipt = await response.json();
+    elements.uploadReceipt.textContent = `Draft 回执：Campaign ${receipt.campaignID} · Content ${receipt.contentID} · status ${receipt.status}`;
+    setStatus('Omnisend 草稿已上传并完成 Draft 回读验证。');
+  } catch (error) {
+    elements.uploadReceipt.textContent = 'Draft 上传未完成；本地项目草稿已保留。';
+    elements.uploadDraft.disabled = false;
     setStatus(error.message, 'error');
   }
 }
@@ -291,7 +356,12 @@ elements.slug.addEventListener('input', () => {
   invalidateConfirmation();
   queueSaveAndPreview();
 });
-elements.refreshPreview.addEventListener('click', saveAndPreview);
+elements.refreshPreview.addEventListener('click', () => {
+  invalidateConfirmation();
+  saveAndPreview();
+});
 elements.imagePicker.addEventListener('change', uploadLocalImage);
+elements.confirmation.addEventListener('change', confirmStaticHtml);
+elements.uploadDraft.addEventListener('click', uploadDraft);
 
 initialise();

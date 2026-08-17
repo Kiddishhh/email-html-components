@@ -33,7 +33,7 @@ description: Use when creating, resuming, previewing, or uploading a Freshine co
 
 ## 工作流
 
-1. 定位组件根目录、作为活动组件路径单一事实来源的 `组件清单.json`、两份 Campaign JSON 契约和 `build-email-template.v1.mjs`；先运行 `scripts/validate-campaign-contracts.mjs`，检查六个区段、注册表文件、Schema、`效果演示.html`、候选样式及交互可用性。
+1. 定位组件根目录后，运行 `node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs --no-open`，读取命令打印的 loopback URL，并用 in-app Browser 打开该 URL。保持启动终端可用，供最终预检通过后隐藏输入 Omnisend API Key。编辑器是 Omnisend Draft-only 入口；界面不得提供发送、发布、排期或激活控件。随后确认作为活动组件路径单一事实来源的 `组件清单.json`、两份 Campaign JSON 契约和 `build-email-template.v1.mjs`，并运行 `scripts/validate-campaign-contracts.mjs`，检查六个区段、注册表文件、Schema、`效果演示.html`、候选样式及交互可用性。
 2. 建立可恢复的本地项目草稿；禁止保存 API 密钥。
 3. 收集 Campaign 名称（仅供内部识别和管理）、Subject（收件箱中显示的邮件主题）、Preheader（通常显示在主题旁或下方的预览摘要）；默认从 Omnisend Brand Assets 读取 Sender、Sender Email 和 Reply-to。
 4. 将 Audience 默认设为所有订阅用户，并明确展示给用户。
@@ -43,7 +43,7 @@ description: Use when creating, resuming, previewing, or uploading a Freshine co
 8. 为每个组件生成桌面端与移动端预览。本地预览使用 `--preview-local-assets` 时，必须将每个 `asset://` 本地资源相对于生成的 `previewOutput` HTML 解析，并验证该 URL 指向实际文件；项目草稿位于子目录时不得按工作区根目录直接写入资源 URL。`collection.saleGrid6` 同时展示当前设置卡片、桌面端预览和约 375px 移动端预览，只询问一次是否确认；用户指出修改时重新生成三项内容，只有明确确认后才锁定。修改时只重开指定组件。
 9. 让现有拼接器只执行完整快照校验、组件 CSS 内联、顺序组装和 HTML 渲染。禁止让拼接器询问用户、访问 Shopify、合并主题或改变组件样式。
 10. 生成整封邮件的本地预览链接和最终高层清单。将最终确认绑定到 HTML 内容哈希；任何修改都使确认失效。
-11. 最终确认后，必须运行固定脚本 `scripts/upload-omnisend-draft.mjs --project <project-state.v1.json> --html <campaign.static-safe.html>`。脚本先在本地校验确认哈希，再运行时询问 Omnisend API Key；密钥只存在于当前进程内存，禁止以参数、环境变量、文件或聊天记录传入。任一图片上传失败时停止 Omnisend 写入并保留项目草稿。
+11. 最终确认后，只能使用编辑器的“上传 Omnisend 草稿”按钮；本地服务器以固定参数调用 `scripts/upload-omnisend-draft.mjs --project <project-state.v1.json> --html <campaign.static-safe.html>`。脚本先在本地校验确认哈希，再在启动编辑器的终端中运行时询问 Omnisend API Key；密钥只存在于该服务器子进程内存，禁止由网页收集，禁止以参数、环境变量、文件或聊天记录传入。任一图片上传失败时停止 Omnisend 写入并保留项目草稿。
 12. 不得手工拼接或调用 Omnisend 请求。项目已有 Campaign ID 与 Content ID 时，固定脚本必须先回读并确认现有 Campaign 为 `draft`，再保留 Email Content 完整结构与节点 ID，仅替换唯一含退订令牌的 HTML 正文并执行完整 `PUT`；必须更新现有 draft，不得新建第二份 Campaign。项目没有既有 ID 时才允许只读 Brand、上传图片、导入 HTML 模板并创建 Campaign 草稿。两种路径都不得调用 `/send`、排期、发布或等效端点。
 13. 脚本回读 Campaign 与 Email Content，验证 `status: draft`、内容 ID、组件顺序、退订令牌、图片地址和内容哈希；只有全部验证通过才输出最小上传回执。
 14. 回读成功后默认保留本地项目草稿和不含密钥的上传回执，便于审计与恢复。只有用户针对该草稿明确确认清理后才删除；不得把上传成功视为删除授权。
@@ -62,4 +62,4 @@ description: Use when creating, resuming, previewing, or uploading a Freshine co
 
 ## 当前实施状态
 
-这是持续完善中的第一版 Skill。六个固定区段、可选性索引、本地结构校验器、自动活动候选发现、所选活动快照解析、六宫格读取和固定 Draft 上传脚本均以本地 fixture 测试约束；真实账户写入仍需用户在最终确认后运行脚本并核验回读结果。
+这是持续完善中的第一版 Skill。六个固定区段、可选性索引、本地结构校验器、自动活动候选发现、所选活动快照解析、六宫格读取、静态 HTML 哈希确认和固定 Draft 上传均以本地 fixture 测试约束；真实账户写入只能在用户明确勾选最终确认并点击 Draft 上传后进行，仍须核验界面返回的最小回读回执。
