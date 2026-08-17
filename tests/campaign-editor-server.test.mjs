@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -54,12 +54,6 @@ test('static editor provides local image inputs and fixed desktop and mobile pre
   assert.match(invalidationFunction, /elements\.uploadDraft\.disabled = true;/);
   assert.doesNotMatch(`${html}\n${app}`, /api\.omnisend\.com|\/send|publish|schedule|activate/);
   assert.doesNotMatch(server, /\/send|\/publish|\/schedule|\/activate/);
-});
-
-test('editor starter preserves terminal input for the server-side runtime API key prompt', () => {
-  const starter = readFileSync(startScript, 'utf8');
-
-  assert.match(starter, /stdio:\s*\['inherit',\s*'pipe',\s*'pipe'\]/);
 });
 
 test('scoped draft helpers reject unsafe paths and keep persisted drafts and images under the draft directory', () => {
@@ -398,32 +392,92 @@ test('editor server serves the local editor application and its static assets', 
   }
 });
 
-test('starter reports a test-only PID for cleanup while stdout remains a single URL', async () => {
+test('starter keeps uploader prompt diagnostics attached while stdout remains a single URL', async () => {
   const testDirectory = mkdtempSync(join(tmpdir(), 'freshine-campaign-editor-start-'));
   const pidFile = join(testDirectory, 'server.pid');
+  const slug = `starter-prompt-${process.pid}`;
+  const draftDirectory = join(workspaceRoot, 'campaign-drafts', slug);
+  let starter;
   let serverPid;
 
   try {
-    const result = spawnSync(process.execPath, [
+    starter = spawn(process.execPath, [
       startScript,
       '--port', '0',
       '--no-open',
       '--test-pid-file', pidFile
     ], {
       cwd: workspaceRoot,
-      encoding: 'utf8',
-      timeout: 10_000
+      stdio: ['pipe', 'pipe', 'pipe']
+    });
+    let stdout = '';
+    let stderr = '';
+    const urlPromise = new Promise((resolveUrl, rejectUrl) => {
+      const timer = setTimeout(() => rejectUrl(new Error('starter URL timeout')), 10_000);
+      starter.stdout.on('data', (chunk) => {
+        stdout += chunk.toString('utf8');
+        const url = stdout.match(/http:\/\/127\.0\.0\.1:\d+\//)?.[0];
+        if (url) {
+          clearTimeout(timer);
+          resolveUrl(url);
+        }
+      });
+    });
+    const diagnosticPromise = new Promise((resolveDiagnostic, rejectDiagnostic) => {
+      const timer = setTimeout(() => rejectDiagnostic(new Error('runtime API-key diagnostic was disconnected')), 5_000);
+      starter.stderr.on('data', (chunk) => {
+        stderr += chunk.toString('utf8');
+        if (/Omnisend API key must be entered through an interactive terminal/.test(stderr)) {
+          clearTimeout(timer);
+          resolveDiagnostic();
+        }
+      });
+    });
+    const starterExit = new Promise((resolveExit, rejectExit) => {
+      starter.once('error', rejectExit);
+      starter.once('exit', (code) => code === 0 ? resolveExit() : rejectExit(new Error(`starter exited with ${code}: ${stderr}`)));
     });
 
-    if (existsSync(pidFile)) serverPid = Number(readFileSync(pidFile, 'utf8').trim());
-    assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout.trim(), /^http:\/\/127\.0\.0\.1:\d+\/$/);
-    assert.equal(result.stdout, `${result.stdout.trim()}\n`);
-    assert.equal(existsSync(pidFile), true);
+    const url = await urlPromise;
+    await starterExit;
+    serverPid = Number(readFileSync(pidFile, 'utf8').trim());
+    assert.equal(stdout, `${url}\n`);
     assert.equal(Number.isInteger(serverPid), true);
     assert.doesNotThrow(() => process.kill(serverPid, 0));
+
+    const savedAsset = await fetch(new URL(`api/drafts/${slug}/assets`, url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'image/png', 'X-Filename': 'editor-image.png' },
+      body: Buffer.from('png-data')
+    });
+    assert.equal(savedAsset.status, 201);
+    const asset = await savedAsset.json();
+    const saved = await fetch(new URL(`api/drafts/${slug}`, url), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state: completePreviewState(asset) })
+    });
+    assert.equal(saved.status, 200);
+    const confirmation = await fetch(new URL(`api/drafts/${slug}/confirm`, url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmed: true })
+    });
+    assert.equal(confirmation.status, 200);
+    const { confirmedStaticHtmlSha256 } = await confirmation.json();
+    const upload = await fetch(new URL(`api/drafts/${slug}/upload`, url), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmedStaticHtmlSha256 })
+    });
+    assert.equal(upload.status, 400);
+    assert.match((await upload.json()).error, /Draft upload failed/);
+    await diagnosticPromise;
+
   } finally {
     if (serverPid) process.kill(serverPid, 'SIGTERM');
+    else starter?.kill('SIGTERM');
+    rmSync(draftDirectory, { recursive: true, force: true });
     rmSync(testDirectory, { recursive: true, force: true });
   }
 });

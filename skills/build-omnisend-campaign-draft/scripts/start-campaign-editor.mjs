@@ -57,13 +57,12 @@ function startDetachedServer(port) {
   ], {
     cwd: workspaceRoot,
     detached: true,
-    stdio: ['inherit', 'pipe', 'pipe']
+    stdio: ['inherit', 'pipe', 'inherit']
   });
   child.unref();
 
   return new Promise((resolveStarted, rejectStarted) => {
     let stdout = '';
-    let stderr = '';
     const timer = setTimeout(() => {
       child.kill();
       rejectStarted(new Error('Campaign editor server did not report a URL'));
@@ -72,7 +71,6 @@ function startDetachedServer(port) {
     function finish() {
       clearTimeout(timer);
       child.stdout.destroy();
-      child.stderr.destroy();
     }
 
     child.stdout.on('data', (chunk) => {
@@ -83,9 +81,6 @@ function startDetachedServer(port) {
         resolveStarted({ child, pid: child.pid, url });
       }
     });
-    child.stderr.on('data', (chunk) => {
-      stderr += chunk;
-    });
     child.once('error', (error) => {
       finish();
       rejectStarted(error);
@@ -93,7 +88,7 @@ function startDetachedServer(port) {
     child.once('exit', (code) => {
       if (code !== 0 && !stdout) {
         finish();
-        rejectStarted(new Error(stderr.trim() || `Campaign editor server exited with code ${code}`));
+        rejectStarted(new Error(`Campaign editor server exited with code ${code}; see terminal output above`));
       }
     });
   });
