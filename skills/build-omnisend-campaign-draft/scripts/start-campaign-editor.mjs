@@ -1,5 +1,5 @@
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,7 +10,7 @@ const validatorScript = resolve(scriptDirectory, 'validate-campaign-contracts.mj
 const serverScript = resolve(scriptDirectory, 'campaign-editor-server.mjs');
 
 function parseArgs(argv) {
-  const options = { noOpen: false, port: 0 };
+  const options = { noOpen: false, port: 0, testPidFile: null };
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === '--no-open') {
@@ -22,10 +22,18 @@ function parseArgs(argv) {
       index += 1;
       continue;
     }
+    if (argument === '--test-pid-file' && argv[index + 1]) {
+      options.testPidFile = resolve(argv[index + 1]);
+      index += 1;
+      continue;
+    }
     throw new Error(`unsupported editor starter option: ${argument}`);
   }
   if (!Number.isInteger(options.port) || options.port < 0 || options.port > 65535) {
     throw new Error('Campaign editor port is invalid');
+  }
+  if (options.testPidFile && !options.noOpen) {
+    throw new Error('--test-pid-file requires --no-open');
   }
   return options;
 }
@@ -53,12 +61,12 @@ function startDetachedServer(port) {
   });
   child.unref();
 
-  return new Promise((resolveUrl, rejectUrl) => {
+  return new Promise((resolveStarted, rejectStarted) => {
     let stdout = '';
     let stderr = '';
     const timer = setTimeout(() => {
       child.kill();
-      rejectUrl(new Error('Campaign editor server did not report a URL'));
+      rejectStarted(new Error('Campaign editor server did not report a URL'));
     }, 10_000);
 
     function finish() {
@@ -72,7 +80,7 @@ function startDetachedServer(port) {
       const url = stdout.split(/\r?\n/).find((line) => /^http:\/\/127\.0\.0\.1:\d+\/$/.test(line));
       if (url) {
         finish();
-        resolveUrl(url);
+        resolveStarted({ child, pid: child.pid, url });
       }
     });
     child.stderr.on('data', (chunk) => {
@@ -80,12 +88,12 @@ function startDetachedServer(port) {
     });
     child.once('error', (error) => {
       finish();
-      rejectUrl(error);
+      rejectStarted(error);
     });
     child.once('exit', (code) => {
       if (code !== 0 && !stdout) {
         finish();
-        rejectUrl(new Error(stderr.trim() || `Campaign editor server exited with code ${code}`));
+        rejectStarted(new Error(stderr.trim() || `Campaign editor server exited with code ${code}`));
       }
     });
   });
@@ -102,9 +110,17 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   if (!existsSync(validatorScript) || !existsSync(serverScript)) throw new Error('Campaign editor scripts are unavailable');
   validateContracts();
-  const url = await startDetachedServer(options.port);
-  process.stdout.write(`${url}\n`);
-  if (!options.noOpen) openInLocalBrowser(url);
+  const started = await startDetachedServer(options.port);
+  if (options.testPidFile) {
+    try {
+      writeFileSync(options.testPidFile, `${started.pid}\n`, { encoding: 'utf8', flag: 'wx' });
+    } catch (error) {
+      started.child.kill();
+      throw error;
+    }
+  }
+  process.stdout.write(`${started.url}\n`);
+  if (!options.noOpen) openInLocalBrowser(started.url);
 }
 
 main().catch((error) => {

@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
@@ -47,13 +50,32 @@ test('editor server is loopback-only and returns the validated bootstrap', async
   }
 });
 
-test('starter validates contracts and prints one loopback URL without opening a browser', () => {
-  const result = spawnSync(process.execPath, [startScript, '--port', '0', '--no-open'], {
-    cwd: workspaceRoot,
-    encoding: 'utf8',
-    timeout: 10_000
-  });
+test('starter reports a test-only PID for cleanup while stdout remains a single URL', async () => {
+  const testDirectory = mkdtempSync(join(tmpdir(), 'freshine-campaign-editor-start-'));
+  const pidFile = join(testDirectory, 'server.pid');
+  let serverPid;
 
-  assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /^http:\/\/127\.0\.0\.1:\d+\/$/m);
+  try {
+    const result = spawnSync(process.execPath, [
+      startScript,
+      '--port', '0',
+      '--no-open',
+      '--test-pid-file', pidFile
+    ], {
+      cwd: workspaceRoot,
+      encoding: 'utf8',
+      timeout: 10_000
+    });
+
+    if (existsSync(pidFile)) serverPid = Number(readFileSync(pidFile, 'utf8').trim());
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout.trim(), /^http:\/\/127\.0\.0\.1:\d+\/$/);
+    assert.equal(result.stdout, `${result.stdout.trim()}\n`);
+    assert.equal(existsSync(pidFile), true);
+    assert.equal(Number.isInteger(serverPid), true);
+    assert.doesNotThrow(() => process.kill(serverPid, 0));
+  } finally {
+    if (serverPid) process.kill(serverPid, 'SIGTERM');
+    rmSync(testDirectory, { recursive: true, force: true });
+  }
 });
