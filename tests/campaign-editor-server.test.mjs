@@ -399,6 +399,10 @@ test('starter keeps uploader prompt diagnostics attached while stdout remains a 
   const draftDirectory = join(workspaceRoot, 'campaign-drafts', slug);
   let starter;
   let serverPid;
+  let cancelUrlWait = () => {};
+  let cancelDiagnosticWait = () => {};
+  let urlPromise = Promise.resolve(null);
+  let diagnosticPromise = Promise.resolve(false);
 
   try {
     starter = spawn(process.execPath, [
@@ -412,34 +416,50 @@ test('starter keeps uploader prompt diagnostics attached while stdout remains a 
     });
     let stdout = '';
     let stderr = '';
-    const urlPromise = new Promise((resolveUrl, rejectUrl) => {
-      const timer = setTimeout(() => rejectUrl(new Error('starter URL timeout')), 10_000);
-      starter.stdout.on('data', (chunk) => {
+    urlPromise = new Promise((resolveUrl, rejectUrl) => {
+      let settled = false;
+      const finish = (error, value = null) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        starter.stdout.off('data', onData);
+        if (error) rejectUrl(error);
+        else resolveUrl(value);
+      };
+      const onData = (chunk) => {
         stdout += chunk.toString('utf8');
         const url = stdout.match(/http:\/\/127\.0\.0\.1:\d+\//)?.[0];
-        if (url) {
-          clearTimeout(timer);
-          resolveUrl(url);
-        }
-      });
+        if (url) finish(null, url);
+      };
+      const timer = setTimeout(() => finish(new Error('starter URL timeout')), 10_000);
+      cancelUrlWait = () => finish(null);
+      starter.stdout.on('data', onData);
     });
-    const diagnosticPromise = new Promise((resolveDiagnostic, rejectDiagnostic) => {
-      const timer = setTimeout(() => rejectDiagnostic(new Error('runtime API-key diagnostic was disconnected')), 5_000);
-      starter.stderr.on('data', (chunk) => {
+    diagnosticPromise = new Promise((resolveDiagnostic) => {
+      let settled = false;
+      const finish = (connected) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        starter.stderr.off('data', onData);
+        resolveDiagnostic(connected);
+      };
+      const onData = (chunk) => {
         stderr += chunk.toString('utf8');
         if (/Omnisend API key must be entered through an interactive terminal/.test(stderr)) {
-          clearTimeout(timer);
-          resolveDiagnostic();
+          finish(true);
         }
-      });
+      };
+      const timer = setTimeout(() => finish(false), 5_000);
+      cancelDiagnosticWait = () => finish(false);
+      starter.stderr.on('data', onData);
     });
     const starterExit = new Promise((resolveExit, rejectExit) => {
       starter.once('error', rejectExit);
       starter.once('exit', (code) => code === 0 ? resolveExit() : rejectExit(new Error(`starter exited with ${code}: ${stderr}`)));
     });
 
-    const url = await urlPromise;
-    await starterExit;
+    const [url] = await Promise.all([urlPromise, starterExit]);
     serverPid = Number(readFileSync(pidFile, 'utf8').trim());
     assert.equal(stdout, `${url}\n`);
     assert.equal(Number.isInteger(serverPid), true);
@@ -472,9 +492,12 @@ test('starter keeps uploader prompt diagnostics attached while stdout remains a 
     });
     assert.equal(upload.status, 400);
     assert.match((await upload.json()).error, /Draft upload failed/);
-    await diagnosticPromise;
+    assert.equal(await diagnosticPromise, true, 'runtime API-key diagnostic was disconnected');
 
   } finally {
+    cancelUrlWait();
+    cancelDiagnosticWait();
+    await Promise.allSettled([urlPromise, diagnosticPromise]);
     if (serverPid) process.kill(serverPid, 'SIGTERM');
     else starter?.kill('SIGTERM');
     rmSync(draftDirectory, { recursive: true, force: true });
