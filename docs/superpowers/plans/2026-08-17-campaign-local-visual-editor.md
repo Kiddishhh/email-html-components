@@ -174,7 +174,7 @@ git commit -m "feat: persist Campaign editor drafts locally"
 
 **Interfaces:**
 - Consumes `GET /api/bootstrap`, `PUT /api/drafts/:slug`, `POST /api/drafts/:slug/assets`, and `POST /api/drafts/:slug/preview`.
-- Produces `window.editorState` with `{ slug, campaign, components, finalConfirmation }` for deterministic UI tests.
+- Produces `window.editorState` with `{ slug, campaign, components, finalConfirmation: null }` for deterministic UI tests. Task 4 alone creates the static-safe HTML hash and replaces this `null` value after an explicit final confirmation.
 
 - [ ] **Step 1: Write failing static editor contract tests**
 
@@ -204,7 +204,7 @@ Expected: FAIL because editor assets do not exist.
 </main>
 ```
 
-Implement `app.js` with `fetch('/api/bootstrap')`, schema-driven fields, binary local-image uploads using `fetch` to the scoped asset endpoint, debounced save/preview, and a final-confirmation checkbox that stores a SHA-256 of the generated static-safe HTML. Use no third-party scripts and no external service calls.
+Implement `app.js` with `fetch('/api/bootstrap')`, schema-driven fields, binary local-image uploads using `fetch` to the scoped asset endpoint, and debounced save/preview. Keep `finalConfirmation` as `null`; this task must not create static-safe HTML, calculate a confirmation hash, or expose an upload action. Use no third-party scripts and no external service calls.
 
 - [ ] **Step 4: Run targeted tests to verify they pass**
 
@@ -262,6 +262,8 @@ if (request.method === 'POST' && pathname === `/api/drafts/${slug}/upload`) {
 ```
 
 Add a disabled-by-default “上传 Omnisend 草稿” button. Enable it only after the exact preview hash is confirmed; prompt for the API key only in the server process; display the returned `draft` receipt. Update Skill step 1 to run the starter and open its printed URL in the in-app Browser. State that the UI must never expose sending, publishing, scheduling, or activation.
+
+Task 4 must first generate the static-safe HTML on the local server, calculate its SHA-256, and write the exact value into `finalConfirmation`; it must not reuse the local-preview HTML or permit Task 3's preview state to satisfy the confirmation gate.
 
 - [ ] **Step 4: Run all tests and manually verify the editor**
 
