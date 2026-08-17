@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownOverlay2",
+  "values": {
+    "promotion.text": "Unlock $100 Off Your First Order at Freshine",
+    "promotion.linkText": "SIGN UP",
+    "promotion.url": "https://freshinelife.com/",
+    "brand.logo.url": "asset://countdown-hero-2-logo",
+    "brand.logo.alt": "FreShine",
+    "brand.logo.clickUrl": "https://freshinelife.com/",
+    "hero.eyebrow": "Winter Comfort Event",
+    "hero.title": "UP TO 65% OFF",
+    "hero.subtitle": "Extra $600 OFF & UP TO 20% OFF SITEWIDE",
+    "hero.image.url": "asset://countdown-hero-2-image",
+    "hero.image.alt": "Woman standing beside tall curtains in a bright living room",
+    "urgency.title": "ONLY 3 DAYS!",
+    "benefit.1.text": "UP TO 65% OFF",
+    "benefit.2.text": "Free Gift On $699+",
+    "benefit.3.text": "Free Shipping",
+    "hero.cta.text": "Shop the Holiday Sale >>",
+    "hero.cta.url": "https://freshinelife.com/",
+    "urgency.note": "Limited Time Offer"
+  },
+  "localReferenceAssets": {
+    "countdown-hero-2-logo": "assets/default-logo-brown.png",
+    "countdown-hero-2-image": "assets/default-hero.jpg"
+  }
+}

@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   buildEditorCatalog,
   createCampaignDocument,
@@ -17,7 +19,7 @@ import {
   styleKeysForStructure
 } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 
-const workspaceRoot = '/Users/ww/Desktop/邮件营销运营/邮件html组件';
+const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const currentKeys = JSON.parse(readFileSync(`${workspaceRoot}/组件清单.json`, 'utf8')).map(({ componentKey }) => componentKey);
 
 test('editor catalog exposes every registered component as a freely selectable style', () => {
@@ -34,8 +36,9 @@ test('editor catalog exposes every registered component as a freely selectable s
 test('editor groups styles by structure before selection and exposes only Skill-directed edits', () => {
   const catalog = buildEditorCatalog({ workspaceRoot });
 
-  assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '评论组件', '赠品与权益组件', '页脚组件']);
-  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay']);
+  assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '通用图片组件', '评论组件', '赠品与权益组件', '页脚组件']);
+  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2']);
+  assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'location.showroomCard', 'image.benefitsStrip3']);
   assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background'] });
   assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), { content: [], settings: [] });
   assert.deepEqual(editableFieldKeys('image.clickableFullWidth'), {
@@ -57,6 +60,20 @@ test('editor groups styles by structure before selection and exposes only Skill-
     value: 'https://freshinelife.com/pages/freshine-sale',
     placeholder: ''
   });
+});
+
+test('full component library retains both countdown heroes and the benefits strip with their default assets', () => {
+  const catalog = buildEditorCatalog({ workspaceRoot });
+  let document = createCampaignDocument({ name: '完整组件库资源测试' });
+  for (const componentKey of ['hero.countdownOverlay', 'hero.countdownOverlay2', 'image.benefitsStrip3']) {
+    document = addComponentInstance(document, catalog, componentKey);
+  }
+
+  assert.deepEqual(document.components.map(({ componentKey }) => componentKey), ['hero.countdownOverlay', 'hero.countdownOverlay2', 'image.benefitsStrip3']);
+  const assets = buildLocalAssetMap(document, { workspaceRoot });
+  for (const assetId of ['countdown-background', 'countdown-brand-logo', 'countdown-divider', 'countdown-hero-2-logo', 'countdown-hero-2-image', 'benefits-strip-3']) {
+    assert.equal(existsSync(resolve(workspaceRoot, assets[assetId].path)), true, `${assetId} should resolve to a checked-in component asset`);
+  }
 });
 
 test('a campaign document permits arbitrary component choice, repetition, and order', () => {

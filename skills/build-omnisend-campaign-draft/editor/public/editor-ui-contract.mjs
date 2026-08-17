@@ -1,4 +1,4 @@
-const structureOrder = ['头图', '活动商品组件', '评论组件', '赠品与权益组件', '地址组件', '页脚组件'];
+const structureOrder = ['头图', '活动商品组件', '通用图片组件', '评论组件', '赠品与权益组件', '地址组件', '页脚组件'];
 
 const editableByComponent = {
   'hero.promotionalOverlay': {

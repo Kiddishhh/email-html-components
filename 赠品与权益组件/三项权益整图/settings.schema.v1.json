@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsStrip3",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": {
+      "type": "string",
+      "default": "#F7F3F0",
+      "themeable": true,
+      "skillPrompt": true
+    },
+    "spacing.outer": {
+      "type": "string",
+      "default": "0",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "image.maxWidth": {
+      "type": "string",
+      "default": "600px",
+      "themeable": true,
+      "skillPrompt": false
+    }
+  },
+  "additionalProperties": false
+}

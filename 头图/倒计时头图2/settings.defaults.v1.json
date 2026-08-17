@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownOverlay2",
+  "values": {
+    "color.surface": "#F3EFE8",
+    "color.promotionLeft": "#B29E92",
+    "color.promotionRight": "#A28C80",
+    "color.promotionText": "#FFFFFF",
+    "color.offerSurface": "#DED8CA",
+    "color.heading": "#24201F",
+    "color.body": "#24201F",
+    "color.divider": "#736A63",
+    "color.theme": "#AD1F22",
+    "color.themeText": "#FFFFFF",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+    "content.maxWidth": "600px",
+    "logo.maxWidth": "96px",
+    "logo.offsetTop": "4px",
+    "cta.horizontalPadding": "38px",
+    "cta.height": "49px",
+    "radius.button": "2px"
+  }
+}

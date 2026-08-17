@@ -20,6 +20,46 @@
     "规范版本": 1
   },
   {
+    "中文名称": "倒计时头图",
+    "分类": "头图",
+    "componentKey": "hero.countdownOverlay",
+    "默认主题": "countdown-overlay",
+    "默认变体": "split-navigation-editable-panel",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/倒计时头图/component.template.v1.html",
+      "内容契约": "头图/倒计时头图/content.schema.v1.json",
+      "设置契约": "头图/倒计时头图/settings.schema.v1.json",
+      "默认测试数据": "头图/倒计时头图/content.fixture.v1.json",
+      "默认设置": "头图/倒计时头图/settings.defaults.v1.json",
+      "中文管理说明": "头图/倒计时头图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/倒计时头图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "倒计时头图2",
+    "分类": "头图",
+    "componentKey": "hero.countdownOverlay2",
+    "默认主题": "countdown-overlay-2",
+    "默认变体": "balanced-compact-image-offer",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/倒计时头图2/component.template.v1.html",
+      "内容契约": "头图/倒计时头图2/content.schema.v1.json",
+      "设置契约": "头图/倒计时头图2/settings.schema.v1.json",
+      "默认测试数据": "头图/倒计时头图2/content.fixture.v1.json",
+      "默认设置": "头图/倒计时头图2/settings.defaults.v1.json",
+      "中文管理说明": "头图/倒计时头图2/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/倒计时头图2/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "六宫格夏季促销",
     "分类": "活动商品组件",
     "componentKey": "collection.saleGrid6",
@@ -95,6 +135,26 @@
       "默认设置": "赠品与权益组件/展厅地址卡/settings.defaults.v1.json",
       "中文管理说明": "赠品与权益组件/展厅地址卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "赠品与权益组件/展厅地址卡/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "三项权益整图",
+    "分类": "赠品与权益组件",
+    "componentKey": "image.benefitsStrip3",
+    "默认主题": "benefits-strip-3",
+    "默认变体": "non-linked-full-image",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/三项权益整图/component.template.v1.html",
+      "内容契约": "赠品与权益组件/三项权益整图/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/三项权益整图/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/三项权益整图/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/三项权益整图/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/三项权益整图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/三项权益整图/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1

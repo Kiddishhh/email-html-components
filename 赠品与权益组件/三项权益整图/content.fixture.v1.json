@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsStrip3",
+  "fixture": "default-three-benefits-strip",
+  "localPreviewAsset": "assets/default-benefits-strip.jpg",
+  "values": {
+    "image.url": "asset://benefits-strip-3",
+    "image.alt": "Freshine benefits: 7–14 day delivery, secure payments, and free shipping"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownOverlay2",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "promotion.text": { "type": "text", "required": true, "skillPrompt": false },
+    "promotion.linkText": { "type": "text", "required": true, "skillPrompt": false },
+    "promotion.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": false },
+    "brand.logo.url": { "type": "url", "role": "image-source", "required": true, "skillPrompt": false },
+    "brand.logo.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": false },
+    "brand.logo.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": false },
+    "hero.eyebrow": { "type": "text", "required": true, "skillPrompt": false },
+    "hero.title": { "type": "text", "required": true, "skillPrompt": false },
+    "hero.subtitle": { "type": "text", "required": true, "skillPrompt": false },
+    "hero.image.url": { "type": "url", "role": "image-source", "required": true, "skillPrompt": true },
+    "hero.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "urgency.title": { "type": "text", "required": true, "skillPrompt": false },
+    "benefit.1.text": { "type": "text", "required": true, "skillPrompt": false },
+    "benefit.2.text": { "type": "text", "required": true, "skillPrompt": false },
+    "benefit.3.text": { "type": "text", "required": true, "skillPrompt": false },
+    "hero.cta.text": { "type": "text", "required": true, "skillPrompt": false },
+    "hero.cta.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": false },
+    "urgency.note": { "type": "text", "required": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

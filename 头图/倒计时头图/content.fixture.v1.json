@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownOverlay",
+  "fixture": "countdown-overlay-reference-demo",
+  "localReferenceAssets": {
+    "countdown-background": "assets/default-background.jpg",
+    "countdown-brand-logo": "assets/brand-logo-dark.png",
+    "countdown-divider": "assets/divider-ornament.png"
+  },
+  "values": {
+    "navigation.text": "Unlock $100 Off Your First Order At Freshine",
+    "navigation.linkText": "SIGN UP",
+    "navigation.url": "https://freshinelife.com/",
+    "hero.backgroundImage.url": "asset://countdown-background",
+    "hero.backgroundImage.alt": "Woman standing beside floor-to-ceiling sheer curtains in a neutral living room",
+    "brand.logo.url": "asset://countdown-brand-logo",
+    "brand.logo.alt": "FreShine",
+    "brand.clickUrl": "https://freshinelife.com/",
+    "decoration.dividerImage.url": "asset://countdown-divider",
+    "decoration.dividerImage.alt": "",
+    "countdown.title": "Only 3 Days Left",
+    "hero.subtitle": "UP TO 65% OFF | Free Gift On $259+ | Free Shipping",
+    "hero.cta.text": "SHOP NOW",
+    "hero.cta.url": "https://freshinelife.com/"
+  }
+}

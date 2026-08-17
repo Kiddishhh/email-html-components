@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownOverlay2",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#F3EFE8", "themeable": true, "skillPrompt": true },
+    "color.promotionLeft": { "type": "string", "default": "#B29E92", "themeable": true, "skillPrompt": false },
+    "color.promotionRight": { "type": "string", "default": "#A28C80", "themeable": true, "skillPrompt": false },
+    "color.promotionText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
+    "color.offerSurface": { "type": "string", "default": "#DED8CA", "themeable": true, "skillPrompt": false },
+    "color.heading": { "type": "string", "default": "#24201F", "themeable": true, "skillPrompt": false },
+    "color.body": { "type": "string", "default": "#24201F", "themeable": true, "skillPrompt": false },
+    "color.divider": { "type": "string", "default": "#736A63", "themeable": true, "skillPrompt": false },
+    "color.theme": { "type": "string", "default": "#AD1F22", "themeable": true, "skillPrompt": true },
+    "color.themeText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
+    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": true, "skillPrompt": false },
+    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "font.action": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "content.maxWidth": { "type": "string", "default": "600px", "themeable": false, "skillPrompt": false },
+    "logo.maxWidth": { "type": "string", "default": "96px", "themeable": true, "skillPrompt": false },
+    "logo.offsetTop": { "type": "string", "default": "4px", "themeable": true, "skillPrompt": false },
+    "cta.horizontalPadding": { "type": "string", "default": "38px", "themeable": true, "skillPrompt": false },
+    "cta.height": { "type": "string", "default": "49px", "themeable": true, "skillPrompt": false },
+    "radius.button": { "type": "string", "default": "2px", "themeable": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

@@ -176,8 +176,12 @@ test('builds a validated upload source with registered local assets deferred for
 
 test('the registry preserves the six fixed Campaign components while allowing optional components', () => {
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const fixedCampaignKeys = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'))
+    .slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys);
 
-  assert.deepEqual(registry.slice(0, campaignComponentKeys.length).map(({ componentKey }) => componentKey), campaignComponentKeys);
+  assert.deepEqual(fixedCampaignKeys, campaignComponentKeys);
+  const registryKeys = new Set(registry.map(({ componentKey }) => componentKey));
+  assert.equal(fixedCampaignKeys.every((componentKey) => registryKeys.has(componentKey)), true);
   for (const entry of registry) {
     for (const relativePath of Object.values(entry.路径)) {
       assert.equal(existsSync(`${root}/${relativePath}`), true, `${entry.componentKey}: missing ${relativePath}`);
