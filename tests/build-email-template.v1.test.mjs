@@ -69,6 +69,162 @@ test('renders only the complete content and settings snapshot supplied by the Sk
   assert.doesNotMatch(preview, /padding:0 24px/, 'preview shell must not shrink the configured 600px canvas');
 });
 
+test('renders a linked curtain promotion card with its instance background color', () => {
+  const directory = `${root}/活动商品组件/单品窗帘促销卡`;
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FBFAF8',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: '/private/tmp/curtain-promotion-card.html',
+    previewOutput: '/private/tmp/curtain-promotion-card.local-preview.html',
+    components: [{
+      name: '单品窗帘促销卡',
+      directory,
+      componentKey: 'collection.curtainPromotionCard',
+      content: {
+        'promotion.title': 'Upgrade Your Home in Style',
+        'promotion.subtitle': 'Refresh Your Home With Our Latest Curtain Designs-Crafted To Bring A Clean, Modern Look And Effortless Comfort For The Year Ahead.',
+        'product.badge': 'SAVE 50%',
+        'product.image.url': 'https://cdn.example.com/celina-linen-curtains.jpg',
+        'product.image.alt': 'Celina Linen Curtains in a bright living room',
+        'product.image.clickUrl': 'https://freshinelife.com/products/celina-linen-curtains',
+        'product.title': 'Celina Linen Curtains',
+        'product.description': 'Elegant Floor-To-Ceiling Drapes For Living Room',
+        'product.cta.text': 'SHOP NOW >>',
+        'product.cta.url': 'https://freshinelife.com/products/celina-linen-curtains'
+      },
+      settings: {
+        'color.surface': '#F4EFEA',
+        'color.text': '#242321',
+        'color.body': '#3B3936',
+        'color.badge': '#A71E22',
+        'color.badgeText': '#FFFFFF',
+        'font.heading': 'Lora, Georgia, Times New Roman, serif',
+        'font.body': 'Montserrat, Arial, Helvetica, sans-serif',
+        'font.action': 'Montserrat, Arial, Helvetica, sans-serif',
+        'spacing.header': '76px 28px 54px',
+        'spacing.content': '0 28px 60px',
+        'radius.badge': '0 0 6px 0'
+      }
+    }]
+  };
+  const path = '/private/tmp/curtain-promotion-card.composition.json';
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+
+  const result = run(path);
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(composition.output, 'utf8');
+  assert.match(html, /background-color:#F4EFEA/);
+  assert.match(html, /Upgrade Your Home in Style/);
+  assert.match(html, /background="https:\/\/cdn\.example\.com\/celina-linen-curtains\.jpg"/);
+  assert.match(html, /href="https:\/\/freshinelife\.com\/products\/celina-linen-curtains"/);
+  assert.match(html, /SAVE 50%/);
+  assert.doesNotMatch(html, /\{\{(?:content|settings)\./);
+});
+
+test('uses the curtain card local default image only in its local preview', () => {
+  const directory = `${root}/活动商品组件/单品窗帘促销卡`;
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FBFAF8',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: '/private/tmp/curtain-promotion-card-default.html',
+    previewOutput: '/private/tmp/curtain-promotion-card-default.local-preview.html',
+    assets: {
+      'curtain-promotion-default': {
+        path: '活动商品组件/单品窗帘促销卡/assets/default-celina-linen-curtains-clean.png',
+        name: 'default-celina-linen-curtains-clean.png'
+      }
+    },
+    components: [{
+      name: '单品窗帘促销卡',
+      directory,
+      componentKey: 'collection.curtainPromotionCard',
+      content: fixture.values,
+      settings: defaults.values
+    }]
+  };
+  const path = '/private/tmp/curtain-promotion-card-default.composition.json';
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+
+  const localResult = run(path, '--preview-local-assets');
+  assert.equal(localResult.status, 0, localResult.stderr || localResult.stdout);
+  assert.match(readFileSync(composition.previewOutput, 'utf8'), /default-celina-linen-curtains-clean\.png/);
+
+  const finalResult = run(path);
+  assert.notEqual(finalResult.status, 0);
+  assert.match(finalResult.stderr, /local asset curtain-promotion-default must be uploaded before final build/);
+});
+
+test('renders the no-title curtain promotion card without top copy fields', () => {
+  const directory = `${root}/活动商品组件/单品窗帘促销卡（无标题款）`;
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FBFAF8',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: '/private/tmp/curtain-promotion-card-no-title.html',
+    previewOutput: '/private/tmp/curtain-promotion-card-no-title.local-preview.html',
+    components: [{
+      name: '单品窗帘促销卡（无标题款）',
+      directory,
+      componentKey: 'collection.curtainPromotionCardNoTitle',
+      content: {
+        'product.badge': 'SAVE 50%',
+        'product.image.url': 'https://cdn.example.com/celina-linen-curtains.jpg',
+        'product.image.alt': 'Celina Linen Curtains in a bright living room',
+        'product.image.clickUrl': 'https://freshinelife.com/products/celina-linen-curtains',
+        'product.title': 'Celina Linen Curtains',
+        'product.description': 'Elegant Floor-To-Ceiling Drapes For Living Room',
+        'product.cta.text': 'SHOP NOW >>',
+        'product.cta.url': 'https://freshinelife.com/products/celina-linen-curtains'
+      },
+      settings: {
+        'color.surface': '#F4EFEA',
+        'color.text': '#242321',
+        'color.body': '#3B3936',
+        'color.badge': '#A71E22',
+        'color.badgeText': '#FFFFFF',
+        'font.body': 'Montserrat, Arial, Helvetica, sans-serif',
+        'font.action': 'Montserrat, Arial, Helvetica, sans-serif',
+        'spacing.content': '0 28px 60px',
+        'radius.badge': '0 0 6px 0'
+      }
+    }]
+  };
+  const path = '/private/tmp/curtain-promotion-card-no-title.composition.json';
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+
+  const result = run(path);
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(composition.output, 'utf8');
+  assert.match(html, /Celina Linen Curtains/);
+  assert.doesNotMatch(html, /Upgrade Your Home in Style/);
+  assert.doesNotMatch(html, /promotion\.title|promotion\.subtitle/);
+
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  assert.equal(registry.find(({ componentKey }) => componentKey === 'collection.curtainPromotionCard')?.中文名称, '单品窗帘促销卡（标题款）');
+  assert.equal(registry.find(({ componentKey }) => componentKey === 'collection.curtainPromotionCardNoTitle')?.中文名称, '单品窗帘促销卡（无标题款）');
+});
+
 test('renders the countdown hero styles required by its registered template', () => {
   const directory = `${root}/头图/倒计时头图`;
   const content = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));

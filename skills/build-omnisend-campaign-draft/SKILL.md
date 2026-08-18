@@ -15,6 +15,10 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 
 在浏览器打开 `http://127.0.0.1:4173`。编辑器从 `组件清单.json` 读取所有已注册组件及其目录内的 `效果演示.html`、默认完整快照和 Schema；用户可以自由添加、重复、拖拽排序或删除任意组件，不预置固定结构。每个新实例使用组件当前默认值，可编辑已开放字段，并实时生成 600px / 375px 预览。
 
+### 单品窗帘促销卡变体
+
+活动商品分类已登记两款自由组合组件：`collection.curtainPromotionCard`（单品窗帘促销卡（标题款））和 `collection.curtainPromotionCardNoTitle`（单品窗帘促销卡（无标题款））。两者都可从组件库自由添加、重复、排序或删除；标题款额外开放顶部 `promotion.title` 和 `promotion.subtitle`，无标题款不显示这两项而直接从商品图片开始。两款均开放促销角标、商品图片与点击链接、商品标题、说明、CTA、组件背景色和角标底色；默认图仅供本地预览，最终 Omnisend HTML 必须替换为公开 HTTPS 图片。它们不属于旧版 CLI 的六个固定区段，不加入 `campaign-structure.v1.json` 或 `campaign-component-interactions.v1.json` 的固定选择流程。
+
 顶部“上传 Omnisend 草稿”是旧版编辑器唯一新增入口：先确认全部组件，填写 Campaign 名称、Subject 与可选 Preheader，生成并逐字确认静态 HTML SHA-256；随后在启动编辑器的终端中运行时输入 Omnisend API Key。密钥不进入浏览器、参数、环境变量或文件；上传固定委托 `scripts/upload-omnisend-draft.mjs`，只创建或更新 `draft`，不得发送、排期或发布。浏览器不可用时，以下固定六区段流程仍可作为 CLI 降级方案。
 
 ## 核心原则

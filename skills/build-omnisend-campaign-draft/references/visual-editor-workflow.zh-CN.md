@@ -15,6 +15,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 - 组件库由 `组件清单.json` 生成；每个已注册组件都可选择、重复、删除和任意排序，分类只是帮助浏览，不构成结构规则。
 - 默认内容和样式分别来自组件的 `content.fixture.v1.json` 与 `settings.defaults.v1.json`；`效果演示.html` 是样式参考，不可用一张素材图替代。
 - 字段编辑受该组件 Schema 限制。编辑后会撤销该组件的确认状态并刷新本地预览。
+- 活动商品分类包含 `collection.curtainPromotionCard`（单品窗帘促销卡（标题款））和 `collection.curtainPromotionCardNoTitle`（单品窗帘促销卡（无标题款））。标题款可编辑顶部 `promotion.title`、`promotion.subtitle` 与商品字段；无标题款不显示顶部标题和说明，也不显示这两个 `promotion` 字段。两款均可编辑商品图片 / Alt / 点击链接、角标、商品文案、CTA、`color.surface` 和 `color.badge`，默认图片只用于本地预览。
 - “shopify商品导入”只在选中 `collection.saleGrid6` 时显示。输入完整 Freshine Page 或 Collection URL 后，固定调用 `fetch-activity-page-sale-grid.mjs --shopify-url <URL>`，只读 Shopify，并只覆盖该实例的 6 个商品图片、Alt、商品链接、折扣标签和 CTA；Page 会从线上主题模板的首个启用 `products-grid-v2` 解析商品来源，Collection 直接读取，CTA 始终保留输入 URL。
 - 预览由 `build-email-template.v1.mjs --preview-local-assets` 生成，供本地核对；发送前 HTML 仍必须通过静态安全校验并替换为公开 HTTPS 图片。
 

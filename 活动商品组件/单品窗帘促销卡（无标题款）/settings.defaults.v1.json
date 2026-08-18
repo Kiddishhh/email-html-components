@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainPromotionCardNoTitle",
+  "values": {
+    "color.surface": "#FBFAF8",
+    "color.text": "#242321",
+    "color.body": "#3B3936",
+    "color.badge": "#A71E22",
+    "color.badgeText": "#FFFFFF",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+    "spacing.content": "0 28px 60px",
+    "radius.badge": "0 0 6px 0"
+  }
+}

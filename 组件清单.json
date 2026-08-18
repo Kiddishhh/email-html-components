@@ -60,6 +60,46 @@
     "规范版本": 1
   },
   {
+    "中文名称": "单品窗帘促销卡（标题款）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.curtainPromotionCard",
+    "默认主题": "linen-editorial",
+    "默认变体": "single-curtain-promotion-card",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/单品窗帘促销卡/component.template.v1.html",
+      "内容契约": "活动商品组件/单品窗帘促销卡/content.schema.v1.json",
+      "设置契约": "活动商品组件/单品窗帘促销卡/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/单品窗帘促销卡/content.fixture.v1.json",
+      "默认设置": "活动商品组件/单品窗帘促销卡/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/单品窗帘促销卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/单品窗帘促销卡/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "单品窗帘促销卡（无标题款）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.curtainPromotionCardNoTitle",
+    "默认主题": "linen-editorial",
+    "默认变体": "single-curtain-promotion-card-no-title",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/单品窗帘促销卡（无标题款）/component.template.v1.html",
+      "内容契约": "活动商品组件/单品窗帘促销卡（无标题款）/content.schema.v1.json",
+      "设置契约": "活动商品组件/单品窗帘促销卡（无标题款）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/单品窗帘促销卡（无标题款）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/单品窗帘促销卡（无标题款）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/单品窗帘促销卡（无标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/单品窗帘促销卡（无标题款）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "六宫格夏季促销",
     "分类": "活动商品组件",
     "componentKey": "collection.saleGrid6",

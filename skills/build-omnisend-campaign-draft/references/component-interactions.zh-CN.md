@@ -10,6 +10,7 @@
 6. 展厅地址卡
 7. 品牌信息页脚
 8. 三项权益整图
+9. 单品窗帘促销卡（标题款 / 无标题款）
 
 ## 1. 通用规则
 
@@ -152,3 +153,19 @@ Skill 只读读取本地图片或临时读取公开 HTTPS 图片，检查尺寸�
 ## 8. `image.benefitsStrip3` 三项权益整图
 
 在自由组合编辑器中选择此组件时，默认快照使用 Omnisend 公开图片 `https://app.omnisend.com/images/6a82d6f0c5aa8a2a0174f006`，并保留 `assets/default-benefits-strip-combination-i-1200.jpg`（1200×584px）供本地替换和回退。它展示“7–14 Day Delivery、Secure Payments、Free Shipping”三项权益，不能拆分图片内部内容，也不包含跳转链接。完成卡片展示图片、Alt、背景色、桌面端与约 375px 移动端预览；用户未提出修改即一次确认。若再替换图片，最终 Omnisend HTML 必须使用新的公开 HTTPS 地址。
+
+## 9. 单品窗帘促销卡（标题款 / 无标题款）
+
+这两款均为自由组合编辑器组件，不加入旧版 CLI 的六个固定区段，也不写入 `campaign-structure.v1.json` 或 `campaign-component-interactions.v1.json`。从 `组件清单.json` 读取、创建和确认，用户可按任意位置重复使用。
+
+### `collection.curtainPromotionCard` 单品窗帘促销卡（标题款）
+
+标题款保留顶部活动标题 `promotion.title` 与说明 `promotion.subtitle`；其后依次为 544×371px 商品主图、可编辑促销角标、商品标题、商品说明和 CTA。一次设置卡片中可编辑以下字段：顶部标题与说明、`product.badge`、商品图片 URL / Alt / 点击链接、商品标题、说明、CTA 文字与链接、`color.surface`（组件背景色）和 `color.badge`（角标底色）。标题使用 Lora 字体栈，副标题使用 Montserrat 字体栈；字体族不在编辑器中暴露为字段。
+
+### `collection.curtainPromotionCardNoTitle` 单品窗帘促销卡（无标题款）
+
+无标题款不显示顶部标题与说明，且不提供 `promotion.title`、`promotion.subtitle` 编辑字段；它从同尺寸商品主图直接开始。其余可编辑字段、图片链接行为、背景色、角标底色与标题款一致，适合不需要活动引言的连续商品区段。
+
+### 图片与确认
+
+默认窗帘图资源仅用于本地预览。用户替换时可提供公开 HTTPS URL 或明确提供本地图片；本地图片在最终 Omnisend HTML 前必须上传并替换为公开 HTTPS URL。每次编辑都会撤销该实例的确认状态，并重新生成桌面端和约 375px 移动端预览；在完整设置卡片和两种预览均已生成后，只询问一次是否确认该实例。
