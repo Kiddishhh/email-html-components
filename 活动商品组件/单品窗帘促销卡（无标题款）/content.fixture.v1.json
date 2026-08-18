@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainPromotionCardNoTitle",
+  "fixture": "celina-linen-curtain-no-title-reference",
+  "localReferenceAssets": {
+    "curtain-promotion-no-title-default": "assets/default-celina-linen-curtains-clean.png"
+  },
+  "values": {
+    "product.badge": "SAVE 50%",
+    "product.image.url": "asset://curtain-promotion-no-title-default",
+    "product.image.alt": "Celina Linen Curtains in a sunlit living room",
+    "product.image.clickUrl": "https://freshinelife.com/collections/linen-curtains",
+    "product.title": "Celina Linen Curtains",
+    "product.description": "Elegant Floor-To-Ceiling Drapes For Living Room",
+    "product.cta.text": "SHOP NOW >>",
+    "product.cta.url": "https://freshinelife.com/collections/linen-curtains"
+  }
+}

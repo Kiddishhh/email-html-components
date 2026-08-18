@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainPromotionCardNoTitle",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "product.badge": { "type": "text", "required": true, "skillPrompt": true },
+    "product.image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" },
+    "product.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "product.image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true, "protocol": "https" },
+    "product.title": { "type": "text", "required": true, "skillPrompt": true },
+    "product.description": { "type": "text", "required": true, "skillPrompt": true },
+    "product.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "product.cta.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true, "protocol": "https" }
+  },
+  "additionalProperties": false
+}

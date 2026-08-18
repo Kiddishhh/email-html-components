@@ -266,6 +266,29 @@ test('Skill documents the image-only Omnisend HTML clipboard export boundary', a
   assert.match(skill, /不.*保存.*完整 HTML/s);
 });
 
+test('Skill documents both curtain promotion card editor variants outside the six legacy slots', async () => {
+  const skill = await read('SKILL.md');
+  const interactions = await read('references/component-interactions.zh-CN.md');
+  const editorWorkflow = await read('references/visual-editor-workflow.zh-CN.md');
+  const titleManagement = readFileSync(join(workspaceRoot, '活动商品组件/单品窗帘促销卡/COMPONENT_MANAGEMENT.zh-CN.v1.md'), 'utf8');
+  const noTitleManagement = readFileSync(join(workspaceRoot, '活动商品组件/单品窗帘促销卡（无标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md'), 'utf8');
+
+  for (const document of [skill, interactions, editorWorkflow]) {
+    assert.match(document, /collection\.curtainPromotionCard/);
+    assert.match(document, /collection\.curtainPromotionCardNoTitle/);
+    assert.match(document, /标题款/);
+    assert.match(document, /无标题款/);
+  }
+
+  assert.match(skill, /不属于.*旧版.*六个固定区段/);
+  assert.match(interactions, /不加入.*旧版.*六个固定区段/);
+  assert.match(editorWorkflow, /promotion\.title.*promotion\.subtitle/);
+  assert.match(editorWorkflow, /无标题款.*不显示.*顶部标题.*说明/);
+  assert.match(titleManagement, /Lora/);
+  assert.match(titleManagement, /Montserrat/);
+  assert.match(noTitleManagement, /不含.*promotion\.title.*promotion\.subtitle/);
+});
+
 test('Skill invokes the tested Shopify scripts in their locked-data order', async () => {
   const skill = await read('SKILL.md');
   const interactions = await read('references/component-interactions.zh-CN.md');

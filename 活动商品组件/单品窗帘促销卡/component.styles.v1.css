@@ -1,0 +1,16 @@
+.freshine-curtain-promotion-card {
+  border-collapse: collapse;
+}
+
+.freshine-curtain-promotion-header {
+  text-align: center;
+}
+
+.freshine-curtain-promotion-title {
+  text-align: center;
+}
+
+.freshine-curtain-promotion-image {
+  background-repeat: no-repeat;
+  background-size: cover;
+}

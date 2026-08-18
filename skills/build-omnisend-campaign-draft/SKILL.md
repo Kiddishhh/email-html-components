@@ -15,6 +15,10 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 
 在浏览器打开 `http://127.0.0.1:4173`。编辑器从 `组件清单.json` 读取所有已注册组件及其目录内的 `效果演示.html`、默认完整快照和 Schema；用户可以自由添加、重复、拖拽排序或删除任意组件，不预置固定结构。每个新实例使用组件当前默认值，可编辑已开放字段，并实时生成 600px / 375px 预览。
 
+### 单品窗帘促销卡变体
+
+活动商品分类已登记两款自由组合组件：`collection.curtainPromotionCard`（单品窗帘促销卡（标题款））和 `collection.curtainPromotionCardNoTitle`（单品窗帘促销卡（无标题款））。两者都可从组件库自由添加、重复、排序或删除；标题款额外开放顶部 `promotion.title` 和 `promotion.subtitle`，无标题款不显示这两项而直接从商品图片开始。两款均开放促销角标、商品图片与点击链接、商品标题、说明、CTA、组件背景色和角标底色；默认图仅供本地预览，最终 Omnisend HTML 必须替换为公开 HTTPS 图片。它们不属于旧版 CLI 的六个固定区段，不加入 `campaign-structure.v1.json` 或 `campaign-component-interactions.v1.json` 的固定选择流程。
+
 `小样-产品` 分类现包含小样产品推荐卡（左）、小样产品推荐卡（右）、窗帘产品推荐卡II（标题版）和窗帘产品推荐卡II（无标题版）；四者可在编辑器中添加、排序和编辑各自已开放的内容与颜色字段。该分类不改变 CLI 降级流程的固定六区段。
 
 顶部“上传 Omnisend 草稿”会先确认全部组件并生成静态安全 HTML；内容哈希只在本机内部校验，不要求用户手动复制或粘贴。随后编辑器弹窗一次性收集 Omnisend API Key，支持粘贴与显示/隐藏；密钥仅在本次浏览器请求和本机进程内存中使用，完成或失败后立即清空，不写入草稿、参数、环境变量、文件或日志。上传前按 Campaign 名称精确检索 `draft`，如有多个同名草稿则更新最近更新的一封；未找到才新建 Draft。上传固定委托 `scripts/upload-omnisend-draft.mjs`，不得发送、排期或发布。浏览器不可用时，以下固定六区段流程仍可作为 CLI 降级方案：脚本在运行时通过终端隐藏询问 Omnisend API Key，且同样不会保存密钥。

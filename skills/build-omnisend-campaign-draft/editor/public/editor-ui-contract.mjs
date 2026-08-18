@@ -17,6 +17,14 @@ const editableByComponent = {
     content: ['saleCollection.title', 'saleCollection.body', 'saleCollection.cta.text', 'saleCollection.cta.url'],
     settings: ['color.theme', 'color.surface']
   },
+  'collection.curtainPromotionCard': {
+    content: ['promotion.title', 'promotion.subtitle', 'product.badge', 'product.image.url', 'product.image.alt', 'product.image.clickUrl', 'product.title', 'product.description', 'product.cta.text', 'product.cta.url'],
+    settings: ['color.surface', 'color.badge']
+  },
+  'collection.curtainPromotionCardNoTitle': {
+    content: ['product.badge', 'product.image.url', 'product.image.alt', 'product.image.clickUrl', 'product.title', 'product.description', 'product.cta.text', 'product.cta.url'],
+    settings: ['color.surface', 'color.badge']
+  },
   'image.clickableFullWidth': {
     content: ['image.url', 'image.alt', 'image.linkUrl'],
     settings: ['color.surface']
@@ -78,6 +86,16 @@ const copyByField = {
   'saleCollection.body': ['商品区说明', '显示在六宫格标题下方的活动说明。'],
   'saleCollection.cta.text': ['商品区按钮文字', '六宫格下方引导用户查看活动的按钮文案。'],
   'saleCollection.cta.url': ['商品区按钮链接', '六宫格下方按钮点击后打开的活动页地址。'],
+  'promotion.title': ['顶部活动标题', '显示在商品主图上方的居中标题。'],
+  'promotion.subtitle': ['顶部活动说明', '显示在顶部活动标题下方的居中说明。'],
+  'product.badge': ['促销角标文字', '显示在商品主图左上角的促销信息。'],
+  'product.image.url': ['商品主图链接', '替换商品主图；填写公开 HTTPS 图片地址。'],
+  'product.image.alt': ['商品主图说明', '图片无法显示时供读屏工具识别的简短说明。'],
+  'product.image.clickUrl': ['商品图片链接', '点击主图和商品标题后打开的商品或集合页面地址。'],
+  'product.title': ['商品名称', '显示在商品图片下方的产品名称。'],
+  'product.description': ['商品卖点', '显示在商品名称下方的简短产品说明。'],
+  'product.cta.text': ['商品 CTA 文字', '显示为下划线文本链接的引导文字。'],
+  'product.cta.url': ['商品 CTA 链接', '点击下划线 CTA 后打开的商品或集合页面地址。'],
   'image.url': ['整图链接', '替换当前组件使用的完整图片；填写公开 HTTPS 图片地址。'],
   'image.alt': ['图片说明', '图片无法显示时供读屏工具识别的简短说明。'],
   'image.linkUrl': ['图片点击链接', '用户点击整张图片后打开的页面地址。'],
@@ -105,6 +123,7 @@ const copyByField = {
   'color.surface': ['组件背景色', '仅修改当前组件的底色，不影响邮件整体背景。'],
   'color.text': ['组件文字色', '仅修改当前组件的文字颜色。'],
   'color.action': ['CTA 操作色', '仅修改当前组件 CTA 的按钮或强调色。'],
+  'color.badge': ['促销角标底色', '仅修改商品主图左上角促销角标的背景色。'],
   'color.offerSurface': ['优惠文案区底色', '仅修改主图下方优惠文案区域的背景色。'],
   'color.promotionLeft': ['顶部栏左侧底色', '修改顶部促销栏左侧区域的背景色。'],
   'color.promotionRight': ['顶部栏右侧底色', '修改顶部促销栏右侧区域的背景色。'],

@@ -66,6 +66,36 @@ test('editor groups styles by structure before selection and exposes only Skill-
     content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.fabric.url', 'product.images.fabric.alt', 'product.title', 'product.subtitle', 'product.cta.label', 'product.url'],
     settings: ['color.surface', 'color.text']
   });
+  assert.deepEqual(editableFieldKeys('collection.curtainPromotionCard'), {
+    content: [
+      'promotion.title', 'promotion.subtitle', 'product.badge', 'product.image.url', 'product.image.alt',
+      'product.image.clickUrl', 'product.title', 'product.description', 'product.cta.text', 'product.cta.url'
+    ],
+    settings: ['color.surface', 'color.badge']
+  });
+  assert.deepEqual(editableFieldKeys('collection.curtainPromotionCardNoTitle'), {
+    content: [
+      'product.badge', 'product.image.url', 'product.image.alt', 'product.image.clickUrl',
+      'product.title', 'product.description', 'product.cta.text', 'product.cta.url'
+    ],
+    settings: ['color.surface', 'color.badge']
+  });
+  assert.deepEqual(editorFieldCopy('collection.curtainPromotionCard', 'content', 'product.image.clickUrl'), {
+    label: '商品图片链接',
+    help: '点击主图和商品标题后打开的商品或集合页面地址。'
+  });
+  assert.deepEqual(editorFieldCopy('collection.curtainPromotionCard', 'content', 'promotion.title'), {
+    label: '顶部活动标题',
+    help: '显示在商品主图上方的居中标题。'
+  });
+  assert.deepEqual(editorFieldCopy('collection.curtainPromotionCard', 'content', 'promotion.subtitle'), {
+    label: '顶部活动说明',
+    help: '显示在顶部活动标题下方的居中说明。'
+  });
+  assert.deepEqual(editorFieldCopy('collection.curtainPromotionCard', 'settings', 'color.badge'), {
+    label: '促销角标底色',
+    help: '仅修改商品主图左上角促销角标的背景色。'
+  });
   assert.deepEqual(editorFieldCopy('collection.saleGrid6', 'content', 'saleCollection.body'), {
     label: '商品区说明',
     help: '显示在六宫格标题下方的活动说明。'
