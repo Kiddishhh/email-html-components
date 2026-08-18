@@ -86,6 +86,7 @@ function assertDraftSafeRequest({ method, url, body }) {
     ['POST', '/api/campaigns'],
     ['GET', '/api/brands/current']
   ].some(([allowedMethod, allowedPath]) => method === allowedMethod && parsed.pathname === allowedPath)
+    || (method === 'GET' && parsed.pathname === '/api/campaigns' && parsed.searchParams.get('status') === 'draft' && parsed.searchParams.get('limit') === '100')
     || (method === 'GET' && /^\/api\/campaigns\/[^/]+$/u.test(parsed.pathname))
     || (method === 'GET' && /^\/api\/email-content\/[^/]+$/u.test(parsed.pathname))
     || (method === 'PUT' && /^\/api\/email-content\/[^/]+$/u.test(parsed.pathname));
@@ -104,7 +105,27 @@ function preflight(projectState, html) {
   assert(html.includes(UNSUBSCRIBE_TOKEN), 'static HTML is missing the unsubscribe token');
   const campaignID = projectState?.finalConfirmation?.campaignID;
   const contentID = projectState?.finalConfirmation?.contentID;
-  assert(Boolean(campaignID) === Boolean(contentID), 'existing draft update requires both campaignID and contentID');
+  assert(!contentID || campaignID, 'existing draft contentID requires a campaignID');
+}
+
+function campaignCandidates(response) {
+  const list = Array.isArray(response) ? response
+    : Array.isArray(response?.items) ? response.items
+      : Array.isArray(response?.campaigns) ? response.campaigns
+        : Array.isArray(response?.data) ? response.data
+          : [];
+  return list.filter((campaign) => campaign && typeof campaign === 'object');
+}
+
+function mostRecentlyUpdatedMatchingDraft(response, name) {
+  const candidates = campaignCandidates(response)
+    .filter((campaign) => campaign.status === 'draft' && campaign.name === name && typeof campaign.id === 'string' && campaign.id)
+    .sort((left, right) => {
+      const rightUpdated = Date.parse(right.updatedAt ?? right.updated_at ?? right.lastUpdatedAt ?? right.createdAt ?? 0) || 0;
+      const leftUpdated = Date.parse(left.updatedAt ?? left.updated_at ?? left.lastUpdatedAt ?? left.createdAt ?? 0) || 0;
+      return rightUpdated - leftUpdated || String(right.id).localeCompare(String(left.id));
+    });
+  return candidates[0] ?? null;
 }
 
 function confirmedHtmlContent(response) {
@@ -244,12 +265,13 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
         preflight(projectState, html);
         const campaignID = projectState?.finalConfirmation?.campaignID;
         const contentID = projectState?.finalConfirmation?.contentID;
-        assert(campaignID && contentID, 'verify-existing requires a confirmed campaignID and contentID');
+        assert(campaignID, 'verify-existing requires a confirmed campaignID');
         const campaignReadback = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/campaigns/${campaignID}` });
         assertResponseStatus(campaignReadback, 200, 'campaign readback');
         assert(campaignReadback.json?.status === 'draft', 'campaign readback is not draft');
-        assert(extractContentID(campaignReadback.json) === contentID, 'campaign readback content ID does not match');
-        const contentReadback = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/email-content/${contentID}` });
+        const resolvedContentID = extractContentID(campaignReadback.json);
+        assert(!contentID || resolvedContentID === contentID, 'campaign readback content ID does not match');
+        const contentReadback = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/email-content/${resolvedContentID}` });
         assertResponseStatus(contentReadback, 200, 'email content readback');
         const { target } = confirmedHtmlContent(contentReadback.json);
         const remoteHtml = target.owner[target.key];
@@ -258,7 +280,7 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
         return {
           operation: 'verified-existing-update',
           campaignID,
-          contentID,
+          contentID: resolvedContentID,
           verifiedAt: now(),
           status: 'draft',
           remoteHtmlSha256: sha256(remoteHtml),
@@ -275,14 +297,22 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
       try {
         assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
         preflight(projectState, html);
-        const existingCampaignID = projectState?.finalConfirmation?.campaignID;
-        const existingContentID = projectState?.finalConfirmation?.contentID;
+        let existingCampaignID = projectState?.finalConfirmation?.campaignID;
+        let existingContentID = projectState?.finalConfirmation?.contentID;
         let existingContent;
+        if (!existingCampaignID) {
+          const campaignList = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/campaigns?status=draft&limit=100` });
+          assertResponseStatus(campaignList, 200, 'draft campaign search');
+          const match = mostRecentlyUpdatedMatchingDraft(campaignList.json, projectState.campaign?.name);
+          if (match) existingCampaignID = match.id;
+        }
         if (existingCampaignID) {
           const existingCampaign = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/campaigns/${existingCampaignID}` });
           assertResponseStatus(existingCampaign, 200, 'existing campaign readback');
           assert(existingCampaign.json?.status === 'draft', 'existing campaign is not draft');
-          assert(extractContentID(existingCampaign.json) === existingContentID, 'existing campaign content ID does not match the confirmed project state');
+          const resolvedContentID = extractContentID(existingCampaign.json);
+          assert(!existingContentID || resolvedContentID === existingContentID, 'existing campaign content ID does not match the confirmed project state');
+          existingContentID = resolvedContentID;
           const existingContentReadback = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/email-content/${existingContentID}` });
           assertResponseStatus(existingContentReadback, 200, 'existing email content readback');
           replaceConfirmedHtmlBlock(existingContentReadback.json, html);
@@ -475,8 +505,8 @@ function createFetchTransport() {
   };
 }
 
-export async function runCli(argv = process.argv.slice(2)) {
-  const { projectPath, htmlPath, verifyExisting } = parseCliArgs(argv);
+export async function runDraftUploadWithApiKey({ projectPath, htmlPath, apiKey, verifyExisting = false }) {
+  assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
   const [projectSource, html] = await Promise.all([readFileFromDisk(projectPath, 'utf8'), readFileFromDisk(htmlPath, 'utf8')]);
   const projectState = JSON.parse(projectSource);
   const transaction = createDraftUploadTransaction({
@@ -486,9 +516,18 @@ export async function runCli(argv = process.argv.slice(2)) {
     transport: createFetchTransport()
   });
   transaction.preflight();
+  try {
+    return verifyExisting ? await transaction.verifyExisting(apiKey) : await transaction.run(apiKey);
+  } finally {
+    apiKey = '';
+  }
+}
+
+export async function runCli(argv = process.argv.slice(2)) {
+  const { projectPath, htmlPath, verifyExisting } = parseCliArgs(argv);
   let apiKey = await promptHiddenSecret();
   try {
-    const receipt = verifyExisting ? await transaction.verifyExisting(apiKey) : await transaction.run(apiKey);
+    const receipt = await runDraftUploadWithApiKey({ projectPath, htmlPath, apiKey, verifyExisting });
     process.stdout.write(`${JSON.stringify(receipt)}\n`);
   } finally {
     apiKey = '';

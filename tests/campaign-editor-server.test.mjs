@@ -167,14 +167,14 @@ test('editor server stores an uploaded local image only in the current draft and
   assert.equal((await fetch(new URL(imageSource, `${baseUrl}${preview.body.previewUrl}`).href)).status, 200);
 });
 
-test('editor uploads only a hash-confirmed Omnisend draft through the fixed draft uploader', async (t) => {
+test('editor uploads a prepared Omnisend draft with a one-time API key and no manual hash entry', async (t) => {
   const calls = [];
   const sessionRoot = mkdtempSync(join(tmpdir(), 'freshine-editor-omnisend-draft-'));
   const server = await createCampaignEditorServer({
     workspaceRoot,
     sessionRoot,
-    runDraftUploader: ({ projectPath, htmlPath }) => {
-      calls.push({ projectPath, htmlPath });
+    runDraftUploader: ({ projectPath, htmlPath, apiKey }) => {
+      calls.push({ projectPath, htmlPath, apiKey });
       return { status: 'draft', campaignID: 'campaign-draft-1', contentID: 'content-draft-1' };
     }
   });
@@ -196,25 +196,20 @@ test('editor uploads only a hash-confirmed Omnisend draft through the fixed draf
     })
   });
   assert.equal(prepared.response.status, 200, prepared.body?.error);
-  assert.match(prepared.body.staticHtmlSha256, /^[a-f0-9]{64}$/u);
-  assert.equal(calls.length, 0);
-
-  const rejected = await request(baseUrl, `/api/drafts/${draftId}/upload-omnisend-draft`, {
-    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ staticHtmlSha256: '0'.repeat(64) })
-  });
-  assert.equal(rejected.response.status, 400);
-  assert.match(rejected.body.error, /hash/i);
+  assert.equal(prepared.body.ready, true);
+  assert.equal('staticHtmlSha256' in prepared.body, false);
   assert.equal(calls.length, 0);
 
   const uploaded = await request(baseUrl, `/api/drafts/${draftId}/upload-omnisend-draft`, {
-    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ staticHtmlSha256: prepared.body.staticHtmlSha256 })
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ apiKey: 'one-time-editor-key' })
   });
   assert.equal(uploaded.response.status, 200, uploaded.body?.error);
   assert.equal(uploaded.body.receipt.status, 'draft');
   assert.equal(calls.length, 1);
+  assert.equal(calls[0].apiKey, 'one-time-editor-key');
   const projectState = JSON.parse(readFileSync(calls[0].projectPath, 'utf8'));
   assert.equal(projectState.finalConfirmation.status, 'confirmed');
-  assert.equal(projectState.finalConfirmation.confirmedStaticHtmlSha256, prepared.body.staticHtmlSha256);
+  assert.match(projectState.finalConfirmation.confirmedStaticHtmlSha256, /^[a-f0-9]{64}$/u);
   assert.equal(projectState.finalConfirmation.remoteStatus, 'draft');
 });
 

@@ -16,11 +16,11 @@
 - `component.template.v1.html`：单根表格结构以及内容、设置插槽。
 - `component.styles.v1.css`：组件自身的安全样式维护源，不直接上传 Omnisend。
 - `content.schema.v1.json`：后续 Skill 需要收集的文案、图片、alt 和链接字段。
-- `content.fixture.v1.json`：公开 HTTPS 默认测试数据，供 Skill 初始化完整内容快照；拼接器不会自动读取。
+- `content.fixture.v1.json`：默认内容与本地预览素材映射，供编辑器初始化完整内容快照；拼接器不会自动读取。
 - `settings.schema.v1.json`：可替换背景色及高级样式参数。
 - `settings.defaults.v1.json`：默认主题设置，供 Skill 初始化完整设置快照；拼接器不会自动补缺失字段。
-- `assets/default-pillow-cover.png`：参考稿上方完整图片，仅供本地演示。
-- `assets/default-eye-mask.png`：参考稿下方完整图片，仅供本地演示。
+- `assets/default-random-pillow-cover.jpg`：默认上方随机抱枕套奖励图，仅供本地预览。
+- `assets/default-silk-eye-mask.jpg`：默认下方丝绸眼罩奖励图，仅供本地预览。
 - `效果演示.html`：使用默认文案、背景色和本地参考图片生成的浏览器效果；不能直接作为 Omnisend Custom HTML 片段导入。
 
 ## 后续 Skill 应收集的内容
@@ -45,10 +45,10 @@ Skill 默认按以下顺序询问：
 | 顶部标题 | `reward.title` | 纯文本，必填 |
 | 第一条规则 | `reward.rules[0]` | 纯文本，必填 |
 | 第二条规则 | `reward.rules[1]` | 纯文本，必填 |
-| 上方图片 | `reward.items[0].image.url` | 完整图片 HTTPS URL |
+| 上方图片 | `reward.items[0].image.url` | 默认使用本地预览素材；正式导入时为完整图片 HTTPS URL |
 | 上方图片说明 | `reward.items[0].image.alt` | 纯文本 alt |
 | 上方图片链接 | `reward.items[0].url` | 完整 HTTPS URL |
-| 下方图片 | `reward.items[1].image.url` | 完整图片 HTTPS URL |
+| 下方图片 | `reward.items[1].image.url` | 默认使用本地预览素材；正式导入时为完整图片 HTTPS URL |
 | 下方图片说明 | `reward.items[1].image.alt` | 纯文本 alt |
 | 下方图片链接 | `reward.items[1].url` | 完整 HTTPS URL |
 

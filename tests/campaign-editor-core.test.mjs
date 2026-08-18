@@ -71,6 +71,7 @@ test('full component library retains both countdown heroes and the benefits stri
 
   assert.deepEqual(document.components.map(({ componentKey }) => componentKey), ['hero.countdownOverlay', 'hero.countdownOverlay2', 'image.benefitsStrip3']);
   const assets = buildLocalAssetMap(document, { workspaceRoot });
+  assert.match(assets['benefits-strip-3'].path, /赠品与权益组件\/三项权益整图\/assets\/default-benefits-strip-combination-i-1200\.jpg$/u);
   for (const assetId of ['countdown-background', 'countdown-brand-logo', 'countdown-divider', 'countdown-hero-2-logo', 'countdown-hero-2-image', 'benefits-strip-3']) {
     assert.equal(existsSync(resolve(workspaceRoot, assets[assetId].path)), true, `${assetId} should resolve to a checked-in component asset`);
   }
@@ -103,6 +104,8 @@ test('local preview asset map is derived from the selected component defaults', 
 
   const assets = buildLocalAssetMap(document, { workspaceRoot });
   assert.match(assets['hero-logo-white'].path, /头图\/促销悬浮首图\/assets\/default-logo-white\.png$/u);
+  assert.match(assets['gift-pillow-cover'].path, /赠品与权益组件\/双赠品奖励卡\/assets\/default-random-pillow-cover\.jpg$/u);
+  assert.match(assets['gift-eye-mask'].path, /赠品与权益组件\/双赠品奖励卡\/assets\/default-silk-eye-mask\.jpg$/u);
   for (const asset of Object.values(assets)) assert.equal(existsSync(`${workspaceRoot}/${asset.path}`), true);
 });
 

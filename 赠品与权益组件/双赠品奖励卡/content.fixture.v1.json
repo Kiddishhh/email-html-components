@@ -2,15 +2,19 @@
   "schemaVersion": 1,
   "componentKey": "gift.rewardGrid2",
   "fixture": "default-theme-demo",
+  "localReferenceAssets": {
+    "gift-pillow-cover": "assets/default-random-pillow-cover.jpg",
+    "gift-eye-mask": "assets/default-silk-eye-mask.jpg"
+  },
   "values": {
-    "reward.items[0].image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Elara_89850_scene_15.webp?v=1755009943",
+    "reward.items[0].image.url": "asset://gift-pillow-cover",
     "reward.items[0].image.alt": "Random pillow cover gift",
-    "reward.items[1].image.url": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Amara-Linen-Curtains-LightBeig1038-1-6.webp?v=1765519015",
+    "reward.items[1].image.url": "asset://gift-eye-mask",
     "reward.items[1].image.alt": "Silk eye mask gift",
     "reward.title": "Free Gifts – Limited Time!",
     "reward.rules[0]": "Spend $359+ And Get Free Eye Mask",
     "reward.rules[1]": "Spend $599+ And Get Free Pillow Cover",
-    "reward.items[0].url": "https://freshinelife.com/collections/curtains",
+    "reward.items[0].url": "https://freshinelife.com/collections/pillow-covers",
     "reward.items[1].url": "https://freshinelife.com/collections/curtains"
   }
 }

@@ -116,13 +116,12 @@ test('creates and verifies a draft without calling send or scheduling endpoints'
   assert.deepEqual(campaignRequest.body.sendingSettings, { strategy: 'immediate' });
 });
 
-test('updates the existing confirmed draft content without creating or sending a campaign', async () => {
+test('resolves the existing draft content ID before updating without creating or sending a campaign', async () => {
   const { createDraftUploadTransaction } = await import(scriptUrl);
   const html = '<table><tr><td background="asset://hero">[[unsubscribe_link]]</td></tr></table>';
   const finalHtml = '<table><tr><td background="https://app.omnisend.com/images/image-1">[[unsubscribe_link]]</td></tr></table>';
   const state = projectState(html);
   state.finalConfirmation.campaignID = 'campaign-existing';
-  state.finalConfirmation.contentID = 'content-existing';
   const existingContent = {
     generalSettings: { content: { width: '600px' }, body: { backgroundColor: '#FFFFFF' } },
     sections: [{
@@ -190,6 +189,47 @@ test('updates the existing confirmed draft content without creating or sending a
   ]);
   assert.ok(calls.every(({ method, url }) => !(method === 'POST' && new URL(url).pathname === '/api/campaigns')));
   assert.ok(calls.every(({ url }) => !url.includes('/send')));
+});
+
+test('updates the most recently updated exact-name draft before creating a new campaign', async () => {
+  const { createDraftUploadTransaction } = await import(scriptUrl);
+  const html = '<table><tr><td>[[unsubscribe_link]]</td></tr></table>';
+  const state = projectState(html);
+  state.campaign.name = 'Summer Sale';
+  const calls = [];
+  const content = {
+    generalSettings: { content: { width: '600px' } },
+    sections: [{ rows: [{ columns: [{ blocks: [{ id: 'html-1', type: 'htmlCode', htmlCode: { body: '<table>old [[unsubscribe_link]]</table>' } }] }] }] }]
+  };
+  let stored = structuredClone(content);
+  const transaction = createDraftUploadTransaction({
+    projectState: state,
+    html,
+    readFile: async () => Buffer.from('unused'),
+    transport: async (request) => {
+      calls.push(request);
+      if (request.method === 'GET' && request.url.includes('/api/campaigns?')) {
+        return { status: 200, json: { items: [
+          { id: 'older', name: 'Summer Sale', status: 'draft', updatedAt: '2026-08-17T10:00:00.000Z' },
+          { id: 'newer', name: 'Summer Sale', status: 'draft', updatedAt: '2026-08-18T10:00:00.000Z' },
+          { id: 'other', name: 'Other Sale', status: 'draft', updatedAt: '2026-08-19T10:00:00.000Z' }
+        ] } };
+      }
+      if (request.method === 'GET' && request.url.endsWith('/api/campaigns/newer')) return { status: 200, json: { id: 'newer', name: 'Summer Sale', status: 'draft', content: { email: { contentID: 'content-newer' } } } };
+      if (request.method === 'GET' && request.url.endsWith('/api/email-content/content-newer')) return { status: 200, json: structuredClone(stored) };
+      if (request.method === 'PUT' && request.url.endsWith('/api/email-content/content-newer')) { stored = structuredClone(request.body); return { status: 200, json: structuredClone(stored) }; }
+      throw new Error(`unexpected request ${request.method} ${request.url}`);
+    }
+  });
+
+  const receipt = await transaction.run('test-api-key');
+
+  assert.equal(receipt.operation, 'updated');
+  assert.equal(receipt.campaignID, 'newer');
+  assert.equal(receipt.contentID, 'content-newer');
+  assert.equal(calls.some(({ method, url }) => method === 'POST' && url.endsWith('/api/campaigns')), false);
+  assert.equal(calls.some(({ method, url }) => method === 'POST' && url.endsWith('/api/email-templates/import')), false);
+  assert.equal(calls.some(({ url }) => url.includes('/send') || url.includes('/schedule') || url.includes('/publish')), false);
 });
 
 test('refuses to update a non-draft existing campaign before uploading images', async () => {

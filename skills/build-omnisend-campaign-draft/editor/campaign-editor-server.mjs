@@ -4,6 +4,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { runDraftUploadWithApiKey } from '../scripts/upload-omnisend-draft.mjs';
 import {
   addComponentInstance,
   attachLocalImage,
@@ -170,20 +171,8 @@ function assetUploadState(draft, workspaceRoot, projectPath) {
   }));
 }
 
-function defaultDraftUploader({ workspaceRoot, projectPath, htmlPath }) {
-  const script = resolve(workspaceRoot, 'skills/build-omnisend-campaign-draft/scripts/upload-omnisend-draft.mjs');
-  const result = spawnSync(process.execPath, [script, '--project', projectPath, '--html', htmlPath], {
-    cwd: workspaceRoot,
-    encoding: 'utf8',
-    stdio: ['inherit', 'pipe', 'pipe']
-  });
-  if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(result.stderr.trim() || 'Omnisend draft upload failed');
-  try {
-    return JSON.parse(result.stdout.trim());
-  } catch {
-    throw new Error('Omnisend draft upload returned an invalid receipt');
-  }
+async function defaultDraftUploader({ projectPath, htmlPath, apiKey }) {
+  return runDraftUploadWithApiKey({ projectPath, htmlPath, apiKey });
 }
 
 export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, runDraftUploader = defaultDraftUploader }) {
@@ -249,28 +238,32 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
     };
     writeFileSync(projectPath, JSON.stringify(projectState, null, 2));
     draft.upload = { projectPath, staticHtmlSha256 };
-    return { staticHtmlSha256 };
+    return { ready: true };
   }
 
-  function uploadOmnisendDraft(draft, confirmedHash) {
+  async function uploadOmnisendDraft(draft, apiKey) {
     assertFullyConfirmed(draft);
     if (!draft.upload?.projectPath || !draft.upload.staticHtmlSha256) throw new Error('prepare the Omnisend draft before uploading');
-    if (confirmedHash !== draft.upload.staticHtmlSha256) throw new Error('the confirmed static HTML hash does not match');
+    if (typeof apiKey !== 'string' || !apiKey.trim()) throw new Error('a non-empty runtime API key is required');
     const projectState = readJson(draft.upload.projectPath);
     projectState.finalConfirmation.status = 'confirmed';
-    projectState.finalConfirmation.confirmedStaticHtmlSha256 = confirmedHash;
+    projectState.finalConfirmation.confirmedStaticHtmlSha256 = draft.upload.staticHtmlSha256;
     writeFileSync(draft.upload.projectPath, JSON.stringify(projectState, null, 2));
-    const receipt = runDraftUploader({ workspaceRoot, projectPath: draft.upload.projectPath, htmlPath: draft.outputPath });
-    if (receipt?.status !== 'draft') throw new Error('Omnisend upload did not return a draft receipt');
-    projectState.finalConfirmation.remoteStatus = 'draft';
-    if (receipt.campaignID && receipt.contentID) {
-      projectState.finalConfirmation.campaignID = receipt.campaignID;
-      projectState.finalConfirmation.contentID = receipt.contentID;
+    try {
+      const receipt = await runDraftUploader({ workspaceRoot, projectPath: draft.upload.projectPath, htmlPath: draft.outputPath, apiKey });
+      if (receipt?.status !== 'draft') throw new Error('Omnisend upload did not return a draft receipt');
+      projectState.finalConfirmation.remoteStatus = 'draft';
+      if (receipt.campaignID && receipt.contentID) {
+        projectState.finalConfirmation.campaignID = receipt.campaignID;
+        projectState.finalConfirmation.contentID = receipt.contentID;
+      }
+      writeFileSync(draft.upload.projectPath, JSON.stringify(projectState, null, 2));
+      writeFileSync(resolve(dirname(draft.upload.projectPath), 'omnisend-draft-receipt.v1.json'), JSON.stringify(receipt, null, 2));
+      draft.upload = { ...draft.upload, receipt };
+      return receipt;
+    } finally {
+      apiKey = '';
     }
-    writeFileSync(draft.upload.projectPath, JSON.stringify(projectState, null, 2));
-    writeFileSync(resolve(dirname(draft.upload.projectPath), 'omnisend-draft-receipt.v1.json'), JSON.stringify(receipt, null, 2));
-    draft.upload = { ...draft.upload, receipt };
-    return receipt;
   }
 
   const server = createServer(async (request, response) => {
@@ -323,7 +316,13 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
         const draft = drafts.get(uploadDraftMatch[1]);
         if (!draft) return json(response, 404, { error: 'draft not found' });
         const body = await readBody(request);
-        return json(response, 200, { receipt: uploadOmnisendDraft(draft, body.staticHtmlSha256) });
+        let apiKey = body.apiKey;
+        try {
+          return json(response, 200, { receipt: await uploadOmnisendDraft(draft, apiKey) });
+        } finally {
+          apiKey = '';
+          body.apiKey = '';
+        }
       }
       const instanceMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)$/u);
       if (instanceMatch && request.method === 'PATCH') {

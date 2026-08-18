@@ -24,15 +24,15 @@
 |---|---|---|
 | `color.background` | `#652a0d` | 页脚区段背景；默认值来自 `new FOOT`；选择本组件时由 Skill 主动询问 |
 | `color.text` | `#FFFFFF` | 修改该组件的常用视觉效果 |
-| `color.link` | `#F4D8A7` | 联系邮箱与退订链接的浅金色，并以底线明确可点击性 |
+| `color.link` | `#F4D8A7` | 联系邮箱与退订链接的浅金色 |
 | `font.body` | `Montserrat, Arial, Helvetica, sans-serif` | 页脚文字优先使用 Montserrat，不支持时回退到 Arial |
 | `space.sectionX` | `24px` | 页脚区段左右留白 |
 | `space.sectionY` | `32px` | 页脚区段上下留白，形成紧凑而不拥挤的暖棕信息卡 |
 | `space.block` | `14px` | 电话与联系邮箱信息组的顶部间距 |
-| `social.size` | `24px` | 四枚社交图标的显示尺寸 |
+| `social.size` | `24px` | 七枚社交图标的显示尺寸 |
 | `content.width` | `440px` | 页脚内容列最大宽度；窄屏时随容器流式缩放 |
 
-默认排版采用精致暖棕信息层级：17px 半粗品牌标题、细金棕分隔线、13px 地址与联系信息、11px 预约说明和法律信息、紧凑的四枚社媒图标，以及浅金色下划线链接。修改方式：只改 `settings.defaults.v1.json` 的 `values`，并同步把相同默认值写入 `settings.schema.v1.json` 的 `default`。颜色使用六位十六进制。组件不会加载外部字体；Montserrat 不可用的邮件客户端会自动回退到 Arial。
+默认排版采用精致暖棕信息层级：17px 半粗品牌标题、细金棕分隔线、13px 地址与联系信息、11px 预约说明和法律信息、紧凑的七枚社媒图标，以及浅金色链接。修改方式：只改 `settings.defaults.v1.json` 的 `values`，并同步把相同默认值写入 `settings.schema.v1.json` 的 `default`。颜色使用六位十六进制。组件不会加载外部字体；Montserrat 不可用的邮件客户端会自动回退到 Arial。
 
 ## Skill 收集规则
 

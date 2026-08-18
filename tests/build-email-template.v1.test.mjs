@@ -69,6 +69,82 @@ test('renders only the complete content and settings snapshot supplied by the Sk
   assert.doesNotMatch(preview, /padding:0 24px/, 'preview shell must not shrink the configured 600px canvas');
 });
 
+test('renders the countdown hero styles required by its registered template', () => {
+  const directory = `${root}/头图/倒计时头图`;
+  const content = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FBFAF8',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: '/private/tmp/countdown-hero-css.html',
+    previewOutput: '/private/tmp/countdown-hero-css.local-preview.html',
+    assets: Object.fromEntries(Object.entries(content.localReferenceAssets).map(([id, relativePath]) => [id, {
+      path: `头图/倒计时头图/${relativePath}`,
+      name: relativePath.split('/').at(-1)
+    }])),
+    components: [{
+      name: '倒计时头图',
+      directory,
+      componentKey: 'hero.countdownOverlay',
+      content: content.values,
+      settings: settings.values
+    }]
+  };
+  const path = '/private/tmp/countdown-hero-css.composition.json';
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+
+  const result = run(path, '--preview-local-assets');
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(composition.previewOutput, 'utf8');
+  assert.match(html, /white-space:nowrap/);
+  assert.match(html, /letter-spacing:0px/);
+});
+
+test('renders the benefits strip without its deprecated optional link field', () => {
+  const directory = `${root}/赠品与权益组件/三项权益整图`;
+  const content = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FBFAF8',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: '/private/tmp/benefits-strip-optional-link.html',
+    previewOutput: '/private/tmp/benefits-strip-optional-link.local-preview.html',
+    assets: {
+      'benefits-strip-3': {
+        path: '赠品与权益组件/三项权益整图/assets/default-benefits-strip-combination-i-1200.jpg',
+        name: 'default-benefits-strip-combination-i-1200.jpg'
+      }
+    },
+    components: [{
+      name: '三项权益整图',
+      directory,
+      componentKey: 'image.benefitsStrip3',
+      content: content.values,
+      settings: settings.values
+    }]
+  };
+  const path = '/private/tmp/benefits-strip-optional-link.composition.json';
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+
+  const result = run(path, '--preview-local-assets');
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(readFileSync(composition.previewOutput, 'utf8'), /https:\/\/app\.omnisend\.com\/images\/6a82d6f0c5aa8a2a0174f006/);
+});
+
 test('rejects an incomplete content snapshot', () => {
   const { path } = makeComposition('email-builder-missing-content', (composition) => {
     delete composition.components[0].content['image.alt'];
@@ -228,8 +304,8 @@ test('builds the six-component local preview with local assets and an Omnisend u
     'default-background.reference.png',
     'default-logo-white.png',
     'default-review-collage.png',
-    'default-pillow-cover.png',
-    'default-eye-mask.png'
+    'default-random-pillow-cover.jpg',
+    'default-silk-eye-mask.jpg'
   ]) assert.ok(preview.includes(filename), `${filename} must appear in the preview`);
   assert.match(preview, /<!-- 组件：品牌信息页脚 -->/);
   assert.match(preview, /href="\[\[unsubscribe_link\]\]"/);
@@ -312,10 +388,10 @@ test('the footer renders its appointment disclaimer as an address-style line bef
   assert.equal(fixture.values['footer.address.disclaimer'], '(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)');
   assert.equal(defaultFooter.content['footer.address.disclaimer'], '(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)');
   assert.ok(countryPosition < disclaimerPosition && disclaimerPosition < phonePosition, 'the disclaimer must stay between country and phone');
-  assert.match(template, /data-freshine-slot="footer\.address\.disclaimer" style="color:#F1D9C7;font-family:\{\{settings\.font\.body\}\};font-size:11px;font-weight:400;line-height:17px;text-align:center;"/);
+  assert.match(template, /data-freshine-slot="footer\.address\.disclaimer" style="color:\{\{settings\.color\.text\}\};font-family:\{\{settings\.font\.body\}\};font-size:11px;font-weight:400;line-height:17px;text-align:center;"/);
 });
 
-test('the footer uses the approved refined warm hierarchy in component, demo, and Skill references', () => {
+test('the footer follows the approved information hierarchy while retaining its existing default colors', () => {
   const directory = `${root}/页脚组件/品牌信息页脚`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
@@ -327,9 +403,10 @@ test('the footer uses the approved refined warm hierarchy in component, demo, an
 
   assert.match(template, /max-width:\{\{settings\.content\.width\}\}/);
   assert.match(template, /font-size:17px;font-weight:600;line-height:22px/);
-  assert.match(template, /height="1" bgcolor="#8B552C"/);
+  assert.match(template, /height="1" bgcolor="#C9B99B"/);
   assert.match(template, /padding:0 5px/);
-  assert.match(template, /color:\{\{settings\.color\.link\}\}[^>]*text-decoration:underline/);
+  assert.match(template, /color:\{\{settings\.color\.text\}\}[^>]*font-size:11px;font-weight:400;line-height:17px/);
+  assert.match(template, /color:\{\{settings\.color\.link\}\}[^>]*text-decoration:none/);
   assert.match(template, /href="\[\[unsubscribe_link\]\]"/);
   assert.equal(defaults.values['color.link'], '#F4D8A7');
   assert.equal(defaults.values['space.sectionY'], '32px');
@@ -340,6 +417,7 @@ test('the footer uses the approved refined warm hierarchy in component, demo, an
   assert.match(demo, /max-width:440px/);
   assert.match(management, /440px/);
   assert.match(management, /#F4D8A7/);
+  assert.doesNotMatch(management, /下划线/);
   assert.match(skill, /精致暖棕信息层级/);
   assert.match(interactions, /精致暖棕信息层级/);
 });
@@ -407,11 +485,47 @@ test('the sale grid CTA aligns with the outer edges of the two desktop product i
   const skill = readFileSync(`${root}/skills/build-omnisend-campaign-draft/SKILL.md`, 'utf8');
   const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
 
-  assert.match(template, /<td style="padding:8px 57px 42px;">/);
-  assert.match(demo, /<td style="padding:8px 57px 42px;">/);
-  assert.match(management, /CTA.*左右各\s*57px.*两列商品图片.*外边缘/s);
-  assert.match(skill, /collection\.saleGrid6.*CTA.*左右各\s*57px.*两列商品图片.*外边缘/s);
-  assert.match(interactions, /CTA.*左右各\s*57px.*两列商品图片.*外边缘/s);
+  assert.match(template, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:100%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
+  assert.match(demo, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:100%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
+  for (const source of [management, skill, interactions]) {
+    assert.match(source, /CTA.*486px/s);
+    assert.match(source, /width:100%.*max-width:486px/s);
+  }
+});
+
+test('the sale grid uses the double-gift title and subtitle type scale', () => {
+  const saleGrid = `${root}/活动商品组件/六宫格夏季促销`;
+  const gifts = `${root}/赠品与权益组件/双赠品奖励卡`;
+  const template = readFileSync(`${saleGrid}/component.template.v1.html`, 'utf8');
+  const demo = readFileSync(`${saleGrid}/效果演示.html`, 'utf8');
+  const giftTemplate = readFileSync(`${gifts}/component.template.v1.html`, 'utf8');
+
+  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
+  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
+  assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
+  assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
+});
+
+test('the default upper gift links to the pillow-cover collection', () => {
+  const directory = `${root}/赠品与权益组件/双赠品奖励卡`;
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const target = 'https://freshinelife.com/collections/pillow-covers';
+
+  assert.equal(fixture.values['reward.items[0].url'], target);
+  assert.match(demo, new RegExp(`<a href="${target}" data-freshine-href-slot="reward\\.items\\[0\\]\\.url"`));
+});
+
+test('the default benefits image uses the approved Omnisend URL', () => {
+  const directory = `${root}/赠品与权益组件/三项权益整图`;
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const target = 'https://app.omnisend.com/images/6a82d6f0c5aa8a2a0174f006';
+
+  assert.equal(fixture.values['image.url'], target);
+  assert.match(demo, new RegExp(`<img src="${target}"`));
 });
 
 test('clickable image defaults to a 600px full-bleed canvas while preserving per-instance overrides', () => {

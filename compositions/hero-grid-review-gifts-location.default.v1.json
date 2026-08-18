@@ -23,12 +23,12 @@
       "name": "customer-review-collage.png"
     },
     "gift-pillow-cover": {
-      "path": "赠品与权益组件/双赠品奖励卡/assets/default-pillow-cover.png",
-      "name": "free-gift-pillow-cover.png"
+      "path": "赠品与权益组件/双赠品奖励卡/assets/default-random-pillow-cover.jpg",
+      "name": "free-gift-pillow-cover.jpg"
     },
     "gift-eye-mask": {
-      "path": "赠品与权益组件/双赠品奖励卡/assets/default-eye-mask.png",
-      "name": "free-gift-eye-mask.png"
+      "path": "赠品与权益组件/双赠品奖励卡/assets/default-silk-eye-mask.jpg",
+      "name": "free-gift-eye-mask.jpg"
     }
   },
   "components": [

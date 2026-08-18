@@ -28,6 +28,18 @@
       <form id="field-form" hidden></form>
     </aside>
   </main>
+  <dialog id="omnisend-upload-dialog" class="upload-dialog" aria-labelledby="omnisend-upload-title">
+    <form method="dialog" class="upload-dialog-form">
+      <h2 id="omnisend-upload-title">上传 Omnisend 草稿</h2>
+      <p>仅会创建或更新 Draft，不会发送、排期或发布。</p>
+      <label>Omnisend API Key
+        <input id="omnisend-api-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="粘贴 API Key">
+      </label>
+      <label class="inline-check"><input id="show-omnisend-api-key" type="checkbox"> 显示 API Key</label>
+      <p class="key-help">密钥仅用于本次本机上传，完成或失败后会立即清除，不会写入草稿、文件或日志。</p>
+      <div class="upload-dialog-actions"><button id="cancel-omnisend-upload" class="button" value="cancel">取消</button><button id="submit-omnisend-upload" type="button" class="button primary">上传为 Draft</button></div>
+    </form>
+  </dialog>
   <script type="module" src="/editor/app.js"></script>
 </body>
 </html>

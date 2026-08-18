@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "componentKey": "image.benefitsStrip3",
   "fixture": "default-three-benefits-strip",
-  "localPreviewAsset": "assets/default-benefits-strip.jpg",
+  "localPreviewAsset": "assets/default-benefits-strip-combination-i-1200.jpg",
   "values": {
-    "image.url": "asset://benefits-strip-3",
+    "image.url": "https://app.omnisend.com/images/6a82d6f0c5aa8a2a0174f006",
     "image.alt": "Freshine benefits: 7–14 day delivery, secure payments, and free shipping"
   }
 }

@@ -10,7 +10,7 @@ if (previewLocalAssets && deferLocalAssets) throw new Error('choose either --pre
 const workspaceRoot = process.cwd();
 const forbiddenTags = /<\/?(?:!doctype|html|head|body|link|style|script|div|iframe|font|video|audio|object|embed|form|input|button|canvas|svg)\b/i;
 const forbiddenCss = /(?:box-shadow|display\s*:\s*(?:flex|grid)|position\s*:\s*(?:absolute|fixed|sticky)|@media|@import|@font-face|--[\w-]+\s*:)/i;
-const allowedCssProperties = new Set(['background-color', 'background-position', 'background-repeat', 'background-size', 'border', 'border-collapse', 'border-radius', 'color', 'display', 'font-family', 'font-size', 'font-weight', 'height', 'line-height', 'margin', 'max-height', 'max-width', 'min-height', 'min-width', 'object-fit', 'outline', 'padding', 'text-align', 'text-decoration', 'vertical-align', 'width']);
+const allowedCssProperties = new Set(['background-color', 'background-position', 'background-repeat', 'background-size', 'border', 'border-collapse', 'border-radius', 'color', 'display', 'font-family', 'font-size', 'font-weight', 'height', 'letter-spacing', 'line-height', 'margin', 'max-height', 'max-width', 'min-height', 'min-width', 'object-fit', 'outline', 'padding', 'text-align', 'text-decoration', 'vertical-align', 'white-space', 'width']);
 
 function readJson(path) { return JSON.parse(readFileSync(path, 'utf8')); }
 function escapeText(value) { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'); }
@@ -89,11 +89,15 @@ function resolveLocalAssets(values, schema, componentKey) {
 
 function validateContent(values, schema, componentKey, localAssetKeys = new Set()) {
   if (!values || typeof values !== 'object' || Array.isArray(values)) throw new Error(`${componentKey}: content must be an object`);
-  const missing = Object.keys(schema.properties).filter((key) => !(key in values));
+  const missing = Object.entries(schema.properties)
+    .filter(([, definition]) => definition.required !== false)
+    .map(([key]) => key)
+    .filter((key) => !(key in values));
   const unknown = Object.keys(values).filter((key) => !(key in schema.properties));
   if (missing.length) throw new Error(`${componentKey}: missing content keys: ${missing.join(', ')}`);
   if (unknown.length) throw new Error(`${componentKey}: unknown content keys: ${unknown.join(', ')}`);
   for (const [key, definition] of Object.entries(schema.properties)) {
+    if (!(key in values) && definition.required === false) continue;
     if (typeof values[key] !== 'string') throw new Error(`${componentKey}: content.${key} must be text`);
     const allowedRegisteredLocalImage = (previewLocalAssets || deferLocalAssets) && definition.role?.endsWith('image-source') && localAssetKeys.has(key);
     if (definition.type === 'url' && !validUrl(values[key]) && !allowedRegisteredLocalImage) throw new Error(`${componentKey}: content.${key} has unsafe URL`);

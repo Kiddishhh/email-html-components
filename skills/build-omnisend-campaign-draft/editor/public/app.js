@@ -13,6 +13,12 @@ const structureSelect = $('#structure-select');
 const styleSelect = $('#style-select');
 const addSelectedComponent = $('#add-selected-component');
 const uploadOmnisendDraftButton = $('#upload-omnisend-draft');
+const omnisendUploadDialog = $('#omnisend-upload-dialog');
+const omnisendApiKeyInput = $('#omnisend-api-key');
+const showOmnisendApiKey = $('#show-omnisend-api-key');
+const submitOmnisendUpload = $('#submit-omnisend-upload');
+const cancelOmnisendUpload = $('#cancel-omnisend-upload');
+let resolveOmnisendApiKey = null;
 
 async function api(path, options = {}) {
   const response = await fetch(path, {
@@ -294,6 +300,25 @@ async function createDraft() {
   $('.workspace').hidden = false;
 }
 
+function finishOmnisendApiKey(value) {
+  const resolveKey = resolveOmnisendApiKey;
+  resolveOmnisendApiKey = null;
+  omnisendApiKeyInput.value = '';
+  showOmnisendApiKey.checked = false;
+  omnisendApiKeyInput.type = 'password';
+  if (omnisendUploadDialog.open) omnisendUploadDialog.close();
+  resolveKey?.(value);
+}
+
+function requestOmnisendApiKey() {
+  omnisendApiKeyInput.value = '';
+  showOmnisendApiKey.checked = false;
+  omnisendApiKeyInput.type = 'password';
+  omnisendUploadDialog.showModal();
+  omnisendApiKeyInput.focus();
+  return new Promise((resolveKey) => { resolveOmnisendApiKey = resolveKey; });
+}
+
 async function uploadOmnisendDraft() {
   if (!state.draft) return;
   window.clearTimeout(state.saveTimer);
@@ -308,19 +333,29 @@ async function uploadOmnisendDraft() {
     const prepared = await api(`/api/drafts/${state.draft.id}/prepare-omnisend-draft`, {
       method: 'POST', body: JSON.stringify({ campaign: { name, subject, preheader } })
     });
-    const confirmedHash = window.prompt(`已生成静态安全 HTML。请粘贴下方完整 SHA-256 以确认后再上传为 Draft：\n${prepared.staticHtmlSha256}`);
-    if (confirmedHash === null) return;
-    if (confirmedHash !== prepared.staticHtmlSha256) throw new Error('确认的 SHA-256 不匹配，已取消上传');
-    window.alert('请在启动编辑器的终端中输入 Omnisend API Key。密钥不会保存到浏览器或草稿文件。');
-    const uploaded = await api(`/api/drafts/${state.draft.id}/upload-omnisend-draft`, {
-      method: 'POST', body: JSON.stringify({ staticHtmlSha256: confirmedHash })
-    });
-    window.alert(`已上传为 Omnisend Draft：${uploaded.receipt.campaignID}`);
+    if (!prepared.ready) throw new Error('静态安全 HTML 准备失败');
+    let apiKey = await requestOmnisendApiKey();
+    if (!apiKey) return;
+    try {
+      const uploaded = await api(`/api/drafts/${state.draft.id}/upload-omnisend-draft`, {
+        method: 'POST', body: JSON.stringify({ apiKey })
+      });
+      window.alert(`已${uploaded.receipt.operation === 'updated' ? '更新' : '创建'} Omnisend Draft：${uploaded.receipt.campaignID}`);
+    } finally {
+      apiKey = '';
+      omnisendApiKeyInput.value = '';
+    }
   } catch (error) { window.alert(error.message); }
 }
 
 $('#new-campaign').addEventListener('click', createDraft);
 uploadOmnisendDraftButton.addEventListener('click', uploadOmnisendDraft);
+showOmnisendApiKey.addEventListener('change', () => { omnisendApiKeyInput.type = showOmnisendApiKey.checked ? 'text' : 'password'; });
+submitOmnisendUpload.addEventListener('click', () => finishOmnisendApiKey(omnisendApiKeyInput.value));
+cancelOmnisendUpload.addEventListener('click', () => finishOmnisendApiKey(null));
+omnisendUploadDialog.addEventListener('close', () => {
+  if (resolveOmnisendApiKey) finishOmnisendApiKey(null);
+});
 structureSelect.addEventListener('change', () => {
   state.selectedStructure = structureSelect.value;
   renderStyleOptions();
