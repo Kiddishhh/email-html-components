@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentKey": "product.sampleProductRecommendation",
+  "componentKey": "product.sampleProductRecommendationRight",
   "injectionMode": "full-component-rerender",
   "properties": {
     "product.images.scene.url": {

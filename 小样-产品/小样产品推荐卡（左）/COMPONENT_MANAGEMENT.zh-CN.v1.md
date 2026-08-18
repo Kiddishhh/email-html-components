@@ -1,10 +1,10 @@
-# 小样产品推荐卡组件管理说明（V1）
+# 小样产品推荐卡（左）组件管理说明（V1）
 
 ## 组件定位
 
-- 中文名称：小样产品推荐卡
+- 中文名称：小样产品推荐卡（左）
 - 英文名称：Sample Product Recommendation Card
-- Component Key：`product.sampleProductRecommendation`
+- Component Key：`product.sampleProductRecommendationLeft`
 - 布局：左侧产品场景图＋右侧面料图、名称、副标题与文字链接 CTA
 - 桌面画布：600px
 - 移动端目标：375px 流式缩放

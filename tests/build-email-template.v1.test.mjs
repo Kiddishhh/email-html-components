@@ -740,18 +740,18 @@ test('the two-review list is registered generally without becoming a Campaign Sk
   assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'review.textList2'), false);
 });
 
-test('the sample product recommendation card is registered with its two-image Liana reference layout without becoming a Campaign Skill candidate', () => {
-  const directory = `${root}/小样-产品/小样产品推荐卡`;
+test('the left sample product recommendation card is registered with its two-image Liana reference layout without becoming a Campaign Skill candidate', () => {
+  const directory = `${root}/小样-产品/小样产品推荐卡（左）`;
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
   const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
   const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
-  const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleProductRecommendation');
+  const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleProductRecommendationLeft');
 
   assert.equal(entries.length, 1);
-  assert.equal(entries[0].中文名称, '小样产品推荐卡');
+  assert.equal(entries[0].中文名称, '小样产品推荐卡（左）');
   assert.equal(entries[0].分类, '小样-产品');
   assert.equal(entries[0].输出宽度, 600);
-  assert.equal(entries[0].路径.组件模板, '小样-产品/小样产品推荐卡/component.template.v1.html');
+  assert.equal(entries[0].路径.组件模板, '小样-产品/小样产品推荐卡（左）/component.template.v1.html');
   for (const filename of [
     'component.template.v1.html',
     'component.styles.v1.css',
@@ -786,13 +786,13 @@ test('the sample product recommendation card is registered with its two-image Li
     output: '/private/tmp/sample-product-recommendation.static-safe.html',
     previewOutput: '/private/tmp/sample-product-recommendation.local-preview.html',
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
-      path: `小样-产品/小样产品推荐卡/${path}`,
+      path: `小样-产品/小样产品推荐卡（左）/${path}`,
       name: path.split('/').at(-1)
     }])),
     components: [{
-      name: '小样产品推荐卡',
+      name: '小样产品推荐卡（左）',
       directory,
-      componentKey: 'product.sampleProductRecommendation',
+      componentKey: 'product.sampleProductRecommendationLeft',
       content: fixture.values,
       settings: settings.values
     }]
@@ -844,8 +844,28 @@ test('the sample product recommendation card is registered with its two-image Li
   assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
   assert.match(preview, /width="319"/);
   assert.match(preview, /width="197"/);
-  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1/assets/default-liana-sheer-curtains.png'));
-  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1/assets/default-liana-sheer-fabric.png'));
-  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleProductRecommendation'), false);
-  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleProductRecommendation'), false);
+  assert.ok(preview.includes('default-liana-sheer-curtains.png'));
+  assert.ok(preview.includes('default-liana-sheer-fabric.png'));
+  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleProductRecommendationLeft'), false);
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleProductRecommendationLeft'), false);
+});
+
+test("the sample product recommendation cards expose distinct left and right variants", () => {
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, "utf8"));
+  const variants = [
+    ["product.sampleProductRecommendationLeft", "小样产品推荐卡（左）", "小样-产品/小样产品推荐卡（左）"],
+    ["product.sampleProductRecommendationRight", "小样产品推荐卡（右）", "小样-产品/小样产品推荐卡（右）"]
+  ];
+  for (const [key, name, directory] of variants) {
+    const entry = registry.find(({ componentKey }) => componentKey === key);
+    assert.ok(entry, `missing ${key} registry entry`);
+    assert.equal(entry.中文名称, name);
+    assert.equal(entry.路径.组件模板, `${directory}/component.template.v1.html`);
+    assert.equal(existsSync(`${root}/${directory}/效果演示.html`), true, `missing ${name} preview`);
+  }
+  const left = readFileSync(`${root}/${variants[0][2]}/component.template.v1.html`, "utf8");
+  const right = readFileSync(`${root}/${variants[1][2]}/component.template.v1.html`, "utf8");
+  assert.ok(left.indexOf("width=\"319\"") < left.indexOf("width=\"197\""));
+  assert.ok(right.indexOf("width=\"197\"") < right.indexOf("width=\"319\""));
+  assert.match(right, /data-freshine-slot=\"product\.images\.fabric\"[\s\S]*data-freshine-slot=\"product\.title\"[\s\S]*data-freshine-slot=\"product\.images\.scene\"/);
 });

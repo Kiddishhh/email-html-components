@@ -200,21 +200,41 @@
     "规范版本": 1
   },
   {
-    "中文名称": "小样产品推荐卡",
+    "中文名称": "小样产品推荐卡（左）",
     "分类": "小样-产品",
-    "componentKey": "product.sampleProductRecommendation",
+    "componentKey": "product.sampleProductRecommendationLeft",
     "默认主题": "warm-minimal-product",
-    "默认变体": "dual-image-product-card",
+    "默认变体": "dual-image-product-card-left",
     "fixedTheme": false,
     "输出宽度": 600,
     "路径": {
-      "组件模板": "小样-产品/小样产品推荐卡/component.template.v1.html",
-      "内容契约": "小样-产品/小样产品推荐卡/content.schema.v1.json",
-      "设置契约": "小样-产品/小样产品推荐卡/settings.schema.v1.json",
-      "默认测试数据": "小样-产品/小样产品推荐卡/content.fixture.v1.json",
-      "默认设置": "小样-产品/小样产品推荐卡/settings.defaults.v1.json",
-      "中文管理说明": "小样-产品/小样产品推荐卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
-      "组件样式": "小样-产品/小样产品推荐卡/component.styles.v1.css"
+      "组件模板": "小样-产品/小样产品推荐卡（左）/component.template.v1.html",
+      "内容契约": "小样-产品/小样产品推荐卡（左）/content.schema.v1.json",
+      "设置契约": "小样-产品/小样产品推荐卡（左）/settings.schema.v1.json",
+      "默认测试数据": "小样-产品/小样产品推荐卡（左）/content.fixture.v1.json",
+      "默认设置": "小样-产品/小样产品推荐卡（左）/settings.defaults.v1.json",
+      "中文管理说明": "小样-产品/小样产品推荐卡（左）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "小样-产品/小样产品推荐卡（左）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "小样产品推荐卡（右）",
+    "分类": "小样-产品",
+    "componentKey": "product.sampleProductRecommendationRight",
+    "默认主题": "warm-minimal-product",
+    "默认变体": "dual-image-product-card-right",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "小样-产品/小样产品推荐卡（右）/component.template.v1.html",
+      "内容契约": "小样-产品/小样产品推荐卡（右）/content.schema.v1.json",
+      "设置契约": "小样-产品/小样产品推荐卡（右）/settings.schema.v1.json",
+      "默认测试数据": "小样-产品/小样产品推荐卡（右）/content.fixture.v1.json",
+      "默认设置": "小样-产品/小样产品推荐卡（右）/settings.defaults.v1.json",
+      "中文管理说明": "小样-产品/小样产品推荐卡（右）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "小样-产品/小样产品推荐卡（右）/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
