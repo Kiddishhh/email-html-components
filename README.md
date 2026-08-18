@@ -7,10 +7,10 @@
 | 顺序 | 组件 | `componentKey` | 源码目录 |
 | --- | --- | --- | --- |
 | 1 | 促销悬浮首图 | `hero.promotionalOverlay` | `头图/促销悬浮首图/` |
-| 2 | 六宫格夏季促销 | `collection.saleGrid6` | `活动商品组件/六宫格夏季促销/` |
-| 3 | 可链接整图 | `image.clickableFullWidth` | `通用图片组件/可链接整图/` |
+| 2 | 六宫格夏季促销 | `collection.saleGrid6` | `活动商品组件/六宫格折扣商品组件/` |
+| 3 | 可链接整图 | `image.clickableFullWidth` | `评论组件/可链接整图/` |
 | 4 | 双赠品奖励卡 | `gift.rewardGrid2` | `赠品与权益组件/双赠品奖励卡/` |
-| 5 | 展厅地址卡 | `location.showroomCard` | `赠品与权益组件/展厅地址卡/` |
+| 5 | 展厅地址卡 | `location.showroomCard` | `地址组件/展厅地址卡/` |
 | 6 | 品牌信息页脚 | `footer.warm` | `页脚组件/品牌信息页脚/` |
 
 活动路径的单一事实来源是 [`组件清单.json`](组件清单.json)。每个组件包含模板、内联 CSS 来源、内容 Schema、设置 Schema、fixture、defaults、中文管理说明和供样式选择直接打开的 `效果演示.html`。

@@ -57,13 +57,13 @@ test('skill records the approved campaign workflow and safety gates', async () =
   assert.match(skill, /内容哈希/);
 });
 
-test('skill starts the Draft-only editor and opens its printed loopback URL in the in-app Browser', async () => {
+test('skill documents the local Draft-only editor entry point', async () => {
   const skill = await read('SKILL.md');
 
-  assert.match(skill, /start-campaign-editor\.mjs.*--no-open/);
-  assert.match(skill, /打印.*URL.*in-app Browser|in-app Browser.*打印.*URL/s);
+  assert.match(skill, /start-campaign-editor\.mjs 4173/);
+  assert.match(skill, /127\.0\.0\.1:4173/);
   assert.match(skill, /Omnisend.*[Dd]raft|[Dd]raft.*Omnisend/s);
-  assert.match(skill, /界面.*不得.*发送.*发布.*排期.*激活/s);
+  assert.match(skill, /不得发送.*排期.*发布|不得发送.*发布.*排期/s);
 });
 
 test('campaign metadata collection explains its three fields in Chinese', async () => {
@@ -205,19 +205,13 @@ test('Shopify access is strictly read-only', async () => {
   assert.match(shopify, /read_online_store_pages.*read_content|read_content.*read_online_store_pages/);
 });
 
-test('campaign structure validates the six fixed slots and interaction-ready styles', async () => {
+test('campaign structure validates user-ordered registered components', async () => {
   const result = spawnSync(process.execPath, [validator], { cwd: workspaceRoot, encoding: 'utf8' });
 
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const structure = JSON.parse(await read('references/campaign-structure.v1.json'));
-  assert.deepEqual(structure.slots.map(({ id }) => id), [
-    'hero',
-    'sale-grid',
-    'clickable-image',
-    'gift',
-    'location',
-    'footer'
-  ]);
+  assert.equal(structure.schemaVersion, 2);
+  assert.equal(structure.selection, 'user-ordered-registered-components');
 });
 
 test('campaign validation rejects a selectable component without its real demo', () => {
@@ -236,14 +230,17 @@ test('campaign validation rejects a component whose content Schema key drifted',
   assert.match(result.stderr, /hero\.promotionalOverlay.*content Schema.*hero\.wrongKey/u);
 });
 
-test('Skill uses the Campaign contracts to select six fixed slots one at a time', async () => {
+test('Skill resolves user-ordered registered components one at a time', async () => {
   const skill = await read('SKILL.md');
   const interactions = await read('references/component-interactions.zh-CN.md');
+  const safety = await read('references/workflow-and-safety.zh-CN.md');
 
   assert.match(skill, /campaign-structure\.v1\.json/);
   assert.match(skill, /campaign-component-interactions\.v1\.json/);
-  assert.match(skill, /首图.*促销多商品栏.*整图链接.*赠品.*地址.*页脚/s);
-  assert.match(skill, /每次.*一个区段.*样式/);
+  assert.match(skill, /自由添加、重复、拖拽排序或删除/);
+  assert.match(safety, /不定义固定区段/);
+  assert.match(safety, /用户提供的 `componentKey` 列表决定邮件的组件成员、数量和顺序/);
+  assert.match(safety, /每次只展示并确认用户列表中的一个组件/);
   assert.match(interactions, /gift\.rewardGrid2/);
   assert.match(interactions, /location\.showroomCard/);
   assert.match(interactions, /footer\.warm/);
@@ -311,14 +308,14 @@ test('Skill invokes the tested Shopify scripts in their locked-data order', asyn
   assert.match(interactions, /不新增.*确认/);
 });
 
-test('workflow reference preserves the fixed six-slot selection boundary', async () => {
+test('workflow reference preserves the user-ordered component selection boundary', async () => {
   const safety = await read('references/workflow-and-safety.zh-CN.md');
 
   assert.match(safety, /campaign-structure\.v1\.json/);
   assert.match(safety, /campaign-component-interactions\.v1\.json/);
-  assert.match(safety, /首图.*促销多商品栏.*整图链接.*赠品.*地址.*页脚/s);
-  assert.match(safety, /每次.*一个区段.*样式/);
-  assert.doesNotMatch(safety, /前五个.*可选.*可排序/);
+  assert.match(safety, /不定义固定区段/);
+  assert.match(safety, /用户提供的 `componentKey` 列表决定邮件的组件成员、数量和顺序/);
+  assert.match(safety, /每次只展示并确认用户列表中的一个组件/);
 });
 
 test('Shopify contract records homepage-slide activity discovery without menu or all-Page scans', async () => {

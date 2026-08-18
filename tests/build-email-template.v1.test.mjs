@@ -8,19 +8,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const builder = `${root}/build-email-template.v1.mjs`;
-const componentDirectory = `${root}/通用图片组件/可链接整图`;
+const componentDirectory = `${root}/评论组件/可链接整图`;
 const productStyle1Directory = `${root}/小样/产品/样式1`;
 const fixture = JSON.parse(readFileSync(`${componentDirectory}/content.fixture.v1.json`, 'utf8'));
 const defaults = JSON.parse(readFileSync(`${componentDirectory}/settings.defaults.v1.json`, 'utf8'));
-const campaignComponentKeys = [
-  'hero.promotionalOverlay',
-  'collection.saleGrid6',
-  'image.clickableFullWidth',
-  'gift.rewardGrid2',
-  'location.showroomCard',
-  'footer.warm'
-];
-
 function makeComposition(name, mutate = () => {}) {
   const composition = {
     schemaVersion: 1,
@@ -39,6 +30,7 @@ function makeComposition(name, mutate = () => {}) {
       componentKey: 'image.clickableFullWidth',
       content: {
         ...fixture.values,
+        'image.url': 'https://cdn.example.com/review-image-default.jpg',
         'image.alt': 'Instance review collage'
       },
       settings: {
@@ -203,7 +195,7 @@ test('product style1 is registered generally without becoming a Campaign Skill c
   assert.match(demo, /\.\/assets\/default-main-image\.png/);
   assert.match(demo, /\.\/assets\/default-detail-image\.png/);
   assert.match(management, /尚未加入 Campaign Skill/);
-  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleStyle1'), false);
+  assert.equal(structure.selection, 'user-ordered-registered-components');
   assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleStyle1'), false);
 });
 
@@ -486,7 +478,7 @@ test('resolves registered local image assets only in local preview mode', () => 
   const { composition, path } = makeComposition('email-builder-local-preview', (value) => {
     value.assets = {
       'review-collage': {
-        path: '通用图片组件/可链接整图/assets/default-review-collage.png',
+        path: '评论组件/可链接整图/assets/default-review-collage.png',
         name: 'review-collage.png'
       }
     };
@@ -496,7 +488,7 @@ test('resolves registered local image assets only in local preview mode', () => 
 
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const preview = readFileSync(composition.previewOutput, 'utf8');
-  assert.ok(preview.includes('%E9%80%9A%E7%94%A8%E5%9B%BE%E7%89%87%E7%BB%84%E4%BB%B6/%E5%8F%AF%E9%93%BE%E6%8E%A5%E6%95%B4%E5%9B%BE/assets/'));
+  assert.ok(preview.includes('%E8%AF%84%E8%AE%BA%E7%BB%84%E4%BB%B6/%E5%8F%AF%E9%93%BE%E6%8E%A5%E6%95%B4%E5%9B%BE/assets/'));
   assert.match(preview, /default-review-collage\.png/);
   assert.doesNotMatch(preview, /file:\/\//, 'local preview assets must also load through the local HTTP preview server');
 });
@@ -506,7 +498,7 @@ test('resolves a local preview asset relative to a nested preview HTML file', ()
     value.previewOutput = '/private/tmp/freshine-preview-test/nested/email.local-preview.html';
     value.assets = {
       'review-collage': {
-        path: '通用图片组件/可链接整图/assets/default-review-collage.png',
+        path: '评论组件/可链接整图/assets/default-review-collage.png',
         name: 'review-collage.png'
       }
     };
@@ -520,7 +512,7 @@ test('resolves a local preview asset relative to a nested preview HTML file', ()
   assert.ok(renderedUrl, 'preview must render the local image source');
   assert.equal(
     fileURLToPath(new URL(renderedUrl, pathToFileURL(composition.previewOutput))),
-    `${root}/通用图片组件/可链接整图/assets/default-review-collage.png`
+    `${root}/评论组件/可链接整图/assets/default-review-collage.png`
   );
 });
 
@@ -528,7 +520,7 @@ test('blocks a final Omnisend build until every local asset has an HTTPS URL', (
   const { path } = makeComposition('email-builder-unresolved-asset', (value) => {
     value.assets = {
       'review-collage': {
-        path: '通用图片组件/可链接整图/assets/default-review-collage.png',
+        path: '评论组件/可链接整图/assets/default-review-collage.png',
         name: 'review-collage.png'
       }
     };
@@ -544,7 +536,7 @@ test('builds a validated upload source with registered local assets deferred for
   const { composition, path } = makeComposition('email-builder-deferred-assets', (value) => {
     value.assets = {
       'review-collage': {
-        path: '通用图片组件/可链接整图/assets/default-review-collage.png',
+        path: '评论组件/可链接整图/assets/default-review-collage.png',
         name: 'review-collage.png'
       }
     };
@@ -557,14 +549,14 @@ test('builds a validated upload source with registered local assets deferred for
   assert.match(output, /src="asset:\/\/review-collage"/);
 });
 
-test('the registry preserves the six fixed Campaign components while allowing optional components', () => {
+test('the registry supports user-ordered registered components with complete local sources', () => {
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
-  const fixedCampaignKeys = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'))
-    .slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys);
-
-  assert.deepEqual(fixedCampaignKeys, campaignComponentKeys);
+  const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
+  const composition = JSON.parse(readFileSync(`${root}/compositions/hero-grid-review-gifts-location.default.v1.json`, 'utf8'));
   const registryKeys = new Set(registry.map(({ componentKey }) => componentKey));
-  assert.equal(fixedCampaignKeys.every((componentKey) => registryKeys.has(componentKey)), true);
+
+  assert.equal(structure.selection, 'user-ordered-registered-components');
+  assert.equal(composition.components.every(({ componentKey }) => registryKeys.has(componentKey)), true);
   for (const entry of registry) {
     for (const relativePath of Object.values(entry.路径)) {
       assert.equal(existsSync(`${root}/${relativePath}`), true, `${entry.componentKey}: missing ${relativePath}`);
@@ -610,9 +602,9 @@ test('builds the six-component local preview with local assets and an Omnisend u
   for (const filename of [
     'default-background.reference.png',
     'default-logo-white.png',
-    'default-review-collage.png',
-    'default-random-pillow-cover.jpg',
-    'default-silk-eye-mask.jpg'
+    'default-review-ix.jpg',
+    'default-pillow-cover.jpg',
+    'default-eye-mask.jpg'
   ]) assert.ok(preview.includes(filename), `${filename} must appear in the preview`);
   assert.match(preview, /<!-- 组件：品牌信息页脚 -->/);
   assert.match(preview, /href="\[\[unsubscribe_link\]\]"/);
@@ -659,7 +651,7 @@ test('the promotional hero preserves the legacy logo size while applying the con
 });
 
 test('the showroom card renders the confirmed full-width reference proportion while retaining an editable surface color', () => {
-  const directory = `${root}/赠品与权益组件/展厅地址卡`;
+  const directory = `${root}/地址组件/展厅地址卡`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
   const schema = JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8'));
@@ -769,7 +761,7 @@ test('the footer renders seven social icons in the approved display order with c
 });
 
 test('all six sale cards use identical centered wrappers and symmetric spacing', () => {
-  const directory = `${root}/活动商品组件/六宫格夏季促销`;
+  const directory = `${root}/活动商品组件/六宫格折扣商品组件`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const wrappers = [...template.matchAll(/<table class="freshine-sale-stack[^"]*"[^>]*>/g)].map(([tag]) => tag);
 
@@ -785,7 +777,7 @@ test('all six sale cards use identical centered wrappers and symmetric spacing',
 });
 
 test('the sale grid CTA aligns with the outer edges of the two desktop product images', () => {
-  const directory = `${root}/活动商品组件/六宫格夏季促销`;
+  const directory = `${root}/活动商品组件/六宫格折扣商品组件`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
   const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
@@ -801,18 +793,21 @@ test('the sale grid CTA aligns with the outer edges of the two desktop product i
 });
 
 test('the sale grid uses the double-gift title and subtitle type scale', () => {
-  const saleGrid = `${root}/活动商品组件/六宫格夏季促销`;
+  const saleGrid = `${root}/活动商品组件/六宫格折扣商品组件`;
   const gifts = `${root}/赠品与权益组件/双赠品奖励卡`;
   const template = readFileSync(`${saleGrid}/component.template.v1.html`, 'utf8');
   const demo = readFileSync(`${saleGrid}/效果演示.html`, 'utf8');
   const giftTemplate = readFileSync(`${gifts}/component.template.v1.html`, 'utf8');
+  const giftDefaults = JSON.parse(readFileSync(`${gifts}/settings.defaults.v1.json`, 'utf8'));
 
   assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
   assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
   assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
   assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
-  assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
-  assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
+  assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:\{\{settings\.font\.headingSize\}\};font-weight:\{\{settings\.font\.headingWeight\}\};line-height:\{\{settings\.font\.headingLineHeight\}\}/);
+  assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:\{\{settings\.font\.bodySize\}\};font-weight:\{\{settings\.font\.bodyWeight\}\};line-height:\{\{settings\.font\.bodyLineHeight\}\}/);
+  assert.equal(giftDefaults.values['font.headingSize'], '26px');
+  assert.equal(giftDefaults.values['font.bodySize'], '15px');
 });
 
 test('the default upper gift links to the pillow-cover collection', () => {
@@ -836,7 +831,7 @@ test('the default benefits image uses the approved Omnisend URL', () => {
 });
 
 test('clickable image defaults to a 600px full-bleed canvas while preserving per-instance overrides', () => {
-  const directory = `${root}/通用图片组件/可链接整图`;
+  const directory = `${root}/评论组件/可链接整图`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const styles = readFileSync(`${directory}/component.styles.v1.css`, 'utf8');
   const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
@@ -1043,7 +1038,7 @@ test('the two-review list is registered generally without becoming a Campaign Sk
   assert.equal((template.match(/content\.star\.image\.url/g) ?? []).length, 15);
   assert.equal((demo.match(/(?:\.\/)?assets\/review-star\.png/g) ?? []).length, 15);
   assert.doesNotMatch(template, /<a\b|href=|cta/i);
-  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('review.textList2'), false);
+  assert.equal(structure.selection, 'user-ordered-registered-components');
   assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'review.textList2'), false);
 });
 
@@ -1155,7 +1150,7 @@ test('the left sample product recommendation card is registered with its two-ima
   assert.match(preview, /width="197"/);
   assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1%EF%BC%88%E5%B7%A6%EF%BC%89/assets/default-liana-sheer-curtains.png'));
   assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1%EF%BC%88%E5%B7%A6%EF%BC%89/assets/default-liana-sheer-fabric.png'));
-  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleProductRecommendationLeft'), false);
+  assert.equal(structure.selection, 'user-ordered-registered-components');
   assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleProductRecommendationLeft'), false);
 });
 
@@ -1312,7 +1307,7 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   const finalResult = run(finalPath);
   assert.equal(finalResult.status, 0, finalResult.stderr || finalResult.stdout);
   assert.match(readFileSync(finalComposition.output, 'utf8'), /https:\/\/cdn\.example\.com\/celina-bedroom\.png/);
-  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.curtainRecommendationOverlay'), false);
+  assert.equal(structure.selection, 'user-ordered-registered-components');
   assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.curtainRecommendationOverlay'), false);
 });
 

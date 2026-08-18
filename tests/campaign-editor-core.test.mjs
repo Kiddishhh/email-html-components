@@ -36,7 +36,7 @@ test('editor catalog exposes every registered component as a freely selectable s
 test('editor groups styles by structure before selection and exposes only Skill-directed edits', () => {
   const catalog = buildEditorCatalog({ workspaceRoot });
 
-  assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '通用图片组件', '评论组件', '小样-产品', '赠品与权益组件', '页脚组件']);
+  assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件']);
   assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2']);
   assert.deepEqual(styleKeysForStructure(catalog, '小样-产品'), [
     'product.sampleProductRecommendationLeft',
@@ -44,7 +44,8 @@ test('editor groups styles by structure before selection and exposes only Skill-
     'product.curtainRecommendationOverlay',
     'product.curtainRecommendationNoTitle'
   ]);
-  assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'location.showroomCard', 'image.benefitsStrip3']);
+  assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'image.benefitsStrip3']);
+  assert.deepEqual(styleKeysForStructure(catalog, '地址组件'), ['location.showroomCard']);
   assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background'] });
   assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), { content: [], settings: [] });
   assert.deepEqual(editableFieldKeys('image.clickableFullWidth'), {

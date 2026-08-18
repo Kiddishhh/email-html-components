@@ -9,10 +9,10 @@
 按以下顺序保留六个组件，`footer.warm` 必须唯一且最后：
 
 1. `hero.promotionalOverlay` → `头图/促销悬浮首图`
-2. `collection.saleGrid6` → `活动商品组件/六宫格夏季促销`
-3. `image.clickableFullWidth` → `通用图片组件/可链接整图`
+2. `collection.saleGrid6` → `活动商品组件/六宫格折扣商品组件`
+3. `image.clickableFullWidth` → `评论组件/可链接整图`
 4. `gift.rewardGrid2` → `赠品与权益组件/双赠品奖励卡`
-5. `location.showroomCard` → `赠品与权益组件/展厅地址卡`
+5. `location.showroomCard` → `地址组件/展厅地址卡`
 6. `footer.warm` → `页脚组件/品牌信息页脚`
 
 `组件清单.json`、`组件索引.md`、Skill 结构契约、交互索引、默认 composition、测试和 README 必须使用上述相同路径及顺序。
