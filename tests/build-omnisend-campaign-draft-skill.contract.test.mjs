@@ -57,6 +57,15 @@ test('skill records the approved campaign workflow and safety gates', async () =
   assert.match(skill, /内容哈希/);
 });
 
+test('skill starts the Draft-only editor and opens its printed loopback URL in the in-app Browser', async () => {
+  const skill = await read('SKILL.md');
+
+  assert.match(skill, /start-campaign-editor\.mjs.*--no-open/);
+  assert.match(skill, /打印.*URL.*in-app Browser|in-app Browser.*打印.*URL/s);
+  assert.match(skill, /Omnisend.*[Dd]raft|[Dd]raft.*Omnisend/s);
+  assert.match(skill, /界面.*不得.*发送.*发布.*排期.*激活/s);
+});
+
 test('campaign metadata collection explains its three fields in Chinese', async () => {
   const skill = await read('SKILL.md');
   const safety = await read('references/workflow-and-safety.zh-CN.md');

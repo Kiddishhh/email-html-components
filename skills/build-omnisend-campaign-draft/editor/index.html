@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Freshine Campaign 本地编辑器</title>
+    <link rel="stylesheet" href="/editor/styles.css">
+  </head>
+  <body>
+    <main class="editor-shell">
+      <aside class="editor-panel settings-panel" aria-label="Campaign settings" data-editor-panel="settings">
+        <header>
+          <p class="eyebrow">LOCAL ONLY</p>
+          <h1>Campaign 编辑器</h1>
+          <p class="panel-description">编辑的草稿、图片和预览只保存在此电脑。</p>
+        </header>
+        <label class="field-label" for="draft-slug">草稿名称</label>
+        <input id="draft-slug" name="slug" autocomplete="off" pattern="[a-z0-9]+(?:-[a-z0-9]+)*" value="campaign-draft">
+        <p class="field-hint">使用小写字母、数字和连字符。</p>
+        <nav aria-label="Campaign 组件" data-editor-components></nav>
+        <section class="confirmation-card" aria-labelledby="confirmation-title">
+          <h2 id="confirmation-title">最终内容确认</h2>
+          <label class="checkbox-label"><input type="checkbox" data-final-confirmation data-confirm-static-html disabled>确认以服务器新生成的静态 HTML 作为最终内容</label>
+          <p data-confirmation-status>本地预览生成后才能确认；预览 HTML 不会用于上传。</p>
+        </section>
+        <button class="secondary-button" type="button" data-upload-draft disabled>上传 Omnisend 草稿</button>
+        <p class="draft-upload-note" aria-live="polite" data-upload-receipt>确认前不可上传。API Key 只会在启动编辑器的终端内询问。</p>
+      </aside>
+
+      <section class="editor-panel fields-panel" aria-label="Component fields" data-editor-panel="fields">
+        <header>
+          <p class="eyebrow">COMPONENT</p>
+          <h2 data-component-title>正在加载组件…</h2>
+          <p class="panel-description" data-component-description>字段将按组件 Schema 显示。</p>
+        </header>
+        <div class="status-message" aria-live="polite" data-editor-status>正在加载本地组件数据…</div>
+        <form data-component-fields></form>
+        <div class="local-image-control">
+          <label class="field-label" for="local-image-input">替换当前图片字段</label>
+          <input id="local-image-input" data-local-image-picker type="file" accept="image/jpeg,image/png,image/gif,image/webp">
+          <p class="field-hint">仅 JPEG、PNG、GIF 或 WebP，最大 5 MB。</p>
+        </div>
+      </section>
+
+      <section class="previews-panel" aria-label="Email previews">
+        <header class="preview-heading">
+          <div>
+            <p class="eyebrow">LOCAL PREVIEW</p>
+            <h2>邮件预览</h2>
+          </div>
+          <button class="secondary-button" type="button" data-refresh-preview>刷新预览</button>
+        </header>
+        <div class="preview-scroll-area">
+          <figure class="preview-figure preview-desktop">
+            <figcaption>桌面端 · 600px</figcaption>
+            <iframe data-editor-preview="desktop" title="600px desktop preview"></iframe>
+          </figure>
+          <figure class="preview-figure preview-mobile">
+            <figcaption>移动端 · 375px</figcaption>
+            <iframe data-editor-preview="mobile" title="375px mobile preview"></iframe>
+          </figure>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/editor/app.js"></script>
+  </body>
+</html>
