@@ -739,3 +739,104 @@ test('the two-review list is registered generally without becoming a Campaign Sk
   assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('review.textList2'), false);
   assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'review.textList2'), false);
 });
+
+test('the sample product recommendation card is registered with its two-image Liana reference layout without becoming a Campaign Skill candidate', () => {
+  const directory = `${root}/小样-产品/小样产品推荐卡`;
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
+  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
+  const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleProductRecommendation');
+
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].中文名称, '小样产品推荐卡');
+  assert.equal(entries[0].分类, '小样-产品');
+  assert.equal(entries[0].输出宽度, 600);
+  assert.equal(entries[0].路径.组件模板, '小样-产品/小样产品推荐卡/component.template.v1.html');
+  for (const filename of [
+    'component.template.v1.html',
+    'component.styles.v1.css',
+    'content.schema.v1.json',
+    'content.fixture.v1.json',
+    'settings.schema.v1.json',
+    'settings.defaults.v1.json',
+    'COMPONENT_MANAGEMENT.zh-CN.v1.md',
+    '效果演示.html',
+    'assets/default-liana-sheer-curtains.png',
+    'assets/default-liana-sheer-fabric.png'
+  ]) {
+    assert.equal(existsSync(`${directory}/${filename}`), true, `missing ${filename}`);
+  }
+
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const contentSchema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const readme = readFileSync(`${root}/README.md`, 'utf8');
+  const index = readFileSync(`${root}/组件索引.md`, 'utf8');
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FAF9F7',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: '/private/tmp/sample-product-recommendation.static-safe.html',
+    previewOutput: '/private/tmp/sample-product-recommendation.local-preview.html',
+    assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
+      path: `小样-产品/小样产品推荐卡/${path}`,
+      name: path.split('/').at(-1)
+    }])),
+    components: [{
+      name: '小样产品推荐卡',
+      directory,
+      componentKey: 'product.sampleProductRecommendation',
+      content: fixture.values,
+      settings: settings.values
+    }]
+  };
+  const compositionPath = '/private/tmp/sample-product-recommendation.composition.json';
+  writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+  const renderResult = run(compositionPath, '--preview-local-assets');
+  const preview = readFileSync(composition.previewOutput, 'utf8');
+
+  assert.match(template, /width="319"/);
+  assert.match(template, /width="197"/);
+  assert.match(template, /width="32"/);
+  assert.match(template, /data-freshine-slot="product\.images\.scene"/);
+  assert.match(template, /data-freshine-slot="product\.images\.fabric"/);
+  assert.match(template, /data-freshine-slot="product\.title"/);
+  assert.match(template, /data-freshine-slot="product\.subtitle"/);
+  assert.match(template, /data-freshine-href-slot="product\.url"/);
+  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-size:24px;font-weight:700;line-height:28px/);
+  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:20px;font-weight:400;line-height:26px/);
+  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:20px;font-weight:400;line-height:24px/);
+  assert.deepEqual(Object.keys(contentSchema.properties), [
+    'product.images.scene.url',
+    'product.images.scene.alt',
+    'product.images.fabric.url',
+    'product.images.fabric.alt',
+    'product.title',
+    'product.subtitle',
+    'product.cta.label',
+    'product.url'
+  ]);
+  assert.equal(fixture.values['product.title'], 'Liana');
+  assert.equal(fixture.values['product.subtitle'], 'Sheer Curtains');
+  assert.equal(fixture.values['product.cta.label'], 'SHOP NOW <');
+  assert.equal(fixture.values['product.url'], 'https://freshinelife.com/');
+  assert.equal(settings.values['color.surface'], '#FAF9F7');
+  assert.match(demo, /\.\/assets\/default-liana-sheer-curtains\.png/);
+  assert.match(demo, /\.\/assets\/default-liana-sheer-fabric\.png/);
+  assert.match(readme, /小样产品推荐卡.*product\.sampleProductRecommendation/s);
+  assert.match(index, /小样-产品[\s\S]*小样产品推荐卡/s);
+  assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
+  assert.match(preview, /width="319"/);
+  assert.match(preview, /width="197"/);
+  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1/assets/default-liana-sheer-curtains.png'));
+  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1/assets/default-liana-sheer-fabric.png'));
+  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleProductRecommendation'), false);
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleProductRecommendation'), false);
+});

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.sampleProductRecommendation",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": {
+      "type": "string",
+      "default": "#FAF9F7",
+      "pattern": "^#[0-9A-Fa-f]{6}$",
+      "themeable": true,
+      "skillPrompt": true
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#202020",
+      "pattern": "^#[0-9A-Fa-f]{6}$",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.body": {
+      "type": "string",
+      "default": "Arial, Helvetica, sans-serif",
+      "themeable": true,
+      "skillPrompt": false
+    }
+  },
+  "additionalProperties": false
+}

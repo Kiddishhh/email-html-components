@@ -15,14 +15,14 @@
 
 活动路径的单一事实来源是 [`组件清单.json`](组件清单.json)。每个组件包含模板、内联 CSS 来源、内容 Schema、设置 Schema、fixture、defaults、中文管理说明和供样式选择直接打开的 `效果演示.html`。
 
-通用组件库另包含双条文字评论（`review.textList2`，`评论组件/双条文字评论/`）。它目前只提供独立模板和真实效果演示，尚未加入 Campaign Skill，也没有内容注入脚本。
+通用组件库另包含双条文字评论（`review.textList2`，`评论组件/双条文字评论/`）和小样产品推荐卡（`product.sampleProductRecommendation`，`小样-产品/小样产品推荐卡/`）。二者均可独立拼接和预览，但尚未加入现有 Campaign 固定结构，也没有内容注入脚本。
 
 ## 目录结构
 
 ```text
 .
 ├── build-email-template.v1.mjs       # 确定性邮件拼接器
-├── 组件清单.json                      # 六组件注册表与路径
+├── 组件清单.json                      # 已注册组件与路径的单一事实来源
 ├── 组件索引.md                        # 组件维护入口
 ├── compositions/                     # 显式完整快照示例
 ├── skills/build-omnisend-campaign-draft/
