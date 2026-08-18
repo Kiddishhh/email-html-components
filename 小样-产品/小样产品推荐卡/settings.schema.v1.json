@@ -20,8 +20,8 @@
     },
     "font.body": {
       "type": "string",
-      "default": "Arial, Helvetica, sans-serif",
-      "themeable": true,
+      "default": "Montserrat, Arial, Helvetica, sans-serif",
+      "themeable": false,
       "skillPrompt": false
     }
   },
