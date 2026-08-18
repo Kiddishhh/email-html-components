@@ -1,0 +1,65 @@
+<style>
+  #freshine-logo-treatment { color:#2a2521; }
+  #freshine-logo-treatment .freshine-logo-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; align-items:start; }
+  #freshine-logo-treatment .freshine-logo-option { border:1px solid #d7cec3; border-radius:14px; background:#f7f3ed; padding:14px; cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+  #freshine-logo-treatment .freshine-logo-option:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(76,55,42,.10); }
+  #freshine-logo-treatment .freshine-logo-option.selected { border-color:#9d1d20; box-shadow:0 0 0 2px rgba(157,29,32,.18); }
+  #freshine-logo-treatment .freshine-option-label { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px; font-family:Arial,sans-serif; }
+  #freshine-logo-treatment .freshine-option-label strong { font-size:15px; font-weight:500; }
+  #freshine-logo-treatment .freshine-option-label span { color:#776b63; font-size:12px; }
+  #freshine-logo-treatment .freshine-email { width:100%; max-width:300px; margin:0 auto; overflow:hidden; background:#f1ede5; color:#23201e; box-shadow:0 6px 20px rgba(55,44,36,.12); font-family:Arial,Helvetica,sans-serif; }
+  #freshine-logo-treatment .freshine-logo-row { height:52px; display:flex; align-items:center; justify-content:center; }
+  #freshine-logo-treatment .freshine-logo-row img { display:block; width:86px; height:auto; }
+  #freshine-logo-treatment .freshine-logo-burgundy { background:#652a0d; }
+  #freshine-logo-treatment .freshine-logo-taupe { background:#9f8b80; }
+  #freshine-logo-treatment .freshine-logo-badge-row { height:58px; background:#f3efe8; }
+  #freshine-logo-treatment .freshine-logo-badge { width:48px; height:48px; border-radius:50%; background:#9d1d20; display:flex; align-items:center; justify-content:center; }
+  #freshine-logo-treatment .freshine-logo-badge img { width:39px; }
+  #freshine-logo-treatment .freshine-promo { display:grid; grid-template-columns:3fr 1fr; height:34px; color:#fff; font-size:7px; letter-spacing:.15px; }
+  #freshine-logo-treatment .freshine-promo div { display:flex; align-items:center; justify-content:center; background:#b29e92; }
+  #freshine-logo-treatment .freshine-promo a { display:flex; align-items:center; justify-content:center; color:#fff; background:#a28c80; text-decoration:underline; }
+  #freshine-logo-treatment .freshine-head { text-align:center; padding:18px 10px 15px; }
+  #freshine-logo-treatment .freshine-event { font:500 15px Georgia,serif; margin-bottom:8px; }
+  #freshine-logo-treatment .freshine-discount { font:500 32px Georgia,serif; letter-spacing:.8px; line-height:1.05; white-space:nowrap; }
+  #freshine-logo-treatment .freshine-description { margin-top:10px; font-size:7px; }
+  #freshine-logo-treatment .freshine-image { width:100%; height:235px; overflow:hidden; background:#dcd5c9; }
+  #freshine-logo-treatment .freshine-image img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 49%; }
+  #freshine-logo-treatment .freshine-caption { margin:12px 2px 0; color:#665d56; font-size:12px; line-height:1.45; }
+  @media (max-width:780px) { #freshine-logo-treatment .freshine-logo-grid { grid-template-columns:1fr; } #freshine-logo-treatment .freshine-email { max-width:360px; } }
+</style>
+<div id="freshine-logo-treatment">
+  <h2>白色 Logo 的承载方式</h2>
+  <p class="subtitle">三项都使用你指定的 PNG；下方其余内容保持已选 B 版式。</p>
+  <div class="freshine-logo-grid">
+    <div class="freshine-logo-option" data-choice="logo-a" onclick="toggleSelect(this)">
+      <div class="freshine-option-label"><strong>A · 深棕全宽条（推荐）</strong><span>稳重</span></div>
+      <div class="freshine-email">
+        <div class="freshine-logo-row freshine-logo-burgundy"><img src="/files/freshine-logo-white.png" alt="FreShine"></div>
+        <div class="freshine-promo"><div>Unlock $100 Off Your First Order at Freshine</div><a>SIGN UP</a></div>
+        <div class="freshine-head"><div class="freshine-event">Winter Comfort Event</div><div class="freshine-discount">UP TO 65% OFF</div><div class="freshine-description">Extra $600 OFF &amp; UP TO 20% OFF SITEWIDE</div></div>
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+      </div>
+      <p class="freshine-caption">品牌识别最清楚，与页脚暖棕色形成呼应。</p>
+    </div>
+    <div class="freshine-logo-option" data-choice="logo-b" onclick="toggleSelect(this)">
+      <div class="freshine-option-label"><strong>B · 暖灰褐全宽条</strong><span>柔和</span></div>
+      <div class="freshine-email">
+        <div class="freshine-logo-row freshine-logo-taupe"><img src="/files/freshine-logo-white.png" alt="FreShine"></div>
+        <div class="freshine-promo"><div>Unlock $100 Off Your First Order at Freshine</div><a>SIGN UP</a></div>
+        <div class="freshine-head"><div class="freshine-event">Winter Comfort Event</div><div class="freshine-discount">UP TO 65% OFF</div><div class="freshine-description">Extra $600 OFF &amp; UP TO 20% OFF SITEWIDE</div></div>
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+      </div>
+      <p class="freshine-caption">最接近参考稿的中性色调，但 Logo 对比略弱。</p>
+    </div>
+    <div class="freshine-logo-option" data-choice="logo-c" onclick="toggleSelect(this)">
+      <div class="freshine-option-label"><strong>C · 米白底圆形徽章</strong><span>装饰感</span></div>
+      <div class="freshine-email">
+        <div class="freshine-logo-row freshine-logo-badge-row"><div class="freshine-logo-badge"><img src="/files/freshine-logo-white.png" alt="FreShine"></div></div>
+        <div class="freshine-promo"><div>Unlock $100 Off Your First Order at Freshine</div><a>SIGN UP</a></div>
+        <div class="freshine-head"><div class="freshine-event">Winter Comfort Event</div><div class="freshine-discount">UP TO 65% OFF</div><div class="freshine-description">Extra $600 OFF &amp; UP TO 20% OFF SITEWIDE</div></div>
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+      </div>
+      <p class="freshine-caption">延续现有圆形 Logo 语言，但比本设计稿更具装饰性。</p>
+    </div>
+  </div>
+</div>

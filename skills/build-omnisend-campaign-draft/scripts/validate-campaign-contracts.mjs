@@ -36,32 +36,10 @@ function requireExactKeys(value, keys, scope) {
 }
 
 function validateStructure(structure) {
-  requireExactKeys(structure, ['schemaVersion', 'slots'], 'campaign structure');
-  if (structure.schemaVersion !== 1) throw new Error('campaign structure schemaVersion must be 1');
-  if (!Array.isArray(structure.slots) || structure.slots.length === 0) throw new Error('campaign structure slots must be a non-empty array');
-  const terminalSlots = [];
-  const seenIds = new Set();
-  const expectedOrders = [];
-  for (const slot of structure.slots) {
-    const allowed = ['id', 'label', 'order', 'required', 'candidateComponentKeys', 'terminal'];
-    requireExactKeys(slot, slot.terminal === undefined ? allowed.filter((key) => key !== 'terminal') : allowed, `slot ${slot.id ?? '<unknown>'}`);
-    if (typeof slot.id !== 'string' || !/^[a-z][a-z0-9-]*$/.test(slot.id)) throw new Error('slot id is invalid');
-    if (seenIds.has(slot.id)) throw new Error(`duplicate slot id: ${slot.id}`);
-    seenIds.add(slot.id);
-    if (typeof slot.label !== 'string' || !slot.label) throw new Error(`slot ${slot.id} label is required`);
-    if (!Number.isInteger(slot.order) || slot.order <= 0) throw new Error(`slot ${slot.id} order must be a positive integer`);
-    expectedOrders.push(slot.order);
-    if (slot.required !== true) throw new Error(`slot ${slot.id} must be required`);
-    if (!Array.isArray(slot.candidateComponentKeys) || slot.candidateComponentKeys.length === 0) throw new Error(`slot ${slot.id} must have candidates`);
-    if (new Set(slot.candidateComponentKeys).size !== slot.candidateComponentKeys.length) throw new Error(`slot ${slot.id} has duplicate candidates`);
-    if (slot.candidateComponentKeys.some((key) => typeof key !== 'string' || !key)) throw new Error(`slot ${slot.id} has invalid candidate`);
-    if (slot.terminal === true) terminalSlots.push(slot);
-    if (slot.terminal !== undefined && slot.terminal !== true) throw new Error(`slot ${slot.id} terminal must be true when present`);
-  }
-  expectedOrders.sort((left, right) => left - right);
-  if (expectedOrders.some((value, index) => value !== index + 1)) throw new Error('campaign structure orders must be contiguous from 1');
-  if (terminalSlots.length !== 1 || terminalSlots[0].id !== 'footer' || terminalSlots[0].candidateComponentKeys.length !== 1 || terminalSlots[0].candidateComponentKeys[0] !== 'footer.warm' || terminalSlots[0].order !== structure.slots.length) {
-    throw new Error('footer.warm must be the only terminal slot');
+  requireExactKeys(structure, ['schemaVersion', 'selection'], 'campaign structure');
+  if (structure.schemaVersion !== 2) throw new Error('campaign structure schemaVersion must be 2');
+  if (structure.selection !== 'user-ordered-registered-components') {
+    throw new Error('campaign structure selection must be user-ordered-registered-components');
   }
 }
 
@@ -71,7 +49,10 @@ function validateInteractions(index) {
   if (!Array.isArray(index.interactions)) throw new Error('campaign interaction index interactions must be an array');
   const byComponentKey = new Map();
   for (const interaction of index.interactions) {
-    requireExactKeys(interaction, ['componentKey', 'interactionReference', 'allowedSources', 'requiredStages', 'completion'], `interaction ${interaction.componentKey ?? '<unknown>'}`);
+    const baseKeys = ['componentKey', 'interactionReference', 'allowedSources', 'requiredStages', 'completion'];
+    const detailKeys = ['imageCollection', 'activityMapping', 'editing', 'colors'];
+    const hasDetailedContract = detailKeys.some((key) => key in interaction);
+    requireExactKeys(interaction, hasDetailedContract ? [...baseKeys, ...detailKeys] : baseKeys, `interaction ${interaction.componentKey ?? '<unknown>'}`);
     if (typeof interaction.componentKey !== 'string' || !interaction.componentKey) throw new Error('interaction componentKey is required');
     if (byComponentKey.has(interaction.componentKey)) throw new Error(`duplicate interaction componentKey: ${interaction.componentKey}`);
     if (typeof interaction.interactionReference !== 'string' || !interaction.interactionReference) throw new Error(`interaction ${interaction.componentKey} reference is required`);
@@ -83,6 +64,45 @@ function validateInteractions(index) {
     requireExactKeys(interaction.completion, ['card', 'previews'], `interaction ${interaction.componentKey} completion`);
     if (interaction.completion.card !== true) throw new Error(`interaction ${interaction.componentKey} completion card must be true`);
     if (!Array.isArray(interaction.completion.previews) || interaction.completion.previews.join(',') !== 'desktop,mobile') throw new Error(`interaction ${interaction.componentKey} completion previews must be desktop,mobile`);
+    if (hasDetailedContract) {
+      requireExactKeys(interaction.imageCollection, ['required', 'displaySize', 'recommendedSize', 'sources', 'ratioMismatch'], `interaction ${interaction.componentKey} imageCollection`);
+      requireExactKeys(interaction.imageCollection.displaySize, ['width', 'height'], `interaction ${interaction.componentKey} imageCollection displaySize`);
+      requireExactKeys(interaction.imageCollection.recommendedSize, ['width', 'height'], `interaction ${interaction.componentKey} imageCollection recommendedSize`);
+      if (interaction.imageCollection.required !== true) throw new Error(`interaction ${interaction.componentKey} imageCollection must be required`);
+      if (interaction.imageCollection.displaySize.width !== 540 || interaction.imageCollection.displaySize.height !== 540) {
+        throw new Error(`interaction ${interaction.componentKey} imageCollection displaySize must be 540x540`);
+      }
+      if (interaction.imageCollection.recommendedSize.width !== 1200 || interaction.imageCollection.recommendedSize.height !== 1200) {
+        throw new Error(`interaction ${interaction.componentKey} imageCollection recommendedSize must be 1200x1200`);
+      }
+      if (!Array.isArray(interaction.imageCollection.sources) || interaction.imageCollection.sources.join(',') !== 'componentDefault,localPath,publicHttps') {
+        throw new Error(`interaction ${interaction.componentKey} imageCollection sources must be componentDefault,localPath,publicHttps`);
+      }
+      if (interaction.imageCollection.ratioMismatch !== 'centerCropDerivativeWithoutOverwrite') {
+        throw new Error(`interaction ${interaction.componentKey} imageCollection ratioMismatch must preserve the source`);
+      }
+
+      requireExactKeys(interaction.activityMapping, ['slideshow-v2.subheading', 'slideshow-v2.heading', 'slideshow-v2.description', 'selectedPageUrl'], `interaction ${interaction.componentKey} activityMapping`);
+      const expectedActivityMapping = {
+        'slideshow-v2.subheading': 'hero.eyebrow',
+        'slideshow-v2.heading': 'hero.title',
+        'slideshow-v2.description': 'hero.subtitle',
+        selectedPageUrl: 'hero.cta.url'
+      };
+      for (const [source, target] of Object.entries(expectedActivityMapping)) {
+        if (interaction.activityMapping[source] !== target) throw new Error(`interaction ${interaction.componentKey} activityMapping ${source} must map to ${target}`);
+      }
+
+      requireExactKeys(interaction.editing, ['defaultFields', 'benefitCount', 'benefitOrder', 'countdownMode', 'confirmationCount'], `interaction ${interaction.componentKey} editing`);
+      if (interaction.editing.defaultFields !== 'completionCardEditable' || interaction.editing.benefitCount !== 3 || interaction.editing.benefitOrder !== 'fixed' || interaction.editing.countdownMode !== 'staticEditable' || interaction.editing.confirmationCount !== 1) {
+        throw new Error(`interaction ${interaction.componentKey} editing contract is invalid`);
+      }
+
+      requireExactKeys(interaction.colors, ['action', 'bodySurface', 'offerSurface', 'promotionBar'], `interaction ${interaction.componentKey} colors`);
+      if (interaction.colors.action !== 'inheritGlobalOrComponentDefault' || interaction.colors.bodySurface !== 'inheritGlobalOrComponentDefault' || interaction.colors.offerSurface !== 'componentDefaultUnlessUserChanges' || interaction.colors.promotionBar !== 'componentDefaultUnlessUserChanges') {
+        throw new Error(`interaction ${interaction.componentKey} colors contract is invalid`);
+      }
+    }
     byComponentKey.set(interaction.componentKey, interaction);
   }
   return byComponentKey;
@@ -141,14 +161,15 @@ function validateRegistry(registry, registryPath) {
   return registered;
 }
 
-function validateCandidates(structure, interactions, registry, registryPath) {
+function validateSelectableComponents(interactions, registry, registryPath) {
   const registered = validateRegistry(registry, registryPath);
-  for (const slot of structure.slots) {
-    for (const componentKey of slot.candidateComponentKeys) {
-      if (!registered.has(componentKey)) throw new Error(`slot ${slot.id} references unregistered component: ${componentKey}`);
-      if (!interactions.has(componentKey)) throw new Error(`slot ${slot.id} component is preparing: ${componentKey}`);
-    }
+  const selectable = [];
+  for (const componentKey of interactions.keys()) {
+    if (!registered.has(componentKey)) throw new Error(`interaction references unregistered component: ${componentKey}`);
+    selectable.push(componentKey);
   }
+  if (selectable.length === 0) throw new Error('campaign structure has no registered interaction-ready components');
+  return selectable;
 }
 
 const options = parseArgs(process.argv.slice(2));
@@ -156,5 +177,5 @@ const structure = readJson(options.structure);
 const interactions = readJson(options.interactions);
 const registry = readJson(options.registry);
 validateStructure(structure);
-validateCandidates(structure, validateInteractions(interactions), registry, options.registry);
-console.log(JSON.stringify({ status: 'valid', slots: structure.slots.map(({ id, candidateComponentKeys }) => ({ id, candidateComponentKeys })) }, null, 2));
+const selectableComponents = validateSelectableComponents(validateInteractions(interactions), registry, options.registry);
+console.log(JSON.stringify({ status: 'valid', selection: structure.selection, components: selectableComponents }, null, 2));

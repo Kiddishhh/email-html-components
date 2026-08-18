@@ -67,6 +67,8 @@ Skill 只允许执行以下 Shopify CLI 命令族：
 
 按推荐 Collection 当前排序获取前六个商品。每个商品至少读取：
 
+编辑器的“shopify商品导入”接受完整的 `https://freshinelife.com/pages/<handle>` 或 `https://freshinelife.com/collections/<handle>` 链接。Page 链接会只读查询 `templateSuffix`、拉取线上主题中的对应模板，并按模板 `order` 找到首个启用的 `products-grid-v2`；该区块的 `settings.collection` 是六宫格商品来源。Collection 链接则直接作为商品来源。两种情形的六宫格 CTA 都保留用户输入链接，不会被另一种 URL 覆盖。若活动页没有启用的 `products-grid-v2`，或来源 Collection 不足六件可导入商品，停止并提示具体原因。
+
 - `id`
 - `title`
 - `handle`
@@ -96,6 +98,7 @@ Collection 的 Admin GraphQL 类型不提供 `onlineStoreUrl`；用 handle 生�
 - `scripts/fetch-sale-grid.mjs` 已实现，并已通过本地 GraphQL fixture 测试：输入推荐 Collection handle 和固定数量 `6`，输出六个商品按媒体 `POSITION` 排序的第一张图片、Alt、详情链接、首个可售变体价格、`compareAtPrice` 和折扣标签。fixture 用不同的 `featuredImage` 验证脚本不会读错来源。它只接受 `--count 6`；fixture 模式仅用于测试，生产模式经只读守卫调用 query-only `shopify store execute`。
 - `scripts/list-sale-activities.mjs` 已实现，并已通过本地首页主题 fixture 测试：它只拉取 `templates/index.json`，从唯一启用 `slideshow-v2` 的多个首页 slide 输出候选；不读取菜单或全量 Page。生产模式只读拉取唯一 live Theme 到新临时目录；fixture 模式只用于测试。
 - `scripts/fetch-sale-activity.mjs` 已实现，并已通过本地主题 snapshot fixture 测试：它只查询选定 slide 链接的一个 Page 模板，重新拉取首页与该模板并验证 slide 与推荐 Collection；若候选时的首页 slide 不一致则停止。它输出 hero 导入文案、推荐 Collection URL、模板文件 SHA-256、Theme ID、读取时间与来源字段；不再读取 Shopify 菜单或修改本地组件。
+- `scripts/fetch-activity-page-sale-grid.mjs` 已实现：输入活动页或 Collection URL。Page 会读取线上主题模板和第一个启用商品网格；Collection 直接读取商品。两种路径都复用 `fetch-sale-grid.mjs` 的商品读取规则，输出六个商品并保留输入 URL 作为 CTA。
 
 所有脚本只输出规范化 JSON，不修改组件、HTML、Theme 或 Shopify 数据。Skill 把输出映射为完整组件快照，再交给现有拼接器；不得假装未实现脚本已经执行。
 

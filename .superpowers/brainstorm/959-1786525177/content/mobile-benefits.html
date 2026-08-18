@@ -1,0 +1,57 @@
+<style>
+  #freshine-mobile-benefits { color:#2a2521; }
+  #freshine-mobile-benefits .freshine-mobile-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; align-items:start; max-width:760px; margin:0 auto; }
+  #freshine-mobile-benefits .freshine-mobile-option { border:1px solid #d7cec3; border-radius:14px; background:#f7f3ed; padding:14px; cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+  #freshine-mobile-benefits .freshine-mobile-option:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(76,55,42,.10); }
+  #freshine-mobile-benefits .freshine-mobile-option.selected { border-color:#9d1d20; box-shadow:0 0 0 2px rgba(157,29,32,.18); }
+  #freshine-mobile-benefits .freshine-option-label { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; font-family:Arial,sans-serif; }
+  #freshine-mobile-benefits .freshine-option-label strong { font-size:15px; font-weight:500; }
+  #freshine-mobile-benefits .freshine-option-label span { color:#776b63; font-size:12px; }
+  #freshine-mobile-benefits .freshine-phone { width:100%; max-width:375px; margin:0 auto; overflow:hidden; background:#efeae1; color:#23201e; box-shadow:0 6px 20px rgba(55,44,36,.13); font-family:Arial,Helvetica,sans-serif; }
+  #freshine-mobile-benefits .freshine-image { height:294px; overflow:hidden; }
+  #freshine-mobile-benefits .freshine-image img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 49%; }
+  #freshine-mobile-benefits .freshine-offer { padding:25px 14px 22px; text-align:center; background:#ded8ca; }
+  #freshine-mobile-benefits .freshine-countdown { font:500 25px Georgia,serif; letter-spacing:.4px; }
+  #freshine-mobile-benefits .freshine-horizontal { width:100%; margin:18px auto 20px; border-collapse:collapse; table-layout:fixed; }
+  #freshine-mobile-benefits .freshine-horizontal td { width:33.33%; padding:2px 7px; font-size:11px; line-height:1.35; font-weight:600; vertical-align:middle; }
+  #freshine-mobile-benefits .freshine-horizontal td + td { border-left:1px solid #736a63; }
+  #freshine-mobile-benefits .freshine-stacked { width:100%; margin:15px auto 19px; border-collapse:collapse; }
+  #freshine-mobile-benefits .freshine-stacked td { padding:7px 4px; font-size:12px; line-height:1.35; font-weight:600; }
+  #freshine-mobile-benefits .freshine-stacked tr + tr td { border-top:1px solid #b2aa9e; }
+  #freshine-mobile-benefits .freshine-button { display:inline-block; width:230px; padding:13px 10px; color:#fff; background:#ad1f22; border-radius:2px; font-size:13px; }
+  #freshine-mobile-benefits .freshine-note { margin-top:15px; color:#55504b; font-size:12px; }
+  #freshine-mobile-benefits .freshine-caption { margin:12px 2px 0; color:#665d56; font-size:12px; line-height:1.5; }
+  @media (max-width:780px) { #freshine-mobile-benefits .freshine-mobile-grid { grid-template-columns:1fr; } }
+</style>
+<div id="freshine-mobile-benefits">
+  <h2>375px 移动端权益区排布</h2>
+  <p class="subtitle">邮件组件不能依赖脚本切换布局，因此请选择一个在桌面端和移动端都稳定的结构。</p>
+  <div class="freshine-mobile-grid">
+    <div class="freshine-mobile-option" data-choice="mobile-a" onclick="toggleSelect(this)">
+      <div class="freshine-option-label"><strong>A · 固定三栏（推荐）</strong><span>贴近设计稿</span></div>
+      <div class="freshine-phone">
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+        <div class="freshine-offer">
+          <div class="freshine-countdown">ONLY 3 DAYS!</div>
+          <table class="freshine-horizontal" role="presentation"><tr><td>UP TO 65% OFF</td><td>Free Gift On $699+</td><td>Free Shipping</td></tr></table>
+          <span class="freshine-button">Shop the Holiday Sale &gt;&gt;</span>
+          <div class="freshine-note">Limited Time Offer</div>
+        </div>
+      </div>
+      <p class="freshine-caption">桌面和移动端都保持三栏。建议每项不超过 24 个英文字符，移动端最多换成两行。</p>
+    </div>
+    <div class="freshine-mobile-option" data-choice="mobile-b" onclick="toggleSelect(this)">
+      <div class="freshine-option-label"><strong>B · 固定三行</strong><span>可读优先</span></div>
+      <div class="freshine-phone">
+        <div class="freshine-image"><img src="/files/reference.png" alt="室内窗帘与人物场景"></div>
+        <div class="freshine-offer">
+          <div class="freshine-countdown">ONLY 3 DAYS!</div>
+          <table class="freshine-stacked" role="presentation"><tr><td>UP TO 65% OFF</td></tr><tr><td>Free Gift On $699+</td></tr><tr><td>Free Shipping</td></tr></table>
+          <span class="freshine-button">Shop the Holiday Sale &gt;&gt;</span>
+          <div class="freshine-note">Limited Time Offer</div>
+        </div>
+      </div>
+      <p class="freshine-caption">长文字更安全，但桌面端也会保持三行，整体高度增加并偏离原设计。</p>
+    </div>
+  </div>
+</div>

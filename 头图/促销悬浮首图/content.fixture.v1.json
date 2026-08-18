@@ -3,6 +3,9 @@
   "componentKey": "hero.promotionalOverlay",
   "fixture": "memorial-day-overlay-reference-demo",
   "localReferenceAsset": "assets/default-background.reference.png",
+  "localReferenceAssets": {
+    "hero-logo-white": "assets/default-logo-white.png"
+  },
   "values": {
     "promotion.text": "Unlock $100 Off Your First Order At Freshine.",
     "promotion.linkText": "SIGN UP",

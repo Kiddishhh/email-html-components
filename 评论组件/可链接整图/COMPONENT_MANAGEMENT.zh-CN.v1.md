@@ -18,12 +18,12 @@
 - `content.schema.v1.json`：后续 Skill 收集的图片、alt 和跳转链接字段。
 - `content.fixture.v1.json`：公开 HTTPS 默认测试数据，并记录本地演示素材；供 Skill 初始化完整内容快照，拼接器不会自动读取。
 - `settings.schema.v1.json`、`settings.defaults.v1.json`：背景、外边距和图片最大宽度。
-- `assets/default-review-collage.png`：用户提供的默认演示图片，只供本地演示。
+- `assets/default-review-ix.jpg`：当前默认评论整图（`1200×2186px`），供本地演示与本地草稿预览；最终 Omnisend HTML 仍须替换为公开 HTTPS 图片地址。
 - `效果演示.html`：使用默认本地图片生成的完整浏览器预览，不是 Omnisend Custom HTML 导入片段。
 
 ## 后续 Skill 采集流程
 
-Skill 只需询问三个内容字段：
+Skill 默认载入 `content.fixture.v1.json` 的评论整图、Alt 和整图链接，先展示完成卡片与双端预览；不逐字段追问。用户主动提出替换时，才更新以下内容字段：
 
 1. `image.url`：用户手动上传图片，或通过 Shopify CLI/API 取得图片。
 2. `image.alt`：图片加载失败及无障碍场景使用的简短说明。
