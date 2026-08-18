@@ -13,6 +13,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 ## 交互约束
 
 - 组件库由 `组件清单.json` 生成；每个已注册组件都可选择、重复、删除和任意排序，分类只是帮助浏览，不构成结构规则。
+- `小样-产品` 分类中的小样产品推荐卡（左、右）、窗帘产品推荐卡II（标题版）和无标题版均可在编辑器中选择；图片、产品文案、CTA、链接与已开放颜色字段可编辑，不影响 CLI 固定六区段。
 - 默认内容和样式分别来自组件的 `content.fixture.v1.json` 与 `settings.defaults.v1.json`；`效果演示.html` 是样式参考，不可用一张素材图替代。
 - 字段编辑受该组件 Schema 限制。编辑后会撤销该组件的确认状态并刷新本地预览。
 - “shopify商品导入”只在选中 `collection.saleGrid6` 时显示。输入完整 Freshine Page 或 Collection URL 后，固定调用 `fetch-activity-page-sale-grid.mjs --shopify-url <URL>`，只读 Shopify，并只覆盖该实例的 6 个商品图片、Alt、商品链接、折扣标签和 CTA；Page 会从线上主题模板的首个启用 `products-grid-v2` 解析商品来源，Collection 直接读取，CTA 始终保留输入 URL。
@@ -20,4 +21,6 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 
 ## 边界
 
-当前编辑器提供本地编排、字段编辑、组件确认、六宫格导入与“上传 Omnisend 草稿”入口。上传前必须确认全部组件、填写 Campaign 名称和 Subject、生成静态 HTML 并逐字确认其 SHA-256；随后只由终端中的固定 `upload-omnisend-draft.mjs` 运行时读取 API Key。不得在编辑器中执行发送、排期或发布，也不得把 API Key 传入浏览器、参数、环境变量或本地草稿文件。
+当前编辑器提供本地编排、字段编辑、组件确认、六宫格导入与“上传 Omnisend 草稿”入口。上传前必须确认全部组件并填写 Campaign 名称和 Subject；静态 HTML 与 SHA-256 在本机内部自动校验，不要求用户复制或粘贴哈希。编辑器弹窗一次性收集 API Key，支持粘贴与显示/隐藏，上传结束或失败后立即清除；不得写入参数、环境变量、日志或本地草稿文件。上传器按 Campaign 名称精确检索同名 `draft`，多个结果更新最近更新的一封；没有匹配才新建 Draft。不得在编辑器中执行发送、排期或发布。
+
+“导出 Omnisend HTML”是独立入口。确认全部组件后，它仅上传本地图片到 Omnisend 并替换 `asset://` 地址，再把完整 HTML 复制到剪切板；不会创建、更新或发送 Campaign 或 Draft，不访问模板或 Email Content。API Key 只在本次请求中使用，完整 HTML 不保存为草稿、回执或日志。浏览器拒绝剪切板权限时，展示已替换 URL 的只读 HTML，用户可手动复制；该备用路径不得再次上传图片。

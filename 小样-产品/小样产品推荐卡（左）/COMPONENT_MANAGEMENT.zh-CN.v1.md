@@ -1,10 +1,10 @@
-# 小样产品推荐卡组件管理说明（V1）
+# 小样产品推荐卡（左）组件管理说明（V1）
 
 ## 组件定位
 
-- 中文名称：小样产品推荐卡
+- 中文名称：小样产品推荐卡（左）
 - 英文名称：Sample Product Recommendation Card
-- Component Key：`product.sampleProductRecommendation`
+- Component Key：`product.sampleProductRecommendationLeft`
 - 布局：左侧产品场景图＋右侧面料图、名称、副标题与文字链接 CTA
 - 桌面画布：600px
 - 移动端目标：375px 流式缩放
@@ -31,7 +31,7 @@
 | 右侧图片说明 | `product.images.fabric.alt` | 纯文本 alt |
 | 产品名称 | `product.title` | 默认 `Liana` |
 | 产品副标题 | `product.subtitle` | 默认 `Sheer Curtains` |
-| CTA | `product.cta.label` | 默认 `SHOP NOW <` |
+| CTA | `product.cta.label` | 默认 `SHOP NOW <`；左边缘与产品名称对齐 |
 | 统一跳转 | `product.url` | 两张图片和 CTA 共用；默认仅为占位 URL |
 
 默认链接 `https://freshinelife.com/` 仅为后续内容注入前的安全占位，不代表已确认的活动落地页。注入脚本或 Campaign 实例必须提供真实的 HTTPS 产品或集合链接。
@@ -40,9 +40,10 @@
 
 - `color.surface` 默认 `#FAF9F7`，可替换整块组件背景。
 - 所有文字统一使用 `Montserrat, Arial, Helvetica, sans-serif`；`font.body` 为固定字体栈，不作为 Campaign 主题覆写项。
-- 桌面端标题为 24px/600，副标题为 20px/400，CTA 为 20px/500；窄屏使用 CSS `clamp()` 将标题最小控制为 18px、副标题与 CTA 最小控制为 15px，并同步收紧行高。
+- 标题为 18px/600/26px，副标题为 12px/400/18px，CTA 为 14px/500/17px；三者均为 0px 字间距、左对齐。
+- 右侧文字均使用 `white-space: nowrap`，保证与 `Linen Blend Curtains` 等相同长度的产品副标题在固定 197px 内容列内单行呈现；超出该安全长度的文案应在 Campaign 内容层缩短后再使用。
 - 图文尺寸、两栏比例、间距、圆角和 CTA 的下划线样式属于已确认的版面，不作为每封 Campaign 的可编辑几何参数。
-- 窄屏保持左右双列，不改为上下布局；图片、列宽与留白依靠 `width:100%` 与最大宽度表格等比例收缩，文字通过内联 `clamp()` 控制字号与行高，不使用媒体查询、Flex 或 Grid。
+- 窄屏保持左右双列，不改为上下布局；图片、列宽与留白依靠 `width:100%` 与最大宽度表格等比例收缩，文字使用固定字号与单行约束，不使用媒体查询、Flex 或 Grid。
 
 ## Omnisend 安全边界
 

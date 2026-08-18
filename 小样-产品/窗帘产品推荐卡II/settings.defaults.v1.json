@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.curtainRecommendationOverlay",
+  "values": {
+    "color.surface": "#FBFAF8",
+    "color.text": "#202020",
+    "color.action": "#9D1D20",
+    "font.display": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif"
+  }
+}

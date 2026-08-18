@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.sampleProductRecommendationRight",
+  "values": {
+    "color.surface": "#FAF9F7",
+    "color.text": "#202020",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif"
+  }
+}

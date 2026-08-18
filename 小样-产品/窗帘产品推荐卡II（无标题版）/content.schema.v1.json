@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.curtainRecommendationNoTitle",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "product.images.scene.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "product.images.scene.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "product.images.detail.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "product.images.detail.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "product.name": { "type": "text", "required": true, "skillPrompt": true },
+    "product.color.label": { "type": "text", "required": true, "skillPrompt": true },
+    "product.color.value": { "type": "text", "required": true, "skillPrompt": true },
+    "product.cta.label": { "type": "text", "required": true, "skillPrompt": true },
+    "product.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

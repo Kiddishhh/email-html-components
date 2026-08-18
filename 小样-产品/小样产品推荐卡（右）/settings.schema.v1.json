@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentKey": "product.sampleProductRecommendation",
+  "componentKey": "product.sampleProductRecommendationRight",
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {

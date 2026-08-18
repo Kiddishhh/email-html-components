@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.sampleProductRecommendationRight",
+  "fixture": "default-liana-sheer-curtains-demo",
+  "localReferenceAssets": {
+    "sample-product-scene": "assets/default-liana-sheer-curtains.png",
+    "sample-product-fabric": "assets/default-liana-sheer-fabric.png"
+  },
+  "values": {
+    "product.images.scene.url": "asset://sample-product-scene",
+    "product.images.scene.alt": "Liana sheer curtains in a bright living room",
+    "product.images.fabric.url": "asset://sample-product-fabric",
+    "product.images.fabric.alt": "White sheer curtain fabric detail",
+    "product.title": "Liana",
+    "product.subtitle": "Sheer Curtains",
+    "product.cta.label": "SHOP NOW <",
+    "product.url": "https://freshinelife.com/"
+  }
+}

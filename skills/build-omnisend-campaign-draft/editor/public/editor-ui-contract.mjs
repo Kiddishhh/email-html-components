@@ -1,4 +1,4 @@
-const structureOrder = ['头图', '活动商品组件', '通用图片组件', '评论组件', '赠品与权益组件', '地址组件', '页脚组件'];
+const structureOrder = ['头图', '活动商品组件', '通用图片组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件'];
 
 const editableByComponent = {
   'hero.promotionalOverlay': {
@@ -25,7 +25,23 @@ const editableByComponent = {
   'location.showroomCard': { content: [], settings: [] },
   'footer.warm': { content: [], settings: ['color.background'] },
   'image.benefitsStrip3': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
-  'review.textList2': { content: [], settings: [] }
+  'review.textList2': { content: [], settings: [] },
+  'product.sampleProductRecommendationLeft': {
+    content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.fabric.url', 'product.images.fabric.alt', 'product.title', 'product.subtitle', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text']
+  },
+  'product.sampleProductRecommendationRight': {
+    content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.fabric.url', 'product.images.fabric.alt', 'product.title', 'product.subtitle', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text']
+  },
+  'product.curtainRecommendationOverlay': {
+    content: ['intro.title', 'intro.subtitle', 'product.images.scene.url', 'product.images.scene.alt', 'product.images.detail.url', 'product.images.detail.alt', 'product.name', 'product.color.label', 'product.color.value', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  },
+  'product.curtainRecommendationNoTitle': {
+    content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.detail.url', 'product.images.detail.alt', 'product.name', 'product.color.label', 'product.color.value', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  }
 };
 
 const copyByField = {
@@ -65,6 +81,21 @@ const copyByField = {
   'image.url': ['整图链接', '替换当前组件使用的完整图片；填写公开 HTTPS 图片地址。'],
   'image.alt': ['图片说明', '图片无法显示时供读屏工具识别的简短说明。'],
   'image.linkUrl': ['图片点击链接', '用户点击整张图片后打开的页面地址。'],
+  'intro.title': ['卡片标题', '显示在产品推荐卡上方的主标题。'],
+  'intro.subtitle': ['顶部说明', '显示在卡片标题下方；按可用宽度自动换行。'],
+  'product.images.scene.url': ['产品场景图', '替换产品场景图片；填写公开 HTTPS 图片地址。'],
+  'product.images.scene.alt': ['产品场景图说明', '场景图无法显示时供读屏工具识别的简短说明。'],
+  'product.images.fabric.url': ['面料细节图', '替换面料细节图片；填写公开 HTTPS 图片地址。'],
+  'product.images.fabric.alt': ['面料细节图说明', '面料图无法显示时供读屏工具识别的简短说明。'],
+  'product.images.detail.url': ['产品细节图', '替换产品细节图片；填写公开 HTTPS 图片地址。'],
+  'product.images.detail.alt': ['产品细节图说明', '细节图无法显示时供读屏工具识别的简短说明。'],
+  'product.title': ['产品标题', '显示在推荐卡中的产品标题。'],
+  'product.subtitle': ['产品副标题', '显示在产品标题下方的补充说明。'],
+  'product.name': ['产品名称', '显示在推荐卡中的产品名称。'],
+  'product.color.label': ['色号标签', '显示在产品色号前的标签。'],
+  'product.color.value': ['色号内容', '显示产品颜色或色号信息。'],
+  'product.cta.label': ['CTA 文字', '显示在产品推荐卡中的按钮或链接文案。'],
+  'product.url': ['产品链接', '点击图片或 CTA 后打开的公开 HTTPS 产品页面。'],
   'color.theme': ['主题操作色', '用于 CTA 和折扣等主要操作元素的颜色。'],
   'color.heroFallback': ['首图回退背景色', '主图无法显示时使用的首图背景色。'],
   'color.logoBadge': ['Logo 徽章底色', '首图 Logo 圆形徽章的实色降级背景。'],
@@ -72,6 +103,8 @@ const copyByField = {
   'color.navigationLeft': ['左侧导航底色', '顶部导航左侧促销区域的背景色。'],
   'color.navigationRight': ['右侧导航底色', '顶部导航右侧注册链接区域的背景色。'],
   'color.surface': ['组件背景色', '仅修改当前组件的底色，不影响邮件整体背景。'],
+  'color.text': ['组件文字色', '仅修改当前组件的文字颜色。'],
+  'color.action': ['CTA 操作色', '仅修改当前组件 CTA 的按钮或强调色。'],
   'color.offerSurface': ['优惠文案区底色', '仅修改主图下方优惠文案区域的背景色。'],
   'color.promotionLeft': ['顶部栏左侧底色', '修改顶部促销栏左侧区域的背景色。'],
   'color.promotionRight': ['顶部栏右侧底色', '修改顶部促销栏右侧区域的背景色。'],

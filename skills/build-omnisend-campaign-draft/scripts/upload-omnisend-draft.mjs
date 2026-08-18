@@ -128,6 +128,18 @@ function mostRecentlyUpdatedMatchingDraft(response, name) {
   return candidates[0] ?? null;
 }
 
+function validateReferencedAssetMetadata(projectState, html) {
+  validateAssetMetadata(projectState.assets ?? {}, html);
+}
+
+function validateAssetMetadata(assets, html) {
+  for (const key of new Set(assetReferences(html))) {
+    const asset = assets[key];
+    assert(asset?.localPath && asset?.name && asset?.mimeType, `local asset ${key} is missing upload metadata`);
+    assert(IMAGE_MIME_TYPES.has(asset.mimeType), `local asset ${key} must be JPEG, PNG, GIF, or WebP`);
+  }
+}
+
 function confirmedHtmlContent(response) {
   assert(response?.generalSettings && typeof response.generalSettings === 'object', 'existing email content is missing generalSettings');
   assert(Array.isArray(response?.sections), 'existing email content is missing sections');
@@ -237,6 +249,82 @@ function assertResponseStatus(response, expectedStatus, label) {
   assert(response.status === expectedStatus, `${label} failed with status ${response.status}: ${apiFailureDetail(response)}`);
 }
 
+function assertImageExportRequest({ method, url }) {
+  const parsed = new URL(url);
+  assert(parsed.origin === API_ORIGIN, 'request origin is not allowlisted');
+  assert(method === 'POST' && parsed.pathname === '/api/images/upload', `request endpoint is not allowlisted: ${method} ${parsed.pathname}`);
+}
+
+async function uploadAndReplaceLocalAssets({ html, assets, readFile, request }) {
+  validateAssetMetadata(assets, html);
+  let finalHtml = html;
+  const uploadedImageIDs = [];
+  for (const key of new Set(assetReferences(html))) {
+    const asset = assets[key];
+    const bytes = await readFile(asset.localPath);
+    assert(bytes.byteLength <= MAX_IMAGE_BYTES, `local asset ${key} exceeds Omnisend's 5 MB limit`);
+    const form = new FormData();
+    form.append('file', new Blob([bytes], { type: asset.mimeType }), asset.name);
+    form.append('name', asset.name);
+    const upload = await request({ method: 'POST', url: `${API_ORIGIN}/api/images/upload`, body: form });
+    assertResponseStatus(upload, 201, 'image upload');
+    const image = extractImage(upload.json);
+    finalHtml = finalHtml.replace(new RegExp(`asset://${escapeRegExp(key)}`, 'gu'), image.url);
+    uploadedImageIDs.push(image.id);
+  }
+  return { finalHtml, uploadedImageIDs };
+}
+
+function assertExportSafeHtml(html) {
+  assert(typeof html === 'string' && html, 'static HTML is required');
+  assert(!html.includes('asset://'), 'final HTML still contains local assets');
+  assert(!/(?:file:|(?:src|background)\s*=\s*["'](?:\.\.?\/|\/))/iu.test(html), 'final HTML contains a local or relative asset path');
+  assert(!/url\(\s*["']?(?:\.\.?\/|file:)/iu.test(html), 'final HTML contains a local or relative CSS asset path');
+  assert(!/\{\{(?:content|settings)\./u.test(html), 'final HTML contains unresolved component placeholders');
+}
+
+export function createOmnisendHtmlExportTransaction({ html, assets, readFile, transport }) {
+  assert(typeof html === 'string' && html, 'static HTML is required');
+  assert(assets && typeof assets === 'object' && !Array.isArray(assets), 'assets are required');
+  assert(typeof readFile === 'function', 'readFile is required');
+  assert(typeof transport === 'function', 'transport is required');
+
+  async function request(apiKey, requestData) {
+    assertImageExportRequest(requestData);
+    const response = await transport({
+      ...requestData,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Omnisend-API-Key ${apiKey}`,
+        'Omnisend-Version': API_VERSION,
+        ...(requestData.headers ?? {})
+      }
+    });
+    assert(Number.isInteger(response?.status), 'API response has no status');
+    return response;
+  }
+
+  return {
+    async run(apiKey) {
+      try {
+        assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
+        const { finalHtml, uploadedImageIDs } = await uploadAndReplaceLocalAssets({
+          html,
+          assets,
+          readFile,
+          request: (requestData) => request(apiKey, requestData)
+        });
+        assertExportSafeHtml(finalHtml);
+        return { html: finalHtml, htmlSha256: sha256(finalHtml), uploadedImageIDs };
+      } catch (error) {
+        throw new Error(redactSecret(error instanceof Error ? error.message : String(error), apiKey));
+      } finally {
+        apiKey = '';
+      }
+    }
+  };
+}
+
 export function createDraftUploadTransaction({ projectState, html, readFile, transport, now = () => new Date().toISOString() }) {
   assert(typeof html === 'string' && html, 'static HTML is required');
   assert(typeof readFile === 'function', 'readFile is required');
@@ -297,15 +385,14 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
       try {
         assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
         preflight(projectState, html);
-        let existingCampaignID = projectState?.finalConfirmation?.campaignID;
-        let existingContentID = projectState?.finalConfirmation?.contentID;
+        validateReferencedAssetMetadata(projectState, html);
+        let existingCampaignID;
+        let existingContentID;
         let existingContent;
-        if (!existingCampaignID) {
-          const campaignList = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/campaigns?status=draft&limit=100` });
-          assertResponseStatus(campaignList, 200, 'draft campaign search');
-          const match = mostRecentlyUpdatedMatchingDraft(campaignList.json, projectState.campaign?.name);
-          if (match) existingCampaignID = match.id;
-        }
+        const campaignList = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/campaigns?status=draft&limit=100` });
+        assertResponseStatus(campaignList, 200, 'draft campaign search');
+        const match = mostRecentlyUpdatedMatchingDraft(campaignList.json, projectState.campaign?.name);
+        if (match) existingCampaignID = match.id;
         if (existingCampaignID) {
           const existingCampaign = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/campaigns/${existingCampaignID}` });
           assertResponseStatus(existingCampaign, 200, 'existing campaign readback');
@@ -318,24 +405,12 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
           replaceConfirmedHtmlBlock(existingContentReadback.json, html);
           existingContent = existingContentReadback.json;
         }
-        let finalHtml = html;
-        const uploadedImageIDs = [];
-        const assets = projectState.assets ?? {};
-        for (const key of new Set(assetReferences(html))) {
-          const asset = assets[key];
-          assert(asset?.localPath && asset?.name && asset?.mimeType, `local asset ${key} is missing upload metadata`);
-          assert(IMAGE_MIME_TYPES.has(asset.mimeType), `local asset ${key} must be JPEG, PNG, GIF, or WebP`);
-          const bytes = await readFile(asset.localPath);
-          assert(bytes.byteLength <= MAX_IMAGE_BYTES, `local asset ${key} exceeds Omnisend's 5 MB limit`);
-          const form = new FormData();
-          form.append('file', new Blob([bytes], { type: asset.mimeType }), asset.name);
-          form.append('name', asset.name);
-          const upload = await request(apiKey, { method: 'POST', url: `${API_ORIGIN}/api/images/upload`, body: form });
-          assertResponseStatus(upload, 201, 'image upload');
-          const image = extractImage(upload.json);
-          finalHtml = finalHtml.replace(new RegExp(`asset://${escapeRegExp(key)}`, 'gu'), image.url);
-          uploadedImageIDs.push(image.id);
-        }
+        const { finalHtml, uploadedImageIDs } = await uploadAndReplaceLocalAssets({
+          html,
+          assets: projectState.assets ?? {},
+          readFile,
+          request: (requestData) => request(apiKey, requestData)
+        });
         assert(!finalHtml.includes('asset://'), 'final HTML still contains local assets');
         assert(!/(?:file:|src\s*=\s*["'](?:\.\.?\/))/iu.test(finalHtml), 'final HTML contains a local or relative asset path');
         assert(finalHtml.includes(UNSUBSCRIBE_TOKEN), 'final HTML is missing the unsubscribe token after upload');
@@ -503,6 +578,21 @@ function createFetchTransport() {
     try { json = text ? JSON.parse(text) : {}; } catch { json = { raw: text }; }
     return { status: response.status, json };
   };
+}
+
+export async function runOmnisendHtmlExportWithApiKey({ html, assets, apiKey }) {
+  assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
+  const transaction = createOmnisendHtmlExportTransaction({
+    html,
+    assets,
+    readFile: (path) => readFileFromDisk(path),
+    transport: createFetchTransport()
+  });
+  try {
+    return await transaction.run(apiKey);
+  } finally {
+    apiKey = '';
+  }
 }
 
 export async function runDraftUploadWithApiKey({ projectPath, htmlPath, apiKey, verifyExisting = false }) {

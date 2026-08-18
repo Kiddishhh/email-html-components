@@ -11,6 +11,7 @@
     <div><span class="eyebrow">FRESHINE</span><h1>Campaign Editor</h1></div>
     <label>Campaign 名称 <input id="campaign-name" value="未命名 Campaign"></label>
     <button id="new-campaign" class="button primary">新建草稿</button>
+    <button id="export-omnisend-html" class="button">导出 Omnisend HTML</button>
     <button id="upload-omnisend-draft" class="button">上传 Omnisend 草稿</button>
   </header>
   <main class="workspace" hidden>
@@ -32,12 +33,41 @@
     <form method="dialog" class="upload-dialog-form">
       <h2 id="omnisend-upload-title">上传 Omnisend 草稿</h2>
       <p>仅会创建或更新 Draft，不会发送、排期或发布。</p>
+      <label>Campaign 名称
+        <input id="omnisend-campaign-name" type="text" autocomplete="off">
+      </label>
+      <label>邮件主题（Subject）
+        <input id="omnisend-subject" type="text" autocomplete="off">
+      </label>
+      <label>预览文案（Preheader，可留空）
+        <input id="omnisend-preheader" type="text" autocomplete="off">
+      </label>
       <label>Omnisend API Key
         <input id="omnisend-api-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="粘贴 API Key">
       </label>
       <label class="inline-check"><input id="show-omnisend-api-key" type="checkbox"> 显示 API Key</label>
       <p class="key-help">密钥仅用于本次本机上传，完成或失败后会立即清除，不会写入草稿、文件或日志。</p>
       <div class="upload-dialog-actions"><button id="cancel-omnisend-upload" class="button" value="cancel">取消</button><button id="submit-omnisend-upload" type="button" class="button primary">上传为 Draft</button></div>
+    </form>
+  </dialog>
+  <dialog id="omnisend-export-dialog" class="upload-dialog" aria-labelledby="omnisend-export-title">
+    <form method="dialog" class="upload-dialog-form">
+      <h2 id="omnisend-export-title">导出 Omnisend HTML</h2>
+      <p>仅上传本地图片并替换为 Omnisend 图片 URL，然后将完整 HTML 复制到剪切板；不会创建、更新或发送 Campaign／Draft。</p>
+      <label>Omnisend API Key
+        <input id="omnisend-export-api-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="粘贴 API Key">
+      </label>
+      <label class="inline-check"><input id="show-omnisend-export-api-key" type="checkbox"> 显示 API Key</label>
+      <p class="key-help">密钥仅用于本次图片上传，完成或失败后会立即清除，不会写入草稿、文件或日志。</p>
+      <div class="upload-dialog-actions"><button id="cancel-omnisend-export" class="button" value="cancel">取消</button><button id="submit-omnisend-export" type="button" class="button primary">上传图片并复制 HTML</button></div>
+    </form>
+  </dialog>
+  <dialog id="omnisend-html-copy-fallback" class="upload-dialog" aria-labelledby="omnisend-html-copy-fallback-title">
+    <form method="dialog" class="upload-dialog-form">
+      <h2 id="omnisend-html-copy-fallback-title">请手动复制 HTML</h2>
+      <p>浏览器未允许自动写入剪切板。图片已上传，下面是已替换 URL 的完整 HTML；选择后复制即可。</p>
+      <textarea id="omnisend-html-copy-text" class="html-copy-text" readonly aria-label="Omnisend HTML"></textarea>
+      <div class="upload-dialog-actions"><button id="copy-omnisend-html-manually" type="button" class="button primary">再次复制</button><button id="close-omnisend-html-copy" class="button" value="cancel">关闭</button></div>
     </form>
   </dialog>
   <script type="module" src="/editor/app.js"></script>

@@ -252,6 +252,20 @@ test('Skill defaults to the legacy free-form visual editor and its Draft-only up
   assert.match(skill, /终端.*API Key/s);
 });
 
+test('Skill documents the image-only Omnisend HTML clipboard export boundary', async () => {
+  const skill = await read('SKILL.md');
+  const editorWorkflow = await read('references/visual-editor-workflow.zh-CN.md');
+
+  for (const document of [skill, editorWorkflow]) {
+    assert.match(document, /导出 Omnisend HTML/);
+    assert.match(document, /仅上传本地图片/);
+    assert.match(document, /不会创建.*Campaign.*Draft/s);
+    assert.match(document, /剪切板/);
+    assert.match(document, /手动复制/);
+  }
+  assert.match(skill, /不.*保存.*完整 HTML/s);
+});
+
 test('Skill invokes the tested Shopify scripts in their locked-data order', async () => {
   const skill = await read('SKILL.md');
   const interactions = await read('references/component-interactions.zh-CN.md');

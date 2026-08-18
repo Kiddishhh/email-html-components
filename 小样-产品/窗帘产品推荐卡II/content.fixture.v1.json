@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.curtainRecommendationOverlay",
+  "fixture": "default-celina-linen-curtains-demo",
+  "localReferenceAssets": {
+    "celina-bedroom": "assets/default-celina-bedroom.png",
+    "celina-khaki-detail": "assets/default-celina-khaki-detail.png"
+  },
+  "values": {
+    "intro.title": "Upgrade Your Home in Style",
+    "intro.subtitle": "Refresh Your Home With Our Latest Curtain Designs-Crafted To Bring A Clean, Modern Look And Effortless Comfort For The Year Ahead.",
+    "product.images.scene.url": "asset://celina-bedroom",
+    "product.images.scene.alt": "Bedroom styled with Celina linen curtains",
+    "product.images.detail.url": "asset://celina-khaki-detail",
+    "product.images.detail.alt": "Khaki Celina linen curtain detail by a window",
+    "product.name": "Celina Linen Curtains",
+    "product.color.label": "Color:",
+    "product.color.value": "Khaki 8823-5",
+    "product.cta.label": "SHOP NOW",
+    "product.url": "https://freshinelife.com/"
+  }
+}

@@ -37,6 +37,24 @@ function defaultComponentAsset(component, assetId, workspaceRoot) {
   return `assets/${matches[0]}`;
 }
 
+function scopedDefaultAssetId(componentKey, assetId) {
+  return `${componentKey.toLowerCase().replace(/[^a-z0-9]+/gu, '-')}-${assetId}`;
+}
+
+function conflictingDefaultAssetIds(document, catalog, workspaceRoot) {
+  const pathsByAssetId = new Map();
+  for (const instance of document.components) {
+    const component = catalog.find((candidate) => candidate.componentKey === instance.componentKey);
+    if (!component) throw new Error(`unknown selected component: ${instance.componentKey}`);
+    for (const [assetId, relativePath] of Object.entries(component.defaultContent.localReferenceAssets ?? {})) {
+      const paths = pathsByAssetId.get(assetId) ?? new Set();
+      paths.add(resolve(workspaceRoot, component.directory, relativePath));
+      pathsByAssetId.set(assetId, paths);
+    }
+  }
+  return new Set([...pathsByAssetId].filter(([, paths]) => paths.size > 1).map(([assetId]) => assetId));
+}
+
 export function buildEditorCatalog({ workspaceRoot }) {
   const registry = readJson(resolve(workspaceRoot, '组件清单.json'));
   return registry.map((entry) => {
@@ -157,10 +175,29 @@ export function attachLocalImage(document, instanceId, fieldKey, asset) {
   };
 }
 
+export function normalizeDefaultLocalAssetReferences(document, { workspaceRoot }) {
+  const catalog = buildEditorCatalog({ workspaceRoot });
+  const conflictingAssetIds = conflictingDefaultAssetIds(document, catalog, workspaceRoot);
+  const components = document.components.map((instance) => {
+    const component = catalog.find((candidate) => candidate.componentKey === instance.componentKey);
+    if (!component) throw new Error(`unknown selected component: ${instance.componentKey}`);
+    const references = component.defaultContent.localReferenceAssets ?? {};
+    const content = Object.fromEntries(Object.entries(instance.content).map(([key, value]) => {
+      if (typeof value !== 'string' || !value.startsWith('asset://')) return [key, value];
+      const assetId = value.slice('asset://'.length);
+      return [key, Object.hasOwn(references, assetId) && conflictingAssetIds.has(assetId) ? `asset://${scopedDefaultAssetId(instance.componentKey, assetId)}` : value];
+    }));
+    return { ...clone(instance), content };
+  });
+  return { ...clone(document), components };
+}
+
 export function buildLocalAssetMap(document, { workspaceRoot }) {
   const catalog = buildEditorCatalog({ workspaceRoot });
+  const conflictingAssetIds = conflictingDefaultAssetIds(document, catalog, workspaceRoot);
+  const normalizedDocument = normalizeDefaultLocalAssetReferences(document, { workspaceRoot });
   const assets = {};
-  for (const instance of document.components) {
+  for (const instance of normalizedDocument.components) {
     const component = catalog.find((candidate) => candidate.componentKey === instance.componentKey);
     if (!component) throw new Error(`unknown selected component: ${instance.componentKey}`);
     const assetIds = Object.values(instance.content).filter((value) => typeof value === 'string' && value.startsWith('asset://')).map((value) => value.slice('asset://'.length));
@@ -169,13 +206,14 @@ export function buildLocalAssetMap(document, { workspaceRoot }) {
       const path = resolve(workspaceRoot, component.directory, relativePath);
       if (!existsSync(path)) throw new Error(`${instance.componentKey}: missing local asset ${relativePath}`);
       const value = { path: path.slice(workspaceRoot.length + 1), name: basename(relativePath) };
-      if (assets[assetId] && assets[assetId].path !== value.path) throw new Error(`duplicate local asset id with different files: ${assetId}`);
-      assets[assetId] = value;
+      const outputAssetId = conflictingAssetIds.has(assetId) ? scopedDefaultAssetId(instance.componentKey, assetId) : assetId;
+      if (assets[outputAssetId] && assets[outputAssetId].path !== value.path) throw new Error(`duplicate local asset id with different files: ${outputAssetId}`);
+      assets[outputAssetId] = value;
     }
     const localPreviewAsset = component.defaultContent.localPreviewAsset;
     if (localPreviewAsset) {
       for (const assetId of assetIds) {
-        if (document.localAssets?.[assetId]) continue;
+        if (normalizedDocument.localAssets?.[assetId]) continue;
         const path = resolve(workspaceRoot, component.directory, localPreviewAsset);
         if (!existsSync(path)) throw new Error(`${instance.componentKey}: missing local preview asset ${localPreviewAsset}`);
         const value = { path: path.slice(workspaceRoot.length + 1), name: basename(localPreviewAsset) };
@@ -184,14 +222,14 @@ export function buildLocalAssetMap(document, { workspaceRoot }) {
       }
     }
     for (const assetId of assetIds) {
-      if (document.localAssets?.[assetId] || assets[assetId]) continue;
+      if (normalizedDocument.localAssets?.[assetId] || assets[assetId]) continue;
       const relativePath = defaultComponentAsset(component, assetId, workspaceRoot);
       if (!relativePath) throw new Error(`${instance.componentKey}: unknown local asset ${assetId}`);
       const path = resolve(workspaceRoot, component.directory, relativePath);
       assets[assetId] = { path: path.slice(workspaceRoot.length + 1), name: basename(relativePath) };
     }
   }
-  for (const [assetId, asset] of Object.entries(document.localAssets ?? {})) {
+  for (const [assetId, asset] of Object.entries(normalizedDocument.localAssets ?? {})) {
     if (!/^[a-z0-9][a-z0-9-]*$/u.test(assetId) || !asset || typeof asset.path !== 'string' || typeof asset.name !== 'string') {
       throw new Error('editor local asset is invalid');
     }

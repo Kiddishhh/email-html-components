@@ -36,13 +36,35 @@ test('editor catalog exposes every registered component as a freely selectable s
 test('editor groups styles by structure before selection and exposes only Skill-directed edits', () => {
   const catalog = buildEditorCatalog({ workspaceRoot });
 
-  assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '通用图片组件', '评论组件', '赠品与权益组件', '页脚组件']);
+  assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '通用图片组件', '评论组件', '小样-产品', '赠品与权益组件', '页脚组件']);
   assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2']);
+  assert.deepEqual(styleKeysForStructure(catalog, '小样-产品'), [
+    'product.sampleProductRecommendationLeft',
+    'product.sampleProductRecommendationRight',
+    'product.curtainRecommendationOverlay',
+    'product.curtainRecommendationNoTitle'
+  ]);
   assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'location.showroomCard', 'image.benefitsStrip3']);
   assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background'] });
   assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), { content: [], settings: [] });
   assert.deepEqual(editableFieldKeys('image.clickableFullWidth'), {
     content: ['image.url', 'image.alt', 'image.linkUrl'], settings: ['color.surface']
+  });
+  assert.deepEqual(editableFieldKeys('product.curtainRecommendationOverlay'), {
+    content: ['intro.title', 'intro.subtitle', 'product.images.scene.url', 'product.images.scene.alt', 'product.images.detail.url', 'product.images.detail.alt', 'product.name', 'product.color.label', 'product.color.value', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  });
+  assert.deepEqual(editableFieldKeys('product.curtainRecommendationNoTitle'), {
+    content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.detail.url', 'product.images.detail.alt', 'product.name', 'product.color.label', 'product.color.value', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  });
+  assert.deepEqual(editableFieldKeys('product.sampleProductRecommendationLeft'), {
+    content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.fabric.url', 'product.images.fabric.alt', 'product.title', 'product.subtitle', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text']
+  });
+  assert.deepEqual(editableFieldKeys('product.sampleProductRecommendationRight'), {
+    content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.fabric.url', 'product.images.fabric.alt', 'product.title', 'product.subtitle', 'product.cta.label', 'product.url'],
+    settings: ['color.surface', 'color.text']
   });
   assert.deepEqual(editorFieldCopy('collection.saleGrid6', 'content', 'saleCollection.body'), {
     label: '商品区说明',
@@ -62,7 +84,7 @@ test('editor groups styles by structure before selection and exposes only Skill-
   });
 });
 
-test('full component library retains both countdown heroes and the benefits strip with their default assets', () => {
+test('full component library retains both countdown heroes and the benefits strip public default', () => {
   const catalog = buildEditorCatalog({ workspaceRoot });
   let document = createCampaignDocument({ name: '完整组件库资源测试' });
   for (const componentKey of ['hero.countdownOverlay', 'hero.countdownOverlay2', 'image.benefitsStrip3']) {
@@ -70,9 +92,11 @@ test('full component library retains both countdown heroes and the benefits stri
   }
 
   assert.deepEqual(document.components.map(({ componentKey }) => componentKey), ['hero.countdownOverlay', 'hero.countdownOverlay2', 'image.benefitsStrip3']);
+  const benefits = document.components.find(({ componentKey }) => componentKey === 'image.benefitsStrip3');
+  assert.equal(benefits.content['image.url'], 'https://app.omnisend.com/images/6a82d6f0c5aa8a2a0174f006');
   const assets = buildLocalAssetMap(document, { workspaceRoot });
-  assert.match(assets['benefits-strip-3'].path, /赠品与权益组件\/三项权益整图\/assets\/default-benefits-strip-combination-i-1200\.jpg$/u);
-  for (const assetId of ['countdown-background', 'countdown-brand-logo', 'countdown-divider', 'countdown-hero-2-logo', 'countdown-hero-2-image', 'benefits-strip-3']) {
+  assert.equal(assets['benefits-strip-3'], undefined);
+  for (const assetId of ['countdown-background', 'countdown-brand-logo', 'countdown-divider', 'countdown-hero-2-logo', 'countdown-hero-2-image']) {
     assert.equal(existsSync(resolve(workspaceRoot, assets[assetId].path)), true, `${assetId} should resolve to a checked-in component asset`);
   }
 });
@@ -116,6 +140,20 @@ test('local preview asset map resolves a current component asset reference witho
 
   const assets = buildLocalAssetMap(document, { workspaceRoot });
   assert.match(assets['review-star'].path, /评论组件\/双条文字评论\/assets\/review-star\.png$/u);
+});
+
+test('local preview keeps left and right sample product assets distinct', () => {
+  const catalog = buildEditorCatalog({ workspaceRoot });
+  let document = createCampaignDocument({ name: '左右小样产品预览测试' });
+  document = addComponentInstance(document, catalog, 'product.sampleProductRecommendationLeft');
+  document = addComponentInstance(document, catalog, 'product.sampleProductRecommendationRight');
+
+  const assets = buildLocalAssetMap(document, { workspaceRoot });
+
+  const paths = Object.values(assets).map(({ path }) => path);
+  assert.equal(new Set(Object.keys(assets)).size, 4);
+  assert.equal(paths.filter((path) => /小样-产品\/小样产品推荐卡（左）\/assets\//u.test(path)).length, 2);
+  assert.equal(paths.filter((path) => /小样-产品\/小样产品推荐卡（右）\/assets\//u.test(path)).length, 2);
 });
 
 test('sale-grid import updates only the selected six-grid instance with its Shopify data', () => {

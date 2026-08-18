@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentKey": "product.sampleProductRecommendation",
+  "componentKey": "product.sampleProductRecommendationLeft",
   "fixture": "default-liana-sheer-curtains-demo",
   "localReferenceAssets": {
     "sample-product-scene": "assets/default-liana-sheer-curtains.png",

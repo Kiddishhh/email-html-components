@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.sampleProductRecommendationLeft",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "product.images.scene.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.images.scene.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.images.fabric.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.images.fabric.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.subtitle": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.cta.label": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.url": {
+      "type": "url",
+      "role": "link-target",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    }
+  },
+  "additionalProperties": false
+}

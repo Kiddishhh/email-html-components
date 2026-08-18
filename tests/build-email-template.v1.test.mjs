@@ -740,18 +740,18 @@ test('the two-review list is registered generally without becoming a Campaign Sk
   assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'review.textList2'), false);
 });
 
-test('the sample product recommendation card is registered with its two-image Liana reference layout without becoming a Campaign Skill candidate', () => {
-  const directory = `${root}/小样-产品/小样产品推荐卡`;
+test('the left sample product recommendation card is registered with its two-image Liana reference layout without becoming a Campaign Skill candidate', () => {
+  const directory = `${root}/小样-产品/小样产品推荐卡（左）`;
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
   const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
   const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
-  const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleProductRecommendation');
+  const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleProductRecommendationLeft');
 
   assert.equal(entries.length, 1);
-  assert.equal(entries[0].中文名称, '小样产品推荐卡');
+  assert.equal(entries[0].中文名称, '小样产品推荐卡（左）');
   assert.equal(entries[0].分类, '小样-产品');
   assert.equal(entries[0].输出宽度, 600);
-  assert.equal(entries[0].路径.组件模板, '小样-产品/小样产品推荐卡/component.template.v1.html');
+  assert.equal(entries[0].路径.组件模板, '小样-产品/小样产品推荐卡（左）/component.template.v1.html');
   for (const filename of [
     'component.template.v1.html',
     'component.styles.v1.css',
@@ -786,13 +786,13 @@ test('the sample product recommendation card is registered with its two-image Li
     output: '/private/tmp/sample-product-recommendation.static-safe.html',
     previewOutput: '/private/tmp/sample-product-recommendation.local-preview.html',
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
-      path: `小样-产品/小样产品推荐卡/${path}`,
+      path: `小样-产品/小样产品推荐卡（左）/${path}`,
       name: path.split('/').at(-1)
     }])),
     components: [{
-      name: '小样产品推荐卡',
+      name: '小样产品推荐卡（左）',
       directory,
-      componentKey: 'product.sampleProductRecommendation',
+      componentKey: 'product.sampleProductRecommendationLeft',
       content: fixture.values,
       settings: settings.values
     }]
@@ -810,9 +810,9 @@ test('the sample product recommendation card is registered with its two-image Li
   assert.match(template, /data-freshine-slot="product\.title"/);
   assert.match(template, /data-freshine-slot="product\.subtitle"/);
   assert.match(template, /data-freshine-href-slot="product\.url"/);
-  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-size:24px;font-size:clamp\(18px,4vw,24px\);font-weight:600;line-height:28px;line-height:clamp\(21px,4\.6667vw,28px\)/);
-  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:400;line-height:26px;line-height:clamp\(20px,4\.3333vw,26px\)/);
-  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:500;line-height:24px;line-height:clamp\(19px,4vw,24px\)/);
+  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
   assert.deepEqual(Object.keys(contentSchema.properties), [
     'product.images.scene.url',
     'product.images.scene.alt',
@@ -830,22 +830,249 @@ test('the sample product recommendation card is registered with its two-image Li
   assert.equal(settings.values['color.surface'], '#FAF9F7');
   assert.equal(settings.values['font.body'], 'Montserrat, Arial, Helvetica, sans-serif');
   assert.equal(JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8')).properties['font.body'].default, 'Montserrat, Arial, Helvetica, sans-serif');
-  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:24px;font-size:clamp\(18px,4vw,24px\);font-weight:600;line-height:28px;line-height:clamp\(21px,4\.6667vw,28px\)/);
-  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:400;line-height:26px;line-height:clamp\(20px,4\.3333vw,26px\)/);
-  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:500;line-height:24px;line-height:clamp\(19px,4vw,24px\)/);
+  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)/i);
   assert.match(demo, /\.\/assets\/default-liana-sheer-curtains\.png/);
   assert.match(demo, /\.\/assets\/default-liana-sheer-fabric\.png/);
   assert.match(demo, /fonts\.googleapis\.com\/css2\?family=Montserrat:wght@400;500;600;700/);
-  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:24px;font-size:clamp\(18px,4vw,24px\)/);
+  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;/);
+  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;/);
+  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;/);
   assert.doesNotMatch(demo, /@media|display:\s*(?:flex|grid)/i);
-  assert.match(readme, /小样产品推荐卡.*product\.sampleProductRecommendation/s);
+  assert.match(readme, /小样产品推荐卡（左）.*product\.sampleProductRecommendationLeft/s);
   assert.match(index, /小样-产品[\s\S]*小样产品推荐卡/s);
   assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
   assert.match(preview, /width="319"/);
   assert.match(preview, /width="197"/);
-  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1/assets/default-liana-sheer-curtains.png'));
-  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1/assets/default-liana-sheer-fabric.png'));
-  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleProductRecommendation'), false);
-  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleProductRecommendation'), false);
+  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1%EF%BC%88%E5%B7%A6%EF%BC%89/assets/default-liana-sheer-curtains.png'));
+  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1%EF%BC%88%E5%B7%A6%EF%BC%89/assets/default-liana-sheer-fabric.png'));
+  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleProductRecommendationLeft'), false);
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleProductRecommendationLeft'), false);
+});
+
+test('the sample product recommendation cards expose distinct left and right variants', () => {
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const variants = [
+    ['product.sampleProductRecommendationLeft', '小样产品推荐卡（左）', '小样-产品/小样产品推荐卡（左）'],
+    ['product.sampleProductRecommendationRight', '小样产品推荐卡（右）', '小样-产品/小样产品推荐卡（右）']
+  ];
+  for (const [key, name, directory] of variants) {
+    const entry = registry.find(({ componentKey }) => componentKey === key);
+    const template = readFileSync(`${root}/${directory}/component.template.v1.html`, 'utf8');
+    assert.ok(entry, `missing ${key} registry entry`);
+    assert.equal(entry.中文名称, name);
+    assert.equal(entry.路径.组件模板, `${directory}/component.template.v1.html`);
+    assert.equal(existsSync(`${root}/${directory}/效果演示.html`), true, `missing ${name} preview`);
+    assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="display:block;[^\"]*text-align:left;/);
+    assert.match(template, /width="197"/);
+    assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+    assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+    assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+    assert.doesNotMatch(template, /data-freshine-href-slot="product\.url" target="_blank" style="display:inline-block;/);
+  }
+});
+
+test('the curtain recommendation overlay card reproduces the 600px editorial product layout without becoming a Campaign Skill candidate', () => {
+  const directory = `${root}/小样-产品/窗帘产品推荐卡II`;
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
+  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
+  const entries = registry.filter(({ componentKey }) => componentKey === 'product.curtainRecommendationOverlay');
+
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].中文名称, '窗帘产品推荐卡II（标题版）');
+  assert.equal(entries[0].分类, '小样-产品');
+  assert.equal(entries[0].输出宽度, 600);
+  assert.equal(entries[0].路径.组件模板, '小样-产品/窗帘产品推荐卡II/component.template.v1.html');
+  for (const filename of [
+    'component.template.v1.html',
+    'component.styles.v1.css',
+    'content.schema.v1.json',
+    'content.fixture.v1.json',
+    'settings.schema.v1.json',
+    'settings.defaults.v1.json',
+    'COMPONENT_MANAGEMENT.zh-CN.v1.md',
+    '效果演示.html',
+    'assets/default-celina-bedroom.png',
+    'assets/default-celina-khaki-detail.png'
+  ]) {
+    assert.equal(existsSync(`${directory}/${filename}`), true, `missing ${filename}`);
+  }
+
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const contentSchema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const readme = readFileSync(`${root}/README.md`, 'utf8');
+  const index = readFileSync(`${root}/组件索引.md`, 'utf8');
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FAF9F7',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: '/private/tmp/curtain-recommendation-overlay.static-safe.html',
+    previewOutput: '/private/tmp/curtain-recommendation-overlay.local-preview.html',
+    assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
+      path: `小样-产品/窗帘产品推荐卡II/${path}`,
+      name: path.split('/').at(-1)
+    }])),
+    components: [{
+      name: '窗帘产品推荐卡II（标题版）',
+      directory,
+      componentKey: 'product.curtainRecommendationOverlay',
+      content: fixture.values,
+      settings: settings.values
+    }]
+  };
+  const compositionPath = '/private/tmp/curtain-recommendation-overlay.composition.json';
+  writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+  const renderResult = run(compositionPath, '--preview-local-assets');
+  const preview = renderResult.status === 0 ? readFileSync(composition.previewOutput, 'utf8') : '';
+
+  assert.match(template, /width="548"/);
+  assert.match(template, /width="296"/);
+  assert.match(template, /width="252"/);
+  assert.match(template, /width="548" height="495" data-freshine-slot="product\.images\.scene"/);
+  assert.match(template, /width="237"[^>]*margin:0 10px 0 auto/);
+  assert.match(template, /width="217" height="245" data-freshine-slot="product\.images\.detail"/);
+  assert.match(template, /padding:79px 0 0 18px/);
+  assert.match(template, /width:45\.9854015%;padding:28px 0 0;vertical-align:top;text-align:right;/);
+  assert.match(template, /padding:9px;background-color:#FFFFFF;border:1px solid #D8D0C5;/);
+  assert.match(template, /data-freshine-slot="intro\.title"/);
+  assert.match(template, /data-freshine-slot="intro\.subtitle"/);
+  assert.doesNotMatch(template, /data-freshine-slot="intro\.subtitle\.line[123]"/);
+  assert.match(template, /data-freshine-slot="product\.images\.scene"/);
+  assert.match(template, /data-freshine-slot="product\.images\.detail"/);
+  assert.match(template, /data-freshine-slot="product\.name"/);
+  assert.match(template, /data-freshine-slot="product\.color\.value"/);
+  assert.match(template, /data-freshine-slot="product\.cta\.label"/);
+  assert.match(template, /data-freshine-href-slot="product\.url"/);
+  assert.match(template, /background-color:\{\{settings\.color\.action\}\}/);
+  assert.match(template, /border-radius:30px/);
+  assert.match(template, /font-family:\{\{settings\.font\.display\}\}/);
+  assert.deepEqual(Object.keys(contentSchema.properties), [
+    'intro.title',
+    'intro.subtitle',
+    'product.images.scene.url',
+    'product.images.scene.alt',
+    'product.images.detail.url',
+    'product.images.detail.alt',
+    'product.name',
+    'product.color.label',
+    'product.color.value',
+    'product.cta.label',
+    'product.url'
+  ]);
+  assert.equal(fixture.values['intro.title'], 'Upgrade Your Home in Style');
+  assert.equal(fixture.values['intro.subtitle'], 'Refresh Your Home With Our Latest Curtain Designs-Crafted To Bring A Clean, Modern Look And Effortless Comfort For The Year Ahead.');
+  assert.equal(fixture.values['product.name'], 'Celina Linen Curtains');
+  assert.equal(fixture.values['product.color.value'], 'Khaki 8823-5');
+  assert.equal(fixture.values['product.cta.label'], 'SHOP NOW');
+  assert.equal(settings.values['color.action'], '#9D1D20');
+  assert.equal(settings.values['font.display'], 'Lora, Georgia, Times New Roman, serif');
+  assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|clamp\(|white-space:pre-line/i);
+  assert.match(demo, /\.\/assets\/default-celina-bedroom\.png/);
+  assert.match(demo, /\.\/assets\/default-celina-khaki-detail\.png/);
+  assert.match(demo, /data-freshine-slot="intro\.subtitle" style="[^"]*word-break:break-word;overflow-wrap:anywhere;/);
+  assert.doesNotMatch(demo, /data-freshine-slot="intro\.subtitle\.line[123]"/);
+  assert.doesNotMatch(demo, /@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|clamp\(|white-space:pre-line/i);
+  assert.ok(readme.includes('窗帘产品推荐卡II（标题版，`product.curtainRecommendationOverlay`'));
+  assert.match(index, /小样-产品[\s\S]*窗帘产品推荐卡II/s);
+  assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
+  assert.match(preview, /width="548"/);
+  assert.match(preview, /margin:0 10px 0 auto/);
+  assert.match(preview, /padding:28px 0 0;vertical-align:top;text-align:right;/);
+  assert.match(preview, /border:1px solid #D8D0C5/);
+  assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E7%AA%97%E5%B8%98%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1II/assets/default-celina-bedroom.png'));
+  const finalComposition = structuredClone(composition);
+  finalComposition.output = '/private/tmp/curtain-recommendation-overlay.final.html';
+  finalComposition.previewOutput = '/private/tmp/curtain-recommendation-overlay.final-preview.html';
+  delete finalComposition.assets;
+  finalComposition.components[0].content = {
+    ...fixture.values,
+    'product.images.scene.url': 'https://cdn.example.com/celina-bedroom.png',
+    'product.images.detail.url': 'https://cdn.example.com/celina-detail.png'
+  };
+  const finalPath = '/private/tmp/curtain-recommendation-overlay.final.composition.json';
+  writeFileSync(finalPath, JSON.stringify(finalComposition, null, 2));
+  const finalResult = run(finalPath);
+  assert.equal(finalResult.status, 0, finalResult.stderr || finalResult.stdout);
+  assert.match(readFileSync(finalComposition.output, 'utf8'), /https:\/\/cdn\.example\.com\/celina-bedroom\.png/);
+  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.curtainRecommendationOverlay'), false);
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.curtainRecommendationOverlay'), false);
+});
+
+test('the no-title curtain recommendation card keeps the editorial product layout without rendering header content', () => {
+  const directory = `${root}/小样-产品/窗帘产品推荐卡II（无标题版）`;
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const entries = registry.filter(({ componentKey }) => componentKey === 'product.curtainRecommendationNoTitle');
+
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].中文名称, '窗帘产品推荐卡II（无标题版）');
+  assert.equal(entries[0].分类, '小样-产品');
+  assert.equal(entries[0].输出宽度, 600);
+  assert.equal(entries[0].路径.组件模板, '小样-产品/窗帘产品推荐卡II（无标题版）/component.template.v1.html');
+  for (const filename of [
+    'component.template.v1.html',
+    'component.styles.v1.css',
+    'content.schema.v1.json',
+    'content.fixture.v1.json',
+    'settings.schema.v1.json',
+    'settings.defaults.v1.json',
+    'COMPONENT_MANAGEMENT.zh-CN.v1.md',
+    '效果演示.html',
+    'assets/default-celina-bedroom.png',
+    'assets/default-celina-khaki-detail.png'
+  ]) {
+    assert.equal(existsSync(`${directory}/${filename}`), true, `missing ${filename}`);
+  }
+
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const contentSchema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const readme = readFileSync(`${root}/README.md`, 'utf8');
+  const index = readFileSync(`${root}/组件索引.md`, 'utf8');
+  const composition = {
+    schemaVersion: 1,
+    canvas: { backgroundColor: '#FAF9F7', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    output: '/private/tmp/curtain-recommendation-no-title.static-safe.html',
+    previewOutput: '/private/tmp/curtain-recommendation-no-title.local-preview.html',
+    assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, { path: `小样-产品/窗帘产品推荐卡II（无标题版）/${path}`, name: path.split('/').at(-1) }])),
+    components: [{ name: '窗帘产品推荐卡II（无标题版）', directory, componentKey: 'product.curtainRecommendationNoTitle', content: fixture.values, settings: settings.values }]
+  };
+  const compositionPath = '/private/tmp/curtain-recommendation-no-title.composition.json';
+  writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+  const renderResult = run(compositionPath, '--preview-local-assets');
+
+  assert.match(template, /width="548" height="495" data-freshine-slot="product\.images\.scene"/);
+  assert.match(template, /padding:79px 0 0 18px/);
+  assert.match(template, /width:45\.9854015%;padding:28px 0 0;vertical-align:top;text-align:right;/);
+  assert.match(template, /width="237"[^>]*margin:0 10px 0 auto/);
+  assert.match(template, /padding:9px;background-color:#FFFFFF;border:1px solid #D8D0C5;/);
+  assert.doesNotMatch(template, /intro\.|Upgrade Your Home in Style/);
+  assert.deepEqual(Object.keys(contentSchema.properties), [
+    'product.images.scene.url', 'product.images.scene.alt', 'product.images.detail.url', 'product.images.detail.alt',
+    'product.name', 'product.color.label', 'product.color.value', 'product.cta.label', 'product.url'
+  ]);
+  assert.equal(fixture.values['product.name'], 'Celina Linen Curtains');
+  assert.equal(settings.values['font.display'], 'Lora, Georgia, Times New Roman, serif');
+  assert.equal(settings.values['font.body'], 'Montserrat, Arial, Helvetica, sans-serif');
+  assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|clamp\(|white-space:pre-line/i);
+  assert.doesNotMatch(demo, /Upgrade Your Home in Style|data-freshine-slot="intro\./);
+  assert.match(demo, /\.\/assets\/default-celina-bedroom\.png/);
+  assert.ok(readme.includes('窗帘产品推荐卡II（无标题版，`product.curtainRecommendationNoTitle`'));
+  assert.match(index, /小样-产品[\s\S]*窗帘产品推荐卡II（无标题版）/s);
+  assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
+  const preview = readFileSync(composition.previewOutput, 'utf8');
+  assert.match(preview, /width="548"/);
+  assert.doesNotMatch(preview, /Upgrade Your Home in Style/);
 });

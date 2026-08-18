@@ -76,11 +76,11 @@ Sender Name、Sender Email 和 Reply-to 默认读取 Omnisend Brand Assets。Aud
 ## 6. Omnisend 写入事务
 
 1. 只能运行 `scripts/upload-omnisend-draft.mjs --project <project-state.v1.json> --html <campaign.static-safe.html>`；不得让模型手工拼接 Omnisend 写入请求。
-2. 脚本先验证最终确认与静态 HTML 内容哈希，再运行时询问 Omnisend API Key。密钥只存在于当前进程内存，不得保存、回显或写入日志，也不得以参数或环境变量传入。
+2. 上传器先验证最终确认与静态 HTML 内容哈希；编辑器弹窗一次性收集 Omnisend API Key，支持粘贴与显示/隐藏。密钥只存在于当前浏览器请求和本机进程内存，完成或失败后立即清空，不得保存、回显或写入日志，也不得以参数或环境变量传入。
 3. 脚本扫描全部快照中的图片地址，仅上传明确清单中的本地图片；Shopify CDN 等公开 HTTPS 图片无需重复上传。
 4. 任一上传失败则终止，不创建或更新 Campaign；替换所有本地路径后重新校验静态 HTML。
 5. 项目已有 Campaign ID 与 Content ID 时，脚本先回读现有 Campaign 并要求 `status: draft`、Content ID 与项目一致，再读取完整 Email Content；保留 `generalSettings`、sections 和全部节点 ID，只替换唯一含 `[[unsubscribe_link]]` 的 HTML 正文并执行完整 `PUT`。该路径不得导入模板或新建 Campaign。
-6. 项目没有既有 ID 时，脚本才读取当前 Brand 名称作为必填 `senderName`（只读），导入 HTML 模板并创建新 Campaign 草稿；创建请求可声明 `immediate`，但脚本不得调用 `/send`、不得排期、不得发布。
+6. 项目没有既有 ID 时，上传器先精确检索同名 `draft`；多个匹配结果按最近更新时间选择一份，回读确认后按更新路径处理。没有同名 Draft 才读取当前 Brand 名称作为必填 `senderName`（只读），导入 HTML 模板并创建新 Campaign 草稿；创建请求可声明 `immediate`，但脚本不得调用 `/send`、不得排期、不得发布。
 7. 两种路径都要回读 Campaign 与 Email Content，要求 `status` 为 `draft`，并比较 Content ID、退订令牌、图片 URL 与关键字段。
 8. 只有回读成功才输出最小上传回执；失败时保留完整项目草稿。
 

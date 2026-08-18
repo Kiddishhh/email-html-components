@@ -34,6 +34,9 @@ function createTransport(expectedHtml) {
   const calls = [];
   const transport = async (request) => {
     calls.push(request);
+    if (request.method === 'GET' && request.url.includes('/api/campaigns?')) {
+      return { status: 200, json: { items: [] } };
+    }
     if (request.method === 'GET' && request.url.endsWith('/api/brands/current')) {
       return { status: 200, json: { name: 'Freshine Curtains' } };
     }
@@ -98,8 +101,9 @@ test('creates and verifies a draft without calling send or scheduling endpoints'
   assert.equal(receipt.templateID, 'template-1');
   assert.deepEqual(receipt.uploadedImageIDs, ['image-1']);
   assert.equal(receipt.htmlSha256, sha256('<table><tr><td background="https://app.omnisend.com/images/image-1">[[unsubscribe_link]]</td></tr></table>'));
-  assert.equal(calls.length, 6);
+  assert.equal(calls.length, 7);
   assert.deepEqual(calls.map(({ method, url }) => [method, new URL(url).pathname]), [
+    ['GET', '/api/campaigns'],
     ['POST', '/api/images/upload'],
     ['GET', '/api/brands/current'],
     ['POST', '/api/email-templates/import'],
@@ -143,6 +147,9 @@ test('resolves the existing draft content ID before updating without creating or
   const calls = [];
   const transport = async (request) => {
     calls.push(request);
+    if (request.method === 'GET' && request.url.includes('/api/campaigns?')) {
+      return { status: 200, json: { items: [{ id: 'campaign-existing', name: 'Draft-only test', status: 'draft', updatedAt: '2026-08-18T00:00:00.000Z' }] } };
+    }
     if (request.method === 'GET' && request.url.endsWith('/api/campaigns/campaign-existing')) {
       return { status: 200, json: { id: 'campaign-existing', status: 'draft', content: { email: { contentID: 'content-existing' } } } };
     }
@@ -180,6 +187,7 @@ test('resolves the existing draft content ID before updating without creating or
   assert.equal(storedContent.sections[0].rows[0].columns[0].blocks[0].htmlCode.body, finalHtml);
   assert.equal(storedContent.sections[0].rows[0].columns[0].blocks[0].htmlCode.style, '.legacy { color: #000000; }');
   assert.deepEqual(calls.map(({ method, url }) => [method, new URL(url).pathname]), [
+    ['GET', '/api/campaigns'],
     ['GET', '/api/campaigns/campaign-existing'],
     ['GET', '/api/email-content/content-existing'],
     ['POST', '/api/images/upload'],
@@ -245,12 +253,16 @@ test('refuses to update a non-draft existing campaign before uploading images', 
     readFile: async () => Buffer.from('image-bytes'),
     transport: async (request) => {
       calls.push(request);
+      if (request.method === 'GET' && request.url.includes('/api/campaigns?')) {
+        return { status: 200, json: { items: [{ id: 'campaign-existing', name: 'Draft-only test', status: 'draft', updatedAt: '2026-08-18T00:00:00.000Z' }] } };
+      }
       return { status: 200, json: { id: 'campaign-existing', status: 'scheduled', content: { email: { contentID: 'content-existing' } } } };
     }
   });
 
   await assert.rejects(() => transaction.run('test-api-key'), /not draft/i);
   assert.deepEqual(calls.map(({ method, url }) => [method, new URL(url).pathname]), [
+    ['GET', '/api/campaigns'],
     ['GET', '/api/campaigns/campaign-existing']
   ]);
 });
@@ -268,6 +280,9 @@ test('reports sanitized HTML block counts before uploading when the existing con
     readFile: async () => Buffer.from('image-bytes'),
     transport: async (request) => {
       calls.push(request);
+      if (request.method === 'GET' && request.url.includes('/api/campaigns?')) {
+        return { status: 200, json: { items: [{ id: 'campaign-existing', name: 'Draft-only test', status: 'draft', updatedAt: '2026-08-18T00:00:00.000Z' }] } };
+      }
       if (request.url.endsWith('/api/campaigns/campaign-existing')) {
         return { status: 200, json: { id: 'campaign-existing', status: 'draft', content: { email: { contentID: 'content-existing' } } } };
       }
@@ -350,6 +365,34 @@ test('uploads each named local asset once even when it appears in multiple HTML 
 
   assert.deepEqual(receipt.uploadedImageIDs, ['image-1']);
   assert.equal(calls.filter(({ url }) => url.endsWith('/api/images/upload')).length, 1);
+});
+
+test('exports Omnisend HTML by uploading each local image once without any Campaign request', async () => {
+  const { createOmnisendHtmlExportTransaction } = await import(scriptUrl);
+  const html = '<table background="asset://hero"><tr><td style="background-image:url(asset://hero)"><img src="asset://hero" alt="Hero"></td></tr></table>';
+  const calls = [];
+  const transaction = createOmnisendHtmlExportTransaction({
+    html,
+    assets: { hero: { localPath: 'hero.png', name: 'hero.png', mimeType: 'image/png' } },
+    readFile: async (path) => {
+      assert.equal(path, 'hero.png');
+      return Buffer.from('image-bytes');
+    },
+    transport: async (request) => {
+      calls.push(request);
+      assert.equal(request.method, 'POST');
+      assert.equal(new URL(request.url).pathname, '/api/images/upload');
+      return { status: 201, json: { id: 'image-hero-1', url: 'https://app.omnisend.com/images/image-hero-1' } };
+    }
+  });
+
+  const exported = await transaction.run('one-time-export-key');
+
+  assert.deepEqual(exported.uploadedImageIDs, ['image-hero-1']);
+  assert.equal((exported.html.match(/https:\/\/app\.omnisend\.com\/images\/image-hero-1/g) ?? []).length, 3);
+  assert.doesNotMatch(exported.html, /asset:\/\//);
+  assert.match(exported.htmlSha256, /^[a-f0-9]{64}$/);
+  assert.deepEqual(calls.map(({ method, url }) => [method, new URL(url).pathname]), [['POST', '/api/images/upload']]);
 });
 
 test('rejects an unsupported local image type before the first API request', async () => {

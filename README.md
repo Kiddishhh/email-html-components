@@ -15,7 +15,7 @@
 
 活动路径的单一事实来源是 [`组件清单.json`](组件清单.json)。每个组件包含模板、内联 CSS 来源、内容 Schema、设置 Schema、fixture、defaults、中文管理说明和供样式选择直接打开的 `效果演示.html`。
 
-通用组件库另包含双条文字评论（`review.textList2`，`评论组件/双条文字评论/`）和小样产品推荐卡（`product.sampleProductRecommendation`，`小样-产品/小样产品推荐卡/`）。二者均可独立拼接和预览，但尚未加入现有 Campaign 固定结构，也没有内容注入脚本。
+通用组件库另包含双条文字评论（`review.textList2`，`评论组件/双条文字评论/`）、小样产品推荐卡（左）：`product.sampleProductRecommendationLeft`（`小样-产品/小样产品推荐卡（左）/`）、小样产品推荐卡（右）：`product.sampleProductRecommendationRight`（`小样-产品/小样产品推荐卡（右）/`）、窗帘产品推荐卡II（标题版，`product.curtainRecommendationOverlay`，`小样-产品/窗帘产品推荐卡II/`）和窗帘产品推荐卡II（无标题版，`product.curtainRecommendationNoTitle`，`小样-产品/窗帘产品推荐卡II（无标题版）/`）。五者均可在可视化 Skill 编辑器中自由添加与编辑；其中小样产品仍未加入 CLI Campaign 的固定六区段或内容注入流程。
 
 ## 目录结构
 

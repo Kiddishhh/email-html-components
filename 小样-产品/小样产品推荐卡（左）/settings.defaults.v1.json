@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "componentKey": "product.sampleProductRecommendation",
+  "componentKey": "product.sampleProductRecommendationLeft",
   "values": {
     "color.surface": "#FAF9F7",
     "color.text": "#202020",

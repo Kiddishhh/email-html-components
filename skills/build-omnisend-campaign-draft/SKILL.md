@@ -15,7 +15,11 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 
 在浏览器打开 `http://127.0.0.1:4173`。编辑器从 `组件清单.json` 读取所有已注册组件及其目录内的 `效果演示.html`、默认完整快照和 Schema；用户可以自由添加、重复、拖拽排序或删除任意组件，不预置固定结构。每个新实例使用组件当前默认值，可编辑已开放字段，并实时生成 600px / 375px 预览。
 
-顶部“上传 Omnisend 草稿”是旧版编辑器唯一新增入口：先确认全部组件，填写 Campaign 名称、Subject 与可选 Preheader，生成并逐字确认静态 HTML SHA-256；随后在启动编辑器的终端中运行时输入 Omnisend API Key。密钥不进入浏览器、参数、环境变量或文件；上传固定委托 `scripts/upload-omnisend-draft.mjs`，只创建或更新 `draft`，不得发送、排期或发布。浏览器不可用时，以下固定六区段流程仍可作为 CLI 降级方案。
+`小样-产品` 分类现包含小样产品推荐卡（左）、小样产品推荐卡（右）、窗帘产品推荐卡II（标题版）和窗帘产品推荐卡II（无标题版）；四者可在编辑器中添加、排序和编辑各自已开放的内容与颜色字段。该分类不改变 CLI 降级流程的固定六区段。
+
+顶部“上传 Omnisend 草稿”会先确认全部组件并生成静态安全 HTML；内容哈希只在本机内部校验，不要求用户手动复制或粘贴。随后编辑器弹窗一次性收集 Omnisend API Key，支持粘贴与显示/隐藏；密钥仅在本次浏览器请求和本机进程内存中使用，完成或失败后立即清空，不写入草稿、参数、环境变量、文件或日志。上传前按 Campaign 名称精确检索 `draft`，如有多个同名草稿则更新最近更新的一封；未找到才新建 Draft。上传固定委托 `scripts/upload-omnisend-draft.mjs`，不得发送、排期或发布。浏览器不可用时，以下固定六区段流程仍可作为 CLI 降级方案：脚本在运行时通过终端隐藏询问 Omnisend API Key，且同样不会保存密钥。
+
+顶部“导出 Omnisend HTML”是独立的图片替换与剪切板流程：确认全部组件后，编辑器仅上传本地图片到 `/api/images/upload`，将 `asset://` 替换为公开 HTTPS URL，并把完整 HTML 写入浏览器剪切板。它不会创建、更新或发送 Campaign 或 Draft，不会调用模板、Campaign 或 Email Content 端点，也不保存完整 HTML、API Key 或导出回执。若浏览器拒绝剪切板权限，界面展示本次已替换 URL 的只读文本供手动复制；不得重新上传图片或改走 Draft 上传流程。
 
 ## 核心原则
 
@@ -54,9 +58,9 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 7. 按顺序逐个收集内容和常用样式；每次只处理一个组件。首图阶段先运行 `scripts/list-sale-activities.mjs`：只读拉取在线主题的首页 `templates/index.json`，从唯一启用的 `slideshow-v2` 中读取可用 slide，不读取 Shopify 菜单或全量 Page。一个 slide 候选时只问是否采用；多个 slide 候选时只让用户选编号。选择后立即运行 `scripts/fetch-sale-activity.mjs`：只查询该 slide 链接的一个 Page 模板，并重新拉取首页与该模板，解析推荐 Collection；快照不一致时停止。写入首图完整快照时，将首页 slide `subheading` 放入 `hero.eyebrow`（首行活动名称）、`heading` 放入 `hero.title`（第二行折扣消息）、`description` 放入 `hero.subtitle`（第三行补充说明）。选定后展示导入的 `subheading`、`heading`、`description` 与推荐 Collection，但不新增确认。首图默认随 600px 邮件画布全宽铺满。首图交互顺序固定为：主视觉图片 → Logo 样式确认 → 首图完成卡片。Logo 样式确认默认展示白色 FreShine 字标、`#A79689` 圆形背景与 70% 透明度；保持旧版圆形 106px、字标 80px。必须同时展示可编辑的 Logo 设置卡片、桌面端预览、375px 移动端预览及 Outlook 实色降级说明，只询问一次是否采用默认 Logo 样式。设置卡片按顺序显示 Logo 图片、Alt、点击链接、圆形背景色和透明度，所有默认值在确认前均可编辑；默认 Logo 图片仍使用现有白色 FreShine 字标。替换图片时接受公开 HTTPS URL 或用户明确提供的本地 Logo 文件；本地 Logo 只用于预览，最终确认后由固定脚本上传并替换为公开 HTTPS URL。圆形背景色只接受 `#A1B2C3` 格式，透明度只接受 0–100%，并确定性换算 `rgba`。每次修改后重新展示同一设置卡片和两种预览；106px 圆形与 80px 字标尺寸保持固定，不纳入编辑。Logo 确认不能替代后续首图完成卡片确认。只有首图完成卡片已锁定，才运行 `scripts/fetch-sale-grid.mjs --collection-handle <锁定推荐 Collection handle> --count 6` 注入六宫格商品；商品图片必须使用媒体按 `POSITION` 排序后的第一张 `MediaImage`，不得退回 `featuredImage`、变体图或视频缩略图；无首图时停止。脚本每个商品先读取 8 个变体，仅在未找到可售变体的商品上继续分页，不得恢复为每商品 250 个变体。其他组件写出符合各自 Schema 的完整 `content` 与 `settings` 快照。`collection.saleGrid6` 完成默认注入后，先用一张当前设置卡片展示全部注入内容及默认 CTA，由用户主动指出需要修改的项目，不逐字段重复追问；CTA 使用居中的固定 486px 表格，并保留 `width:100%;max-width:486px` 以适配窄屏，使按钮左右边缘在 Gmail 中也与两列商品图片的外边缘对齐，不作为可编辑样式项。该组件用一个操作色控制全部折扣标签和 CTA 按钮主题色，背景色作为独立设置；已有对应全局色时只展示继承值并等待用户主动修改，没有时才分别询问。`image.clickableFullWidth` 默认 600px 全宽、零外边距；先提示参考尺寸与移动端缩放，再收集用户提供的公开 HTTPS 图片链接。
 8. 为每个组件生成桌面端与移动端预览。本地预览使用 `--preview-local-assets` 时，必须将每个 `asset://` 本地资源相对于生成的 `previewOutput` HTML 解析，并验证该 URL 指向实际文件；项目草稿位于子目录时不得按工作区根目录直接写入资源 URL。`collection.saleGrid6` 同时展示当前设置卡片、桌面端预览和约 375px 移动端预览，只询问一次是否确认；用户指出修改时重新生成三项内容，只有明确确认后才锁定。修改时只重开指定组件。
 9. 让现有拼接器只执行完整快照校验、组件 CSS 内联、顺序组装和 HTML 渲染。禁止让拼接器询问用户、访问 Shopify、合并主题或改变组件样式。
-10. 生成整封邮件的本地预览链接和最终高层清单。将最终确认绑定到 HTML 内容哈希；任何修改都使确认失效。
-11. 最终确认后，必须运行固定脚本 `scripts/upload-omnisend-draft.mjs --project <project-state.v1.json> --html <campaign.static-safe.html>`。脚本先在本地校验确认哈希，再运行时询问 Omnisend API Key；密钥只存在于当前进程内存，禁止以参数、环境变量、文件或聊天记录传入。任一图片上传失败时停止 Omnisend 写入并保留项目草稿。
-12. 不得手工拼接或调用 Omnisend 请求。项目已有 Campaign ID 与 Content ID 时，固定脚本必须先回读并确认现有 Campaign 为 `draft`，再保留 Email Content 完整结构与节点 ID，仅替换唯一含退订令牌的 HTML 正文并执行完整 `PUT`；必须更新现有 draft，不得新建第二份 Campaign。项目没有既有 ID 时才允许只读 Brand、上传图片、导入 HTML 模板并创建 Campaign 草稿。两种路径都不得调用 `/send`、排期、发布或等效端点。
+10. 生成整封邮件的本地预览链接和最终高层清单。将最终确认绑定到 HTML 内容哈希；任何修改都使确认失效。编辑器内部完成这一校验，不要求用户手动确认哈希。
+11. 最终确认后，编辑器弹窗收集一次性 Omnisend API Key 并调用固定上传器。密钥仅存在于当前浏览器请求与本机进程内存，完成或失败后立即清空；禁止写入参数、环境变量、文件、日志或聊天记录。任一图片上传失败时停止 Omnisend 写入并保留项目草稿。
+12. 不得手工拼接或调用 Omnisend 请求。上传器先按 Campaign 名称精确检索 `draft`，如有多个同名 Draft 则更新最近更新的一份；项目已有 Campaign ID 时仍优先回读并确认该 Campaign 为 `draft`，只能更新现有 `draft`，不得新建 Campaign。更新路径必须保留 Email Content 完整结构与节点 ID，仅替换唯一含退订令牌的 HTML 正文并执行完整 `PUT`；没有匹配 Draft 才允许只读 Brand、上传图片、导入 HTML 模板并创建 Campaign 草稿。两种路径都不得调用 `/send`、排期、发布或等效端点。
 13. 脚本回读 Campaign 与 Email Content，验证 `status: draft`、内容 ID、组件顺序、退订令牌、图片地址和内容哈希；只有全部验证通过才输出最小上传回执。
 14. 回读成功后默认保留本地项目草稿和不含密钥的上传回执，便于审计与恢复。只有用户针对该草稿明确确认清理后才删除；不得把上传成功视为删除授权。
 
@@ -66,7 +70,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 - Shopify 访问必须严格只读。只允许契约白名单中的查询、主题列表和主题拉取命令；不得修改、创建、发布或删除 Shopify 店铺数据及主题。
 - 不得在用户最终确认前上传图片或写入 Omnisend。
 - 不得保存、回显或写入日志中的 Shopify/Omnisend 密钥。
-- Omnisend API Key 必须在本地预检通过后运行时询问；不得用命令行参数、环境变量或项目文件传入，不得让模型手工构造 Omnisend 写入请求。
+- Omnisend API Key 必须在本地预检通过后由编辑器弹窗一次性收集；支持粘贴与显示/隐藏，完成或失败后必须清空。不得写入命令行参数、环境变量、项目文件、日志或聊天记录，不得让模型手工构造 Omnisend 写入请求。
 - 不得在邮件中使用 JavaScript、iframe、表单、本地路径、相对图片路径或运行时 Shopify 请求。
 - 不得删除失败运行的项目草稿。
 - 成功运行也默认保留项目草稿；只有用户明确确认清理后才可删除精确目标。

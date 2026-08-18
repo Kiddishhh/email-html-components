@@ -1,10 +1,10 @@
 import { createServer } from 'node:http';
 import { createHash, randomUUID } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { runDraftUploadWithApiKey } from '../scripts/upload-omnisend-draft.mjs';
+import { runDraftUploadWithApiKey, runOmnisendHtmlExportWithApiKey } from '../scripts/upload-omnisend-draft.mjs';
 import {
   addComponentInstance,
   attachLocalImage,
@@ -12,6 +12,7 @@ import {
   buildEditorCatalog,
   buildLocalAssetMap,
   createCampaignDocument,
+  normalizeDefaultLocalAssetReferences,
   reorderComponentInstances
 } from './campaign-editor-core.mjs';
 
@@ -136,13 +137,14 @@ function uploadLocalImage({ draft, instance, fieldKey, body, workspaceRoot, cata
 }
 
 function compositionFor(document, workspaceRoot) {
+  const normalizedDocument = normalizeDefaultLocalAssetReferences(document, { workspaceRoot });
   return {
     schemaVersion: 1,
-    canvas: document.canvas,
-    output: document.outputPath,
-    previewOutput: document.previewPath,
-    assets: buildLocalAssetMap(document, { workspaceRoot }),
-    components: document.components.map(({ name, directory, componentKey, content, settings }) => ({
+    canvas: normalizedDocument.canvas,
+    output: normalizedDocument.outputPath,
+    previewOutput: normalizedDocument.previewPath,
+    assets: buildLocalAssetMap(normalizedDocument, { workspaceRoot }),
+    components: normalizedDocument.components.map(({ name, directory, componentKey, content, settings }) => ({
       name, directory, componentKey, content, settings
     }))
   };
@@ -171,11 +173,23 @@ function assetUploadState(draft, workspaceRoot, projectPath) {
   }));
 }
 
+function assetExportMap(composition, workspaceRoot) {
+  return Object.fromEntries(Object.entries(composition.assets ?? {}).map(([id, asset]) => [id, {
+    localPath: resolve(workspaceRoot, asset.path),
+    name: asset.name,
+    mimeType: mimeType(asset.name)
+  }]));
+}
+
 async function defaultDraftUploader({ projectPath, htmlPath, apiKey }) {
   return runDraftUploadWithApiKey({ projectPath, htmlPath, apiKey });
 }
 
-export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, runDraftUploader = defaultDraftUploader }) {
+async function defaultHtmlExporter({ html, assets, apiKey }) {
+  return runOmnisendHtmlExportWithApiKey({ html, assets, apiKey });
+}
+
+export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, runDraftUploader = defaultDraftUploader, runHtmlExporter = defaultHtmlExporter }) {
   const catalog = buildEditorCatalog({ workspaceRoot });
   const drafts = new Map();
   const builderPath = resolve(workspaceRoot, 'build-email-template.v1.mjs');
@@ -266,6 +280,24 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
     }
   }
 
+  async function exportOmnisendHtml(draft, apiKey) {
+    assertFullyConfirmed(draft);
+    if (typeof apiKey !== 'string' || !apiKey.trim()) throw new Error('a non-empty runtime API key is required');
+    const directory = dirname(draft.outputPath);
+    const compositionPath = resolve(directory, 'omnisend-html-export.composition.v1.json');
+    const htmlPath = resolve(directory, 'omnisend-html-export.static-safe.html');
+    const composition = { ...compositionFor(draft, workspaceRoot), output: htmlPath };
+    writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+    try {
+      const result = spawnSync(process.execPath, [builderPath, compositionPath, '--defer-local-assets'], { cwd: workspaceRoot, encoding: 'utf8' });
+      if (result.status !== 0) throw new Error(result.stderr.trim() || result.stdout.trim() || 'Omnisend HTML export build failed');
+      return await runHtmlExporter({ html: readFileSync(htmlPath, 'utf8'), assets: assetExportMap(composition, workspaceRoot), apiKey });
+    } finally {
+      apiKey = '';
+      if (existsSync(htmlPath)) rmSync(htmlPath);
+    }
+  }
+
   const server = createServer(async (request, response) => {
     try {
       const url = new URL(request.url, 'http://127.0.0.1');
@@ -319,6 +351,19 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
         let apiKey = body.apiKey;
         try {
           return json(response, 200, { receipt: await uploadOmnisendDraft(draft, apiKey) });
+        } finally {
+          apiKey = '';
+          body.apiKey = '';
+        }
+      }
+      const exportHtmlMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/export-omnisend-html$/u);
+      if (exportHtmlMatch && request.method === 'POST') {
+        const draft = drafts.get(exportHtmlMatch[1]);
+        if (!draft) return json(response, 404, { error: 'draft not found' });
+        const body = await readBody(request);
+        let apiKey = body.apiKey;
+        try {
+          return json(response, 200, await exportOmnisendHtml(draft, apiKey));
         } finally {
           apiKey = '';
           body.apiKey = '';

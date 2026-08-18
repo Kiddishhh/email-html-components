@@ -12,13 +12,27 @@ const confirmState = $('#confirm-state');
 const structureSelect = $('#structure-select');
 const styleSelect = $('#style-select');
 const addSelectedComponent = $('#add-selected-component');
+const exportOmnisendHtmlButton = $('#export-omnisend-html');
 const uploadOmnisendDraftButton = $('#upload-omnisend-draft');
 const omnisendUploadDialog = $('#omnisend-upload-dialog');
+const omnisendCampaignNameInput = $('#omnisend-campaign-name');
+const omnisendSubjectInput = $('#omnisend-subject');
+const omnisendPreheaderInput = $('#omnisend-preheader');
 const omnisendApiKeyInput = $('#omnisend-api-key');
 const showOmnisendApiKey = $('#show-omnisend-api-key');
 const submitOmnisendUpload = $('#submit-omnisend-upload');
 const cancelOmnisendUpload = $('#cancel-omnisend-upload');
-let resolveOmnisendApiKey = null;
+const omnisendExportDialog = $('#omnisend-export-dialog');
+const omnisendExportApiKeyInput = $('#omnisend-export-api-key');
+const showOmnisendExportApiKey = $('#show-omnisend-export-api-key');
+const submitOmnisendExport = $('#submit-omnisend-export');
+const cancelOmnisendExport = $('#cancel-omnisend-export');
+const omnisendHtmlCopyFallback = $('#omnisend-html-copy-fallback');
+const omnisendHtmlCopyText = $('#omnisend-html-copy-text');
+const copyOmnisendHtmlManually = $('#copy-omnisend-html-manually');
+const closeOmnisendHtmlCopy = $('#close-omnisend-html-copy');
+let resolveOmnisendUpload = null;
+let resolveOmnisendHtmlExport = null;
 
 async function api(path, options = {}) {
   const response = await fetch(path, {
@@ -38,11 +52,36 @@ function catalogItem(componentKey) {
   return state.catalog.find((component) => component.componentKey === componentKey);
 }
 
-function setDraft(draft) {
+function captureFieldFocus() {
+  const input = document.activeElement;
+  if (!(input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) || !form.contains(input) || !input.dataset.group || !input.dataset.key) return null;
+  return {
+    group: input.dataset.group,
+    key: input.dataset.key,
+    selectionStart: input.selectionStart,
+    selectionEnd: input.selectionEnd
+  };
+}
+
+function restoreFieldFocus(focus) {
+  if (!focus) return;
+  const input = [...form.querySelectorAll('input, textarea')].find((candidate) => candidate.dataset.group === focus.group && candidate.dataset.key === focus.key);
+  if (!input) return;
+  input.focus();
+  if (typeof focus.selectionStart !== 'number' || typeof focus.selectionEnd !== 'number') return;
+  try {
+    input.setSelectionRange(focus.selectionStart, focus.selectionEnd);
+  } catch {
+    // Color and file controls do not support a text selection range.
+  }
+}
+
+function setDraft(draft, { fieldFocus = null } = {}) {
   state.draft = draft;
   if (state.selectedId && !draft.components.some(({ instanceId }) => instanceId === state.selectedId)) state.selectedId = null;
   renderStructure();
   renderInspector();
+  restoreFieldFocus(fieldFocus);
 }
 
 function addOption(select, { value, label }) {
@@ -194,9 +233,10 @@ async function commitEdits() {
   const patch = state.pending;
   state.pending = { content: {}, settings: {} };
   if (!Object.keys(patch.content).length && !Object.keys(patch.settings).length) return;
+  const fieldFocus = captureFieldFocus();
   try {
     const result = await api(`/api/drafts/${state.draft.id}/components/${instance.instanceId}`, { method: 'PATCH', body: JSON.stringify(patch) });
-    setDraft(result.draft);
+    setDraft(result.draft, { fieldFocus });
     queuePreview();
   } catch (error) { window.alert(error.message); }
 }
@@ -300,62 +340,139 @@ async function createDraft() {
   $('.workspace').hidden = false;
 }
 
-function finishOmnisendApiKey(value) {
-  const resolveKey = resolveOmnisendApiKey;
-  resolveOmnisendApiKey = null;
+function finishOmnisendUpload(value) {
+  const resolveUpload = resolveOmnisendUpload;
+  resolveOmnisendUpload = null;
+  omnisendCampaignNameInput.value = '';
+  omnisendSubjectInput.value = '';
+  omnisendPreheaderInput.value = '';
   omnisendApiKeyInput.value = '';
   showOmnisendApiKey.checked = false;
   omnisendApiKeyInput.type = 'password';
   if (omnisendUploadDialog.open) omnisendUploadDialog.close();
-  resolveKey?.(value);
+  resolveUpload?.(value);
 }
 
-function requestOmnisendApiKey() {
+function requestOmnisendUpload() {
+  omnisendCampaignNameInput.value = state.draft.name;
+  omnisendSubjectInput.value = '';
+  omnisendPreheaderInput.value = '';
   omnisendApiKeyInput.value = '';
   showOmnisendApiKey.checked = false;
   omnisendApiKeyInput.type = 'password';
   omnisendUploadDialog.showModal();
-  omnisendApiKeyInput.focus();
-  return new Promise((resolveKey) => { resolveOmnisendApiKey = resolveKey; });
+  omnisendSubjectInput.focus();
+  return new Promise((resolveUpload) => { resolveOmnisendUpload = resolveUpload; });
 }
 
 async function uploadOmnisendDraft() {
   if (!state.draft) return;
   window.clearTimeout(state.saveTimer);
   await commitEdits();
-  const name = window.prompt('Campaign 名称', state.draft.name);
-  if (name === null) return;
-  const subject = window.prompt('邮件主题（Subject）');
-  if (subject === null) return;
-  const preheader = window.prompt('预览文案（Preheader，可留空）', '');
-  if (preheader === null) return;
+  const upload = await requestOmnisendUpload();
+  if (!upload) return;
   try {
     const prepared = await api(`/api/drafts/${state.draft.id}/prepare-omnisend-draft`, {
-      method: 'POST', body: JSON.stringify({ campaign: { name, subject, preheader } })
+      method: 'POST', body: JSON.stringify({ campaign: upload.campaign })
     });
     if (!prepared.ready) throw new Error('静态安全 HTML 准备失败');
-    let apiKey = await requestOmnisendApiKey();
-    if (!apiKey) return;
     try {
       const uploaded = await api(`/api/drafts/${state.draft.id}/upload-omnisend-draft`, {
-        method: 'POST', body: JSON.stringify({ apiKey })
+        method: 'POST', body: JSON.stringify({ apiKey: upload.apiKey })
       });
       window.alert(`已${uploaded.receipt.operation === 'updated' ? '更新' : '创建'} Omnisend Draft：${uploaded.receipt.campaignID}`);
     } finally {
-      apiKey = '';
+      upload.apiKey = '';
       omnisendApiKeyInput.value = '';
     }
   } catch (error) { window.alert(error.message); }
 }
 
+function finishOmnisendHtmlExport(value) {
+  const resolveExport = resolveOmnisendHtmlExport;
+  resolveOmnisendHtmlExport = null;
+  omnisendExportApiKeyInput.value = '';
+  showOmnisendExportApiKey.checked = false;
+  omnisendExportApiKeyInput.type = 'password';
+  if (omnisendExportDialog.open) omnisendExportDialog.close();
+  resolveExport?.(value);
+}
+
+function requestOmnisendHtmlExport() {
+  omnisendExportApiKeyInput.value = '';
+  showOmnisendExportApiKey.checked = false;
+  omnisendExportApiKeyInput.type = 'password';
+  omnisendExportDialog.showModal();
+  omnisendExportApiKeyInput.focus();
+  return new Promise((resolveExport) => { resolveOmnisendHtmlExport = resolveExport; });
+}
+
+function showHtmlCopyFallback(html) {
+  omnisendHtmlCopyText.value = html;
+  omnisendHtmlCopyFallback.showModal();
+  omnisendHtmlCopyText.focus();
+  omnisendHtmlCopyText.select();
+}
+
+function closeHtmlCopyFallback() {
+  omnisendHtmlCopyText.value = '';
+  if (omnisendHtmlCopyFallback.open) omnisendHtmlCopyFallback.close();
+}
+
+async function exportOmnisendHtml() {
+  if (!state.draft) return;
+  window.clearTimeout(state.saveTimer);
+  await commitEdits();
+  let apiKey = await requestOmnisendHtmlExport();
+  if (!apiKey) return;
+  let exported;
+  try {
+    exported = await api(`/api/drafts/${state.draft.id}/export-omnisend-html`, {
+      method: 'POST', body: JSON.stringify({ apiKey })
+    });
+    await navigator.clipboard.writeText(exported.html);
+    window.alert(`已上传 ${exported.uploadedImageIDs.length} 张本地图片，并将完整 Omnisend HTML 复制到剪切板。`);
+  } catch (error) {
+    if (exported?.html) {
+      showHtmlCopyFallback(exported.html);
+      return;
+    }
+    window.alert(error.message);
+  } finally {
+    apiKey = '';
+    omnisendExportApiKeyInput.value = '';
+  }
+}
+
 $('#new-campaign').addEventListener('click', createDraft);
+exportOmnisendHtmlButton.addEventListener('click', exportOmnisendHtml);
 uploadOmnisendDraftButton.addEventListener('click', uploadOmnisendDraft);
 showOmnisendApiKey.addEventListener('change', () => { omnisendApiKeyInput.type = showOmnisendApiKey.checked ? 'text' : 'password'; });
-submitOmnisendUpload.addEventListener('click', () => finishOmnisendApiKey(omnisendApiKeyInput.value));
-cancelOmnisendUpload.addEventListener('click', () => finishOmnisendApiKey(null));
+submitOmnisendUpload.addEventListener('click', () => finishOmnisendUpload({
+  campaign: { name: omnisendCampaignNameInput.value, subject: omnisendSubjectInput.value, preheader: omnisendPreheaderInput.value },
+  apiKey: omnisendApiKeyInput.value
+}));
+cancelOmnisendUpload.addEventListener('click', () => finishOmnisendUpload(null));
 omnisendUploadDialog.addEventListener('close', () => {
-  if (resolveOmnisendApiKey) finishOmnisendApiKey(null);
+  if (resolveOmnisendUpload) finishOmnisendUpload(null);
 });
+showOmnisendExportApiKey.addEventListener('change', () => { omnisendExportApiKeyInput.type = showOmnisendExportApiKey.checked ? 'text' : 'password'; });
+submitOmnisendExport.addEventListener('click', () => finishOmnisendHtmlExport(omnisendExportApiKeyInput.value));
+cancelOmnisendExport.addEventListener('click', () => finishOmnisendHtmlExport(null));
+omnisendExportDialog.addEventListener('close', () => {
+  if (resolveOmnisendHtmlExport) finishOmnisendHtmlExport(null);
+});
+copyOmnisendHtmlManually.addEventListener('click', async () => {
+  omnisendHtmlCopyText.select();
+  try {
+    await navigator.clipboard.writeText(omnisendHtmlCopyText.value);
+    window.alert('完整 HTML 已复制到剪切板。');
+  } catch {
+    window.alert('请选择文本后使用系统复制快捷键。');
+  }
+});
+closeOmnisendHtmlCopy.addEventListener('click', closeHtmlCopyFallback);
+omnisendHtmlCopyFallback.addEventListener('close', () => { omnisendHtmlCopyText.value = ''; });
 structureSelect.addEventListener('change', () => {
   state.selectedStructure = structureSelect.value;
   renderStyleOptions();
