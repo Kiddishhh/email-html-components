@@ -810,9 +810,9 @@ test('the sample product recommendation card is registered with its two-image Li
   assert.match(template, /data-freshine-slot="product\.title"/);
   assert.match(template, /data-freshine-slot="product\.subtitle"/);
   assert.match(template, /data-freshine-href-slot="product\.url"/);
-  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-size:24px;font-size:clamp\(18px,4vw,24px\);font-weight:700;line-height:28px;line-height:clamp\(21px,4\.6667vw,28px\)/);
+  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-size:24px;font-size:clamp\(18px,4vw,24px\);font-weight:600;line-height:28px;line-height:clamp\(21px,4\.6667vw,28px\)/);
   assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:400;line-height:26px;line-height:clamp\(20px,4\.3333vw,26px\)/);
-  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:400;line-height:24px;line-height:clamp\(19px,4vw,24px\)/);
+  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:500;line-height:24px;line-height:clamp\(19px,4vw,24px\)/);
   assert.deepEqual(Object.keys(contentSchema.properties), [
     'product.images.scene.url',
     'product.images.scene.alt',
@@ -830,9 +830,9 @@ test('the sample product recommendation card is registered with its two-image Li
   assert.equal(settings.values['color.surface'], '#FAF9F7');
   assert.equal(settings.values['font.body'], 'Montserrat, Arial, Helvetica, sans-serif');
   assert.equal(JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8')).properties['font.body'].default, 'Montserrat, Arial, Helvetica, sans-serif');
-  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:24px;font-size:clamp\(18px,4vw,24px\);font-weight:700;line-height:28px;line-height:clamp\(21px,4\.6667vw,28px\)/);
+  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:24px;font-size:clamp\(18px,4vw,24px\);font-weight:600;line-height:28px;line-height:clamp\(21px,4\.6667vw,28px\)/);
   assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:400;line-height:26px;line-height:clamp\(20px,4\.3333vw,26px\)/);
-  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:400;line-height:24px;line-height:clamp\(19px,4vw,24px\)/);
+  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:20px;font-size:clamp\(15px,3\.3333vw,20px\);font-weight:500;line-height:24px;line-height:clamp\(19px,4vw,24px\)/);
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)/i);
   assert.match(demo, /\.\/assets\/default-liana-sheer-curtains\.png/);
   assert.match(demo, /\.\/assets\/default-liana-sheer-fabric\.png/);
