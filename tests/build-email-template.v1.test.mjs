@@ -9,6 +9,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const builder = `${root}/build-email-template.v1.mjs`;
 const componentDirectory = `${root}/通用图片组件/可链接整图`;
+const productStyle1Directory = `${root}/小样/产品/样式1`;
 const fixture = JSON.parse(readFileSync(`${componentDirectory}/content.fixture.v1.json`, 'utf8'));
 const defaults = JSON.parse(readFileSync(`${componentDirectory}/settings.defaults.v1.json`, 'utf8'));
 const campaignComponentKeys = [
@@ -55,6 +56,156 @@ function makeComposition(name, mutate = () => {}) {
 function run(path, ...args) {
   return spawnSync(process.execPath, [builder, path, ...args], { cwd: root, encoding: 'utf8' });
 }
+
+const productStyle1Settings = {
+  'color.surface': '#F8F5F1',
+  'color.title': '#242424',
+  'color.subtitle': '#303033',
+  'color.action': '#242424',
+  'color.detailFrame': '#FFFFFF',
+  'color.detailShadow': '#D8D1CA',
+  'font.body': 'Montserrat,Arial,Helvetica,sans-serif',
+  'content.maxWidth': '600px',
+  'image.mainWidth': '548px',
+  'image.detailWidth': '213px',
+  'spacing.horizontal': '26px',
+  'spacing.contentHorizontal': '42px',
+  'spacing.detailOverlap': '10px',
+  'spacing.detailShadow': '6px'
+};
+
+function makeProductStyle1Composition(name, mutate = () => {}) {
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#F8F5F1',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: `/private/tmp/${name}.html`,
+    previewOutput: `/private/tmp/${name}.local-preview.html`,
+    assets: {
+      'product-main': {
+        path: '小样/产品/样式1/assets/default-main-image.png',
+        name: 'product-main.png'
+      },
+      'product-detail': {
+        path: '小样/产品/样式1/assets/default-detail-image.png',
+        name: 'product-detail.png'
+      }
+    },
+    components: [{
+      name: '产品样式1',
+      directory: '小样/产品/样式1',
+      componentKey: 'product.sampleStyle1',
+      content: {
+        'product.mainImage.url': 'asset://product-main',
+        'product.mainImage.alt': 'Living room with sheer curtains',
+        'product.detailImage.url': 'asset://product-detail',
+        'product.detailImage.alt': 'White sheer curtain fabric',
+        'product.title': 'Liana Sheer Curtains',
+        'product.subtitle': 'Extra Long Sheer Light Drapes For Living Room & Bedroom...',
+        'product.cta.text': 'SHOP NOW',
+        'product.cta.url': 'https://freshinelife.com/collections/sheer-curtains'
+      },
+      settings: { ...productStyle1Settings }
+    }]
+  };
+  mutate(composition);
+  const path = `/private/tmp/${name}.composition.json`;
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+  return { composition, path };
+}
+
+test('product style1 source exposes two replaceable image fields and the table-shadow geometry', () => {
+  const contentSchema = JSON.parse(readFileSync(`${productStyle1Directory}/content.schema.v1.json`, 'utf8'));
+  const settingsSchema = JSON.parse(readFileSync(`${productStyle1Directory}/settings.schema.v1.json`, 'utf8'));
+  const productFixture = JSON.parse(readFileSync(`${productStyle1Directory}/content.fixture.v1.json`, 'utf8'));
+  const productDefaults = JSON.parse(readFileSync(`${productStyle1Directory}/settings.defaults.v1.json`, 'utf8'));
+  const template = readFileSync(`${productStyle1Directory}/component.template.v1.html`, 'utf8');
+
+  assert.equal(contentSchema.componentKey, 'product.sampleStyle1');
+  assert.equal(settingsSchema.componentKey, 'product.sampleStyle1');
+  assert.deepEqual(Object.keys(contentSchema.properties), [
+    'product.mainImage.url',
+    'product.mainImage.alt',
+    'product.detailImage.url',
+    'product.detailImage.alt',
+    'product.title',
+    'product.subtitle',
+    'product.cta.text',
+    'product.cta.url'
+  ]);
+  assert.equal(contentSchema.properties['product.mainImage.url'].role, 'image-source');
+  assert.equal(contentSchema.properties['product.detailImage.url'].role, 'image-source');
+  assert.equal(contentSchema.properties['product.cta.url'].protocol, 'https');
+  assert.equal(productFixture.values['product.mainImage.url'], 'asset://product-main');
+  assert.equal(productFixture.values['product.detailImage.url'], 'asset://product-detail');
+  assert.equal(productDefaults.values['spacing.contentHorizontal'], '42px');
+  assert.equal(productDefaults.values['spacing.detailOverlap'], '10px');
+  assert.equal(productDefaults.values['spacing.detailShadow'], '6px');
+  assert.equal(productDefaults.values['image.detailWidth'], '213px');
+  assert.equal(productDefaults.values['font.body'], 'Montserrat,Arial,Helvetica,sans-serif');
+  assert.match(template, /width="548"/);
+  assert.match(template, /padding:53px \{\{settings\.spacing\.horizontal\}\} 0/);
+  assert.match(template, /padding:0 \{\{settings\.spacing\.contentHorizontal\}\};/);
+  assert.match(template, /<td width="59%" align="left" valign="top" style="width:59%;/);
+  assert.match(template, /<td width="41%" align="right" valign="top" style="width:41%;/);
+  assert.match(template, /width="194" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:194px;/);
+  assert.match(template, /margin-top:-\{\{settings\.spacing\.detailOverlap\}\}/);
+  assert.match(template, /padding:0 \{\{settings\.spacing\.detailShadow\}\} \{\{settings\.spacing\.detailShadow\}\} 0/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:22px;font-weight:600;line-height:150%;letter-spacing:0px;text-align:left/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:17px;font-weight:400;line-height:150%;letter-spacing:0px;text-align:left/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:16px;font-weight:500;line-height:15px;letter-spacing:0px;text-align:center/);
+  assert.doesNotMatch(template, /box-shadow|position\s*:/i);
+});
+
+test('product style1 local assets resolve together in a preview', () => {
+  const { composition, path } = makeProductStyle1Composition('product-style1-local-preview');
+  const result = run(path, '--preview-local-assets');
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const preview = readFileSync(composition.previewOutput, 'utf8');
+  assert.match(preview, /default-main-image\.png/);
+  assert.match(preview, /default-detail-image\.png/);
+  assert.match(preview, /margin-top:-10px/);
+  assert.match(preview, /padding:0 6px 6px 0/);
+  assert.doesNotMatch(preview, /box-shadow|position\s*:/i);
+});
+
+test('product style1 final builds reject the pending local main image upload', () => {
+  const { path } = makeProductStyle1Composition('product-style1-final-local-assets');
+  const result = run(path);
+
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /local asset product-main must be uploaded before final build/);
+});
+
+test('product style1 is registered generally without becoming a Campaign Skill candidate', () => {
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleStyle1');
+
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].输出宽度, 600);
+  assert.equal(entries[0].移动端断点, 375);
+  for (const relativePath of Object.values(entries[0].路径)) {
+    assert.equal(existsSync(`${root}/${relativePath}`), true, `product.sampleStyle1: missing ${relativePath}`);
+  }
+
+  const demo = readFileSync(`${productStyle1Directory}/效果演示.html`, 'utf8');
+  const management = readFileSync(`${productStyle1Directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
+  const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
+  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
+
+  assert.match(demo, /375px/);
+  assert.match(demo, /\.\/assets\/default-main-image\.png/);
+  assert.match(demo, /\.\/assets\/default-detail-image\.png/);
+  assert.match(management, /尚未加入 Campaign Skill/);
+  assert.equal(structure.slots.flatMap(({ candidateComponentKeys }) => candidateComponentKeys).includes('product.sampleStyle1'), false);
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleStyle1'), false);
+});
 
 test('renders only the complete content and settings snapshot supplied by the Skill', () => {
   const { composition, path } = makeComposition('email-builder-valid');

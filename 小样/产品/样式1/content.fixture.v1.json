@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.sampleStyle1",
+  "values": {
+    "product.mainImage.url": "asset://product-main",
+    "product.mainImage.alt": "Sunlit living room framed by extra long sheer curtains",
+    "product.detailImage.url": "asset://product-detail",
+    "product.detailImage.alt": "Close-up of white sheer curtain fabric",
+    "product.title": "Liana Sheer Curtains",
+    "product.subtitle": "Extra Long Sheer Light Drapes For Living Room & Bedroom...",
+    "product.cta.text": "SHOP NOW",
+    "product.cta.url": "https://freshinelife.com/collections/sheer-curtains"
+  }
+}

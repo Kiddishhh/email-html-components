@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "product.sampleStyle1",
+  "values": {
+    "color.surface": "#F8F5F1",
+    "color.title": "#242424",
+    "color.subtitle": "#303033",
+    "color.action": "#242424",
+    "color.detailFrame": "#FFFFFF",
+    "color.detailShadow": "#D8D1CA",
+    "font.body": "Montserrat,Arial,Helvetica,sans-serif",
+    "content.maxWidth": "600px",
+    "image.mainWidth": "548px",
+    "image.detailWidth": "213px",
+    "spacing.horizontal": "26px",
+    "spacing.contentHorizontal": "42px",
+    "spacing.detailOverlap": "10px",
+    "spacing.detailShadow": "6px"
+  }
+}
