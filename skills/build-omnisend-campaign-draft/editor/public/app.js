@@ -1,4 +1,4 @@
-import { editableFieldKeys, editorFieldCopy, editorInputDisplay, structuresForCatalog, styleKeysForStructure } from './editor-ui-contract.mjs';
+import { editableFieldKeys, editorFieldCopy, editorInputDisplay, normalizeHexColor, structuresForCatalog, styleKeysForStructure } from './editor-ui-contract.mjs';
 
 const state = { catalog: [], draft: null, selectedId: null, selectedStructure: '', width: 600, previewTimer: null, saveTimer: null, pending: { content: {}, settings: {} } };
 
@@ -156,17 +156,54 @@ function editableFields(componentKey, values, schema, groupName, groupKey, allow
     const help = document.createElement('small');
     help.className = 'field-help';
     help.textContent = copy.help;
-    const multiline = /(?:body|subtitle|description|address)/u.test(key) && String(value).length > 42;
-    const input = document.createElement(multiline ? 'textarea' : 'input');
-    if (!multiline) input.type = /^#[0-9A-F]{6}$/iu.test(String(value)) ? 'color' : 'text';
-    const display = editorInputDisplay(value);
-    input.value = display.value;
-    input.placeholder = display.placeholder;
-    input.dataset.group = groupName === '内容' ? 'content' : 'settings';
-    input.dataset.key = key;
-    input.addEventListener('input', onFieldInput);
     label.append(title, help);
-    wrapper.append(label, input);
+    const color = normalizeHexColor(value);
+    if (color) {
+      const colorControl = document.createElement('div');
+      colorControl.className = 'color-control';
+      const picker = document.createElement('input');
+      picker.type = 'color';
+      picker.value = color;
+      picker.setAttribute('aria-label', `${copy.label}色块选择器`);
+      const hexInput = document.createElement('input');
+      hexInput.type = 'text';
+      hexInput.inputMode = 'text';
+      hexInput.autocapitalize = 'characters';
+      hexInput.spellcheck = false;
+      hexInput.maxLength = 7;
+      hexInput.pattern = '#[0-9A-Fa-f]{6}';
+      hexInput.value = color;
+      hexInput.placeholder = '#RRGGBB';
+      hexInput.dataset.group = groupName === '内容' ? 'content' : 'settings';
+      hexInput.dataset.key = key;
+      hexInput.addEventListener('input', () => setHexInputValidity(hexInput));
+      hexInput.addEventListener('blur', () => applyHexInput(hexInput, picker));
+      hexInput.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        applyHexInput(hexInput, picker);
+      });
+      picker.addEventListener('input', () => {
+        const selectedColor = normalizeHexColor(picker.value);
+        if (!selectedColor) return;
+        hexInput.value = selectedColor;
+        setHexInputValidity(hexInput);
+        queueFieldEdit(hexInput, selectedColor);
+      });
+      colorControl.append(picker, hexInput);
+      wrapper.append(label, colorControl);
+    } else {
+      const multiline = /(?:body|subtitle|description|address)/u.test(key) && String(value).length > 42;
+      const input = document.createElement(multiline ? 'textarea' : 'input');
+      if (!multiline) input.type = 'text';
+      const display = editorInputDisplay(value);
+      input.value = display.value;
+      input.placeholder = display.placeholder;
+      input.dataset.group = groupName === '内容' ? 'content' : 'settings';
+      input.dataset.key = key;
+      input.addEventListener('input', onFieldInput);
+      wrapper.append(label, input);
+    }
     if (metadata.role?.endsWith('image-source')) {
       const uploadLabel = document.createElement('label');
       uploadLabel.className = 'local-upload';
@@ -217,12 +254,34 @@ function renderInspector() {
 }
 
 function onFieldInput(event) {
-  const input = event.currentTarget;
+  queueFieldEdit(event.currentTarget, event.currentTarget.value);
+}
+
+function setHexInputValidity(input) {
+  const valid = Boolean(normalizeHexColor(input.value));
+  input.classList.toggle('invalid', !valid);
+  input.setCustomValidity(valid ? '' : '请输入完整的 #RRGGBB 色号。');
+  return valid;
+}
+
+function applyHexInput(input, picker) {
+  const color = normalizeHexColor(input.value);
+  if (!color) {
+    setHexInputValidity(input);
+    return;
+  }
+  input.value = color;
+  picker.value = color;
+  setHexInputValidity(input);
+  queueFieldEdit(input, color);
+}
+
+function queueFieldEdit(input, value) {
   const instance = selectedInstance();
   if (!instance) return;
   const group = input.dataset.group;
-  instance[group][input.dataset.key] = input.value;
-  state.pending[group][input.dataset.key] = input.value;
+  instance[group][input.dataset.key] = value;
+  state.pending[group][input.dataset.key] = value;
   window.clearTimeout(state.saveTimer);
   state.saveTimer = window.setTimeout(commitEdits, 320);
 }

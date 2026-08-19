@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "tool.measurementCard",
+  "fixture": "default-measurement-tool-demo",
+  "localReferenceAssets": {
+    "measurement-tool": "assets/default-measurement-tool-cropped.png"
+  },
+  "values": {
+    "measurement.image.url": "asset://measurement-tool",
+    "measurement.image.alt": "Designer measuring curtain fabric on a worktable",
+    "measurement.title": "Measure Size Easily",
+    "measurement.subtitle": "Not Sure On Size? Our Tool Makesit Easy.",
+    "measurement.cta.label": "MEASURE NOW",
+    "measurement.cta.url": "https://freshinelife.com/pages/measurement-tool"
+  }
+}

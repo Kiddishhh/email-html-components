@@ -228,8 +228,8 @@
       },
       "settings": {
         "color.background": "#652a0d",
-        "color.text": "#FFFFFF",
-        "color.link": "#F4D8A7",
+        "color.text": "#000000",
+        "color.link": "#0000FF",
         "font.body": "Montserrat, Arial, Helvetica, sans-serif",
         "space.sectionX": "24px",
         "space.sectionY": "32px",

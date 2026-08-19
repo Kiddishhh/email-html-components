@@ -15,6 +15,7 @@ import {
   editableFieldKeys,
   editorFieldCopy,
   editorInputDisplay,
+  normalizeHexColor,
   structuresForCatalog,
   styleKeysForStructure
 } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
@@ -44,10 +45,14 @@ test('editor groups styles by structure before selection and exposes only Skill-
     'product.curtainRecommendationOverlay',
     'product.curtainRecommendationNoTitle'
   ]);
-  assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'image.benefitsStrip3']);
+  assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'image.benefitsStrip3', 'tool.measurementCard']);
   assert.deepEqual(styleKeysForStructure(catalog, '地址组件'), ['location.showroomCard']);
-  assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background'] });
+  assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background', 'color.text', 'color.link'] });
   assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), { content: [], settings: [] });
+  assert.deepEqual(editableFieldKeys('tool.measurementCard'), {
+    content: ['measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  });
   assert.deepEqual(editableFieldKeys('image.clickableFullWidth'), {
     content: ['image.url', 'image.alt', 'image.linkUrl'], settings: ['color.surface']
   });
@@ -105,6 +110,18 @@ test('editor groups styles by structure before selection and exposes only Skill-
     label: '页脚背景色',
     help: '仅修改页脚底色，不影响邮件整体背景。'
   });
+  assert.deepEqual(editorFieldCopy('footer.warm', 'settings', 'color.text'), {
+    label: '页脚正文颜色',
+    help: '修改页脚的常规文字颜色。'
+  });
+  assert.deepEqual(editorFieldCopy('footer.warm', 'settings', 'color.link'), {
+    label: '页脚链接颜色',
+    help: '修改联系邮箱与退订链接的颜色。'
+  });
+  assert.equal(normalizeHexColor(' #f7eedc '), '#F7EEDC');
+  assert.equal(normalizeHexColor('#F7EEDC'), '#F7EEDC');
+  assert.equal(normalizeHexColor('#F7EED'), null);
+  assert.equal(normalizeHexColor('F7EEDC'), null);
   assert.deepEqual(editorInputDisplay('asset://countdown-hero-2-image'), {
     value: '',
     placeholder: '当前使用组件默认图片；如需替换，请填写公开 HTTPS 图片地址。'

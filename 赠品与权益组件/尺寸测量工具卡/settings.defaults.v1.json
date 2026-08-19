@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "tool.measurementCard",
+  "values": {
+    "color.surface": "#F7F5F1",
+    "color.text": "#252525",
+    "color.action": "#252525",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif"
+  }
+}

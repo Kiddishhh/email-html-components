@@ -107,6 +107,9 @@ test('editor server creates a free-form campaign, renders it, and serves the gen
   assert.match(client, /setDraft\(result\.draft, \{ fieldFocus \}\)/);
   assert.match(client, /selectionStart/);
   assert.match(client, /selectionEnd/);
+  assert.match(client, /className = 'color-control'/);
+  assert.match(client, /placeholder = '#RRGGBB'/);
+  assert.match(client, /normalizeHexColor/);
 });
 
 test('editor server rejects an unregistered component rather than inferring a replacement', async (t) => {
@@ -319,6 +322,44 @@ test('editor exports substituted Omnisend HTML without preparing or creating a c
   assert.equal(existsSync(join(sessionRoot, draftId, 'project-state.v1.json')), false);
   assert.equal(existsSync(join(sessionRoot, draftId, 'omnisend-draft-receipt.v1.json')), false);
   assert.equal(existsSync(join(sessionRoot, draftId, 'omnisend-html-export.static-safe.html')), false);
+});
+
+test('editor persists the Omnisend image cache across exports without storing the runtime key', async (t) => {
+  const calls = [];
+  const sessionRoot = mkdtempSync(join(workspaceRoot, 'campaign-drafts/editor-omnisend-image-cache-'));
+  const server = await createCampaignEditorServer({
+    workspaceRoot,
+    sessionRoot,
+    runHtmlExporter: ({ html, imageCache = {} }) => {
+      calls.push(structuredClone(imageCache));
+      imageCache['image-content-sha'] = { id: 'cached-image-1', url: 'https://app.omnisend.com/images/cached-image-1' };
+      return { html, htmlSha256: 'b'.repeat(64), uploadedImageIDs: [], reusedImageIDs: [] };
+    }
+  });
+  const baseUrl = await server.listen();
+  t.after(() => server.close());
+  const created = await request(baseUrl, '/api/drafts', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: 'image cache export' })
+  });
+  const draftId = created.body.draft.id;
+  const footer = await request(baseUrl, `/api/drafts/${draftId}/components`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'footer.warm' })
+  });
+  const footerId = footer.body.draft.components[0].instanceId;
+  await request(baseUrl, `/api/drafts/${draftId}/components/${footerId}/confirm`, { method: 'POST' });
+
+  for (let index = 0; index < 2; index += 1) {
+    const exported = await request(baseUrl, `/api/drafts/${draftId}/export-omnisend-html`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ apiKey: 'runtime-cache-key' })
+    });
+    assert.equal(exported.response.status, 200, exported.body?.error);
+  }
+
+  assert.deepEqual(calls[0], {});
+  assert.deepEqual(calls[1], { 'image-content-sha': { id: 'cached-image-1', url: 'https://app.omnisend.com/images/cached-image-1' } });
+  const cacheSource = readFileSync(join(sessionRoot, 'omnisend-image-cache.v1.json'), 'utf8');
+  assert.match(cacheSource, /cached-image-1/);
+  assert.doesNotMatch(cacheSource, /runtime-cache-key/);
 });
 
 test('editor server serves editor ES modules with a JavaScript MIME type', async (t) => {

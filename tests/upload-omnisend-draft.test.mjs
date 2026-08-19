@@ -395,6 +395,39 @@ test('exports Omnisend HTML by uploading each local image once without any Campa
   assert.deepEqual(calls.map(({ method, url }) => [method, new URL(url).pathname]), [['POST', '/api/images/upload']]);
 });
 
+test('exports reuse a cached Omnisend image for identical bytes even when asset keys differ', async () => {
+  const { createOmnisendHtmlExportTransaction } = await import(scriptUrl);
+  const imageCache = {};
+  const imageBytes = Buffer.from('same-image-bytes');
+  const initialCalls = [];
+  const initial = createOmnisendHtmlExportTransaction({
+    html: '<img src="asset://first">',
+    assets: { first: { localPath: 'first.png', name: 'first.png', mimeType: 'image/png' } },
+    imageCache,
+    readFile: async () => imageBytes,
+    transport: async (request) => {
+      initialCalls.push(request);
+      return { status: 201, json: { id: 'cached-image-1', url: 'https://app.omnisend.com/images/cached-image-1' } };
+    }
+  });
+
+  await initial.run('same-account-key');
+  assert.equal(initialCalls.length, 1);
+  assert.deepEqual(Object.values(imageCache), [{ id: 'cached-image-1', url: 'https://app.omnisend.com/images/cached-image-1' }]);
+
+  const repeated = createOmnisendHtmlExportTransaction({
+    html: '<img src="asset://second">',
+    assets: { second: { localPath: 'second.png', name: 'second.png', mimeType: 'image/png' } },
+    imageCache,
+    readFile: async () => imageBytes,
+    transport: async () => { throw new Error('a cached image must not upload again'); }
+  });
+  const exported = await repeated.run('same-account-key');
+
+  assert.deepEqual(exported.uploadedImageIDs, []);
+  assert.match(exported.html, /https:\/\/app\.omnisend\.com\/images\/cached-image-1/);
+});
+
 test('rejects an unsupported local image type before the first API request', async () => {
   const { createDraftUploadTransaction } = await import(scriptUrl);
   const html = '<table><tr><td background="asset://hero">[[unsubscribe_link]]</td></tr></table>';

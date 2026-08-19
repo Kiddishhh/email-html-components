@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "tool.measurementCard",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#F7F5F1", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": true },
+    "color.text": { "type": "string", "default": "#252525", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": false },
+    "color.action": { "type": "string", "default": "#252525", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": false },
+    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": false, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

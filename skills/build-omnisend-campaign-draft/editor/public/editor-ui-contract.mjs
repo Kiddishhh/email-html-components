@@ -31,8 +31,12 @@ const editableByComponent = {
   },
   'gift.rewardGrid2': { content: [], settings: [] },
   'location.showroomCard': { content: [], settings: [] },
-  'footer.warm': { content: [], settings: ['color.background'] },
+  'footer.warm': { content: [], settings: ['color.background', 'color.text', 'color.link'] },
   'image.benefitsStrip3': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
+  'tool.measurementCard': {
+    content: ['measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  },
   'review.textList2': { content: [], settings: [] },
   'product.sampleProductRecommendationLeft': {
     content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.fabric.url', 'product.images.fabric.alt', 'product.title', 'product.subtitle', 'product.cta.label', 'product.url'],
@@ -99,6 +103,12 @@ const copyByField = {
   'image.url': ['整图链接', '替换当前组件使用的完整图片；填写公开 HTTPS 图片地址。'],
   'image.alt': ['图片说明', '图片无法显示时供读屏工具识别的简短说明。'],
   'image.linkUrl': ['图片点击链接', '用户点击整张图片后打开的页面地址。'],
+  'measurement.image.url': ['测量场景图', '替换尺寸测量工具卡主图；填写公开 HTTPS 图片地址。'],
+  'measurement.image.alt': ['测量场景图说明', '图片无法显示时供读屏工具识别的简短说明。'],
+  'measurement.title': ['测量工具标题', '显示在尺寸测量工具卡主图下方的标题。'],
+  'measurement.subtitle': ['测量工具说明', '显示在标题下方的补充说明。'],
+  'measurement.cta.label': ['测量工具 CTA 文字', '显示为下划线的尺寸测量入口文字。'],
+  'measurement.cta.url': ['测量工具 CTA 链接', '点击 CTA 后打开的公开 HTTPS 尺寸测量工具页面。'],
   'intro.title': ['卡片标题', '显示在产品推荐卡上方的主标题。'],
   'intro.subtitle': ['顶部说明', '显示在卡片标题下方；按可用宽度自动换行。'],
   'product.images.scene.url': ['产品场景图', '替换产品场景图片；填写公开 HTTPS 图片地址。'],
@@ -130,6 +140,13 @@ const copyByField = {
   'color.background': ['页脚背景色', '仅修改页脚底色，不影响邮件整体背景。']
 };
 
+const copyByComponentField = {
+  'footer.warm': {
+    'settings.color.text': ['页脚正文颜色', '修改页脚的常规文字颜色。'],
+    'settings.color.link': ['页脚链接颜色', '修改联系邮箱与退订链接的颜色。']
+  }
+};
+
 export function structuresForCatalog(catalog) {
   return structureOrder.filter((category) => catalog.some((component) => component.category === category));
 }
@@ -147,8 +164,15 @@ export function editableFieldKeys(componentKey) {
 export function editorFieldCopy(componentKey, group, key) {
   const fields = editableFieldKeys(componentKey);
   if (!fields[group]?.includes(key)) throw new Error(`field is not editable in this component: ${componentKey}.${group}.${key}`);
-  const [label, help] = copyByField[key] ?? ['可编辑内容', '修改此项后会自动刷新当前组件预览。'];
+  const [label, help] = copyByComponentField[componentKey]?.[`${group}.${key}`]
+    ?? copyByField[key]
+    ?? ['可编辑内容', '修改此项后会自动刷新当前组件预览。'];
   return { label, help };
+}
+
+export function normalizeHexColor(value) {
+  const normalized = typeof value === 'string' ? value.trim().toUpperCase() : '';
+  return /^#[0-9A-F]{6}$/u.test(normalized) ? normalized : null;
 }
 
 export function editorInputDisplay(value) {

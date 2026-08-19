@@ -39,6 +39,11 @@ function extractImage(response) {
   return { id, url };
 }
 
+function cachedImage(imageCache, cacheKey) {
+  const image = imageCache?.[cacheKey];
+  return typeof image?.id === 'string' && image.id && isPublicHttps(image.url) ? image : null;
+}
+
 function extractTemplateID(response) {
   const id = response?.id ?? response?.templateID ?? response?.template?.id;
   assert(typeof id === 'string' && id, 'template import response is missing template ID');
@@ -255,24 +260,32 @@ function assertImageExportRequest({ method, url }) {
   assert(method === 'POST' && parsed.pathname === '/api/images/upload', `request endpoint is not allowlisted: ${method} ${parsed.pathname}`);
 }
 
-async function uploadAndReplaceLocalAssets({ html, assets, readFile, request }) {
+async function uploadAndReplaceLocalAssets({ html, assets, readFile, request, imageCache = {} }) {
   validateAssetMetadata(assets, html);
   let finalHtml = html;
   const uploadedImageIDs = [];
+  const reusedImageIDs = [];
   for (const key of new Set(assetReferences(html))) {
     const asset = assets[key];
     const bytes = await readFile(asset.localPath);
     assert(bytes.byteLength <= MAX_IMAGE_BYTES, `local asset ${key} exceeds Omnisend's 5 MB limit`);
-    const form = new FormData();
-    form.append('file', new Blob([bytes], { type: asset.mimeType }), asset.name);
-    form.append('name', asset.name);
-    const upload = await request({ method: 'POST', url: `${API_ORIGIN}/api/images/upload`, body: form });
-    assertResponseStatus(upload, 201, 'image upload');
-    const image = extractImage(upload.json);
+    const cacheKey = sha256(bytes);
+    let image = cachedImage(imageCache, cacheKey);
+    if (image) {
+      reusedImageIDs.push(image.id);
+    } else {
+      const form = new FormData();
+      form.append('file', new Blob([bytes], { type: asset.mimeType }), asset.name);
+      form.append('name', asset.name);
+      const upload = await request({ method: 'POST', url: `${API_ORIGIN}/api/images/upload`, body: form });
+      assertResponseStatus(upload, 201, 'image upload');
+      image = extractImage(upload.json);
+      imageCache[cacheKey] = image;
+      uploadedImageIDs.push(image.id);
+    }
     finalHtml = finalHtml.replace(new RegExp(`asset://${escapeRegExp(key)}`, 'gu'), image.url);
-    uploadedImageIDs.push(image.id);
   }
-  return { finalHtml, uploadedImageIDs };
+  return { finalHtml, uploadedImageIDs, reusedImageIDs };
 }
 
 function assertExportSafeHtml(html) {
@@ -283,11 +296,12 @@ function assertExportSafeHtml(html) {
   assert(!/\{\{(?:content|settings)\./u.test(html), 'final HTML contains unresolved component placeholders');
 }
 
-export function createOmnisendHtmlExportTransaction({ html, assets, readFile, transport }) {
+export function createOmnisendHtmlExportTransaction({ html, assets, readFile, transport, imageCache = {} }) {
   assert(typeof html === 'string' && html, 'static HTML is required');
   assert(assets && typeof assets === 'object' && !Array.isArray(assets), 'assets are required');
   assert(typeof readFile === 'function', 'readFile is required');
   assert(typeof transport === 'function', 'transport is required');
+  assert(imageCache && typeof imageCache === 'object' && !Array.isArray(imageCache), 'image cache must be an object');
 
   async function request(apiKey, requestData) {
     assertImageExportRequest(requestData);
@@ -308,14 +322,15 @@ export function createOmnisendHtmlExportTransaction({ html, assets, readFile, tr
     async run(apiKey) {
       try {
         assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
-        const { finalHtml, uploadedImageIDs } = await uploadAndReplaceLocalAssets({
+        const { finalHtml, uploadedImageIDs, reusedImageIDs } = await uploadAndReplaceLocalAssets({
           html,
           assets,
           readFile,
-          request: (requestData) => request(apiKey, requestData)
+          request: (requestData) => request(apiKey, requestData),
+          imageCache
         });
         assertExportSafeHtml(finalHtml);
-        return { html: finalHtml, htmlSha256: sha256(finalHtml), uploadedImageIDs };
+        return { html: finalHtml, htmlSha256: sha256(finalHtml), uploadedImageIDs, reusedImageIDs };
       } catch (error) {
         throw new Error(redactSecret(error instanceof Error ? error.message : String(error), apiKey));
       } finally {
@@ -580,11 +595,12 @@ function createFetchTransport() {
   };
 }
 
-export async function runOmnisendHtmlExportWithApiKey({ html, assets, apiKey }) {
+export async function runOmnisendHtmlExportWithApiKey({ html, assets, apiKey, imageCache = {} }) {
   assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
   const transaction = createOmnisendHtmlExportTransaction({
     html,
     assets,
+    imageCache,
     readFile: (path) => readFileFromDisk(path),
     transport: createFetchTransport()
   });

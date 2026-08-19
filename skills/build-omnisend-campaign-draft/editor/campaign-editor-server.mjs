@@ -70,6 +70,26 @@ function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
 
+function loadOmnisendImageCache(path) {
+  if (!existsSync(path)) return { schemaVersion: 1, accounts: {} };
+  try {
+    const cache = readJson(path);
+    if (cache?.schemaVersion !== 1 || !cache.accounts || typeof cache.accounts !== 'object' || Array.isArray(cache.accounts)) {
+      return { schemaVersion: 1, accounts: {} };
+    }
+    return cache;
+  } catch {
+    return { schemaVersion: 1, accounts: {} };
+  }
+}
+
+function imageCacheForApiKey(cache, apiKey) {
+  const accountKey = sha256(apiKey);
+  const imageCache = cache.accounts[accountKey];
+  if (!imageCache || typeof imageCache !== 'object' || Array.isArray(imageCache)) cache.accounts[accountKey] = {};
+  return cache.accounts[accountKey];
+}
+
 function updateInstance(document, instanceId, patch) {
   const index = document.components.findIndex((component) => component.instanceId === instanceId);
   if (index === -1) throw new Error('component instance not found');
@@ -194,6 +214,7 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
   const drafts = new Map();
   const builderPath = resolve(workspaceRoot, 'build-email-template.v1.mjs');
   const publicRoot = resolve(dirname(fileURLToPath(import.meta.url)), 'public');
+  const omnisendImageCachePath = resolve(sessionRoot, 'omnisend-image-cache.v1.json');
 
   function draftSummary(draft) {
     return {
@@ -291,7 +312,11 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
     try {
       const result = spawnSync(process.execPath, [builderPath, compositionPath, '--defer-local-assets'], { cwd: workspaceRoot, encoding: 'utf8' });
       if (result.status !== 0) throw new Error(result.stderr.trim() || result.stdout.trim() || 'Omnisend HTML export build failed');
-      return await runHtmlExporter({ html: readFileSync(htmlPath, 'utf8'), assets: assetExportMap(composition, workspaceRoot), apiKey });
+      const cache = loadOmnisendImageCache(omnisendImageCachePath);
+      const imageCache = imageCacheForApiKey(cache, apiKey);
+      const exported = await runHtmlExporter({ html: readFileSync(htmlPath, 'utf8'), assets: assetExportMap(composition, workspaceRoot), apiKey, imageCache });
+      writeFileSync(omnisendImageCachePath, JSON.stringify(cache, null, 2));
+      return exported;
     } finally {
       apiKey = '';
       if (existsSync(htmlPath)) rmSync(htmlPath);

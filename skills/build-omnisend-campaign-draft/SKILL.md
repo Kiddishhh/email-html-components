@@ -21,7 +21,9 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 
 `小样-产品` 分类现包含小样产品推荐卡（左）、小样产品推荐卡（右）、窗帘产品推荐卡II（标题版）和窗帘产品推荐卡II（无标题版）；四者可在编辑器中添加、排序和编辑各自已开放的内容与颜色字段。该分类不改变 CLI 降级流程的固定六区段。
 
-顶部“上传 Omnisend 草稿”会先确认全部组件并生成静态安全 HTML；内容哈希只在本机内部校验，不要求用户手动复制或粘贴。随后编辑器弹窗一次性收集 Omnisend API Key，支持粘贴与显示/隐藏；密钥仅在本次浏览器请求和本机进程内存中使用，完成或失败后立即清空，不写入草稿、参数、环境变量、文件或日志。上传前按 Campaign 名称精确检索 `draft`，如有多个同名草稿则更新最近更新的一封；未找到才新建 Draft。上传固定委托 `scripts/upload-omnisend-draft.mjs`，不得发送、排期或发布。浏览器不可用时，以下固定六区段流程仍可作为 CLI 降级方案：脚本在运行时通过终端隐藏询问 Omnisend API Key，且同样不会保存密钥。
+`赠品与权益组件` 分类另包含尺寸测量工具卡（`tool.measurementCard`）。它在编辑器中可自由添加、重复和排序，默认使用本地测量场景图、`Measure Size Easily` 文案以及 `https://freshinelife.com/pages/measurement-tool` CTA；开放主图 / Alt、标题、副标题、CTA 文案和 CTA 链接，以及组件背景、文字和 CTA 颜色。它同样不加入 CLI 降级流程的固定六区段；正式 Omnisend HTML 必须将默认本地图片替换为公开 HTTPS URL。
+
+顶部“上传 Omnisend 草稿”会先确认全部组件并生成静态安全 HTML；内容哈希只在本机内部校验，不要求用户手动复制或粘贴。随后编辑器弹窗一次性收集 Omnisend API Key，支持粘贴与显示/隐藏；密钥仅在本次浏览器请求和本机进程内存中使用，完成或失败后立即清空，不写入草稿、参数、环境变量、文件或日志。上传前按 Campaign 名称精确检索 `draft`，如有多个同名草稿则更新最近更新的一封；未找到才新建 Draft。上传固定委托 `scripts/upload-omnisend-draft.mjs`，不得发送、排期或发布。独立的“导出 Omnisend HTML”会按图片字节 SHA-256 与 API Key 哈希缓存已上传图片 URL，相同图片再次导出时直接复用 URL，缓存仅位于被忽略的 `campaign-drafts/` 且不保存 API Key。浏览器不可用时，以下固定六区段流程仍可作为 CLI 降级方案：脚本在运行时通过终端隐藏询问 Omnisend API Key，且同样不会保存密钥。
 
 顶部“导出 Omnisend HTML”是独立的图片替换与剪切板流程：确认全部组件后，编辑器仅上传本地图片到 `/api/images/upload`，将 `asset://` 替换为公开 HTTPS URL，并把完整 HTML 写入浏览器剪切板。它不会创建、更新或发送 Campaign 或 Draft，不会调用模板、Campaign 或 Email Content 端点，也不保存完整 HTML、API Key 或导出回执。若浏览器拒绝剪切板权限，界面展示本次已替换 URL 的只读文本供手动复制；不得重新上传图片或改走 Draft 上传流程。
 

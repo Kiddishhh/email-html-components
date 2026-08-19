@@ -690,7 +690,7 @@ test('the footer renders its appointment disclaimer as an address-style line bef
   assert.match(template, /data-freshine-slot="footer\.address\.disclaimer" style="color:\{\{settings\.color\.text\}\};font-family:\{\{settings\.font\.body\}\};font-size:11px;font-weight:400;line-height:17px;text-align:center;"/);
 });
 
-test('the footer follows the approved information hierarchy while retaining its existing default colors', () => {
+test('the footer follows the approved information hierarchy with black text and blue links', () => {
   const directory = `${root}/页脚组件/品牌信息页脚`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
@@ -707,15 +707,18 @@ test('the footer follows the approved information hierarchy while retaining its 
   assert.match(template, /color:\{\{settings\.color\.text\}\}[^>]*font-size:11px;font-weight:400;line-height:17px/);
   assert.match(template, /color:\{\{settings\.color\.link\}\}[^>]*text-decoration:none/);
   assert.match(template, /href="\[\[unsubscribe_link\]\]"/);
-  assert.equal(defaults.values['color.link'], '#F4D8A7');
+  assert.equal(defaults.values['color.text'], '#000000');
+  assert.equal(defaults.values['color.link'], '#0000FF');
   assert.equal(defaults.values['space.sectionY'], '32px');
   assert.equal(defaults.values['content.width'], '440px');
-  assert.equal(schema.properties['color.link'].default, '#F4D8A7');
+  assert.equal(schema.properties['color.text'].default, '#000000');
+  assert.equal(schema.properties['color.link'].default, '#0000FF');
   assert.equal(schema.properties['space.sectionY'].default, '32px');
   assert.equal(schema.properties['content.width'].default, '440px');
   assert.match(demo, /max-width:440px/);
   assert.match(management, /440px/);
-  assert.match(management, /#F4D8A7/);
+  assert.match(management, /#000000/);
+  assert.match(management, /#0000FF/);
   assert.doesNotMatch(management, /下划线/);
   assert.match(skill, /精致暖棕信息层级/);
   assert.match(interactions, /精致暖棕信息层级/);
@@ -1377,4 +1380,82 @@ test('the no-title curtain recommendation card keeps the editorial product layou
   const preview = readFileSync(composition.previewOutput, 'utf8');
   assert.match(preview, /width="548"/);
   assert.doesNotMatch(preview, /Upgrade Your Home in Style/);
+});
+
+test('the measurement tool card is a registered 600px editable component with its local reference image', async () => {
+  const directory = `${root}/赠品与权益组件/尺寸测量工具卡`;
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
+  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
+  const editor = await import(pathToFileURL(`${root}/skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs`).href);
+  const entries = registry.filter(({ componentKey }) => componentKey === 'tool.measurementCard');
+
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].中文名称, '尺寸测量工具卡');
+  assert.equal(entries[0].分类, '赠品与权益组件');
+  assert.equal(entries[0].输出宽度, 600);
+  assert.equal(entries[0].路径.组件模板, '赠品与权益组件/尺寸测量工具卡/component.template.v1.html');
+  for (const filename of [
+    'component.template.v1.html',
+    'component.styles.v1.css',
+    'content.schema.v1.json',
+    'content.fixture.v1.json',
+    'settings.schema.v1.json',
+    'settings.defaults.v1.json',
+    'COMPONENT_MANAGEMENT.zh-CN.v1.md',
+    '效果演示.html',
+    'assets/default-measurement-tool.jpg',
+    'assets/default-measurement-tool-cropped.png'
+  ]) {
+    assert.equal(existsSync(`${directory}/${filename}`), true, `missing ${filename}`);
+  }
+
+  const contentSchema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
+  const readme = readFileSync(`${root}/README.md`, 'utf8');
+  const index = readFileSync(`${root}/组件索引.md`, 'utf8');
+  const composition = {
+    schemaVersion: 1,
+    canvas: { backgroundColor: '#F7F5F1', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    output: '/private/tmp/measurement-tool-card.static-safe.html',
+    previewOutput: '/private/tmp/measurement-tool-card.local-preview.html',
+    assets: { 'measurement-tool': { path: '赠品与权益组件/尺寸测量工具卡/assets/default-measurement-tool.jpg', name: 'default-measurement-tool.jpg' } },
+    components: [{ name: '尺寸测量工具卡', directory, componentKey: 'tool.measurementCard', content: fixture.values, settings: settings.values }]
+  };
+  const compositionPath = '/private/tmp/measurement-tool-card.composition.json';
+  writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+  const renderResult = run(compositionPath, '--preview-local-assets');
+
+  assert.deepEqual(Object.keys(contentSchema.properties), [
+    'measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'
+  ]);
+  assert.equal(fixture.values['measurement.title'], 'Measure Size Easily');
+  assert.equal(fixture.values['measurement.subtitle'], 'Not Sure On Size? Our Tool Makesit Easy.');
+  assert.equal(fixture.values['measurement.cta.url'], 'https://freshinelife.com/pages/measurement-tool');
+  assert.equal(settings.values['color.surface'], '#F7F5F1');
+  assert.match(template, /width="548" height="493"[^>]*data-freshine-slot="measurement\.image"/);
+  assert.match(template, /data-freshine-slot="measurement\.image" style="[^"]*width:100%;height:auto;/);
+  assert.match(fixture.localReferenceAssets['measurement-tool'], /default-measurement-tool-cropped\.png$/);
+  assert.match(template, /data-freshine-slot="measurement\.title" style="[^"]*font-size:26px;font-weight:600;line-height:36px;letter-spacing:0;text-align:left;/);
+  assert.match(template, /data-freshine-href-slot="measurement\.cta\.url"[^>]*data-freshine-slot="measurement\.cta\.label"/);
+  assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|<div\b/i);
+  assert.match(demo, /\.\/assets\/default-measurement-tool-cropped\.png/);
+  assert.match(management, /375px/);
+  assert.match(readme, /尺寸测量工具卡.*tool\.measurementCard/s);
+  assert.match(index, /赠品与权益组件[\s\S]*尺寸测量工具卡/s);
+  assert.deepEqual(editor.editableFieldKeys('tool.measurementCard'), {
+    content: ['measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  });
+  assert.equal(structure.selection, 'user-ordered-registered-components');
+  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'tool.measurementCard'), false);
+  assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
+  const preview = readFileSync(composition.previewOutput, 'utf8');
+  assert.match(preview, /width="548" height="493"[^>]*height:auto/);
+  assert.match(preview, /https:\/\/freshinelife\.com\/pages\/measurement-tool/);
+  assert.ok(preview.includes('%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%B0%BA%E5%AF%B8%E6%B5%8B%E9%87%8F%E5%B7%A5%E5%85%B7%E5%8D%A1/assets/default-measurement-tool.jpg'));
 });

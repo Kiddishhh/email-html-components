@@ -23,8 +23,8 @@
 | 参数 | 默认值 | 用途 |
 |---|---|---|
 | `color.background` | `#652a0d` | 页脚区段背景；默认值来自 `new FOOT`；选择本组件时由 Skill 主动询问 |
-| `color.text` | `#FFFFFF` | 修改该组件的常用视觉效果 |
-| `color.link` | `#F4D8A7` | 联系邮箱与退订链接的浅金色 |
+| `color.text` | `#000000` | 页脚常规文字的黑色 |
+| `color.link` | `#0000FF` | 联系邮箱与退订链接的蓝色 |
 | `font.body` | `Montserrat, Arial, Helvetica, sans-serif` | 页脚文字优先使用 Montserrat，不支持时回退到 Arial |
 | `space.sectionX` | `24px` | 页脚区段左右留白 |
 | `space.sectionY` | `32px` | 页脚区段上下留白，形成紧凑而不拥挤的暖棕信息卡 |

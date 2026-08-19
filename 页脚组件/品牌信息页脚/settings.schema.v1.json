@@ -12,12 +12,12 @@
     },
     "color.text": {
       "type": "string",
-      "default": "#FFFFFF",
+      "default": "#000000",
       "themeable": true
     },
     "color.link": {
       "type": "string",
-      "default": "#F4D8A7",
+      "default": "#0000FF",
       "themeable": true
     },
     "font.body": {

@@ -15,7 +15,7 @@
 
 活动路径的单一事实来源是 [`组件清单.json`](组件清单.json)。每个组件包含模板、内联 CSS 来源、内容 Schema、设置 Schema、fixture、defaults、中文管理说明和供样式选择直接打开的 `效果演示.html`。
 
-通用组件库另包含双条文字评论（`review.textList2`，`评论组件/双条文字评论/`）、小样产品推荐卡（左）：`product.sampleProductRecommendationLeft`（`小样-产品/小样产品推荐卡（左）/`）、小样产品推荐卡（右）：`product.sampleProductRecommendationRight`（`小样-产品/小样产品推荐卡（右）/`）、窗帘产品推荐卡II（标题版，`product.curtainRecommendationOverlay`，`小样-产品/窗帘产品推荐卡II/`）、窗帘产品推荐卡II（无标题版，`product.curtainRecommendationNoTitle`，`小样-产品/窗帘产品推荐卡II（无标题版）/`）和产品样式1（`product.sampleStyle1`，`小样/产品/样式1/`）。全部均提供独立模板和真实效果演示；其中小样产品可在可视化 Skill 编辑器中自由添加与编辑，但均未加入 CLI Campaign 的固定六区段或内容注入流程。
+通用组件库另包含双条文字评论（`review.textList2`，`评论组件/双条文字评论/`）、尺寸测量工具卡（`tool.measurementCard`，`赠品与权益组件/尺寸测量工具卡/`）、小样产品推荐卡（左）：`product.sampleProductRecommendationLeft`（`小样-产品/小样产品推荐卡（左）/`）、小样产品推荐卡（右）：`product.sampleProductRecommendationRight`（`小样-产品/小样产品推荐卡（右）/`）、窗帘产品推荐卡II（标题版，`product.curtainRecommendationOverlay`，`小样-产品/窗帘产品推荐卡II/`）、窗帘产品推荐卡II（无标题版，`product.curtainRecommendationNoTitle`，`小样-产品/窗帘产品推荐卡II（无标题版）/`）和产品样式1（`product.sampleStyle1`，`小样/产品/样式1/`）。全部均提供独立模板和真实效果演示；其中尺寸测量工具卡和小样产品可在可视化 Skill 编辑器中自由添加与编辑，但均未加入 CLI Campaign 的固定六区段或内容注入流程。
 
 ## 目录结构
 

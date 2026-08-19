@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "tool.measurementCard",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "measurement.image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "measurement.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "measurement.title": { "type": "text", "required": true, "skillPrompt": true },
+    "measurement.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "measurement.cta.label": { "type": "text", "required": true, "skillPrompt": true },
+    "measurement.cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}
