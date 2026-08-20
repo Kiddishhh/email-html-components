@@ -71,7 +71,7 @@ const editableByComponent = {
   },
   'product.sampleStyle1': {
     content: ['product.mainImage.url', 'product.mainImage.alt', 'product.detailImage.url', 'product.detailImage.alt', 'product.title', 'product.subtitle', 'product.cta.text', 'product.cta.url'],
-    settings: ['color.surface', 'color.title', 'color.subtitle', 'color.action', 'color.detailFrame', 'color.detailShadow']
+    settings: ['color.surface', 'color.title', 'color.subtitle', 'color.action', 'color.detailFrame', 'color.detailBorder', 'color.detailShadow']
   }
 };
 
@@ -163,7 +163,8 @@ const copyByField = {
   'color.title': ['标题文字色', '仅修改当前组件标题的文字颜色。'],
   'color.subtitle': ['副标题文字色', '仅修改当前组件副标题的文字颜色。'],
   'color.detailFrame': ['细节图边框色', '修改产品细节图的外框颜色。'],
-  'color.detailShadow': ['细节图投影底色', '修改细节图右侧和底部的邮件安全投影底板颜色。'],
+  'color.detailBorder': ['细节图描边色', '修改细节图暖灰细描边的颜色。'],
+  'color.detailShadow': ['细节图投影色', '修改细节图右侧和底部的柔和邮件安全投影颜色。'],
   'color.offerSurface': ['优惠文案区底色', '仅修改主图下方优惠文案区域的背景色。'],
   'color.promotionLeft': ['顶部栏左侧底色', '修改顶部促销栏左侧区域的背景色。'],
   'color.promotionRight': ['顶部栏右侧底色', '修改顶部促销栏右侧区域的背景色。'],

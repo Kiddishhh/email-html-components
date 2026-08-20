@@ -286,7 +286,7 @@ test('every registered component has an explicit editor field contract', () => {
       'product.detailImage.url', 'product.detailImage.alt',
       'product.title', 'product.subtitle', 'product.cta.text', 'product.cta.url'
     ],
-    settings: ['color.surface', 'color.title', 'color.subtitle', 'color.action', 'color.detailFrame', 'color.detailShadow']
+    settings: ['color.surface', 'color.title', 'color.subtitle', 'color.action', 'color.detailFrame', 'color.detailBorder', 'color.detailShadow']
   });
 });
 

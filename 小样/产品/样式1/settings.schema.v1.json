@@ -9,15 +9,16 @@
     "color.subtitle": { "type": "string", "default": "#303033", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
     "color.action": { "type": "string", "default": "#242424", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
     "color.detailFrame": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.detailShadow": { "type": "string", "default": "#D8D1CA", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.detailBorder": { "type": "string", "default": "#E9E4DF", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.detailShadow": { "type": "string", "default": "#D5CDC4", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
     "font.body": { "type": "string", "default": "Montserrat,Arial,Helvetica,sans-serif", "themeable": true, "skillPrompt": false, "pattern": "^[A-Za-z,-]+$" },
     "content.maxWidth": { "type": "string", "default": "600px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
     "image.mainWidth": { "type": "string", "default": "548px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
-    "image.detailWidth": { "type": "string", "default": "213px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
+    "image.detailWidth": { "type": "string", "default": "202px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
     "spacing.horizontal": { "type": "string", "default": "26px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
     "spacing.contentHorizontal": { "type": "string", "default": "42px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
-    "spacing.detailOverlap": { "type": "string", "default": "10px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
-    "spacing.detailShadow": { "type": "string", "default": "6px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" }
+    "spacing.detailOverlap": { "type": "string", "default": "56px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" },
+    "spacing.detailShadow": { "type": "string", "default": "4px", "themeable": true, "skillPrompt": false, "pattern": "^\\d+px$" }
   },
   "additionalProperties": false
 }
