@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "componentKey": "hero.promotionalOverlay",
   "values": {
+    "navigation.visible": true,
     "color.theme": "#9D1D20",
     "color.themeText": "#FFFFFF",
     "color.heroFallback": "#E9E4DC",

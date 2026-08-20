@@ -7,5 +7,5 @@
 .freshine-overlay-hero-logo-badge { border-radius:53px; }
 .freshine-overlay-hero-logo { display:block; width:80px; height:auto; }
 .freshine-promotional-overlay-hero [data-freshine-slot="promotion.text"],
-.freshine-promotional-overlay-hero [data-freshine-slot="promotion.linkText"] { font-size:14px; line-height:20px; }
+.freshine-promotional-overlay-hero [data-freshine-slot="promotion.linkText"] { font-size:18px; font-size:min(18px,3vw); line-height:24px; line-height:min(24px,4vw); }
 .freshine-overlay-hero-panel { width:100%; max-width:472px; }

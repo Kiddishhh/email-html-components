@@ -1,7 +1,7 @@
 # 产品样式1组件管理说明（V1）
 
 - Component Key：`product.sampleStyle1`
-- 当前状态：已登记到通用组件库，尚未加入 Campaign Skill。
+- 当前状态：已注册到 Campaign 可视化编辑器，并开放图片、文案、链接和常用颜色字段。
 
 ## 用途与版式
 
@@ -27,9 +27,9 @@
 
 默认文字规范：标题为 Montserrat SemiBold（600）、22px、150% 行高、0px 字间距、左对齐；副标题为 Montserrat Regular（400）、17px、150% 行高、0px 字间距、左对齐；CTA 为 Montserrat Medium（500）、16px、15px 行高、0px 字间距、文字居中。邮件客户端未安装 Montserrat 时会回退至 Arial / Helvetica / sans-serif。
 
-## Skill 边界
+## 编辑器边界
 
-尚未加入 Campaign Skill。待用户确认最终样式，并另行确认数据来源、字段映射、失败处理和完成卡片后，才可注册到 Campaign 的交互结构中。
+组件可在 Campaign 可视化编辑器中自由添加、重复、排序或删除。编辑器开放“可替换内容”中的全部字段，以及 `color.surface`、`color.title`、`color.subtitle`、`color.action`、`color.detailFrame` 和 `color.detailShadow`；其余尺寸、间距和字体保持当前组件设计。
 
 ## Omnisend 验收边界
 

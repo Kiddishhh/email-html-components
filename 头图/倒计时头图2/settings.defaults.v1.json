@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "componentKey": "hero.countdownOverlay2",
   "values": {
+    "navigation.visible": true,
     "color.surface": "#F3EFE8",
     "color.promotionLeft": "#B29E92",
     "color.promotionRight": "#A28C80",

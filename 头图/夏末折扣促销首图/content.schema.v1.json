@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.lateSummerSale",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "promotion.text": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.linkText": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true, "protocol": "https" },
+    "brand.logo.url": { "type": "url", "role": "image-source", "required": true, "skillPrompt": false, "protocol": "https" },
+    "brand.logo.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": false },
+    "brand.logo.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": false, "protocol": "https" },
+    "hero.eyebrow": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.title": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" },
+    "hero.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true, "protocol": "https" },
+    "hero.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true, "protocol": "https" }
+  },
+  "additionalProperties": false
+}

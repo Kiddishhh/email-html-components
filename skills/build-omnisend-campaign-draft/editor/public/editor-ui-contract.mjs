@@ -3,15 +3,19 @@ const structureOrder = ['头图', '活动商品组件', '通用图片组件', '�
 const editableByComponent = {
   'hero.promotionalOverlay': {
     content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.eyebrow', 'hero.title', 'hero.subtitle', 'hero.cta.text', 'hero.cta.url', 'promotion.text', 'promotion.linkText', 'promotion.url', 'hero.logo.url', 'hero.logo.alt', 'hero.logo.clickUrl'],
-    settings: ['color.theme', 'color.heroFallback', 'color.logoBadge', 'color.logoBadgeTransparent']
+    settings: ['navigation.visible', 'color.theme', 'color.heroFallback', 'color.logoBadge', 'color.logoBadgeTransparent']
   },
   'hero.countdownOverlay': {
     content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'countdown.title', 'hero.subtitle', 'hero.cta.text', 'hero.cta.url', 'navigation.text', 'navigation.linkText', 'navigation.url', 'brand.logo.url', 'brand.logo.alt', 'brand.clickUrl', 'decoration.dividerImage.url', 'decoration.dividerImage.alt'],
-    settings: ['color.theme', 'color.navigationLeft', 'color.navigationRight']
+    settings: ['navigation.visible', 'color.theme', 'color.navigationLeft', 'color.navigationRight']
   },
   'hero.countdownOverlay2': {
     content: ['hero.image.url', 'hero.image.alt', 'hero.eyebrow', 'hero.title', 'hero.subtitle', 'urgency.title', 'benefit.1.text', 'benefit.2.text', 'benefit.3.text', 'hero.cta.text', 'hero.cta.url', 'urgency.note', 'promotion.text', 'promotion.linkText', 'promotion.url'],
-    settings: ['color.theme', 'color.surface', 'color.offerSurface', 'color.promotionLeft', 'color.promotionRight']
+    settings: ['navigation.visible', 'color.theme', 'color.surface', 'color.offerSurface', 'color.promotionLeft', 'color.promotionRight']
+  },
+  'hero.lateSummerSale': {
+    content: ['promotion.text', 'promotion.linkText', 'promotion.url', 'brand.logo.url', 'brand.logo.alt', 'brand.logo.clickUrl', 'hero.eyebrow', 'hero.title', 'hero.subtitle', 'hero.image.url', 'hero.image.alt', 'hero.image.clickUrl', 'hero.cta.text', 'hero.cta.url'],
+    settings: ['navigation.visible', 'color.surface', 'color.promotionLeft', 'color.promotionRight', 'color.heading', 'color.body', 'color.action']
   },
   'collection.saleGrid6': {
     content: ['saleCollection.title', 'saleCollection.body', 'saleCollection.cta.text', 'saleCollection.cta.url'],
@@ -29,8 +33,19 @@ const editableByComponent = {
     content: ['image.url', 'image.alt', 'image.linkUrl'],
     settings: ['color.surface']
   },
-  'gift.rewardGrid2': { content: [], settings: [] },
-  'location.showroomCard': { content: [], settings: [] },
+  'gift.rewardGrid2': {
+    content: [
+      'reward.title',
+      'reward.rules[0]',
+      'reward.rules[1]',
+      'reward.items[0].image.url',
+      'reward.items[0].image.alt',
+      'reward.items[1].image.url',
+      'reward.items[1].image.alt'
+    ],
+    settings: ['color.surface']
+  },
+  'location.showroomCard': { content: [], settings: ['color.surface'] },
   'footer.warm': { content: [], settings: ['color.background', 'color.text', 'color.link'] },
   'image.benefitsStrip3': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
   'tool.measurementCard': {
@@ -53,6 +68,10 @@ const editableByComponent = {
   'product.curtainRecommendationNoTitle': {
     content: ['product.images.scene.url', 'product.images.scene.alt', 'product.images.detail.url', 'product.images.detail.alt', 'product.name', 'product.color.label', 'product.color.value', 'product.cta.label', 'product.url'],
     settings: ['color.surface', 'color.text', 'color.action']
+  },
+  'product.sampleStyle1': {
+    content: ['product.mainImage.url', 'product.mainImage.alt', 'product.detailImage.url', 'product.detailImage.alt', 'product.title', 'product.subtitle', 'product.cta.text', 'product.cta.url'],
+    settings: ['color.surface', 'color.title', 'color.subtitle', 'color.action', 'color.detailFrame', 'color.detailShadow']
   }
 };
 
@@ -61,6 +80,7 @@ const copyByField = {
   'hero.backgroundImage.alt': ['背景图说明', '图片无法显示时供读屏工具识别的简短说明。'],
   'hero.image.url': ['主图链接', '替换首图主视觉图片；填写公开 HTTPS 图片地址。'],
   'hero.image.alt': ['主图说明', '图片无法显示时供读屏工具识别的简短说明。'],
+  'hero.image.clickUrl': ['主图点击链接', '点击主图后打开的活动页面地址。'],
   'hero.eyebrow': ['活动名称', '显示在主标题上方的活动名称。'],
   'hero.title': ['活动主标题', '显示折扣或活动核心信息的主标题。'],
   'hero.subtitle': ['活动补充说明', '显示在主标题下方的补充文案。'],
@@ -78,6 +98,7 @@ const copyByField = {
   'navigation.url': ['导航链接', '点击顶部导航时打开的页面地址。'],
   'brand.logo.url': ['品牌 Logo 链接', '替换倒计时首图中的品牌 Logo 图片地址。'],
   'brand.logo.alt': ['品牌 Logo 说明', 'Logo 无法显示时使用的品牌名称说明。'],
+  'brand.logo.clickUrl': ['品牌 Logo 点击链接', '点击顶部品牌 Logo 后打开的页面地址。'],
   'brand.clickUrl': ['品牌 Logo 链接', '点击 Logo 后打开的页面地址。'],
   'decoration.dividerImage.url': ['装饰分隔图链接', '替换标题下方的装饰性分隔图片地址。'],
   'decoration.dividerImage.alt': ['装饰分隔图说明', '分隔图无法显示时使用的简短说明。'],
@@ -124,6 +145,10 @@ const copyByField = {
   'product.color.value': ['色号内容', '显示产品颜色或色号信息。'],
   'product.cta.label': ['CTA 文字', '显示在产品推荐卡中的按钮或链接文案。'],
   'product.url': ['产品链接', '点击图片或 CTA 后打开的公开 HTTPS 产品页面。'],
+  'product.mainImage.url': ['产品主图', '替换产品样式1的主视觉图片；填写公开 HTTPS 图片地址。'],
+  'product.mainImage.alt': ['产品主图说明', '主图无法显示时供读屏工具识别的简短说明。'],
+  'product.detailImage.url': ['产品细节图', '替换覆盖在主图右下的材质细节图片；填写公开 HTTPS 图片地址。'],
+  'product.detailImage.alt': ['产品细节图说明', '细节图无法显示时供读屏工具识别的简短说明。'],
   'color.theme': ['主题操作色', '用于 CTA 和折扣等主要操作元素的颜色。'],
   'color.heroFallback': ['首图回退背景色', '主图无法显示时使用的首图背景色。'],
   'color.logoBadge': ['Logo 徽章底色', '首图 Logo 圆形徽章的实色降级背景。'],
@@ -131,16 +156,35 @@ const copyByField = {
   'color.navigationLeft': ['左侧导航底色', '顶部导航左侧促销区域的背景色。'],
   'color.navigationRight': ['右侧导航底色', '顶部导航右侧注册链接区域的背景色。'],
   'color.surface': ['组件背景色', '仅修改当前组件的底色，不影响邮件整体背景。'],
+  'color.heading': ['标题文字色', '修改活动名称和主折扣标题的文字颜色。'],
   'color.text': ['组件文字色', '仅修改当前组件的文字颜色。'],
   'color.action': ['CTA 操作色', '仅修改当前组件 CTA 的按钮或强调色。'],
   'color.badge': ['促销角标底色', '仅修改商品主图左上角促销角标的背景色。'],
+  'color.title': ['标题文字色', '仅修改当前组件标题的文字颜色。'],
+  'color.subtitle': ['副标题文字色', '仅修改当前组件副标题的文字颜色。'],
+  'color.detailFrame': ['细节图边框色', '修改产品细节图的外框颜色。'],
+  'color.detailShadow': ['细节图投影底色', '修改细节图右侧和底部的邮件安全投影底板颜色。'],
   'color.offerSurface': ['优惠文案区底色', '仅修改主图下方优惠文案区域的背景色。'],
   'color.promotionLeft': ['顶部栏左侧底色', '修改顶部促销栏左侧区域的背景色。'],
   'color.promotionRight': ['顶部栏右侧底色', '修改顶部促销栏右侧区域的背景色。'],
+  'navigation.visible': ['显示顶部导航栏', '关闭后从最终 HTML 中移除当前头图的顶部导航栏；Logo 和其余头图内容保持不变。'],
   'color.background': ['页脚背景色', '仅修改页脚底色，不影响邮件整体背景。']
 };
 
 const copyByComponentField = {
+  'gift.rewardGrid2': {
+    'content.reward.title': ['赠品区主标题', '显示在两条赠品规则上方的主标题。'],
+    'content.reward.rules[0]': ['第一条赠品规则', '显示在主标题下方的第一条满额赠品说明。'],
+    'content.reward.rules[1]': ['第二条赠品规则', '显示在第一条规则下方的第二条满额赠品说明。'],
+    'content.reward.items[0].image.url': ['上方赠品图片', '替换第一张完整赠品活动图；填写公开 HTTPS 图片地址。'],
+    'content.reward.items[0].image.alt': ['上方赠品图片说明', '第一张赠品图无法显示时供读屏工具识别的简短说明。'],
+    'content.reward.items[1].image.url': ['下方赠品图片', '替换第二张完整赠品活动图；填写公开 HTTPS 图片地址。'],
+    'content.reward.items[1].image.alt': ['下方赠品图片说明', '第二张赠品图无法显示时供读屏工具识别的简短说明。']
+  },
+  'hero.lateSummerSale': {
+    'content.brand.logo.url': ['品牌 Logo 图片', '替换夏末折扣首图顶部使用的品牌 Logo 图片。'],
+    'settings.color.body': ['正文文字色', '修改活动补充说明的文字颜色。']
+  },
   'footer.warm': {
     'settings.color.text': ['页脚正文颜色', '修改页脚的常规文字颜色。'],
     'settings.color.link': ['页脚链接颜色', '修改联系邮箱与退订链接的颜色。']
@@ -155,10 +199,46 @@ export function styleKeysForStructure(catalog, category) {
   return catalog.filter((component) => component.category === category).map((component) => component.componentKey);
 }
 
+export function previewComponentIndex(components, selectedId) {
+  if (!Array.isArray(components) || typeof selectedId !== 'string') return -1;
+  return components.findIndex(({ instanceId }) => instanceId === selectedId);
+}
+
+export function previewStageScrollTop({ stageScrollTop, stageTop, frameTop, documentTop, innerScroll }) {
+  const frameTopInStage = frameTop - stageTop + stageScrollTop;
+  return Math.max(0, Math.round(frameTopInStage + documentTop - innerScroll));
+}
+
+export function previewTargetIsCurrent({ frame, currentFrame, frameWindow, target }) {
+  return Boolean(frame && frame === currentFrame && frameWindow && target?.isConnected);
+}
+
+export function appendPendingEdit(pending, { instanceId, group, key, value }) {
+  if (!instanceId || !['content', 'settings'].includes(group) || !key) throw new Error('invalid pending editor field');
+  if (pending.instanceId && pending.instanceId !== instanceId) throw new Error('pending editor fields belong to another component');
+  return {
+    instanceId,
+    content: { ...pending.content, ...(group === 'content' ? { [key]: value } : {}) },
+    settings: { ...pending.settings, ...(group === 'settings' ? { [key]: value } : {}) }
+  };
+}
+
+export function consumePendingEdits(pending) {
+  return {
+    instanceId: pending.instanceId,
+    patch: { content: { ...pending.content }, settings: { ...pending.settings } },
+    next: { instanceId: null, content: {}, settings: {} }
+  };
+}
+
 export function editableFieldKeys(componentKey) {
   const fields = editableByComponent[componentKey];
   if (!fields) throw new Error(`unknown editor component: ${componentKey}`);
   return { content: [...fields.content], settings: [...fields.settings] };
+}
+
+export function editableComponentKeys() {
+  return Object.keys(editableByComponent);
 }
 
 export function editorFieldCopy(componentKey, group, key) {
@@ -175,7 +255,10 @@ export function normalizeHexColor(value) {
   return /^#[0-9A-F]{6}$/u.test(normalized) ? normalized : null;
 }
 
-export function editorInputDisplay(value) {
+export function editorInputDisplay(value, metadata = {}) {
+  if (metadata.type === 'boolean' && typeof value === 'boolean') {
+    return { control: 'checkbox', checked: value };
+  }
   if (typeof value === 'string' && value.startsWith('asset://')) {
     return {
       value: '',

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.lateSummerSale",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "navigation.visible": { "type": "boolean", "default": true, "themeable": false, "skillPrompt": false },
+    "color.surface": { "type": "string", "default": "#F3EFE8", "themeable": true, "skillPrompt": true },
+    "color.promotionLeft": { "type": "string", "default": "#B4A096", "themeable": true, "skillPrompt": false },
+    "color.promotionRight": { "type": "string", "default": "#A58F83", "themeable": true, "skillPrompt": false },
+    "color.promotionText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
+    "color.heading": { "type": "string", "default": "#1D1C1B", "themeable": true, "skillPrompt": false },
+    "color.body": { "type": "string", "default": "#242323", "themeable": true, "skillPrompt": false },
+    "color.action": { "type": "string", "default": "#9F1D20", "themeable": true, "skillPrompt": true },
+    "color.actionText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
+    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": true, "skillPrompt": false },
+    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "font.action": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
+    "content.maxWidth": { "type": "string", "default": "600px", "themeable": false, "skillPrompt": false },
+    "logo.maxWidth": { "type": "string", "default": "106px", "themeable": true, "skillPrompt": false },
+    "image.maxWidth": { "type": "string", "default": "542px", "themeable": false, "skillPrompt": false },
+    "image.height": { "type": "string", "default": "527px", "themeable": false, "skillPrompt": false },
+    "cta.maxWidth": { "type": "string", "default": "275px", "themeable": true, "skillPrompt": false },
+    "cta.height": { "type": "string", "default": "54px", "themeable": true, "skillPrompt": false },
+    "cta.overlap": { "type": "string", "default": "27px", "themeable": false, "skillPrompt": false },
+    "radius.button": { "type": "string", "default": "0px", "themeable": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

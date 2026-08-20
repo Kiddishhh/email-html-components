@@ -18,7 +18,7 @@
 - `content.schema.v1.json`：Skill 收集的图片与 Alt 字段；其中保留的旧链接字段只用于兼容历史组合，不参与渲染。
 - `content.fixture.v1.json`：默认内容完整快照和本地素材引用。
 - `settings.schema.v1.json`、`settings.defaults.v1.json`：组件外部背景、外边距和图片最大宽度。
-- `assets/default-benefits-strip-combination-i-1200.jpg`：用户确认使用的默认三项权益图（1200×584px）。
+- `assets/default-benefits-strip-rights-2.jpg`：用户确认使用的默认三项权益图（1290×627px）。
 - `效果演示.html`：600px 浏览器效果演示，不是正式 Omnisend 导入片段。
 
 ## Skill 使用与修改
@@ -34,18 +34,18 @@
 
 ## 图片规格与响应式
 
-- 当前默认源图：1200 × 584px。
+- 当前默认源图：1290 × 627px。
 - 桌面端：在 600px 邮件画布中显示为 600px 全宽，预计高度约 292px。
 - 移动端：按容器宽度缩放到约 375 × 182px。
 - 模板固定使用 `width:100%; max-width:100%; height:auto`，因此不会裁切图片。
-- 后续生产素材建议保持当前约 2.06:1 的比例，并使用至少 `1200 × 584px` 的 PNG、JPG 或 WebP，以提升高密度屏幕清晰度。
+- 后续生产素材建议保持当前约 2.06:1 的比例，并使用至少 `1290 × 627px` 的 PNG、JPG 或 WebP，以提升高密度屏幕清晰度。
 - 图片内的小字号必须在 375px 宽度下仍可读；替换前应检查实机缩放效果。
 
 ## 内容字段
 
 | 参数 | 默认值 | 用途 |
 | --- | --- | --- |
-| `image.url` | `https://app.omnisend.com/images/6a82d6f0c5aa8a2a0174f006` | 当前默认的公开 Omnisend 图片地址；可替换为其他公开 HTTPS 地址 |
+| `image.url` | `asset://benefits-strip-3` | 当前默认的本地组件图片；可替换为其他公开 HTTPS 地址 |
 | `image.alt` | 三项权益英文说明 | 图片加载失败与无障碍描述，应随替换图片同步更新 |
 
 ## 设置字段
@@ -62,7 +62,7 @@ Skill 必须把全部内容字段和设置字段写入当前 composition 的完�
 
 - 模板使用单根 100% presentation table、嵌套 table 和 `img`。
 - 关键样式内联，不使用脚本、iframe、表单、Flex、Grid、定位或外部 CSS。
-- 当前默认值使用公开 HTTPS 图片地址；本地上传替换图仍需在最终导入前上传到 Omnisend 图片仓库或其他公开 CDN，并把返回的 HTTPS URL 写回 `image.url`。
+- 当前默认本地素材会在导出时上传至 Omnisend 图片仓库；手动替换图仍需在最终导入前上传到 Omnisend 图片仓库或其他公开 CDN，并把返回的 HTTPS URL 写回 `image.url`。
 - 组件不包含页脚或退订令牌。
 
 静态检查通过只表示符合静态规范。正式发送前仍需在 Omnisend 完成 Desktop/Mobile 预览和测试邮件验证。

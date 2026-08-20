@@ -8,9 +8,10 @@
 4. 数据源分工
 5. 首页 Slide 活动解析
 6. 六宫格商品解析
-7. 折扣计算
-8. 计划脚本接口
-9. 失败处理
+7. 单品窗帘促销卡商品解析
+8. 折扣计算
+9. 当前脚本接口
+10. 失败处理
 
 ## 1. 连接与权限
 
@@ -80,7 +81,13 @@ Skill 只允许执行以下 Shopify CLI 命令族：
 
 Collection 的 Admin GraphQL 类型不提供 `onlineStoreUrl`；用 handle 生成 `https://freshinelife.com/collections/{handle}`。
 
-## 7. 折扣计算
+## 7. 单品窗帘促销卡商品解析
+
+`collection.curtainPromotionCard` 与 `collection.curtainPromotionCardNoTitle` 的“shopify商品导入”接受完整的 Freshine 商品详情页链接：`https://freshinelife.com/products/<handle>` 或 `https://freshinelife.com/collections/<collection-handle>/products/<handle>`。`fetch-single-product.mjs` 从两种路径提取相同的 handle，再经只读 `shopify store execute` 查询一个商品，读取其第一张按 `POSITION` 排序的图片媒体、Alt、`onlineStoreUrl`、标题与首个可售变体；不读取或修改其他商品、Collection、主题或 Shopify 数据。
+
+导入只更新当前选中卡片的 `product.image.url`、`product.image.alt`、`product.image.clickUrl`、`product.cta.url`、`product.title`、`product.description` 与 `product.badge`。商品标题在第一个 `–` 前的文本写入 `product.title`，其后文本写入 `product.description`；没有 `–` 时说明写为空。顶部活动标题/说明、CTA 文案、背景色和角标底色不得被导入覆盖。没有有效折扣时写入空角标，以清除旧促销信息。
+
+## 8. 折扣计算
 
 对 Shopify 排序中的首个可售变体执行与实时主题 `selected_or_first_available_variant` 一致的规则：
 
@@ -92,17 +99,18 @@ Collection 的 Admin GraphQL 类型不提供 `onlineStoreUrl`；用 handle 生�
 
 不要默认读取商品 Tag 或 Metafield 作为 `SAVE xx%`。主题中的自定义徽章属于另一类内容，只在用户明确要求覆盖时处理。
 
-## 8. 脚本接口与实施状态
+## 9. 当前脚本接口
 
 - `scripts/shopify-readonly.mjs` 已实现：在启动 Shopify 子进程前只允许 `store info`、query-only `store execute`、`theme list` 和 `theme pull`，并拒绝 mutation、`--allow-mutations` 与所有非白名单命令。
 - `scripts/fetch-sale-grid.mjs` 已实现，并已通过本地 GraphQL fixture 测试：输入推荐 Collection handle 和固定数量 `6`，输出六个商品按媒体 `POSITION` 排序的第一张图片、Alt、详情链接、首个可售变体价格、`compareAtPrice` 和折扣标签。fixture 用不同的 `featuredImage` 验证脚本不会读错来源。它只接受 `--count 6`；fixture 模式仅用于测试，生产模式经只读守卫调用 query-only `shopify store execute`。
 - `scripts/list-sale-activities.mjs` 已实现，并已通过本地首页主题 fixture 测试：它只拉取 `templates/index.json`，从唯一启用 `slideshow-v2` 的多个首页 slide 输出候选；不读取菜单或全量 Page。生产模式只读拉取唯一 live Theme 到新临时目录；fixture 模式只用于测试。
 - `scripts/fetch-sale-activity.mjs` 已实现，并已通过本地主题 snapshot fixture 测试：它只查询选定 slide 链接的一个 Page 模板，重新拉取首页与该模板并验证 slide 与推荐 Collection；若候选时的首页 slide 不一致则停止。它输出 hero 导入文案、推荐 Collection URL、模板文件 SHA-256、Theme ID、读取时间与来源字段；不再读取 Shopify 菜单或修改本地组件。
 - `scripts/fetch-activity-page-sale-grid.mjs` 已实现：输入活动页或 Collection URL。Page 会读取线上主题模板和第一个启用商品网格；Collection 直接读取商品。两种路径都复用 `fetch-sale-grid.mjs` 的商品读取规则，输出六个商品并保留输入 URL 作为 CTA。
+- `scripts/fetch-single-product.mjs` 已实现：输入一个 Freshine 商品详情页 URL，只读查询该商品，输出第一张商品图片、Alt、商品详情链接、按第一个 `–` 拆分后的标题与卖点，以及与六宫格一致的折扣标签；无有效折扣输出空标签。
 
-所有脚本只输出规范化 JSON，不修改组件、HTML、Theme 或 Shopify 数据。Skill 把输出映射为完整组件快照，再交给现有拼接器；不得假装未实现脚本已经执行。
+所有脚本只输出规范化 JSON，不修改组件、HTML、Theme 或 Shopify 数据。编辑器把输出映射到当前组件实例，再由拼接器生成静态邮件 HTML。
 
-## 9. 失败处理
+## 10. 失败处理
 
 - CLI 未认证或店铺不匹配：停止并要求用户恢复正确登录。
 - Theme 与 Admin API 数据无法对应：展示来源并要求用户选择。

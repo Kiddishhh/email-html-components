@@ -1,113 +1,63 @@
-# 工作流与安全契约
+# 当前工作流与安全契约
 
-## 目录
+## 状态流
 
-1. 状态机
-2. 项目草稿
-3. 颜色交互
-4. Campaign 元数据
-5. 最终确认
-6. Omnisend 写入事务
-7. 上传回执
-8. 区段与样式选择
+`编辑中 → 逐组件确认 → 生成 600px/375px 预览 → 最终确认 → 处理本地图片 → 导出 HTML 或写入 Omnisend Draft → 回读验证 → 保留项目草稿`
 
-## 1. 状态机
+失败时停在当前状态并保留项目草稿。不得跳过组件确认或最终确认。
 
-严格按以下状态推进：
+## 项目草稿与注册
 
-`编辑中 → 按用户顺序逐组件确认 → 生成最终清单与本地预览 → 用户最终确认 → 上传图片 → 写入 Omnisend 草稿 → 回读验证 → 默认保留项目草稿`
+- `组件清单.json` 是组件路径和注册状态的单一事实来源。每次启动前运行 `scripts/validate-campaign-contracts.mjs`。
+- 校验必须覆盖注册表路径、模板、内容/设置 Schema、fixture/defaults、管理说明、组件 CSS、`效果演示.html` 和编辑器字段契约。
+- 草稿保存组件成员、顺序、完整内容/设置快照、Campaign 元数据、确认状态和内容哈希。
+- 不保存 Shopify CLI 会话、Omnisend API Key 或其他访问令牌。
+- 默认保留成功或失败的项目草稿。只有用户明确指定要清理的草稿后才删除精确目标。
 
-失败时停在当前状态并保留项目草稿。不要跳过组件确认或最终确认。
+## 本地图片与预览
 
-## 2. 项目草稿
+- 本地图片以 `asset://` 加资产清单的形式进入草稿，只用于本地预览。
+- `--preview-local-assets` 必须相对生成的 `previewOutput` HTML 解析本地资源，并验证文件存在。
+- 模板保存本地图片的原路径引用，不复制或接管文件。
+- 最终 HTML 不得包含 `asset://`、本地绝对路径或相对图片路径；所有图片必须是公开 HTTPS URL。
+- 本地预览和截图属于验收证据，不等于 Omnisend、Gmail、Outlook 或 Apple Mail 的真实收件箱验证。
 
-- `组件清单.json` 是活动组件目录与文件路径的单一事实来源。创建或恢复项目草稿时按 `componentKey` 重新解析当前注册表路径；不得沿用 README、历史设计文档、旧 composition 或既往运行中记录的目录字符串。注册表路径不存在时停止，并报告需要同步的 `componentKey` 与路径。
-- 保存已验证的结构配置版本、组件选择、顺序、完整内容快照、完整设置快照、Campaign 元数据、数据来源、确认状态和内容哈希。
-- 不保存 Shopify CLI 会话、Omnisend API Key 或任何访问令牌。
-- 回读验证成功后默认保留本地项目草稿和脱敏上传回执，便于审计与恢复。
-- 只有用户针对该草稿明确确认清理后才删除精确目标；上传成功本身不是删除授权。
-- 回读失败、图片上传失败或 API 写入失败时保留草稿，便于恢复。
-- 使用 `--preview-local-assets` 生成本地预览时，`asset://` 必须相对于 `previewOutput` HTML 解析为实际文件；不得假定预览文件位于工作区根目录。生成后逐项验证解析结果，并在覆盖预览文件后重新加载预览。此规则仅适用于本地预览；最终邮件仍必须将所有本地资源替换为公开 HTTPS 地址。
-- 本地预览 HTML 是组件确认和整封邮件的正式交付载体；桌面端与移动端截图只记录验收证据，不得代替 HTML，也不得作为 Omnisend 上传内容源。
+## 最终确认
 
-## 3. 颜色交互
+最终确认展示 Campaign 名称、Subject、Preheader、Sender、Audience、组件顺序、退订令牌、桌面/移动检查状态和本地预览。
 
-开始时分别询问：
+- Campaign 名称用于内部识别和管理。
+- Subject 是收件箱显示的邮件主题。
+- Preheader 是主题旁或下方的预览摘要。
+- Audience 默认显示为所有订阅用户。
+- 最终确认绑定完整 HTML 的 SHA-256 内容哈希；任何内容、设置、图片或顺序变化都会使确认失效。
 
-1. 是否统一导航栏、CTA 按钮和其他操作元素的颜色。
-2. 是否统一所选正文组件的背景色。正文组件背景色只写入各组件的完整 `settings` 快照；不得改写邮件 `canvas` 或外层背景色。
+## 导出 HTML 边界
 
-颜色格式只接受完整的 `#RRGGBB`，例如 `#9D1D20`。每次展示颜色时同时展示：
+“导出 Omnisend HTML”仅上传本地图片、替换 URL、执行静态安全校验并复制 HTML。它不会创建、更新或发送 Campaign 或 Draft，也不保存完整 HTML、API Key 或导出正文回执。
 
-- 十六进制值；
-- 中文近似描述，例如 `#9D1D20（深酒红）`；
-- 本地 HTML 中的真实色块。
+图片上传前必须通过 MIME、扩展名、文件大小和本地路径检查；任一图片失败即停止。图片缓存只保存图片哈希、账户隔离哈希、Omnisend 图片 ID 和公开 URL。
 
-统一后，每个组件说明当前继承值，并允许输入新的色号覆盖当前组件。未统一时，每个组件主动询问。选中页脚时，其背景色始终单独询问。
+## Omnisend Draft 写入
 
-分别记录常用操作色和常用背景色，统一转成大写并去重。只在 Omnisend 草稿写入且回读成功后更新使用次数和最后使用时间；不要在运行时修改 `SKILL.md`。
+1. 只调用固定的 `scripts/upload-omnisend-draft.mjs`；不得手工拼接 Omnisend 写请求。
+2. API Key 由编辑器对话框一次性收集，只保留在当前请求和本机进程内存，完成、失败或取消后清空。
+3. 先按 Campaign 名称精确查询 `draft`；多个同名结果选择最近更新的一封。
+4. 更新现有 Draft 时，先回读完整 Email Content，保留 `generalSettings`、sections、节点 ID 和 `[[unsubscribe_link]]`，只替换目标 HTML 正文后执行完整 `PUT`。
+5. 没有同名 Draft 时才读取 Brand senderName、导入 HTML 并创建新的 Draft。
+6. 两条路径都必须回读并验证 `status: draft`、Campaign ID、Email Content ID、退订令牌、图片 URL 和内容哈希。
+7. 任一步失败都不得继续后续写入，并保留本地草稿。
 
-首图 Logo 背景不参与正文背景色继承。它在主视觉图片之后通过独立的 Logo 样式确认处理：默认白色 FreShine 字标、`#A79689` 与 70% 透明度，并保持旧版 106px 圆形和 80px 字标。Logo 设置卡片必须带桌面端、375px 移动端预览及 Outlook 实色降级说明，并将 Logo 图片、Alt、点击链接、圆形背景色和透明度作为可编辑默认值；只询问一次是否采用默认 Logo 样式。替换本地 Logo 时只用于预览，最终确认后由固定脚本上传；圆形背景色只接受新 `#A1B2C3` 格式色号，透明度只接受 0–100%，并确定性生成 `rgba`。106px 圆形和 80px 字标尺寸固定；之后仍须执行首图完成卡片确认。
+不得发送、排期、发布或调用任何使 Campaign 离开 `draft` 状态的端点。
 
-`hero.countdownOverlay` 倒计时头图使用 `width:100%;max-width:600px`，桌面画布固定在 600px 上限，移动端只收窄宽度。主视觉按默认背景 `1200×1443px` 的真实比例显示：桌面总画布约 `600×778px`，其中顶部导航 56px、主视觉约 `600×722px`。导航下方的跨两列外壳保持 table-cell，背景放入内部单列 `td`；内层背景使用 `height:120vw`、`min-height:560px`、`max-height:722px` 和 `display:block`，跨列外壳不得使用 block。600px 桌面主视觉稳定为 722px；375px 移动端主视觉稳定为 560px，含导航总高约 616px。背景使用 `cover` 与 `center center`，移动端允许可控的左右裁切。中央面板桌面最大宽度为 460px、最大高度为 520px，内容垂直居中；约 375px 移动端仍由两侧各 10px 留白限制为约 355px 宽，面板以 `86.67vw` 收窄到约 325px 高，内容较多时允许由自然高度撑开。内部使用 28px 24px 内边距和 8/14/22/22px 四段间距；Logo 为 108px、分隔图为 220px、CTA 为 200×44px。倒计时只使用一个可编辑字段 `countdown.title`，默认值为 `Only 3 Days Left`；标题框固定为 280px 宽并使用正常空白自然换行，使默认文案显示为第一行 `Only 3`、第二行 `Days Left`，模板不得插入固定换行标签或拆分字段。标题使用 Lora Regular，字重 400、字号 50px、行高 64px、字间距 0px、居中对齐；补充文字均使用 Montserrat 14px/21px，文案仍可由用户修改。左侧导航文案使用 14px/20px，在窄屏允许自然换成两行但导航仍保持 56px。右侧 `SIGN UP` 使用 `color.navigationRight`，主视觉 `SHOP NOW` 使用 `color.theme`，参考图默认值均为 `#725A4B`；左侧导航参考图默认值为 `#97866D`，初始来源为 `reference-default`。只有用户主动修改 CTA 主题色且没有左侧覆盖值时，Skill 才运行 `scripts/derive-countdown-theme.mjs`，以主题色 35%、浅色基准 65% 确定性计算左侧导航色，浅色基准固定为 `#F4F1EC`。允许用户分别修改左侧或右侧导航色；左侧修改后保持覆盖，不随 CTA 主题色自动变化，直到用户明确恢复自动配色。组件只展示一张当前设置卡片、桌面端和约 375px 移动端预览，并只进行一次完成确认；字体、绑定配色和默认链接不另设确认。
+## 静态邮件安全
 
-`hero.countdownOverlay2` 沿用 Shopify 只读活动候选、快照校验与 `subheading`→`hero.eyebrow`、`heading`→`hero.title`、`description`→`hero.subtitle` 映射，并将选定活动页 URL 写入 `hero.cta.url`；导入结果只展示，不新增一轮文案确认。主图必须主动收集，先说明 600px 画布内使用 90% 内层卡片、图片为 `1:1` 比例、桌面端显示 `540×540px`、约 375px 移动端显示 `337.5×337.5px`，再提示 `1200×1200px` 建议尺寸和中央安全区，并提供默认图、本地路径、公开 HTTPS 三种来源。比例不符时运行 `scripts/prepare-countdown-hero-2-image.mjs`，生成不覆盖原图的居中裁切衍生图。主图与图下文案区同宽，并保留组件背景色形成的左右和底部留白；`ONLY 3 DAYS!` 使用 Lora，三项权益之间固定显示两条竖向分隔线。顶部促销栏与 `SIGN UP` 使用 14px/20px且保持 52px 高度，主标题下补充说明使用 14px/21px，底部补充提示使用 14px/20px，三项权益保持 12px/15px。Logo 默认使用透明底、`#652E17` 深棕色 FreShine 字标，并继续由组件整体背景色承托。Logo、顶部促销条、静态倒计时文案、固定顺序的三项权益、CTA 和补充提示均作为完成卡片的可编辑当前值，不逐项追问。CTA 与 Logo/活动文案区分别继承已设全局操作色和正文背景色；没有全局色时用组件默认值。图下文案区和顶部促销条保留组件默认色，用户主动提出时才修改。同时展示完成卡片、桌面端和约 375px 移动端预览，只进行一次组件完成确认。
+- 邮件 HTML 不得包含 JavaScript、iframe、表单、事件处理器或运行时 Shopify 请求。
+- 组件使用邮件安全表格结构与内联 CSS；不得依赖 Flex、Grid、外部样式表或 Web Font 才能完成核心布局。
+- URL 字段按 Schema 校验；正式图片地址必须使用 HTTPS。
+- 组件 CSS 只内联到当前组件，不得改变其他组件。
+- 保留退订令牌 `[[unsubscribe_link]]`。
 
-## 4. Campaign 元数据
+## Shopify 边界
 
-必须收集：
-
-- Campaign 名称：仅供内部识别和管理，不是收件人在邮件中看到的文案；
-- Subject：收件箱中显示的邮件主题；
-- Preheader：通常显示在 Subject 主题旁或下方的预览摘要。
-
-Sender Name、Sender Email 和 Reply-to 默认读取 Omnisend Brand Assets。Audience 默认显示为“所有订阅用户”。第一版不收集发送时间，不发送、不排期。
-
-## 5. 最终确认
-
-最终文字清单只展示：
-
-- 邮件名称；
-- Subject 与 Preheader；
-- Sender；
-- Audience；
-- 组件名称与顺序；
-- 退订令牌存在；
-- 桌面端与移动端检查状态；
-- 本地预览 HTML 链接；
-- “仅创建草稿，不发送”。
-
-不要在文字清单重复各组件的文案、图片、链接和颜色；这些内容通过本地预览 HTML 展示。最终确认必须绑定当前完整 HTML 内容哈希，任何变更都要重新生成预览和确认。确认后的该 HTML 是固定上传脚本的输入，截图不参与哈希或上传。
-
-## 6. Omnisend 写入事务
-
-1. 只能运行 `scripts/upload-omnisend-draft.mjs --project <project-state.v1.json> --html <campaign.static-safe.html>`；不得让模型手工拼接 Omnisend 写入请求。
-2. 上传器先验证最终确认与静态 HTML 内容哈希；编辑器弹窗一次性收集 Omnisend API Key，支持粘贴与显示/隐藏。密钥只存在于当前浏览器请求和本机进程内存，完成或失败后立即清空，不得保存、回显或写入日志，也不得以参数或环境变量传入。
-3. 脚本扫描全部快照中的图片地址，仅上传明确清单中的本地图片；Shopify CDN 等公开 HTTPS 图片无需重复上传。
-4. 任一上传失败则终止，不创建或更新 Campaign；替换所有本地路径后重新校验静态 HTML。
-5. 项目已有 Campaign ID 与 Content ID 时，脚本先回读现有 Campaign 并要求 `status: draft`、Content ID 与项目一致，再读取完整 Email Content；保留 `generalSettings`、sections 和全部节点 ID，只替换唯一含 `[[unsubscribe_link]]` 的 HTML 正文并执行完整 `PUT`。该路径不得导入模板或新建 Campaign。
-6. 项目没有既有 ID 时，上传器先精确检索同名 `draft`；多个匹配结果按最近更新时间选择一份，回读确认后按更新路径处理。没有同名 Draft 才读取当前 Brand 名称作为必填 `senderName`（只读），导入 HTML 模板并创建新 Campaign 草稿；创建请求可声明 `immediate`，但脚本不得调用 `/send`、不得排期、不得发布。
-7. 两种路径都要回读 Campaign 与 Email Content，要求 `status` 为 `draft`，并比较 Content ID、退订令牌、图片 URL 与关键字段。
-8. 只有回读成功才输出最小上传回执；失败时保留完整项目草稿。
-
-不得调用 `/send`、不得排期、不得发布或调用任何等效接口。
-
-## 7. 上传回执
-
-成功后保留本地项目草稿，并输出只包含以下字段的脱敏上传回执：
-
-- Campaign ID；
-- Email Content ID；
-- 上传时间；
-- 状态 `draft`；
-- HTML 内容哈希；
-- 组件顺序；
-- 回读验证结果。
-
-不要保留完整正文、图片文件、完整 HTML 或 API 密钥。
-
-## 8. 用户驱动的组件选择
-
-运行前读取 `campaign-structure.v1.json` 与 `campaign-component-interactions.v1.json`，并运行本地结构校验器。`campaign-structure.v1.json` 不定义固定区段；用户提供的 `componentKey` 列表决定邮件的组件成员、数量和顺序。
-
-每次只展示并确认用户列表中的一个组件。必须从 `组件清单.json` 解析该组件目录，并直接打开目录中的 `效果演示.html` 作为样式演示；不得用单独素材图代替组件预览。每个键须同时在注册表和交互索引中存在，否则停止并报告它，不得替换、插入或重排组件。完成当前组件确认后才进入列表的下一项；不要求页脚、地址、首图或其他组件出现、唯一或位于特定位置。
+只有执行组件的 Shopify 导入时才读取 `shopify-data-contract.zh-CN.md`。所有 Shopify 操作严格只读；不创建、修改、上传、发布或删除任何店铺数据或主题。

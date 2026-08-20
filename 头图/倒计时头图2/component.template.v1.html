@@ -4,20 +4,22 @@
       <a href="{{content.brand.logo.clickUrl}}" data-freshine-href-slot="brand.logo.clickUrl" target="_blank" style="display:inline-block;line-height:0;margin-top:{{settings.logo.offsetTop}};text-align:center;text-decoration:none;"><img class="freshine-countdown-2-logo" src="{{content.brand.logo.url}}" data-freshine-image-slot="brand.logo.url" width="96" alt="{{content.brand.logo.alt}}" border="0" style="display:block;width:100%;max-width:{{settings.logo.maxWidth}};height:auto;border:0;margin:0 auto;"></a>
     </td>
   </tr>
+  <!-- FRESHINE_IF_SETTING:navigation.visible -->
   <tr>
     <td style="padding:0;">
       <table class="freshine-countdown-2-promotion" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;border-collapse:collapse;">
         <tr>
-          <td width="75%" height="52" align="center" valign="middle" bgcolor="{{settings.color.promotionLeft}}" style="width:75%;height:52px;padding:0 16px;background-color:{{settings.color.promotionLeft}};color:{{settings.color.promotionText}};text-align:center;vertical-align:middle;">
-            <!-- FRESHINE_SLOT_START:promotion.text --><span class="freshine-countdown-2-promotion-text" data-freshine-slot="promotion.text" style="color:{{settings.color.promotionText}};font-family:{{settings.font.body}};font-size:14px;font-weight:400;line-height:20px;text-align:center;">{{content.promotion.text}}</span><!-- FRESHINE_SLOT_END:promotion.text -->
+          <td class="freshine-countdown-2-promotion-left" width="75.5%" height="71" align="center" valign="middle" bgcolor="{{settings.color.promotionLeft}}" style="width:75.5%;height:71px;height:min(71px,11.833333vw);padding:0 18px;padding:0 min(18px,3vw);background-color:{{settings.color.promotionLeft}};color:{{settings.color.promotionText}};text-align:center;vertical-align:middle;">
+            <!-- FRESHINE_SLOT_START:promotion.text --><span class="freshine-countdown-2-promotion-text" data-freshine-slot="promotion.text" style="display:inline-block;color:{{settings.color.promotionText}};font-family:{{settings.font.body}};font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:24px;line-height:min(24px,4vw);text-align:center;">{{content.promotion.text}}</span><!-- FRESHINE_SLOT_END:promotion.text -->
           </td>
-          <td width="25%" height="52" align="center" valign="middle" bgcolor="{{settings.color.promotionRight}}" style="width:25%;height:52px;padding:0 10px;background-color:{{settings.color.promotionRight}};text-align:center;vertical-align:middle;">
-            <a class="freshine-countdown-2-promotion-link" href="{{content.promotion.url}}" data-freshine-href-slot="promotion.url" target="_blank" style="display:inline-block;color:{{settings.color.promotionText}};font-family:{{settings.font.action}};font-size:14px;font-weight:400;line-height:20px;text-align:center;text-decoration:underline;"><!-- FRESHINE_SLOT_START:promotion.linkText --><span data-freshine-slot="promotion.linkText">{{content.promotion.linkText}}</span><!-- FRESHINE_SLOT_END:promotion.linkText --></a>
+          <td class="freshine-countdown-2-promotion-right" width="24.5%" height="71" align="center" valign="middle" bgcolor="{{settings.color.promotionRight}}" style="width:24.5%;height:71px;height:min(71px,11.833333vw);padding:0 10px;padding:0 min(10px,1.666667vw);background-color:{{settings.color.promotionRight}};text-align:center;vertical-align:middle;">
+            <a class="freshine-countdown-2-promotion-link" href="{{content.promotion.url}}" data-freshine-href-slot="promotion.url" target="_blank" style="display:inline-block;color:{{settings.color.promotionText}};font-family:{{settings.font.action}};font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:24px;line-height:min(24px,4vw);text-align:center;text-decoration:underline;"><!-- FRESHINE_SLOT_START:promotion.linkText --><span data-freshine-slot="promotion.linkText">{{content.promotion.linkText}}</span><!-- FRESHINE_SLOT_END:promotion.linkText --></a>
           </td>
         </tr>
       </table>
     </td>
   </tr>
+  <!-- FRESHINE_END_IF_SETTING:navigation.visible -->
   <tr>
     <td align="center" bgcolor="{{settings.color.surface}}" style="padding:18px;background-color:{{settings.color.surface}};text-align:center;">
       <!-- FRESHINE_SLOT_START:hero.eyebrow --><span class="freshine-countdown-2-eyebrow" data-freshine-slot="hero.eyebrow" style="display:inline-block;color:{{settings.color.heading}};font-family:{{settings.font.heading}};font-size:25px;font-weight:500;line-height:31px;text-align:center;">{{content.hero.eyebrow}}</span><!-- FRESHINE_SLOT_END:hero.eyebrow -->

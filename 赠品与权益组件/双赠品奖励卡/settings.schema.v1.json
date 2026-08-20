@@ -24,13 +24,13 @@
     },
     "font.headingSize": {
       "type": "string",
-      "default": "26px",
+      "default": "28px",
       "themeable": true,
       "skillPrompt": false
     },
     "font.headingWeight": {
       "type": "string",
-      "default": "400",
+      "default": "500",
       "themeable": true,
       "skillPrompt": false
     },
@@ -48,19 +48,19 @@
     },
     "font.bodySize": {
       "type": "string",
-      "default": "15px",
+      "default": "14px",
       "themeable": true,
       "skillPrompt": false
     },
     "font.bodyWeight": {
       "type": "string",
-      "default": "400",
+      "default": "500",
       "themeable": true,
       "skillPrompt": false
     },
     "font.bodyLineHeight": {
       "type": "string",
-      "default": "22px",
+      "default": "21px",
       "themeable": true,
       "skillPrompt": false
     },

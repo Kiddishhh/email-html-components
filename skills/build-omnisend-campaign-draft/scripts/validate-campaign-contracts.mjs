@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, isAbsolute, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { editableComponentKeys, editableFieldKeys } from '../editor/public/editor-ui-contract.mjs';
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const skillDirectory = resolve(scriptDirectory, '..');
@@ -13,12 +14,11 @@ function readJson(path) {
 function parseArgs(argv) {
   const options = {
     structure: resolve(skillDirectory, 'references/campaign-structure.v1.json'),
-    interactions: resolve(skillDirectory, 'references/campaign-component-interactions.v1.json'),
     registry: resolve(workspaceDirectory, '组件清单.json')
   };
   for (let index = 0; index < argv.length; index += 1) {
     const option = argv[index];
-    if (!['--structure', '--interactions', '--registry'].includes(option) || !argv[index + 1]) {
+    if (!['--structure', '--registry'].includes(option) || !argv[index + 1]) {
       throw new Error(`unsupported validator option: ${option}`);
     }
     options[option.slice(2)] = resolve(argv[index + 1]);
@@ -41,71 +41,6 @@ function validateStructure(structure) {
   if (structure.selection !== 'user-ordered-registered-components') {
     throw new Error('campaign structure selection must be user-ordered-registered-components');
   }
-}
-
-function validateInteractions(index) {
-  requireExactKeys(index, ['schemaVersion', 'interactions'], 'campaign interaction index');
-  if (index.schemaVersion !== 1) throw new Error('campaign interaction index schemaVersion must be 1');
-  if (!Array.isArray(index.interactions)) throw new Error('campaign interaction index interactions must be an array');
-  const byComponentKey = new Map();
-  for (const interaction of index.interactions) {
-    const baseKeys = ['componentKey', 'interactionReference', 'allowedSources', 'requiredStages', 'completion'];
-    const detailKeys = ['imageCollection', 'activityMapping', 'editing', 'colors'];
-    const hasDetailedContract = detailKeys.some((key) => key in interaction);
-    requireExactKeys(interaction, hasDetailedContract ? [...baseKeys, ...detailKeys] : baseKeys, `interaction ${interaction.componentKey ?? '<unknown>'}`);
-    if (typeof interaction.componentKey !== 'string' || !interaction.componentKey) throw new Error('interaction componentKey is required');
-    if (byComponentKey.has(interaction.componentKey)) throw new Error(`duplicate interaction componentKey: ${interaction.componentKey}`);
-    if (typeof interaction.interactionReference !== 'string' || !interaction.interactionReference) throw new Error(`interaction ${interaction.componentKey} reference is required`);
-    for (const key of ['allowedSources', 'requiredStages']) {
-      if (!Array.isArray(interaction[key]) || interaction[key].length === 0 || interaction[key].some((value) => typeof value !== 'string' || !value)) {
-        throw new Error(`interaction ${interaction.componentKey} ${key} must be a non-empty string array`);
-      }
-    }
-    requireExactKeys(interaction.completion, ['card', 'previews'], `interaction ${interaction.componentKey} completion`);
-    if (interaction.completion.card !== true) throw new Error(`interaction ${interaction.componentKey} completion card must be true`);
-    if (!Array.isArray(interaction.completion.previews) || interaction.completion.previews.join(',') !== 'desktop,mobile') throw new Error(`interaction ${interaction.componentKey} completion previews must be desktop,mobile`);
-    if (hasDetailedContract) {
-      requireExactKeys(interaction.imageCollection, ['required', 'displaySize', 'recommendedSize', 'sources', 'ratioMismatch'], `interaction ${interaction.componentKey} imageCollection`);
-      requireExactKeys(interaction.imageCollection.displaySize, ['width', 'height'], `interaction ${interaction.componentKey} imageCollection displaySize`);
-      requireExactKeys(interaction.imageCollection.recommendedSize, ['width', 'height'], `interaction ${interaction.componentKey} imageCollection recommendedSize`);
-      if (interaction.imageCollection.required !== true) throw new Error(`interaction ${interaction.componentKey} imageCollection must be required`);
-      if (interaction.imageCollection.displaySize.width !== 540 || interaction.imageCollection.displaySize.height !== 540) {
-        throw new Error(`interaction ${interaction.componentKey} imageCollection displaySize must be 540x540`);
-      }
-      if (interaction.imageCollection.recommendedSize.width !== 1200 || interaction.imageCollection.recommendedSize.height !== 1200) {
-        throw new Error(`interaction ${interaction.componentKey} imageCollection recommendedSize must be 1200x1200`);
-      }
-      if (!Array.isArray(interaction.imageCollection.sources) || interaction.imageCollection.sources.join(',') !== 'componentDefault,localPath,publicHttps') {
-        throw new Error(`interaction ${interaction.componentKey} imageCollection sources must be componentDefault,localPath,publicHttps`);
-      }
-      if (interaction.imageCollection.ratioMismatch !== 'centerCropDerivativeWithoutOverwrite') {
-        throw new Error(`interaction ${interaction.componentKey} imageCollection ratioMismatch must preserve the source`);
-      }
-
-      requireExactKeys(interaction.activityMapping, ['slideshow-v2.subheading', 'slideshow-v2.heading', 'slideshow-v2.description', 'selectedPageUrl'], `interaction ${interaction.componentKey} activityMapping`);
-      const expectedActivityMapping = {
-        'slideshow-v2.subheading': 'hero.eyebrow',
-        'slideshow-v2.heading': 'hero.title',
-        'slideshow-v2.description': 'hero.subtitle',
-        selectedPageUrl: 'hero.cta.url'
-      };
-      for (const [source, target] of Object.entries(expectedActivityMapping)) {
-        if (interaction.activityMapping[source] !== target) throw new Error(`interaction ${interaction.componentKey} activityMapping ${source} must map to ${target}`);
-      }
-
-      requireExactKeys(interaction.editing, ['defaultFields', 'benefitCount', 'benefitOrder', 'countdownMode', 'confirmationCount'], `interaction ${interaction.componentKey} editing`);
-      if (interaction.editing.defaultFields !== 'completionCardEditable' || interaction.editing.benefitCount !== 3 || interaction.editing.benefitOrder !== 'fixed' || interaction.editing.countdownMode !== 'staticEditable' || interaction.editing.confirmationCount !== 1) {
-        throw new Error(`interaction ${interaction.componentKey} editing contract is invalid`);
-      }
-
-      requireExactKeys(interaction.colors, ['action', 'bodySurface', 'offerSurface', 'promotionBar'], `interaction ${interaction.componentKey} colors`);
-      if (interaction.colors.action !== 'inheritGlobalOrComponentDefault' || interaction.colors.bodySurface !== 'inheritGlobalOrComponentDefault' || interaction.colors.offerSurface !== 'componentDefaultUnlessUserChanges' || interaction.colors.promotionBar !== 'componentDefaultUnlessUserChanges') {
-        throw new Error(`interaction ${interaction.componentKey} colors contract is invalid`);
-      }
-    }
-    byComponentKey.set(interaction.componentKey, interaction);
-  }
-  return byComponentKey;
 }
 
 const registryPathKeys = ['组件模板', '内容契约', '设置契约', '默认测试数据', '默认设置', '中文管理说明', '组件样式'];
@@ -150,32 +85,49 @@ function validateRegistry(registry, registryPath) {
     }
     const contentSchema = readJson(resolvedPaths.内容契约);
     const settingsSchema = readJson(resolvedPaths.设置契约);
+    const contentFixture = readJson(resolvedPaths.默认测试数据);
+    const settingsDefaults = readJson(resolvedPaths.默认设置);
     if (contentSchema.componentKey !== componentKey) {
       throw new Error(`${componentKey} content Schema componentKey is ${contentSchema.componentKey ?? '<missing>'}`);
     }
     if (settingsSchema.componentKey !== componentKey) {
       throw new Error(`${componentKey} settings Schema componentKey is ${settingsSchema.componentKey ?? '<missing>'}`);
     }
+    const editable = editableFieldKeys(componentKey);
+    for (const [group, schema, snapshot] of [
+      ['content', contentSchema, contentFixture],
+      ['settings', settingsSchema, settingsDefaults]
+    ]) {
+      for (const key of editable[group]) {
+        if (!(key in (schema.properties ?? {}))) throw new Error(`${componentKey} editor ${group} field is missing from Schema: ${key}`);
+        if (!(key in (snapshot.values ?? {}))) throw new Error(`${componentKey} editor ${group} field is missing from default snapshot: ${key}`);
+      }
+    }
     registered.set(componentKey, entry);
   }
   return registered;
 }
 
-function validateSelectableComponents(interactions, registry, registryPath) {
+function validateEditorComponents(registry, registryPath) {
   const registered = validateRegistry(registry, registryPath);
-  const selectable = [];
-  for (const componentKey of interactions.keys()) {
-    if (!registered.has(componentKey)) throw new Error(`interaction references unregistered component: ${componentKey}`);
-    selectable.push(componentKey);
-  }
-  if (selectable.length === 0) throw new Error('campaign structure has no registered interaction-ready components');
-  return selectable;
+  const registeredKeys = [...registered.keys()];
+  const editorKeys = editableComponentKeys();
+  const missingEditorContracts = registeredKeys.filter((componentKey) => !editorKeys.includes(componentKey));
+  const unregisteredEditorContracts = editorKeys.filter((componentKey) => !registered.has(componentKey));
+  if (missingEditorContracts.length) throw new Error(`registered components missing editor contracts: ${missingEditorContracts.join(', ')}`);
+  if (unregisteredEditorContracts.length) throw new Error(`editor contracts reference unregistered components: ${unregisteredEditorContracts.join(', ')}`);
+  return registeredKeys;
 }
 
 const options = parseArgs(process.argv.slice(2));
 const structure = readJson(options.structure);
-const interactions = readJson(options.interactions);
 const registry = readJson(options.registry);
 validateStructure(structure);
-const selectableComponents = validateSelectableComponents(validateInteractions(interactions), registry, options.registry);
-console.log(JSON.stringify({ status: 'valid', selection: structure.selection, components: selectableComponents }, null, 2));
+const components = validateEditorComponents(registry, options.registry);
+console.log(JSON.stringify({
+  status: 'valid',
+  selection: structure.selection,
+  componentCount: components.length,
+  editorComponentCount: editableComponentKeys().length,
+  components
+}, null, 2));

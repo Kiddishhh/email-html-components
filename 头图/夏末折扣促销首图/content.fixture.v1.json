@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.lateSummerSale",
+  "values": {
+    "promotion.text": "Unlock $100 Off Your First Order at Freshine",
+    "promotion.linkText": "SIGN UP",
+    "promotion.url": "https://freshinelife.com/",
+    "brand.logo.url": "asset://late-summer-logo",
+    "brand.logo.alt": "FreShine",
+    "brand.logo.clickUrl": "https://freshinelife.com/",
+    "hero.eyebrow": "Late Summer Sale",
+    "hero.title": "UP TO 70% OFF",
+    "hero.subtitle": "Extra $600 OFF & UP TO 20% OFF SITEWIDE",
+    "hero.image.url": "asset://late-summer-room",
+    "hero.image.alt": "Bright dining room with floor-length beige curtains",
+    "hero.image.clickUrl": "https://freshinelife.com/collections/all",
+    "hero.cta.text": "SHOP NOW",
+    "hero.cta.url": "https://freshinelife.com/collections/all"
+  },
+  "localReferenceAssets": {
+    "late-summer-logo": "assets/default-logo-brown.png",
+    "late-summer-room": "assets/default-room.png"
+  }
+}

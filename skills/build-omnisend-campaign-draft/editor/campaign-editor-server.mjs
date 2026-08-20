@@ -8,6 +8,7 @@ import { runDraftUploadWithApiKey, runOmnisendHtmlExportWithApiKey } from '../sc
 import {
   addComponentInstance,
   attachLocalImage,
+  applyCurtainPromotionProductImport,
   applySaleGridImport,
   buildEditorCatalog,
   buildLocalAssetMap,
@@ -125,6 +126,11 @@ export function formatSaleGridImportFailure(output) {
   return new Error(actionable ?? 'Shopify sale-grid import failed');
 }
 
+export function formatCurtainPromotionProductImportFailure(output) {
+  const actionable = String(output).match(/Error:\s*((?:shopify product|curtain promotion product|shopify URL) [^\n\r]+)/u)?.[1];
+  return new Error(actionable ?? 'Shopify curtain promotion product import failed');
+}
+
 function importSaleGrid({ workspaceRoot, instance, shopifyUrl }) {
   if (instance.componentKey !== 'collection.saleGrid6') throw new Error('sale-grid import requires a collection.saleGrid6 instance');
   if (typeof shopifyUrl !== 'string' || !shopifyUrl.trim()) throw new Error('shopify URL is required');
@@ -138,6 +144,24 @@ function importSaleGrid({ workspaceRoot, instance, shopifyUrl }) {
     return JSON.parse(result.stdout);
   } catch {
     throw new Error('Shopify sale-grid import returned invalid JSON');
+  }
+}
+
+function importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl }) {
+  if (!['collection.curtainPromotionCard', 'collection.curtainPromotionCardNoTitle'].includes(instance.componentKey)) {
+    throw new Error('curtain promotion product import requires a curtain promotion card instance');
+  }
+  if (typeof shopifyUrl !== 'string' || !shopifyUrl.trim()) throw new Error('shopify product URL is required');
+  const script = resolve(workspaceRoot, 'skills/build-omnisend-campaign-draft/scripts/fetch-single-product.mjs');
+  const result = spawnSync(process.execPath, [script, '--shopify-url', shopifyUrl.trim()], {
+    cwd: workspaceRoot,
+    encoding: 'utf8'
+  });
+  if (result.status !== 0) throw formatCurtainPromotionProductImportFailure(result.stderr || result.stdout);
+  try {
+    return JSON.parse(result.stdout);
+  } catch {
+    throw new Error('Shopify curtain promotion product import returned invalid JSON');
   }
 }
 
@@ -215,6 +239,81 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
   const builderPath = resolve(workspaceRoot, 'build-email-template.v1.mjs');
   const publicRoot = resolve(dirname(fileURLToPath(import.meta.url)), 'public');
   const omnisendImageCachePath = resolve(sessionRoot, 'omnisend-image-cache.v1.json');
+  const savedTemplatesPath = resolve(sessionRoot, 'saved-templates.v1.json');
+  mkdirSync(sessionRoot, { recursive: true });
+
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function loadSavedTemplates() {
+    if (!existsSync(savedTemplatesPath)) return [];
+    const store = readJson(savedTemplatesPath);
+    if (store?.schemaVersion !== 1 || !Array.isArray(store.templates)) throw new Error('saved template store is invalid');
+    return store.templates;
+  }
+
+  let savedTemplates = loadSavedTemplates();
+
+  function writeSavedTemplates() {
+    writeFileSync(savedTemplatesPath, JSON.stringify({ schemaVersion: 1, templates: savedTemplates }, null, 2));
+  }
+
+  function templateSummary(template) {
+    return {
+      id: template.id,
+      name: template.name,
+      componentCount: template.snapshot.components.length,
+      createdAt: template.createdAt,
+      updatedAt: template.updatedAt
+    };
+  }
+
+  function templateSummaries() {
+    return savedTemplates.map(templateSummary).sort((left, right) => left.name.localeCompare(right.name, 'zh-CN'));
+  }
+
+  function normalizedTemplateName(value) {
+    const name = typeof value === 'string' ? value.trim() : '';
+    if (!name || name.length > 80 || /[\u0000-\u001F\u007F]/u.test(name)) throw new Error('template name must contain 1 to 80 visible characters');
+    return name;
+  }
+
+  function templateSnapshot(draft) {
+    return {
+      canvas: clone(draft.canvas),
+      localAssets: clone(draft.localAssets ?? {}),
+      components: draft.components.map(({ name, directory, componentKey, content, settings }) => ({
+        name,
+        directory,
+        componentKey,
+        content: clone(content),
+        settings: clone(settings)
+      }))
+    };
+  }
+
+  function saveTemplate({ name: rawName, draftId, overwrite = false }) {
+    const name = normalizedTemplateName(rawName);
+    const draft = drafts.get(draftId);
+    if (!draft) throw new Error('draft not found');
+    const existingIndex = savedTemplates.findIndex((template) => template.name.localeCompare(name, 'zh-CN', { sensitivity: 'accent' }) === 0);
+    if (existingIndex !== -1 && overwrite !== true) return { conflict: savedTemplates[existingIndex] };
+    const now = new Date().toISOString();
+    const existing = existingIndex === -1 ? null : savedTemplates[existingIndex];
+    const template = {
+      schemaVersion: 1,
+      id: existing?.id ?? randomUUID(),
+      name,
+      createdAt: existing?.createdAt ?? now,
+      updatedAt: now,
+      snapshot: templateSnapshot(draft)
+    };
+    if (existingIndex === -1) savedTemplates.push(template);
+    else savedTemplates[existingIndex] = template;
+    writeSavedTemplates();
+    return { template, overwritten: existingIndex !== -1 };
+  }
 
   function draftSummary(draft) {
     return {
@@ -235,6 +334,26 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
     document.outputPath = resolve(directory, 'campaign.static-safe.html');
     document.previewPath = resolve(directory, 'campaign.local-preview.html');
     drafts.set(id, document);
+    return document;
+  }
+
+  function createDraftFromTemplate(template) {
+    const document = createDraft(template.name);
+    const counts = new Map();
+    document.canvas = clone(template.snapshot.canvas);
+    document.localAssets = clone(template.snapshot.localAssets ?? {});
+    document.components = template.snapshot.components.map((component) => {
+      const count = (counts.get(component.componentKey) ?? 0) + 1;
+      counts.set(component.componentKey, count);
+      return {
+        ...clone(component),
+        instanceId: `${component.componentKey}-${count}`,
+        source: `saved-template:${template.id}`,
+        confirmed: false
+      };
+    });
+    document.confirmed = false;
+    drafts.set(document.id, document);
     return document;
   }
 
@@ -338,6 +457,30 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
         return response.end(readFileSync(file));
       }
       if (request.method === 'GET' && path === '/api/catalog') return json(response, 200, { components: catalog });
+      if (request.method === 'GET' && path === '/api/templates') return json(response, 200, { templates: templateSummaries() });
+      if (request.method === 'POST' && path === '/api/templates') {
+        const saved = saveTemplate(await readBody(request));
+        if (saved.conflict) return json(response, 409, {
+          error: `template name already exists: ${saved.conflict.name}`,
+          code: 'template-name-conflict',
+          template: templateSummary(saved.conflict)
+        });
+        return json(response, saved.overwritten ? 200 : 201, { template: templateSummary(saved.template), templates: templateSummaries() });
+      }
+      const templateDraftMatch = path.match(/^\/api\/templates\/([0-9a-f-]+)\/drafts$/u);
+      if (templateDraftMatch && request.method === 'POST') {
+        const template = savedTemplates.find(({ id }) => id === templateDraftMatch[1]);
+        if (!template) return json(response, 404, { error: 'template not found' });
+        return json(response, 201, { draft: draftSummary(createDraftFromTemplate(template)) });
+      }
+      const templateMatch = path.match(/^\/api\/templates\/([0-9a-f-]+)$/u);
+      if (templateMatch && request.method === 'DELETE') {
+        const index = savedTemplates.findIndex(({ id }) => id === templateMatch[1]);
+        if (index === -1) return json(response, 404, { error: 'template not found' });
+        const [deleted] = savedTemplates.splice(index, 1);
+        writeSavedTemplates();
+        return json(response, 200, { deleted: templateSummary(deleted), templates: templateSummaries() });
+      }
       if (request.method === 'POST' && path === '/api/drafts') {
         const body = await readBody(request);
         return json(response, 201, { draft: draftSummary(createDraft(body.name)) });
@@ -433,6 +576,18 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
       }
+      const curtainPromotionProductImportMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/import-shopify-product$/u);
+      if (curtainPromotionProductImportMatch && request.method === 'POST') {
+        const [, draftId, instanceId] = curtainPromotionProductImportMatch;
+        const draft = drafts.get(draftId);
+        if (!draft) return json(response, 404, { error: 'draft not found' });
+        const instance = draft.components.find((component) => component.instanceId === instanceId);
+        if (!instance) return json(response, 404, { error: 'component instance not found' });
+        const body = await readBody(request);
+        const updated = applyCurtainPromotionProductImport(draft, instanceId, importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl }));
+        drafts.set(draftId, updated);
+        return json(response, 200, { draft: draftSummary(updated) });
+      }
       const reorderMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/reorder$/u);
       if (reorderMatch && request.method === 'POST') {
         const draft = drafts.get(reorderMatch[1]);
@@ -457,8 +612,7 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
       const previewAssetMatch = path.match(/^\/previews\/([0-9a-f-]+)\/uploads\/([a-z0-9-]+\.(?:png|jpe?g|webp|gif))$/u);
       if (request.method === 'GET' && previewAssetMatch) {
         const [, draftId, filename] = previewAssetMatch;
-        const draft = drafts.get(draftId);
-        const file = draft ? resolve(dirname(draft.previewPath), 'uploads', filename) : null;
+        const file = resolve(sessionRoot, draftId, 'uploads', filename);
         if (!file || !existsSync(file)) return json(response, 404, { error: 'preview asset not found' });
         response.writeHead(200, { 'content-type': mimeType(file), 'cache-control': 'no-store' });
         return response.end(readFileSync(file));

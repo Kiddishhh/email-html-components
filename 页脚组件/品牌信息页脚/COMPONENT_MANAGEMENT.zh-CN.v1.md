@@ -29,10 +29,12 @@
 | `space.sectionX` | `24px` | 页脚区段左右留白 |
 | `space.sectionY` | `32px` | 页脚区段上下留白，形成紧凑而不拥挤的暖棕信息卡 |
 | `space.block` | `14px` | 电话与联系邮箱信息组的顶部间距 |
-| `social.size` | `24px` | 七枚社交图标的显示尺寸 |
+| `social.size` | `24px` | TikTok、Threads 使用的视觉基准尺寸；其他图标按源图透明留白做固定补偿 |
 | `content.width` | `440px` | 页脚内容列最大宽度；窄屏时随容器流式缩放 |
 
 默认排版采用精致暖棕信息层级：17px 半粗品牌标题、细金棕分隔线、13px 地址与联系信息、11px 预约说明和法律信息、紧凑的七枚社媒图标，以及浅金色链接。修改方式：只改 `settings.defaults.v1.json` 的 `values`，并同步把相同默认值写入 `settings.schema.v1.json` 的 `default`。颜色使用六位十六进制。组件不会加载外部字体；Montserrat 不可用的邮件客户端会自动回退到 Arial。
+
+七枚社媒图标使用相同的 `26 × 26px` 居中单元，并根据默认源图自带的透明留白校准图像尺寸：YouTube `26px`、Instagram `22px`、Facebook `22px`、TikTok `24px`、Pinterest `23px`、WhatsApp `22px`、Threads `24px`。这些数值用于统一图形主体的视觉重量，不代表素材文件画布尺寸不一致；更换图标素材后必须重新检查 600px 与移动端实际渲染，不能只比较 `<img>` 外框。
 
 ## Skill 收集规则
 
@@ -104,7 +106,7 @@ Skill 默认只主动询问 `color.background`；其他页脚样式仍使用 V1 
 2. 改颜色、字体、间距、圆角等高频值时，改 settings，不要复制出新的内联 style。
 3. 改表格层级、增加图片或 CTA 时，同时更新模板、content schema、fixture 和本说明文档。
 4. 禁止在模板或 CSS 中新增 `div`、`style`、`link`、脚本、外部字体、`box-shadow`、Flex/Grid 或媒体查询。
-5. 七枚社交图标的默认尺寸由 `social.size` 管理，HTML 的兼容宽高属性保持 `24 × 24`；不要用通用图片规则覆盖其尺寸。
+5. 七枚社交图标必须保留统一的 `26 × 26px` 居中单元及平台级图像补偿尺寸；`social.size` 只作为 `24px` 视觉基准供 TikTok、Threads 使用。不要把七张源图重新强制成同一个 `<img>` 宽高，也不要用通用图片规则覆盖其尺寸，否则素材内部留白会再次造成一大一小。
 6. `Unsubscribe` 使用唯一受保护的 `[[unsubscribe_link]]`，并保留 `data-translation-key="unsubscribe"` 与 `target="_blank"`。不得修改、转义、复制或替换为其他 ESP 的退订变量。
 7. 如果把该组件放入已经自带原生页脚的 Branded 邮件布局，应关闭其中一个页脚，避免重复公司信息和退订链接。
 

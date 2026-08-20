@@ -1,0 +1,38 @@
+.freshine-late-summer-hero {
+  width:100%;
+  max-width:600px;
+  border-collapse:collapse;
+  margin:0 auto;
+}
+
+.freshine-late-summer-logo {
+  display:block;
+  width:17.666667vw;
+  max-width:106px;
+  height:auto;
+  border:0;
+  margin:0 auto;
+}
+
+.freshine-late-summer-promotion {
+  width:100%;
+  max-width:600px;
+  border-collapse:collapse;
+}
+
+.freshine-late-summer-image {
+  width:90.333333%;
+  max-width:542px;
+  height:min(527px,87.833333vw);
+  max-height:527px;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.freshine-late-summer-cta {
+  width:45.833333vw;
+  max-width:275px;
+  border-collapse:separate;
+  margin:-27px auto 0;
+}

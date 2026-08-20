@@ -116,6 +116,11 @@ function validateSettings(values, schema, componentKey) {
   if (unknown.length) throw new Error(`${componentKey}: unknown settings keys: ${unknown.join(', ')}`);
   for (const [key, definition] of Object.entries(schema.properties)) {
     const value = values[key];
+    if (definition.type === 'boolean') {
+      if (typeof value !== 'boolean') throw new Error(`${componentKey}: settings.${key} must be boolean`);
+      continue;
+    }
+    if (definition.type !== 'string') throw new Error(`${componentKey}: settings schema ${key} has unsupported type`);
     if (typeof value !== 'string') throw new Error(`${componentKey}: settings.${key} must be text`);
     if (/["'<> {};]/.test(value.replaceAll(' ', ''))) throw new Error(`${componentKey}: settings.${key} contains unsafe characters`);
     if (definition.pattern !== undefined) {
@@ -131,6 +136,16 @@ function validateSettings(values, schema, componentKey) {
       if (!matcher.test(value)) throw new Error(`${componentKey}: settings.${key} does not match pattern`);
     }
   }
+}
+
+function renderSettingConditionals(template, settings, schema, componentKey) {
+  const rendered = template.replace(/<!-- FRESHINE_IF_SETTING:([a-z][\w.-]*) -->([\s\S]*?)<!-- FRESHINE_END_IF_SETTING:\1 -->/gu, (_, key, body) => {
+    if (schema.properties[key]?.type !== 'boolean') throw new Error(`${componentKey}: conditional setting ${key} must be boolean`);
+    if (typeof settings[key] !== 'boolean') throw new Error(`${componentKey}: conditional setting ${key} is unresolved`);
+    return settings[key] ? body : '';
+  });
+  if (/FRESHINE_(?:IF|END_IF)_SETTING/u.test(rendered)) throw new Error(`${componentKey}: malformed conditional setting block`);
+  return rendered;
 }
 
 function parseSafeCss(css, componentKey) {
@@ -171,7 +186,8 @@ function renderComponent(instance) {
   const { values: content, localAssetKeys } = resolveLocalAssets(instance.content, contentSchema, instance.componentKey);
   validateContent(content, contentSchema, instance.componentKey, localAssetKeys);
   validateSettings(instance.settings, settingsSchema, instance.componentKey);
-  let html = template.replace(/\{\{content\.([^}]+)\}\}/g, (_, key) => {
+  let html = renderSettingConditionals(template, instance.settings, settingsSchema, instance.componentKey);
+  html = html.replace(/\{\{content\.([^}]+)\}\}/g, (_, key) => {
     if (!(key in content)) throw new Error(`${instance.componentKey}: unresolved content.${key}`);
     return contentSchema.properties[key].type === 'url' ? escapeAttribute(content[key]) : escapeText(content[key]);
   });

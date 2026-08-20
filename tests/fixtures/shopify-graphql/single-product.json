@@ -1,0 +1,25 @@
+{
+  "data": {
+    "productByHandle": {
+      "id": "gid://shopify/Product/123",
+      "title": "Amara Extra Long Linen Curtains – Elegant Light-Filtering Drapes",
+      "handle": "amara-extra-long-linen-curtains",
+      "onlineStoreUrl": "https://freshinelife.com/products/amara-extra-long-linen-curtains",
+      "media": {
+        "nodes": [
+          {
+            "alt": "Amara curtains in a sunlit living room",
+            "image": { "url": "https://cdn.example.com/amara-primary.webp", "width": 1200, "height": 819 }
+          }
+        ]
+      },
+      "variants": {
+        "nodes": [
+          { "availableForSale": false, "price": { "amount": "99.00" }, "compareAtPrice": { "amount": "149.00" } },
+          { "availableForSale": true, "price": { "amount": "119.00" }, "compareAtPrice": { "amount": "170.00" } }
+        ],
+        "pageInfo": { "hasNextPage": false, "endCursor": null }
+      }
+    }
+  }
+}

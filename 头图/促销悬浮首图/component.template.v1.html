@@ -1,12 +1,20 @@
 <table class="freshine-component freshine-promotional-overlay-hero" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="{{settings.color.heroFallback}}" style="width:100%;border-collapse:collapse;background-color:{{settings.color.heroFallback}};">
-  <tr>
-    <td height="56" align="center" valign="middle" bgcolor="{{settings.color.theme}}" style="height:56px;padding:{{settings.spacing.promotion}};background-color:{{settings.color.theme}};color:{{settings.color.themeText}};text-align:center;">
-      <!-- FRESHINE_SLOT_START:promotion.text -->
-      <span data-freshine-slot="promotion.text" style="color:{{settings.color.themeText}};font-family:{{settings.font.body}};font-size:14px;font-weight:400;line-height:20px;text-align:center;">{{content.promotion.text}}</span><!-- FRESHINE_SLOT_END:promotion.text --><a href="{{content.promotion.url}}" data-freshine-href-slot="promotion.url" target="_blank" style="color:{{settings.color.themeText}};font-family:{{settings.font.action}};font-size:14px;font-weight:500;line-height:20px;text-align:center;text-decoration:underline;">
-        <!-- FRESHINE_SLOT_START:promotion.linkText --><span data-freshine-slot="promotion.linkText" style="color:{{settings.color.themeText}};font-family:{{settings.font.action}};font-size:14px;font-weight:500;line-height:20px;">{{content.promotion.linkText}}</span><!-- FRESHINE_SLOT_END:promotion.linkText -->
-      </a>
+  <!-- FRESHINE_IF_SETTING:navigation.visible -->
+  <tr class="freshine-promotional-overlay-navigation">
+    <td style="padding:0;">
+      <table class="freshine-promotional-overlay-promotion" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;border-collapse:collapse;">
+        <tr>
+          <td class="freshine-promotional-overlay-navigation-left" width="75.5%" height="71" align="center" valign="middle" bgcolor="{{settings.color.theme}}" style="width:75.5%;height:71px;height:min(71px,11.833333vw);padding:0 18px;padding:0 min(18px,3vw);background-color:{{settings.color.theme}};color:{{settings.color.themeText}};text-align:center;vertical-align:middle;">
+            <!-- FRESHINE_SLOT_START:promotion.text --><span data-freshine-slot="promotion.text" style="display:inline-block;color:{{settings.color.themeText}};font-family:{{settings.font.body}};font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:24px;line-height:min(24px,4vw);text-align:center;">{{content.promotion.text}}</span><!-- FRESHINE_SLOT_END:promotion.text -->
+          </td>
+          <td class="freshine-promotional-overlay-navigation-right" width="24.5%" height="71" align="center" valign="middle" bgcolor="{{settings.color.theme}}" style="width:24.5%;height:71px;height:min(71px,11.833333vw);padding:0 10px;padding:0 min(10px,1.666667vw);background-color:{{settings.color.theme}};text-align:center;vertical-align:middle;">
+            <a href="{{content.promotion.url}}" data-freshine-href-slot="promotion.url" target="_blank" style="display:inline-block;color:{{settings.color.themeText}};font-family:{{settings.font.action}};font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:24px;line-height:min(24px,4vw);text-align:center;text-decoration:underline;"><!-- FRESHINE_SLOT_START:promotion.linkText --><span data-freshine-slot="promotion.linkText">{{content.promotion.linkText}}</span><!-- FRESHINE_SLOT_END:promotion.linkText --></a>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
+  <!-- FRESHINE_END_IF_SETTING:navigation.visible -->
   <tr>
     <td class="freshine-overlay-hero-background" role="img" aria-label="{{content.hero.backgroundImage.alt}}" background="{{content.hero.backgroundImage.url}}" height="722" align="center" valign="top" bgcolor="{{settings.color.heroFallback}}" style="display:block;height:120vw;max-height:722px;min-height:560px;background-color:{{settings.color.heroFallback}};background-image:url('{{content.hero.backgroundImage.url}}');background-position:{{settings.background.position}};background-repeat:no-repeat;background-size:cover;text-align:center;">
       <table role="presentation" width="100%" height="722" cellpadding="0" cellspacing="0" border="0" style="width:100%;height:100%;border-collapse:collapse;">

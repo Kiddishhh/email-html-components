@@ -36,6 +36,12 @@ Skill 默认不询问 Logo、字体、面板透明度和详细间距。Logo 使�
 
 顶部促销条和 CTA 默认共用 `color.theme`。修改一个主题色即可同时换色；文字色由 `color.themeText` 控制。
 
+## 顶部导航栏开关
+
+可视化编辑器以“显示顶部导航栏”复选框开放 `navigation.visible`，默认值为 `true`。关闭后，构建器会从最终 HTML 中完整移除顶部促销条及其占位高度；背景主图、Logo、活动文案和 CTA 保持不变。促销条文案、链接和颜色仍保存在当前组件快照中，重新开启即可恢复。不得用 CSS `display:none` 模拟隐藏。
+
+顶部促销条与夏末折扣促销首图使用相同的响应式双栏规格：左侧 `75.5%`、右侧 `24.5%`；桌面高度 `71px`，移动端按 `min(71px,11.833333vw)` 缩放。两侧文字均使用 Montserrat Regular `18px / 24px` 并按移动宽度等比缩小，右侧链接保留下划线；本组件左右两侧继续共用 `color.theme`。
+
 ## 背景图维护方法
 
 背景图必须是干净场景图，不应包含：
@@ -97,7 +103,7 @@ Skill 默认不询问 Logo、字体、面板透明度和详细间距。Logo 使�
 | `spacing.logoTop` | `48px` | Logo 与背景区顶部距离 |
 | `spacing.panelBottom` | `32px` | 悬浮面板与背景区底部距离 |
 | `background.position` | `center center` | 背景图对齐位置 |
-| `logo.maxWidth` | `80px` | 白色 FreShine 字标最大宽度；圆形保持旧版 106px |
+| `logo.maxWidth` | `80px` | 白色 FreShine 字标最大宽度；圆形保持当前 106px |
 | `panel.maxWidth` | `472px` | 桌面端悬浮面板最大宽度 |
 | `panel.padding` | `26px 28px 30px` | 面板内部间距 |
 | `cta.maxWidth` | `252px` | CTA 最大宽度 |
@@ -110,7 +116,7 @@ Skill 默认不询问 Logo、字体、面板透明度和详细间距。Logo 使�
 - `bgcolor="color.panelFallback"`：不支持透明色时显示浅米白实体背景；
 - `background-color:color.panelTransparent`：支持 `rgba` 的客户端显示半透明效果。
 
-圆形 Logo 背景同样同时设置 `bgcolor="color.logoBadge"` 与 `background-color:color.logoBadgeTransparent`。不要使用 `opacity`，否则白色字标也会一起变透明。Skill 在主视觉图片之后、首图完成卡片之前单独确认 Logo 样式；常规流程只允许修改 `#RRGGBB` 背景色和 0–100% 透明度，并确定性生成 RGBA，白色字标与旧版 106px/80px 尺寸固定。
+圆形 Logo 背景同样同时设置 `bgcolor="color.logoBadge"` 与 `background-color:color.logoBadgeTransparent`。不要使用 `opacity`，否则白色字标也会一起变透明。编辑器允许修改 `#RRGGBB` 背景色和 0–100% 透明度，并确定性生成 RGBA；白色字标与当前 106px/80px 尺寸固定。
 
 背景图片和透明色属于邮件客户端兼容性警告项。它们失效时，关键文案、Logo 与 CTA 仍必须在降级背景上可读。不要改成绝对定位、Flex、Grid、CSS 变量或 JavaScript。
 

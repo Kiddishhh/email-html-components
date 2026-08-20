@@ -4,6 +4,7 @@
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {
+    "navigation.visible": { "type": "boolean", "default": true, "themeable": false, "skillPrompt": false },
     "color.navigationLeft": { "type": "string", "default": "#97866D", "themeable": true, "skillPrompt": true },
     "color.navigationRight": { "type": "string", "default": "#725A4B", "themeable": true, "skillPrompt": true },
     "color.navigationText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },

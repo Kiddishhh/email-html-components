@@ -4,6 +4,7 @@
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {
+    "navigation.visible": { "type": "boolean", "default": true, "themeable": false, "skillPrompt": false },
     "color.theme": { "type": "string", "default": "#9D1D20", "themeable": true, "skillPrompt": true },
     "color.themeText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false },
     "color.heroFallback": { "type": "string", "default": "#E9E4DC", "themeable": true, "skillPrompt": false },

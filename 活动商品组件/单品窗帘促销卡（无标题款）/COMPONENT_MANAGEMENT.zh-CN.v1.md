@@ -36,4 +36,6 @@
 
 ## Omnisend 安全边界
 
+卡内商品名使用 Montserrat `22px / 500 / 30px`，商品卖点使用 Montserrat `15px / 400 / 22px`；该层级与标题款保持一致，并避免无标题版本的商品名显得过大或过重。
+
 模板仅使用一个根 `<table>` 和 table/tr/td 布局，关键样式内联，不含脚本、外部 CSS、Flex、Grid、绝对定位或退订 token。静态构建通过不等同于真实邮件客户端验证；正式使用前需完成 Omnisend、Gmail、Outlook 和 Apple Mail 测试。

@@ -88,6 +88,11 @@ test('editor server creates a free-form campaign, renders it, and serves the gen
   assert.match(editorHtml, /Freshine Campaign Editor/);
   assert.match(editorHtml, /id="structure-select"/);
   assert.match(editorHtml, /id="style-select"/);
+  assert.match(editorHtml, /id="template-select"/);
+  assert.match(editorHtml, /id="use-template"/);
+  assert.match(editorHtml, /id="save-template"/);
+  assert.match(editorHtml, /id="delete-template"/);
+  assert.match(editorHtml, /id="template-save-dialog"/);
   assert.match(editorHtml, /id="upload-omnisend-draft"/);
   assert.match(editorHtml, /id="export-omnisend-html"/);
   assert.match(editorHtml, /id="omnisend-api-key"/);
@@ -110,6 +115,9 @@ test('editor server creates a free-form campaign, renders it, and serves the gen
   assert.match(client, /className = 'color-control'/);
   assert.match(client, /placeholder = '#RRGGBB'/);
   assert.match(client, /normalizeHexColor/);
+  assert.match(client, /collection\.curtainPromotionCard/);
+  assert.match(client, /collection\.curtainPromotionCardNoTitle/);
+  assert.match(client, /import-shopify-product/);
 });
 
 test('editor server rejects an unregistered component rather than inferring a replacement', async (t) => {
@@ -128,6 +136,141 @@ test('editor server rejects an unregistered component rather than inferring a re
 
   assert.equal(rejected.response.status, 400);
   assert.match(rejected.body.error, /unknown selectable component/);
+});
+
+test('editor persists a named template and creates an editable draft from its complete local snapshot', async (t) => {
+  const sessionRoot = mkdtempSync(join(workspaceRoot, 'campaign-drafts/editor-template-persist-'));
+  const firstServer = await createCampaignEditorServer({ workspaceRoot, sessionRoot });
+  const firstUrl = await firstServer.listen();
+  t.after(async () => {
+    try { await firstServer.close(); } catch {}
+  });
+
+  const created = await request(firstUrl, '/api/drafts', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '夏末活动编辑稿' })
+  });
+  const draftId = created.body.draft.id;
+  const heroAdded = await request(firstUrl, `/api/drafts/${draftId}/components`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'hero.lateSummerSale' })
+  });
+  const heroId = heroAdded.body.draft.components[0].instanceId;
+  await request(firstUrl, `/api/drafts/${draftId}/components/${heroId}`, {
+    method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ content: { 'hero.title': 'TEMPLATE SALE' } })
+  });
+  const imageAdded = await request(firstUrl, `/api/drafts/${draftId}/components`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'image.clickableFullWidth' })
+  });
+  const imageId = imageAdded.body.draft.components[1].instanceId;
+  const uploaded = await request(firstUrl, `/api/drafts/${draftId}/components/${imageId}/upload-image`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({
+      fieldKey: 'image.url',
+      filename: 'template-reference.png',
+      dataUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLz8QAAAABJRU5ErkJggg=='
+    })
+  });
+  const localImageReference = uploaded.body.draft.components[1].content['image.url'];
+
+  const saved = await request(firstUrl, '/api/templates', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '夏末双区块模板', draftId })
+  });
+  assert.equal(saved.response.status, 201, saved.body?.error);
+  assert.equal(saved.body.template.name, '夏末双区块模板');
+  assert.equal(saved.body.template.componentCount, 2);
+
+  await firstServer.close();
+  const secondServer = await createCampaignEditorServer({ workspaceRoot, sessionRoot });
+  const secondUrl = await secondServer.listen();
+  t.after(() => secondServer.close());
+
+  const listed = await request(secondUrl, '/api/templates');
+  assert.equal(listed.response.status, 200);
+  assert.deepEqual(listed.body.templates.map(({ name }) => name), ['夏末双区块模板']);
+
+  const loaded = await request(secondUrl, `/api/templates/${saved.body.template.id}/drafts`, { method: 'POST' });
+  assert.equal(loaded.response.status, 201, loaded.body?.error);
+  assert.equal(loaded.body.draft.name, '夏末双区块模板');
+  assert.deepEqual(loaded.body.draft.components.map(({ componentKey }) => componentKey), ['hero.lateSummerSale', 'image.clickableFullWidth']);
+  assert.equal(loaded.body.draft.components[0].content['hero.title'], 'TEMPLATE SALE');
+  assert.equal(loaded.body.draft.components[1].content['image.url'], localImageReference);
+  assert.equal(loaded.body.draft.components.every(({ confirmed }) => confirmed === false), true);
+  assert.equal(loaded.body.draft.confirmed, false);
+
+  const preview = await request(secondUrl, `/api/drafts/${loaded.body.draft.id}/preview`, { method: 'POST' });
+  assert.equal(preview.response.status, 200, preview.body?.error);
+  const previewHtml = await (await fetch(`${secondUrl}${preview.body.previewUrl}`)).text();
+  assert.match(previewHtml, /TEMPLATE SALE/);
+  const localAssetId = localImageReference.slice('asset://'.length);
+  const localImageSource = [...previewHtml.matchAll(/<img[^>]+src="([^"]+)"/giu)].map((match) => match[1]).find((source) => source.includes(localAssetId));
+  assert.ok(localImageSource, 'template preview should resolve the saved local image reference');
+  assert.equal((await fetch(new URL(localImageSource, `${secondUrl}${preview.body.previewUrl}`).href)).status, 200);
+});
+
+test('editor requires explicit overwrite for a duplicate template name', async (t) => {
+  const server = await createCampaignEditorServer({
+    workspaceRoot,
+    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-template-overwrite-'))
+  });
+  const baseUrl = await server.listen();
+  t.after(() => server.close());
+  const created = await request(baseUrl, '/api/drafts', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '覆盖测试' })
+  });
+  const draftId = created.body.draft.id;
+  const added = await request(baseUrl, `/api/drafts/${draftId}/components`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'hero.lateSummerSale' })
+  });
+  const heroId = added.body.draft.components[0].instanceId;
+  await request(baseUrl, '/api/templates', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '重复名称', draftId })
+  });
+
+  await request(baseUrl, `/api/drafts/${draftId}/components/${heroId}`, {
+    method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ content: { 'hero.title': 'UPDATED TEMPLATE' } })
+  });
+  const duplicate = await request(baseUrl, '/api/templates', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '重复名称', draftId })
+  });
+  assert.equal(duplicate.response.status, 409);
+  assert.equal(duplicate.body.code, 'template-name-conflict');
+
+  const overwritten = await request(baseUrl, '/api/templates', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '重复名称', draftId, overwrite: true })
+  });
+  assert.equal(overwritten.response.status, 200, overwritten.body?.error);
+  const loaded = await request(baseUrl, `/api/templates/${overwritten.body.template.id}/drafts`, { method: 'POST' });
+  assert.equal(loaded.body.draft.components[0].content['hero.title'], 'UPDATED TEMPLATE');
+});
+
+test('deleting a saved template leaves an already-created draft editable', async (t) => {
+  const server = await createCampaignEditorServer({
+    workspaceRoot,
+    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-template-delete-'))
+  });
+  const baseUrl = await server.listen();
+  t.after(() => server.close());
+  const created = await request(baseUrl, '/api/drafts', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '删除测试' })
+  });
+  const added = await request(baseUrl, `/api/drafts/${created.body.draft.id}/components`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'footer.warm' })
+  });
+  const saved = await request(baseUrl, '/api/templates', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '待删除模板', draftId: created.body.draft.id })
+  });
+  assert.equal(saved.response.status, 201, saved.body?.error);
+  const loaded = await request(baseUrl, `/api/templates/${saved.body.template.id}/drafts`, { method: 'POST' });
+  assert.equal(loaded.response.status, 201, loaded.body?.error);
+
+  const deleted = await request(baseUrl, `/api/templates/${saved.body.template.id}`, { method: 'DELETE' });
+  assert.equal(deleted.response.status, 200, deleted.body?.error);
+  assert.equal(deleted.body.deleted.name, '待删除模板');
+  assert.deepEqual(deleted.body.templates, []);
+
+  const stillEditable = await request(baseUrl, `/api/drafts/${loaded.body.draft.id}/components/${loaded.body.draft.components[0].instanceId}`, {
+    method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ settings: { 'color.background': '#123456' } })
+  });
+  assert.equal(stillEditable.response.status, 200, stillEditable.body?.error);
+  assert.equal(stillEditable.body.draft.components[0].settings['color.background'], '#123456');
 });
 
 test('editor server renders both sample product card variants in one local preview', async (t) => {
@@ -175,6 +318,28 @@ test('editor server keeps Shopify import scoped to a selected sale-grid instance
   });
   assert.equal(rejected.response.status, 400);
   assert.match(rejected.body.error, /sale-grid import requires/);
+});
+
+test('editor server limits Shopify single-product import to curtain promotion cards', async (t) => {
+  const server = await createCampaignEditorServer({
+    workspaceRoot,
+    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-single-product-import-'))
+  });
+  const baseUrl = await server.listen();
+  t.after(() => server.close());
+  const created = await request(baseUrl, '/api/drafts', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({})
+  });
+  const draftId = created.body.draft.id;
+  const footer = await request(baseUrl, `/api/drafts/${draftId}/components`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'footer.warm' })
+  });
+  const rejected = await request(baseUrl, `/api/drafts/${draftId}/components/${footer.body.draft.components[0].instanceId}/import-shopify-product`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ shopifyUrl: 'https://freshinelife.com/products/amara-extra-long-linen-curtains' })
+  });
+
+  assert.equal(rejected.response.status, 400);
+  assert.match(rejected.body.error, /curtain promotion product import requires/);
 });
 
 test('editor server stores an uploaded local image only in the current draft and renders it', async (t) => {
@@ -385,7 +550,24 @@ test('editor stylesheet keeps the email preview in an independently scrollable p
 
   const response = await fetch(`${baseUrl}/editor/styles.css`);
   const css = await response.text();
-  assert.match(css, /\.workspace\s*\{[^}]*height:calc\(100vh - 78px\)[^}]*overflow:hidden/s);
+  assert.match(css, /\.templatebar\s*\{[^}]*min-height:48px/s);
+  assert.match(css, /\.workspace\s*\{[^}]*height:calc\(100vh - 126px\)[^}]*overflow:hidden/s);
   assert.match(css, /\.preview-pane\s*\{[^}]*grid-template-rows:auto minmax\(0,1fr\)[^}]*overflow:hidden/s);
   assert.match(css, /\.preview-stage\s*\{[^}]*min-height:0[^}]*overflow:auto/s);
+  assert.match(css, /@media \(max-width:720px\)[\s\S]*?\.workspace\s*\{[^}]*grid-template-columns:1fr/s);
+  assert.match(css, /@media \(max-width:720px\)[\s\S]*?\.preview-pane\s*\{[^}]*min-height:520px/s);
+  assert.match(css, /@media \(max-width:720px\)[\s\S]*?\.topbar input\s*\{[^}]*width:100%/s);
+});
+
+test('editor client writes runtime component labels and errors as text rather than HTML', async (t) => {
+  const server = await createCampaignEditorServer({
+    workspaceRoot,
+    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-safe-dom-'))
+  });
+  const baseUrl = await server.listen();
+  t.after(() => server.close());
+
+  const client = await (await fetch(`${baseUrl}/editor/app.js`)).text();
+  assert.doesNotMatch(client, /item\.innerHTML\s*=\s*`[^`]*\$\{instance\.(?:name|componentKey)\}/s);
+  assert.doesNotMatch(client, /previewStage\.innerHTML\s*=\s*`[^`]*\$\{error\.message\}/s);
 });

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.lateSummerSale",
+  "values": {
+    "navigation.visible": true,
+    "color.surface": "#F3EFE8",
+    "color.promotionLeft": "#B4A096",
+    "color.promotionRight": "#A58F83",
+    "color.promotionText": "#FFFFFF",
+    "color.heading": "#1D1C1B",
+    "color.body": "#242323",
+    "color.action": "#9F1D20",
+    "color.actionText": "#FFFFFF",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+    "content.maxWidth": "600px",
+    "logo.maxWidth": "106px",
+    "image.maxWidth": "542px",
+    "image.height": "527px",
+    "cta.maxWidth": "275px",
+    "cta.height": "54px",
+    "cta.overlap": "27px",
+    "radius.button": "0px"
+  }
+}

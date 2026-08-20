@@ -14,6 +14,14 @@
     <button id="export-omnisend-html" class="button">导出 Omnisend HTML</button>
     <button id="upload-omnisend-draft" class="button">上传 Omnisend 草稿</button>
   </header>
+  <section class="templatebar" aria-label="邮件模板">
+    <strong>邮件模板</strong>
+    <label><span>选择模板</span><select id="template-select"><option value="">选择已保存模板</option></select></label>
+    <button id="use-template" class="button" disabled>使用模板</button>
+    <button id="save-template" class="button" disabled>保存当前为模板</button>
+    <button id="delete-template" class="button danger" disabled>删除模板</button>
+    <span id="template-status" class="template-status" aria-live="polite"></span>
+  </section>
   <main class="workspace" hidden>
     <aside class="sidebar">
       <section class="component-picker"><h2>添加组件</h2><p>先选结构，再选择该结构下的样式；可重复添加。</p><label>结构<select id="structure-select"><option value="">选择结构</option></select></label><label>样式<select id="style-select" disabled><option value="">先选择结构</option></select></label><button id="add-selected-component" class="button primary" disabled>添加此组件</button></section>
@@ -29,6 +37,16 @@
       <form id="field-form" hidden></form>
     </aside>
   </main>
+  <dialog id="template-save-dialog" class="upload-dialog" aria-labelledby="template-save-title">
+    <form method="dialog" class="upload-dialog-form">
+      <h2 id="template-save-title">保存当前为模板</h2>
+      <p>保存当前组件顺序、文案、链接、样式设置和本地图片地址。</p>
+      <label>模板名称
+        <input id="template-name" type="text" maxlength="80" autocomplete="off" placeholder="输入模板名称" required>
+      </label>
+      <div class="upload-dialog-actions"><button id="cancel-template-save" class="button" value="cancel">取消</button><button id="submit-template-save" type="button" class="button primary">保存模板</button></div>
+    </form>
+  </dialog>
   <dialog id="omnisend-upload-dialog" class="upload-dialog" aria-labelledby="omnisend-upload-title">
     <form method="dialog" class="upload-dialog-form">
       <h2 id="omnisend-upload-title">上传 Omnisend 草稿</h2>

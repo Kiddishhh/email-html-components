@@ -154,6 +154,36 @@ export function applySaleGridImport(document, instanceId, saleGrid) {
   return { ...clone(document), components, confirmed: false };
 }
 
+export function applyCurtainPromotionProductImport(document, instanceId, productImport) {
+  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
+  if (index === -1) throw new Error('component instance not found');
+  const current = document.components[index];
+  if (!['collection.curtainPromotionCard', 'collection.curtainPromotionCardNoTitle'].includes(current.componentKey)) {
+    throw new Error('curtain promotion product import requires a curtain promotion card instance');
+  }
+  const product = productImport?.product;
+  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.title !== 'string' || typeof product.description !== 'string' || typeof product.discountLabel !== 'string') {
+    throw new Error('curtain promotion product import returned incomplete product data');
+  }
+  const content = {
+    ...current.content,
+    'product.badge': product.discountLabel,
+    'product.image.url': product.image.url,
+    'product.image.alt': product.image.alt ?? '',
+    'product.image.clickUrl': product.linkUrl,
+    'product.title': product.title,
+    'product.description': product.description,
+    'product.cta.url': product.linkUrl
+  };
+  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
+    ...instance,
+    content,
+    source: `shopify-product:${product.handle}`,
+    confirmed: false
+  } : instance);
+  return { ...clone(document), components, confirmed: false };
+}
+
 export function attachLocalImage(document, instanceId, fieldKey, asset) {
   const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
   if (index === -1) throw new Error('component instance not found');

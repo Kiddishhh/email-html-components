@@ -1,30 +1,56 @@
 # Campaign 可视化编辑器
 
-## 使用方式
-
-运行：
+## 启动与会话
 
 ```bash
 node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 ```
 
-浏览器打开 `http://127.0.0.1:4173`。本地会话保存在 `campaign-drafts/editor-sessions/`，不包含 Omnisend 密钥。
+打开 `http://127.0.0.1:4173`。本地草稿、上传回执、图片缓存和已保存模板位于被忽略的 `campaign-drafts/editor-sessions/`；其中不保存 API Key。
 
-## 交互约束
+## 当前操作流程
 
-- 组件库由 `组件清单.json` 生成；每个已注册组件都可选择、重复、删除和任意排序，分类只是帮助浏览，不构成结构规则。
-- `小样-产品` 分类中的小样产品推荐卡（左、右）、窗帘产品推荐卡II（标题版）和无标题版均可在编辑器中选择；图片、产品文案、CTA、链接与已开放颜色字段可编辑，不影响 CLI 固定六区段。
-- `赠品与权益组件` 分类中的尺寸测量工具卡（`tool.measurementCard`）可自由添加、重复和排序；可编辑主图 / Alt、标题、副标题、CTA 文案和链接，以及组件背景、文字和 CTA 颜色。默认预裁切本地图在 600px 中显示为约 `548×493px`，在 375px 预览中随容器等比缩放；最终导出 Omnisend HTML 前须替换为公开 HTTPS 图片。
-- 默认内容和样式分别来自组件的 `content.fixture.v1.json` 与 `settings.defaults.v1.json`；`效果演示.html` 是样式参考，不可用一张素材图替代。
-- 字段编辑受该组件 Schema 限制。编辑后会撤销该组件的确认状态并刷新本地预览。
-- 颜色字段同时提供色块选择器与 `#RRGGBB` 输入框；输入如 `#F7EEDC` 后按 Enter 或离开输入框即可应用。只接受完整六位色号，非法输入不会覆盖当前已应用颜色。
-- `footer.warm` 可编辑页脚背景色、正文颜色与链接颜色；三项仅作用于页脚组件本身。
-- 活动商品分类包含 `collection.curtainPromotionCard`（单品窗帘促销卡（标题款））和 `collection.curtainPromotionCardNoTitle`（单品窗帘促销卡（无标题款））。标题款可编辑顶部 `promotion.title`、`promotion.subtitle` 与商品字段；无标题款不显示顶部标题和说明，也不显示这两个 `promotion` 字段。两款均可编辑商品图片 / Alt / 点击链接、角标、商品文案、CTA、`color.surface` 和 `color.badge`，默认图片只用于本地预览。
-- “shopify商品导入”只在选中 `collection.saleGrid6` 时显示。输入完整 Freshine Page 或 Collection URL 后，固定调用 `fetch-activity-page-sale-grid.mjs --shopify-url <URL>`，只读 Shopify，并只覆盖该实例的 6 个商品图片、Alt、商品链接、折扣标签和 CTA；Page 会从线上主题模板的首个启用 `products-grid-v2` 解析商品来源，Collection 直接读取，CTA 始终保留输入 URL。
-- 预览由 `build-email-template.v1.mjs --preview-local-assets` 生成，供本地核对；发送前 HTML 仍必须通过静态安全校验并替换为公开 HTTPS 图片。
+1. 填写邮件名称并新建草稿。
+2. 左侧先选择组件分类，再选择具体样式。组件来自 `组件清单.json`，可自由添加、重复、拖拽排序或删除。
+3. 选中结构项后，中间预览将同一组件实例定位到预览区顶部，并显示短暂描边；描边不会进入导出 HTML。
+4. 右侧仅显示该组件开放的内容与设置字段。修改字段会撤销该实例的确认状态并自动刷新预览。
+5. 在 600px 桌面模式和 375px 移动模式分别检查。窄屏编辑器按组件库、预览、设置面板的顺序单列显示，所有操作保持在当前视口内。
+6. 逐个确认组件，再执行整封邮件确认。任何内容、设置、图片或顺序变化都会使整封确认与内容哈希失效。
 
-## 边界
+## 模板
 
-当前编辑器提供本地编排、字段编辑、组件确认、六宫格导入与“上传 Omnisend 草稿”入口。上传前必须确认全部组件并填写 Campaign 名称和 Subject；静态 HTML 与 SHA-256 在本机内部自动校验，不要求用户复制或粘贴哈希。编辑器弹窗一次性收集 API Key，支持粘贴与显示/隐藏，上传结束或失败后立即清除；不得写入参数、环境变量、日志或本地草稿文件。上传器按 Campaign 名称精确检索同名 `draft`，多个结果更新最近更新的一封；没有匹配才新建 Draft。不得在编辑器中执行发送、排期或发布。
+顶部模板栏支持保存模板、选择模板继续编辑和删除模板：
 
-“导出 Omnisend HTML”是独立入口。确认全部组件后，它仅上传本地图片中尚未缓存的部分到 Omnisend 并替换 `asset://` 地址，再把完整 HTML 复制到剪切板；不会创建、更新或发送 Campaign 或 Draft，不访问模板或 Email Content。缓存以图片字节 SHA-256 和 API Key 的不可逆哈希隔离账户，保存于被忽略的 `campaign-drafts/`，不保存 API Key；相同图片在后续导出或不同组件中复用已上传 URL。API Key 只在本次请求中使用，完整 HTML 不保存为草稿、回执或日志。浏览器拒绝剪切板权限时，展示已替换 URL 的只读 HTML，用户可手动复制；该备用路径不得再次上传图片。
+- 保存模板记录当前画布、组件顺序、完整 `content`/`settings` 快照及本地图片引用，可自定义名称。
+- 同名保存必须先确认覆盖。
+- 选择模板会创建一份新的可编辑草稿，不会回写模板；组件确认、整封确认、内容哈希、输出路径和 Omnisend 状态均重置。
+- 删除模板只删除模板记录，不删除由模板创建的草稿或图片。
+- 模板引用本地图片的原路径，不复制图片。原文件移动或删除时，预览会报告资源不可用。
+
+## 组件编辑
+
+- 四款头图提供“显示顶部导航栏”复选框。关闭时从生成 HTML 移除导航结构和高度；再次开启时恢复该实例保存的文案、链接和颜色。
+- 颜色字段提供色块和 `#RRGGBB` 输入。只有完整六位色号会写入组件快照。
+- 图片字段可以填写公开 HTTPS URL，也可选择本地 PNG、JPEG、WebP 或 GIF 进行预览；单文件不超过 5 MB。
+- `collection.saleGrid6` 支持从 Freshine Page 或 Collection URL 只读导入六件商品。
+- `collection.curtainPromotionCard` 与 `collection.curtainPromotionCardNoTitle` 支持从 Freshine 商品 URL 只读导入一个商品。导入不会覆盖 CTA 文案、顶部活动文案或配色。
+
+## 导出 Omnisend HTML
+
+“导出 Omnisend HTML”要求所有组件已确认。它仅执行以下操作：
+
+1. 上传尚未缓存的本地图片；
+2. 将 `asset://` 替换为公开 HTTPS URL；
+3. 重新校验静态邮件 HTML；
+4. 把完整 HTML 写入剪切板。
+
+该流程不会创建、更新或发送 Campaign 或 Draft。图片缓存按图片字节 SHA-256 与 API Key 的不可逆哈希隔离账户，不保存 API Key。若剪切板被浏览器拒绝，界面显示只读 HTML 供手动复制，不重新上传图片。
+
+## 上传 Omnisend 草稿
+
+“上传 Omnisend 草稿”要求所有组件与整封邮件均已确认，并在一个对话框中收集 Campaign 名称、Subject、Preheader 和一次性 API Key。
+
+- API Key 只存在于当前浏览器请求和本机进程内存，结束后立即清空。
+- 先精确检索同名 `draft`；多个结果更新最近更新的一封，没有匹配才创建 Draft。
+- 更新后回读 Campaign 与 Email Content，验证 `status: draft`、内容 ID、退订令牌、图片 URL 和内容哈希。
+- 不提供发送、排期或发布操作。

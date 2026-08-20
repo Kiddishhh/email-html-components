@@ -52,6 +52,7 @@
         "hero.cta.url": "https://freshinelife.com/pages/freshine-sale"
       },
       "settings": {
+        "navigation.visible": true,
         "color.theme": "#9D1D20",
         "color.themeText": "#FFFFFF",
         "color.heroFallback": "#E9E4DC",

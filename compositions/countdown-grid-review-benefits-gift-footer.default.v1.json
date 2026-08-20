@@ -23,8 +23,8 @@
       "name": "divider-ornament.png"
     },
     "benefits-strip-3": {
-      "path": "赠品与权益组件/三项权益整图/assets/default-benefits-strip.jpg",
-      "name": "default-benefits-strip.jpg"
+      "path": "赠品与权益组件/三项权益整图/assets/default-benefits-strip-rights-2.jpg",
+      "name": "default-benefits-strip-rights-2.jpg"
     },
     "gift-pillow-cover": {
       "path": "赠品与权益组件/双赠品奖励卡/assets/default-pillow-cover.jpg",
@@ -57,6 +57,7 @@
         "hero.cta.url": "https://freshinelife.com/"
       },
       "settings": {
+        "navigation.visible": true,
         "color.navigationLeft": "#97866D",
         "color.navigationRight": "#725A4B",
         "color.navigationText": "#FFFFFF",

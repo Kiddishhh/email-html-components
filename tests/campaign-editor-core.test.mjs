@@ -19,6 +19,7 @@ import {
   structuresForCatalog,
   styleKeysForStructure
 } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
+import * as editorUiContract from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const currentKeys = JSON.parse(readFileSync(`${workspaceRoot}/组件清单.json`, 'utf8')).map(({ componentKey }) => componentKey);
@@ -38,17 +39,33 @@ test('editor groups styles by structure before selection and exposes only Skill-
   const catalog = buildEditorCatalog({ workspaceRoot });
 
   assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件']);
-  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2']);
+  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2', 'hero.lateSummerSale']);
   assert.deepEqual(styleKeysForStructure(catalog, '小样-产品'), [
     'product.sampleProductRecommendationLeft',
     'product.sampleProductRecommendationRight',
     'product.curtainRecommendationOverlay',
-    'product.curtainRecommendationNoTitle'
+    'product.curtainRecommendationNoTitle',
+    'product.sampleStyle1'
   ]);
   assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'image.benefitsStrip3', 'tool.measurementCard']);
   assert.deepEqual(styleKeysForStructure(catalog, '地址组件'), ['location.showroomCard']);
   assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background', 'color.text', 'color.link'] });
-  assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), { content: [], settings: [] });
+  assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), {
+    content: [
+      'reward.title',
+      'reward.rules[0]',
+      'reward.rules[1]',
+      'reward.items[0].image.url',
+      'reward.items[0].image.alt',
+      'reward.items[1].image.url',
+      'reward.items[1].image.alt'
+    ],
+    settings: ['color.surface']
+  });
+  assert.deepEqual(editableFieldKeys('location.showroomCard'), {
+    content: [],
+    settings: ['color.surface']
+  });
   assert.deepEqual(editableFieldKeys('tool.measurementCard'), {
     content: ['measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'],
     settings: ['color.surface', 'color.text', 'color.action']
@@ -118,6 +135,18 @@ test('editor groups styles by structure before selection and exposes only Skill-
     label: '页脚链接颜色',
     help: '修改联系邮箱与退订链接的颜色。'
   });
+  assert.deepEqual(editorFieldCopy('gift.rewardGrid2', 'content', 'reward.title'), {
+    label: '赠品区主标题',
+    help: '显示在两条赠品规则上方的主标题。'
+  });
+  assert.deepEqual(editorFieldCopy('gift.rewardGrid2', 'content', 'reward.items[0].image.url'), {
+    label: '上方赠品图片',
+    help: '替换第一张完整赠品活动图；填写公开 HTTPS 图片地址。'
+  });
+  assert.deepEqual(editorFieldCopy('gift.rewardGrid2', 'content', 'reward.items[1].image.url'), {
+    label: '下方赠品图片',
+    help: '替换第二张完整赠品活动图；填写公开 HTTPS 图片地址。'
+  });
   assert.equal(normalizeHexColor(' #f7eedc '), '#F7EEDC');
   assert.equal(normalizeHexColor('#F7EEDC'), '#F7EEDC');
   assert.equal(normalizeHexColor('#F7EED'), null);
@@ -132,7 +161,7 @@ test('editor groups styles by structure before selection and exposes only Skill-
   });
 });
 
-test('full component library retains both countdown heroes and the benefits strip public default', () => {
+test('full component library retains both countdown heroes and the benefits strip local default', () => {
   const catalog = buildEditorCatalog({ workspaceRoot });
   let document = createCampaignDocument({ name: '完整组件库资源测试' });
   for (const componentKey of ['hero.countdownOverlay', 'hero.countdownOverlay2', 'image.benefitsStrip3']) {
@@ -141,9 +170,9 @@ test('full component library retains both countdown heroes and the benefits stri
 
   assert.deepEqual(document.components.map(({ componentKey }) => componentKey), ['hero.countdownOverlay', 'hero.countdownOverlay2', 'image.benefitsStrip3']);
   const benefits = document.components.find(({ componentKey }) => componentKey === 'image.benefitsStrip3');
-  assert.equal(benefits.content['image.url'], 'https://app.omnisend.com/images/6a82d6f0c5aa8a2a0174f006');
+  assert.equal(benefits.content['image.url'], 'asset://benefits-strip-3');
   const assets = buildLocalAssetMap(document, { workspaceRoot });
-  assert.equal(assets['benefits-strip-3'], undefined);
+  assert.match(assets['benefits-strip-3'].path, /赠品与权益组件\/三项权益整图\/assets\/default-benefits-strip-rights-2\.jpg$/);
   for (const assetId of ['countdown-background', 'countdown-brand-logo', 'countdown-divider', 'countdown-hero-2-logo', 'countdown-hero-2-image']) {
     assert.equal(existsSync(resolve(workspaceRoot, assets[assetId].path)), true, `${assetId} should resolve to a checked-in component asset`);
   }
@@ -167,6 +196,61 @@ test('a campaign document permits arbitrary component choice, repetition, and or
   assert.equal(document.components[2].content['hero.title'], 'UP TO 65% OFF');
 });
 
+test('preview selection resolves the selected component to its rendered component order', async () => {
+  const { previewComponentIndex, previewStageScrollTop } = await import('../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs');
+  assert.equal(typeof previewComponentIndex, 'function');
+  assert.equal(typeof previewStageScrollTop, 'function');
+  const components = [
+    { instanceId: 'hero.promotionalOverlay-1' },
+    { instanceId: 'collection.saleGrid6-1' },
+    { instanceId: 'footer.warm-1' }
+  ];
+
+  assert.equal(previewComponentIndex(components, 'collection.saleGrid6-1'), 1);
+  assert.equal(previewComponentIndex(components, 'missing-instance'), -1);
+  assert.equal(previewStageScrollTop({
+    stageScrollTop: 1076,
+    stageTop: 200,
+    frameTop: -852,
+    documentTop: 1006,
+    innerScroll: 0
+  }), 1030);
+});
+
+test('preview alignment ignores a target from a replaced iframe', () => {
+  assert.equal(typeof editorUiContract.previewTargetIsCurrent, 'function');
+  const oldFrame = {};
+  const currentFrame = {};
+  const target = { isConnected: true };
+
+  assert.equal(editorUiContract.previewTargetIsCurrent({
+    frame: oldFrame,
+    currentFrame,
+    frameWindow: null,
+    target
+  }), false);
+  assert.equal(editorUiContract.previewTargetIsCurrent({
+    frame: currentFrame,
+    currentFrame,
+    frameWindow: {},
+    target
+  }), true);
+});
+
+test('pending editor fields remain bound to the component that produced them', () => {
+  assert.equal(typeof editorUiContract.appendPendingEdit, 'function');
+  assert.equal(typeof editorUiContract.consumePendingEdits, 'function');
+  const pending = editorUiContract.appendPendingEdit(
+    { instanceId: null, content: {}, settings: {} },
+    { instanceId: 'gift.rewardGrid2-1', group: 'settings', key: 'color.surface', value: '#F1E8DE' }
+  );
+  const consumed = editorUiContract.consumePendingEdits(pending);
+
+  assert.equal(consumed.instanceId, 'gift.rewardGrid2-1');
+  assert.deepEqual(consumed.patch, { content: {}, settings: { 'color.surface': '#F1E8DE' } });
+  assert.deepEqual(consumed.next, { instanceId: null, content: {}, settings: {} });
+});
+
 test('local preview asset map is derived from the selected component defaults', () => {
   const catalog = buildEditorCatalog({ workspaceRoot });
   let document = createCampaignDocument({ name: '默认资源测试' });
@@ -188,6 +272,22 @@ test('local preview asset map resolves a current component asset reference witho
 
   const assets = buildLocalAssetMap(document, { workspaceRoot });
   assert.match(assets['review-star'].path, /评论组件\/双条文字评论\/assets\/review-star\.png$/u);
+});
+
+test('every registered component has an explicit editor field contract', () => {
+  const registry = JSON.parse(readFileSync(`${workspaceRoot}/组件清单.json`, 'utf8'));
+  for (const { componentKey } of registry) {
+    assert.doesNotThrow(() => editableFieldKeys(componentKey), componentKey);
+  }
+
+  assert.deepEqual(editableFieldKeys('product.sampleStyle1'), {
+    content: [
+      'product.mainImage.url', 'product.mainImage.alt',
+      'product.detailImage.url', 'product.detailImage.alt',
+      'product.title', 'product.subtitle', 'product.cta.text', 'product.cta.url'
+    ],
+    settings: ['color.surface', 'color.title', 'color.subtitle', 'color.action', 'color.detailFrame', 'color.detailShadow']
+  });
 });
 
 test('local preview keeps left and right sample product assets distinct', () => {
@@ -226,4 +326,36 @@ test('sale-grid import updates only the selected six-grid instance with its Shop
   assert.equal(imported.components[1].content['saleCollection.cta.url'], 'https://freshinelife.com/pages/back-to-school-refresh');
   assert.equal(imported.components[1].source, 'shopify-sale-grid:freshine-sale');
   assert.equal(imported.components[1].confirmed, false);
+});
+
+test('curtain promotion product import updates only product fields for either card variant', async () => {
+  const { applyCurtainPromotionProductImport } = await import('../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs');
+  assert.equal(typeof applyCurtainPromotionProductImport, 'function');
+
+  const catalog = buildEditorCatalog({ workspaceRoot });
+  let document = createCampaignDocument({ name: '单品窗帘导入测试' });
+  document = addComponentInstance(document, catalog, 'collection.curtainPromotionCard');
+  document = addComponentInstance(document, catalog, 'collection.curtainPromotionCardNoTitle');
+  const originalTitleCard = document.components[0];
+  const imported = applyCurtainPromotionProductImport(document, document.components[1].instanceId, {
+    product: {
+      handle: 'amara-extra-long-linen-curtains',
+      image: { url: 'https://cdn.example.com/amara-primary.webp', alt: 'Amara curtains' },
+      linkUrl: 'https://freshinelife.com/products/amara-extra-long-linen-curtains',
+      title: 'Amara Extra Long Linen Curtains',
+      description: 'Elegant Light-Filtering Drapes',
+      discountLabel: ''
+    }
+  });
+
+  assert.equal(imported.components[0].content['product.title'], originalTitleCard.content['product.title']);
+  assert.equal(imported.components[1].content['product.image.url'], 'https://cdn.example.com/amara-primary.webp');
+  assert.equal(imported.components[1].content['product.image.clickUrl'], 'https://freshinelife.com/products/amara-extra-long-linen-curtains');
+  assert.equal(imported.components[1].content['product.cta.url'], 'https://freshinelife.com/products/amara-extra-long-linen-curtains');
+  assert.equal(imported.components[1].content['product.title'], 'Amara Extra Long Linen Curtains');
+  assert.equal(imported.components[1].content['product.description'], 'Elegant Light-Filtering Drapes');
+  assert.equal(imported.components[1].content['product.badge'], '');
+  assert.equal(imported.components[1].source, 'shopify-product:amara-extra-long-linen-curtains');
+  assert.equal(imported.components[1].confirmed, false);
+  assert.equal(imported.components[1].content['promotion.title'], undefined);
 });

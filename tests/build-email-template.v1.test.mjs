@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const builder = `${root}/build-email-template.v1.mjs`;
@@ -175,7 +176,7 @@ test('product style1 final builds reject the pending local main image upload', (
   assert.match(result.stderr, /local asset product-main must be uploaded before final build/);
 });
 
-test('product style1 is registered generally without becoming a Campaign Skill candidate', () => {
+test('product style1 is registered and editable in the current Campaign editor', () => {
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
   const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleStyle1');
 
@@ -189,14 +190,13 @@ test('product style1 is registered generally without becoming a Campaign Skill c
   const demo = readFileSync(`${productStyle1Directory}/效果演示.html`, 'utf8');
   const management = readFileSync(`${productStyle1Directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
   const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
-  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
 
   assert.match(demo, /375px/);
   assert.match(demo, /\.\/assets\/default-main-image\.png/);
   assert.match(demo, /\.\/assets\/default-detail-image\.png/);
-  assert.match(management, /尚未加入 Campaign Skill/);
+  assert.match(management, /Campaign 可视化编辑器/);
   assert.equal(structure.selection, 'user-ordered-registered-components');
-  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleStyle1'), false);
+  assert.doesNotThrow(() => editableFieldKeys('product.sampleStyle1'));
 });
 
 test('renders only the complete content and settings snapshot supplied by the Skill', () => {
@@ -402,7 +402,9 @@ test('renders the countdown hero styles required by its registered template', ()
 
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const html = readFileSync(composition.previewOutput, 'utf8');
-  assert.match(html, /white-space:nowrap/);
+  assert.match(html, /freshine-countdown-navigation-right/);
+  assert.match(html, /height:min\(71px,11\.833333vw\)/);
+  assert.match(html, /text-decoration:underline/);
   assert.match(html, /letter-spacing:0px/);
 });
 
@@ -423,8 +425,8 @@ test('renders the benefits strip without its deprecated optional link field', ()
     previewOutput: '/private/tmp/benefits-strip-optional-link.local-preview.html',
     assets: {
       'benefits-strip-3': {
-        path: '赠品与权益组件/三项权益整图/assets/default-benefits-strip-combination-i-1200.jpg',
-        name: 'default-benefits-strip-combination-i-1200.jpg'
+        path: '赠品与权益组件/三项权益整图/assets/default-benefits-strip-rights-2.jpg',
+        name: 'default-benefits-strip-rights-2.jpg'
       }
     },
     components: [{
@@ -441,7 +443,7 @@ test('renders the benefits strip without its deprecated optional link field', ()
   const result = run(path, '--preview-local-assets');
 
   assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.match(readFileSync(composition.previewOutput, 'utf8'), /https:\/\/app\.omnisend\.com\/images\/6a82d6f0c5aa8a2a0174f006/);
+  assert.match(readFileSync(composition.previewOutput, 'utf8'), /default-benefits-strip-rights-2\.jpg/);
 });
 
 test('rejects an incomplete content snapshot', () => {
@@ -697,13 +699,12 @@ test('the footer follows the approved information hierarchy with black text and 
   const schema = JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8'));
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
   const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
-  const skill = readFileSync(`${root}/skills/build-omnisend-campaign-draft/SKILL.md`, 'utf8');
   const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
 
   assert.match(template, /max-width:\{\{settings\.content\.width\}\}/);
   assert.match(template, /font-size:17px;font-weight:600;line-height:22px/);
   assert.match(template, /height="1" bgcolor="#C9B99B"/);
-  assert.match(template, /padding:0 5px/);
+  assert.match(template, /data-freshine-social-cell="youtube"[^>]*padding:0 4px/);
   assert.match(template, /color:\{\{settings\.color\.text\}\}[^>]*font-size:11px;font-weight:400;line-height:17px/);
   assert.match(template, /color:\{\{settings\.color\.link\}\}[^>]*text-decoration:none/);
   assert.match(template, /href="\[\[unsubscribe_link\]\]"/);
@@ -720,8 +721,7 @@ test('the footer follows the approved information hierarchy with black text and 
   assert.match(management, /#000000/);
   assert.match(management, /#0000FF/);
   assert.doesNotMatch(management, /下划线/);
-  assert.match(skill, /精致暖棕信息层级/);
-  assert.match(interactions, /精致暖棕信息层级/);
+  assert.match(interactions, /品牌信息.*法律信息.*退订链接/s);
 });
 
 test('the footer renders seven social icons in the approved display order with complete default links', () => {
@@ -760,7 +760,64 @@ test('the footer renders seven social icons in the approved display order with c
   assert.match(demo, /threads\.com\/@freshinecurtains/);
   assert.match(demo, /api\.whatsapp\.com\/send/);
   assert.match(management, /Facebook、WhatsApp、Threads/);
-  assert.match(interactions, /七个社交媒体链接及图标/);
+  assert.match(interactions, /七枚社媒图标/);
+});
+
+test('the rendered footer normalizes seven social logos inside equal visual cells', () => {
+  const directory = `${root}/页脚组件/品牌信息页脚`;
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const output = '/private/tmp/footer-social-visual-normalization.html';
+  const compositionPath = '/private/tmp/footer-social-visual-normalization.composition.json';
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#652A0D',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output,
+    previewOutput: '/private/tmp/footer-social-visual-normalization.local-preview.html',
+    components: [{
+      name: '品牌信息页脚',
+      directory,
+      componentKey: 'footer.warm',
+      content: { ...fixture.values },
+      settings: { ...defaults.values }
+    }]
+  };
+  writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+
+  const result = run(compositionPath);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const rendered = readFileSync(output, 'utf8');
+  const expectedSizes = {
+    youtube: 26,
+    instagram: 22,
+    facebook: 22,
+    tiktok: 24,
+    pinterest: 23,
+    whatsapp: 22,
+    threads: 24
+  };
+
+  for (const [platform, size] of Object.entries(expectedSizes)) {
+    const cell = rendered.match(new RegExp(`<td[^>]*data-freshine-social-cell="${platform}"[^>]*>`))?.[0];
+    const image = rendered.match(new RegExp(`<img[^>]*data-freshine-social-icon="${platform}"[^>]*>`))?.[0];
+
+    assert.ok(cell, `${platform} must render inside a named visual cell`);
+    assert.match(cell, /width="26"/);
+    assert.match(cell, /height="26"/);
+    assert.match(cell, /text-align:center/);
+    assert.ok(image, `${platform} must render a named image for visual calibration`);
+    assert.match(image, new RegExp(`width="${size}"`));
+    assert.match(image, new RegExp(`height="${size}"`));
+    assert.match(image, new RegExp(`width:${size}px`));
+    assert.match(image, new RegExp(`height:${size}px`));
+    assert.match(image, /margin:0 auto/);
+  }
 });
 
 test('all six sale cards use identical centered wrappers and symmetric spacing', () => {
@@ -779,19 +836,18 @@ test('all six sale cards use identical centered wrappers and symmetric spacing',
   assert.doesNotMatch(template, /padding:0 14px 20px 0|padding:0 0 20px 14px/);
 });
 
-test('the sale grid CTA aligns with the outer edges of the two desktop product images', () => {
+test('the sale grid CTA keeps its desktop maximum and mobile-side breathing room', () => {
   const directory = `${root}/活动商品组件/六宫格折扣商品组件`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
   const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
-  const skill = readFileSync(`${root}/skills/build-omnisend-campaign-draft/SKILL.md`, 'utf8');
   const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
 
-  assert.match(template, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:100%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
-  assert.match(demo, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:100%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
-  for (const source of [management, skill, interactions]) {
+  assert.match(template, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
+  assert.match(demo, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
+  for (const source of [management, interactions]) {
     assert.match(source, /CTA.*486px/s);
-    assert.match(source, /width:100%.*max-width:486px/s);
+    assert.match(source, /width:81%.*max-width:486px/s);
   }
 });
 
@@ -803,14 +859,18 @@ test('the sale grid uses the double-gift title and subtitle type scale', () => {
   const giftTemplate = readFileSync(`${gifts}/component.template.v1.html`, 'utf8');
   const giftDefaults = JSON.parse(readFileSync(`${gifts}/settings.defaults.v1.json`, 'utf8'));
 
-  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
-  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:26px;font-weight:400;line-height:36px/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:15px;font-weight:400;line-height:22px/);
-  assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:\{\{settings\.font\.headingSize\}\};font-weight:\{\{settings\.font\.headingWeight\}\};line-height:\{\{settings\.font\.headingLineHeight\}\}/);
-  assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:\{\{settings\.font\.bodySize\}\};font-weight:\{\{settings\.font\.bodyWeight\}\};line-height:\{\{settings\.font\.bodyLineHeight\}\}/);
-  assert.equal(giftDefaults.values['font.headingSize'], '26px');
-  assert.equal(giftDefaults.values['font.bodySize'], '15px');
+  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:28px;font-weight:500;line-height:36px;letter-spacing:0px;text-align:center/);
+  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:14px;font-weight:500;line-height:21px;letter-spacing:0px;text-align:center/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:28px;font-weight:500;line-height:36px;letter-spacing:0px;text-align:center/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:14px;font-weight:500;line-height:21px;letter-spacing:0px;text-align:center/);
+  assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:\{\{settings\.font\.headingSize\}\};font-weight:\{\{settings\.font\.headingWeight\}\};line-height:\{\{settings\.font\.headingLineHeight\}\};letter-spacing:0px;text-align:center/);
+  assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:\{\{settings\.font\.bodySize\}\};font-weight:\{\{settings\.font\.bodyWeight\}\};line-height:\{\{settings\.font\.bodyLineHeight\}\};letter-spacing:0px;text-align:center/);
+  assert.equal(giftDefaults.values['font.headingSize'], '28px');
+  assert.equal(giftDefaults.values['font.headingWeight'], '500');
+  assert.equal(giftDefaults.values['font.headingLineHeight'], '36px');
+  assert.equal(giftDefaults.values['font.bodySize'], '14px');
+  assert.equal(giftDefaults.values['font.bodyWeight'], '500');
+  assert.equal(giftDefaults.values['font.bodyLineHeight'], '21px');
 });
 
 test('the default upper gift links to the pillow-cover collection', () => {
@@ -823,14 +883,15 @@ test('the default upper gift links to the pillow-cover collection', () => {
   assert.match(demo, new RegExp(`<a href="${target}" data-freshine-href-slot="reward\\.items\\[0\\]\\.url"`));
 });
 
-test('the default benefits image uses the approved Omnisend URL', () => {
+test('the default benefits image uses the supplied local component asset', () => {
   const directory = `${root}/赠品与权益组件/三项权益整图`;
   const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
-  const target = 'https://app.omnisend.com/images/6a82d6f0c5aa8a2a0174f006';
+  const target = 'asset://benefits-strip-3';
 
   assert.equal(fixture.values['image.url'], target);
-  assert.match(demo, new RegExp(`<img src="${target}"`));
+  assert.match(fixture.localPreviewAsset, /default-benefits-strip-rights-2\.jpg$/);
+  assert.match(demo, /\.\/assets\/default-benefits-strip-rights-2\.jpg/);
 });
 
 test('clickable image defaults to a 600px full-bleed canvas while preserving per-instance overrides', () => {
@@ -1028,11 +1089,10 @@ test('the final text review build still blocks its registered asset until upload
   assert.match(result.stderr, /local asset review-star must be uploaded before final build/);
 });
 
-test('the two-review list is registered generally without becoming a Campaign Skill candidate', () => {
+test('the two-review list is registered and selectable in the current Campaign editor', () => {
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
   const entries = registry.filter(({ componentKey }) => componentKey === 'review.textList2');
   const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
-  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
   const template = readFileSync(`${textReviewDirectory}/component.template.v1.html`, 'utf8');
   const demo = readFileSync(`${textReviewDirectory}/效果演示.html`, 'utf8');
 
@@ -1042,14 +1102,13 @@ test('the two-review list is registered generally without becoming a Campaign Sk
   assert.equal((demo.match(/(?:\.\/)?assets\/review-star\.png/g) ?? []).length, 15);
   assert.doesNotMatch(template, /<a\b|href=|cta/i);
   assert.equal(structure.selection, 'user-ordered-registered-components');
-  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'review.textList2'), false);
+  assert.doesNotThrow(() => editableFieldKeys('review.textList2'));
 });
 
-test('the left sample product recommendation card is registered with its two-image Liana reference layout without becoming a Campaign Skill candidate', () => {
+test('the left sample product recommendation card is registered with its two-image Liana reference layout and editor contract', () => {
   const directory = `${root}/小样-产品/小样产品推荐卡（左）`;
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
   const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
-  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
   const entries = registry.filter(({ componentKey }) => componentKey === 'product.sampleProductRecommendationLeft');
 
   assert.equal(entries.length, 1);
@@ -1077,7 +1136,6 @@ test('the left sample product recommendation card is registered with its two-ima
   const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
-  const readme = readFileSync(`${root}/README.md`, 'utf8');
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
@@ -1146,7 +1204,7 @@ test('the left sample product recommendation card is registered with its two-ima
   assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;/);
   assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;/);
   assert.doesNotMatch(demo, /@media|display:\s*(?:flex|grid)/i);
-  assert.match(readme, /小样产品推荐卡（左）.*product\.sampleProductRecommendationLeft/s);
+  assert.match(index, /小样产品推荐卡（左.*product\.sampleProductRecommendationLeft/s);
   assert.match(index, /小样-产品[\s\S]*小样产品推荐卡/s);
   assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
   assert.match(preview, /width="319"/);
@@ -1154,7 +1212,7 @@ test('the left sample product recommendation card is registered with its two-ima
   assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1%EF%BC%88%E5%B7%A6%EF%BC%89/assets/default-liana-sheer-curtains.png'));
   assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E5%B0%8F%E6%A0%B7%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1%EF%BC%88%E5%B7%A6%EF%BC%89/assets/default-liana-sheer-fabric.png'));
   assert.equal(structure.selection, 'user-ordered-registered-components');
-  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.sampleProductRecommendationLeft'), false);
+  assert.doesNotThrow(() => editableFieldKeys('product.sampleProductRecommendationLeft'));
 });
 
 test('the sample product recommendation cards expose distinct left and right variants', () => {
@@ -1179,11 +1237,10 @@ test('the sample product recommendation cards expose distinct left and right var
   }
 });
 
-test('the curtain recommendation overlay card reproduces the 600px editorial product layout without becoming a Campaign Skill candidate', () => {
+test('the curtain recommendation overlay card reproduces the 600px editorial product layout with an editor contract', () => {
   const directory = `${root}/小样-产品/窗帘产品推荐卡II`;
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
   const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
-  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
   const entries = registry.filter(({ componentKey }) => componentKey === 'product.curtainRecommendationOverlay');
 
   assert.equal(entries.length, 1);
@@ -1211,7 +1268,6 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
-  const readme = readFileSync(`${root}/README.md`, 'utf8');
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
@@ -1288,7 +1344,7 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   assert.match(demo, /data-freshine-slot="intro\.subtitle" style="[^"]*word-break:break-word;overflow-wrap:anywhere;/);
   assert.doesNotMatch(demo, /data-freshine-slot="intro\.subtitle\.line[123]"/);
   assert.doesNotMatch(demo, /@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|clamp\(|white-space:pre-line/i);
-  assert.ok(readme.includes('窗帘产品推荐卡II（标题版，`product.curtainRecommendationOverlay`'));
+  assert.ok(index.includes('窗帘产品推荐卡II（标题版，`product.curtainRecommendationOverlay`'));
   assert.match(index, /小样-产品[\s\S]*窗帘产品推荐卡II/s);
   assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
   assert.match(preview, /width="548"/);
@@ -1311,7 +1367,7 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   assert.equal(finalResult.status, 0, finalResult.stderr || finalResult.stdout);
   assert.match(readFileSync(finalComposition.output, 'utf8'), /https:\/\/cdn\.example\.com\/celina-bedroom\.png/);
   assert.equal(structure.selection, 'user-ordered-registered-components');
-  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'product.curtainRecommendationOverlay'), false);
+  assert.doesNotThrow(() => editableFieldKeys('product.curtainRecommendationOverlay'));
 });
 
 test('the no-title curtain recommendation card keeps the editorial product layout without rendering header content', () => {
@@ -1344,7 +1400,6 @@ test('the no-title curtain recommendation card keeps the editorial product layou
   const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
-  const readme = readFileSync(`${root}/README.md`, 'utf8');
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
@@ -1374,7 +1429,7 @@ test('the no-title curtain recommendation card keeps the editorial product layou
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|clamp\(|white-space:pre-line/i);
   assert.doesNotMatch(demo, /Upgrade Your Home in Style|data-freshine-slot="intro\./);
   assert.match(demo, /\.\/assets\/default-celina-bedroom\.png/);
-  assert.ok(readme.includes('窗帘产品推荐卡II（无标题版，`product.curtainRecommendationNoTitle`'));
+  assert.ok(index.includes('窗帘产品推荐卡II（无标题版，`product.curtainRecommendationNoTitle`'));
   assert.match(index, /小样-产品[\s\S]*窗帘产品推荐卡II（无标题版）/s);
   assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
   const preview = readFileSync(composition.previewOutput, 'utf8');
@@ -1386,7 +1441,6 @@ test('the measurement tool card is a registered 600px editable component with it
   const directory = `${root}/赠品与权益组件/尺寸测量工具卡`;
   const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
   const structure = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-structure.v1.json`, 'utf8'));
-  const interactions = JSON.parse(readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/campaign-component-interactions.v1.json`, 'utf8'));
   const editor = await import(pathToFileURL(`${root}/skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs`).href);
   const entries = registry.filter(({ componentKey }) => componentKey === 'tool.measurementCard');
 
@@ -1416,7 +1470,6 @@ test('the measurement tool card is a registered 600px editable component with it
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
   const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
-  const readme = readFileSync(`${root}/README.md`, 'utf8');
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
@@ -1445,14 +1498,14 @@ test('the measurement tool card is a registered 600px editable component with it
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|<div\b/i);
   assert.match(demo, /\.\/assets\/default-measurement-tool-cropped\.png/);
   assert.match(management, /375px/);
-  assert.match(readme, /尺寸测量工具卡.*tool\.measurementCard/s);
+  assert.match(index, /尺寸测量工具卡.*tool\.measurementCard/s);
   assert.match(index, /赠品与权益组件[\s\S]*尺寸测量工具卡/s);
   assert.deepEqual(editor.editableFieldKeys('tool.measurementCard'), {
     content: ['measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'],
     settings: ['color.surface', 'color.text', 'color.action']
   });
   assert.equal(structure.selection, 'user-ordered-registered-components');
-  assert.equal(interactions.interactions.some(({ componentKey }) => componentKey === 'tool.measurementCard'), false);
+  assert.doesNotThrow(() => editableFieldKeys('tool.measurementCard'));
   assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
   const preview = readFileSync(composition.previewOutput, 'utf8');
   assert.match(preview, /width="548" height="493"[^>]*height:auto/);
