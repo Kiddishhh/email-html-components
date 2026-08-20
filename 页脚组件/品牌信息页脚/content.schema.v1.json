@@ -11,10 +11,6 @@
       "type": "text",
       "required": true
     },
-    "footer.address.line2": {
-      "type": "text",
-      "required": true
-    },
     "footer.address.line3": {
       "type": "text",
       "required": true

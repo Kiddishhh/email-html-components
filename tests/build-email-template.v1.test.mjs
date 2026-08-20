@@ -709,19 +709,40 @@ test('the footer follows the approved information hierarchy with black text and 
   assert.match(template, /color:\{\{settings\.color\.link\}\}[^>]*text-decoration:none/);
   assert.match(template, /href="\[\[unsubscribe_link\]\]"/);
   assert.equal(defaults.values['color.text'], '#000000');
-  assert.equal(defaults.values['color.link'], '#0000FF');
+  assert.equal(defaults.values['color.link'], 'rgba(0, 87, 184, 1)');
   assert.equal(defaults.values['space.sectionY'], '32px');
   assert.equal(defaults.values['content.width'], '440px');
   assert.equal(schema.properties['color.text'].default, '#000000');
-  assert.equal(schema.properties['color.link'].default, '#0000FF');
+  assert.equal(schema.properties['color.link'].default, 'rgba(0, 87, 184, 1)');
   assert.equal(schema.properties['space.sectionY'].default, '32px');
   assert.equal(schema.properties['content.width'].default, '440px');
   assert.match(demo, /max-width:440px/);
   assert.match(management, /440px/);
   assert.match(management, /#000000/);
-  assert.match(management, /#0000FF/);
+  assert.match(management, /rgba\(0, 87, 184, 1\)/);
   assert.doesNotMatch(management, /下划线/);
   assert.match(interactions, /品牌信息.*法律信息.*退订链接/s);
+});
+
+test('the footer removes Suite 208 without a blank address line and defaults to the light beige background', () => {
+  const directory = `${root}/页脚组件/品牌信息页脚`;
+  const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
+  const schema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const settingsSchema = JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8'));
+  const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
+  const composition = JSON.parse(readFileSync(`${root}/compositions/hero-grid-review-gifts-location.default.v1.json`, 'utf8'));
+  const footer = composition.components.find(({ componentKey }) => componentKey === 'footer.warm');
+
+  assert.doesNotMatch(template, /footer\.address\.line2/);
+  assert.equal(schema.properties['footer.address.line2'], undefined);
+  assert.equal(fixture.values['footer.address.line2'], undefined);
+  assert.equal(footer.content['footer.address.line2'], undefined);
+  assert.equal(defaults.values['color.background'], '#F7EEDC');
+  assert.equal(settingsSchema.properties['color.background'].default, '#F7EEDC');
+  assert.match(demo, /bgcolor="#F7EEDC"/);
+  assert.doesNotMatch(demo, /Suite 208/);
 });
 
 test('the footer renders seven social icons in the approved display order with complete default links', () => {

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "componentKey": "footer.warm",
   "values": {
-    "color.background": "#652a0d",
+    "color.background": "#F7EEDC",
     "color.text": "#000000",
-    "color.link": "#0000FF",
+    "color.link": "rgba(0, 87, 184, 1)",
     "font.body": "Montserrat, Arial, Helvetica, sans-serif",
     "space.sectionX": "24px",
     "space.sectionY": "32px",

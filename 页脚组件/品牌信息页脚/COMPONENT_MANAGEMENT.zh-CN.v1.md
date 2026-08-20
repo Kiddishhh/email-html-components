@@ -22,17 +22,17 @@
 
 | 参数 | 默认值 | 用途 |
 |---|---|---|
-| `color.background` | `#652a0d` | 页脚区段背景；默认值来自 `new FOOT`；选择本组件时由 Skill 主动询问 |
+| `color.background` | `#F7EEDC` | 页脚区段背景；选择本组件时由 Skill 主动询问 |
 | `color.text` | `#000000` | 页脚常规文字的黑色 |
-| `color.link` | `#0000FF` | 联系邮箱与退订链接的蓝色 |
+| `color.link` | `rgba(0, 87, 184, 1)` | 联系邮箱与退订链接的默认蓝色 |
 | `font.body` | `Montserrat, Arial, Helvetica, sans-serif` | 页脚文字优先使用 Montserrat，不支持时回退到 Arial |
 | `space.sectionX` | `24px` | 页脚区段左右留白 |
-| `space.sectionY` | `32px` | 页脚区段上下留白，形成紧凑而不拥挤的暖棕信息卡 |
+| `space.sectionY` | `32px` | 页脚区段上下留白，形成紧凑而不拥挤的信息卡 |
 | `space.block` | `14px` | 电话与联系邮箱信息组的顶部间距 |
 | `social.size` | `24px` | TikTok、Threads 使用的视觉基准尺寸；其他图标按源图透明留白做固定补偿 |
 | `content.width` | `440px` | 页脚内容列最大宽度；窄屏时随容器流式缩放 |
 
-默认排版采用精致暖棕信息层级：17px 半粗品牌标题、细金棕分隔线、13px 地址与联系信息、11px 预约说明和法律信息、紧凑的七枚社媒图标，以及浅金色链接。修改方式：只改 `settings.defaults.v1.json` 的 `values`，并同步把相同默认值写入 `settings.schema.v1.json` 的 `default`。颜色使用六位十六进制。组件不会加载外部字体；Montserrat 不可用的邮件客户端会自动回退到 Arial。
+默认排版采用浅米色信息层级：17px 半粗品牌标题、细金棕分隔线、13px 地址与联系信息、11px 预约说明和法律信息、紧凑的七枚社媒图标，以及 `rgba(0, 87, 184, 1)` 链接。修改方式：只改 `settings.defaults.v1.json` 的 `values`，并同步把相同默认值写入 `settings.schema.v1.json` 的 `default`。颜色可使用六位十六进制或 CSS `rgba()`。组件不会加载外部字体；Montserrat 不可用的邮件客户端会自动回退到 Arial。
 
 七枚社媒图标使用相同的 `26 × 26px` 居中单元，并根据默认源图自带的透明留白校准图像尺寸：YouTube `26px`、Instagram `22px`、Facebook `22px`、TikTok `24px`、Pinterest `23px`、WhatsApp `22px`、Threads `24px`。这些数值用于统一图形主体的视觉重量，不代表素材文件画布尺寸不一致；更换图标素材后必须重新检查 600px 与移动端实际渲染，不能只比较 `<img>` 外框。
 
@@ -41,7 +41,7 @@
 当用户选择“品牌信息页脚”加入邮件时，Skill 必须读取 `settings.schema.v1.json`，并对 `skillPrompt: true` 的 `color.background` 主动询问页脚背景色：
 
 1. 用户提供六位十六进制颜色时，将其作为当前组件实例的 `color.background` 设置写入最终 HTML；不要改写组件默认文件。
-2. 用户明确沿用默认值，或未提出更换时，使用 `settings.defaults.v1.json` 中的 `#652a0d`。
+2. 用户明确沿用默认值，或未提出更换时，使用 `settings.defaults.v1.json` 中的 `#F7EEDC`。
 3. 同一个值必须同时渲染到页脚根表格的 `bgcolor`、根表格内联 `background-color` 以及外层内容单元格的背景，不能只改其中一处。
 4. 更换背景色不得联动修改页脚文案、社交链接、邮箱链接、文字颜色、链接颜色或 `[[unsubscribe_link]]`。如果新背景与默认文字颜色对比不足，应单独向用户确认是否调整 `color.text` 或 `color.link`，不能自动改色。
 
@@ -65,13 +65,12 @@ Skill 默认只主动询问 `color.background`；其他页脚样式仍使用 V1 
 
 - `footer.brand`：纯文本，必填。
 - `footer.address.line1`：地址第一行，纯文本且必填。
-- `footer.address.line2`：地址第二行，纯文本且必填。
 - `footer.address.line3`：城市、州和邮编，纯文本且必填。
 - `footer.address.line4`：国家，纯文本且必填。
 - `footer.address.disclaimer`：预约与收件限制说明，纯文本且必填；固定显示在国家和电话之间，使用辅助信息样式以避免与地址和电话混读。
 - `footer.address.line5`：电话，纯文本且必填。
 
-以上地址字段必须保持独立，模板通过显式 `<br>` 分行，避免 Omnisend 折叠换行。
+以上地址字段必须保持独立，模板通过显式 `<br>` 分行，避免 Omnisend 折叠换行；不再包含 Suite 208 的独立地址行。
 - `footer.contact`：纯文本，必填。
 - `footer.contactUrl`：邮箱使用 `mailto:`，也可填写经过审核的 HTTPS 联系页面，必填。
 - `footer.copyright`：纯文本，必填。
