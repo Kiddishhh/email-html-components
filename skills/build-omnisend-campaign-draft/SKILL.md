@@ -35,8 +35,8 @@ A valid result means the registry paths, component Schemas, default snapshots, d
 ## Current editor capabilities
 
 - Free composition from all registered components: add, repeat, drag-sort, select, edit, confirm, and delete.
-- Named local templates: save the current complete snapshot, select a template to create a new editable draft, overwrite only after confirmation, and delete only the template record.
-- Local image upload and preview. Templates retain the original local image references; they do not duplicate or own image files.
+- Named local templates: save the current complete snapshot only after confirmation, select a template to create a new editable draft, overwrite only after confirmation, and delete the template together with its dedicated local-image copies.
+- Local image upload and preview exist only for the current editor run. Saving a template copies its selected local images into that template's dedicated asset directory; component-directory assets are never copied or deleted.
 - Desktop/mobile preview switching and selected-component positioning.
 - `navigation.visible` toggle for all four head-image styles. When disabled, the navigation markup and its height are removed from generated HTML while the saved copy, URL, and colors remain available for re-enabling.
 - Shopify read-only import for the six-product grid and the two single-curtain promotion cards.
@@ -50,10 +50,15 @@ A valid result means the registry paths, component Schemas, default snapshots, d
 - Default `asset://` images are local-preview inputs. Final Omnisend HTML must contain public HTTPS images.
 - The four head-image variants, promotion-card variants, product recommendation cards, reviews, benefits, address, gift, measurement, and footer styles are documented in [component-interactions.zh-CN.md](references/component-interactions.zh-CN.md).
 
+## New component creation from an approved design
+
+When the request is to create a reusable component from a design, read [new-component-standard.zh-CN.md](references/new-component-standard.zh-CN.md) before deciding its name, fields, assets, or implementation scope. It defines the required confirmation boundary, email-safe layout contract, registration and documentation set, and evidence required before reporting the component as complete.
+
 ## References
 
 - Read [visual-editor-workflow.zh-CN.md](references/visual-editor-workflow.zh-CN.md) for editor controls, templates, focus behavior, previews, export, and Draft upload.
 - Read [component-interactions.zh-CN.md](references/component-interactions.zh-CN.md) when choosing or editing a component style.
+- Read [new-component-standard.zh-CN.md](references/new-component-standard.zh-CN.md) when creating a new reusable component from a design or reference image.
 - Read [workflow-and-safety.zh-CN.md](references/workflow-and-safety.zh-CN.md) before exporting HTML or writing an Omnisend Draft.
 - Read [shopify-data-contract.zh-CN.md](references/shopify-data-contract.zh-CN.md) only when importing Shopify activity, Collection, or product data.
 
@@ -64,4 +69,4 @@ A valid result means the registry paths, component Schemas, default snapshots, d
 - Do not upload images or write Omnisend data before final confirmation.
 - Email HTML must not contain JavaScript, iframe, forms, local paths, relative image paths, or runtime Shopify requests.
 - Preserve `[[unsubscribe_link]]` and the complete Omnisend Email Content structure when updating an existing Draft.
-- Keep failed and successful local project drafts by default. Delete a specific draft only after the user explicitly requests that cleanup.
+- Treat normal editor drafts, previews, image caches, and export intermediates as transient: remove them when the editor closes. Persist only user-confirmed templates and their dedicated local images; never delete component-directory assets.

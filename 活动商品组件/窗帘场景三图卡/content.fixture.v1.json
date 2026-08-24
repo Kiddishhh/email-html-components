@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainEditorialTriptych",
+  "fixture": "reference-faithful-local-crops",
+  "values": {
+    "hero.image.url": "asset://curtain-editorial-hero",
+    "hero.image.alt": "Sunlit dining room with Liana sheer curtains",
+    "hero.image.clickUrl": "https://freshinelife.com/collections/sheer-curtains",
+    "pair.left.url": "asset://curtain-editorial-left",
+    "pair.left.alt": "Living room with Mira solid sheer curtains",
+    "pair.left.clickUrl": "https://freshinelife.com/collections/solid-sheer-curtains",
+    "pair.left.caption": "Mira Solid Sheer Curtains >>",
+    "pair.right.url": "asset://curtain-editorial-right",
+    "pair.right.alt": "Dining room with semi-sheer curtains",
+    "pair.right.clickUrl": "https://freshinelife.com/collections/semi-sheer-curtains",
+    "pair.right.caption": "Semi-Sheer Curtains >>",
+    "intro.title": "Dining Room",
+    "intro.subtitle": "From Warm Ivories To Deep Charcoals, Find The Neutral That Feels Right For Your Space."
+  },
+  "localReferenceAssets": {
+    "curtain-editorial-hero": "assets/default-curtain-editorial-hero.jpg",
+    "curtain-editorial-left": "assets/default-curtain-editorial-left.jpg",
+    "curtain-editorial-right": "assets/default-curtain-editorial-right.jpg"
+  }
+}

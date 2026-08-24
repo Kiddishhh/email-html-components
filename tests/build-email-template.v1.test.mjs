@@ -119,6 +119,7 @@ test('product style1 uses a compact desktop split layout with a thin sample fram
   const productFixture = JSON.parse(readFileSync(`${productStyle1Directory}/content.fixture.v1.json`, 'utf8'));
   const productDefaults = JSON.parse(readFileSync(`${productStyle1Directory}/settings.defaults.v1.json`, 'utf8'));
   const template = readFileSync(`${productStyle1Directory}/component.template.v1.html`, 'utf8');
+  const demo = readFileSync(`${productStyle1Directory}/效果演示.html`, 'utf8');
 
   assert.equal(contentSchema.componentKey, 'product.sampleStyle1');
   assert.equal(settingsSchema.componentKey, 'product.sampleStyle1');
@@ -145,10 +146,14 @@ test('product style1 uses a compact desktop split layout with a thin sample fram
   assert.equal(productDefaults.values['font.body'], 'Montserrat,Arial,Helvetica,sans-serif');
   assert.match(template, /width="548"/);
   assert.match(template, /padding:53px \{\{settings\.spacing\.horizontal\}\} 0/);
-  assert.match(template, /padding:0 \{\{settings\.spacing\.contentHorizontal\}\};/);
+  assert.match(template, /padding:0 \{\{settings\.spacing\.contentHorizontal\}\};padding:0 clamp\(18px,calc\(16vw - 54px\),\{\{settings\.spacing\.contentHorizontal\}\}\);/);
   assert.match(template, /width="202"[^>]*style="display:block;position:relative;top:-\{\{settings\.spacing\.detailOverlap\}\};margin-bottom:-\{\{settings\.spacing\.detailOverlap\}\};width:100%;max-width:\{\{settings\.image\.detailWidth\}\};[^\"]*margin-right:10px;margin-left:auto/);
   assert.match(template, /border:1px solid \{\{settings\.color\.detailBorder\}\}/);
   assert.match(template, /padding:34px 0 54px;text-align:left;vertical-align:top/);
+  assert.match(template, /width:59%;padding:34px 0 54px;text-align:left;vertical-align:top/);
+  assert.doesNotMatch(template, /min-width:210px|width:clamp\(200px/);
+  assert.match(demo, /padding:0 42px;padding:0 clamp\(18px,calc\(16vw - 54px\),42px\);/);
+  assert.match(demo, /width:59%;padding:34px 0 54px;text-align:left;vertical-align:top/);
   assert.match(template, /width="194" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:194px;/);
   assert.match(template, /padding:0 \{\{settings\.spacing\.detailShadow\}\} \{\{settings\.spacing\.detailShadow\}\} 0/);
   assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:22px;font-size:min\(22px,5\.333vw\);font-weight:600;line-height:150%;letter-spacing:0px;text-align:left/);
@@ -883,18 +888,18 @@ test('the sale grid uses the double-gift title and subtitle type scale', () => {
   const giftTemplate = readFileSync(`${gifts}/component.template.v1.html`, 'utf8');
   const giftDefaults = JSON.parse(readFileSync(`${gifts}/settings.defaults.v1.json`, 'utf8'));
 
-  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:28px;font-weight:500;line-height:36px;letter-spacing:0px;text-align:center/);
-  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:14px;font-weight:500;line-height:21px;letter-spacing:0px;text-align:center/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:28px;font-weight:500;line-height:36px;letter-spacing:0px;text-align:center/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:14px;font-weight:500;line-height:21px;letter-spacing:0px;text-align:center/);
+  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-weight:500;line-height:38px;letter-spacing:0px;text-align:center/);
+  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-weight:500;line-height:27px;letter-spacing:0px;text-align:center/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-weight:500;line-height:38px;letter-spacing:0px;text-align:center/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-weight:500;line-height:27px;letter-spacing:0px;text-align:center/);
   assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:\{\{settings\.font\.headingSize\}\};font-weight:\{\{settings\.font\.headingWeight\}\};line-height:\{\{settings\.font\.headingLineHeight\}\};letter-spacing:0px;text-align:center/);
   assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:\{\{settings\.font\.bodySize\}\};font-weight:\{\{settings\.font\.bodyWeight\}\};line-height:\{\{settings\.font\.bodyLineHeight\}\};letter-spacing:0px;text-align:center/);
-  assert.equal(giftDefaults.values['font.headingSize'], '28px');
+  assert.equal(giftDefaults.values['font.headingSize'], '30px');
   assert.equal(giftDefaults.values['font.headingWeight'], '500');
-  assert.equal(giftDefaults.values['font.headingLineHeight'], '36px');
-  assert.equal(giftDefaults.values['font.bodySize'], '14px');
+  assert.equal(giftDefaults.values['font.headingLineHeight'], '38px');
+  assert.equal(giftDefaults.values['font.bodySize'], '18px');
   assert.equal(giftDefaults.values['font.bodyWeight'], '500');
-  assert.equal(giftDefaults.values['font.bodyLineHeight'], '21px');
+  assert.equal(giftDefaults.values['font.bodyLineHeight'], '27px');
 });
 
 test('the default upper gift links to the pillow-cover collection', () => {
@@ -1197,9 +1202,10 @@ test('the left sample product recommendation card is registered with its two-ima
   assert.match(template, /data-freshine-slot="product\.title"/);
   assert.match(template, /data-freshine-slot="product\.subtitle"/);
   assert.match(template, /data-freshine-href-slot="product\.url"/);
-  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
-  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
-  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /height="16" style="height:16px;height:min\(16px,3\.2vw\);font-size:0;line-height:0;/);
+  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-size:22px;font-size:min\(22px,5\.333vw\);font-weight:600;line-height:30px;line-height:min\(30px,7\.467vw\);letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:17px;font-size:min\(17px,3\.733vw\);font-weight:400;line-height:23px;line-height:min\(23px,5\.333vw\);letter-spacing:0;text-align:left;white-space:normal;word-break:normal;overflow-wrap:break-word;/);
+  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:18px;font-size:min\(18px,4vw\);font-weight:500;line-height:22px;line-height:min\(22px,5\.333vw\);letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
   assert.deepEqual(Object.keys(contentSchema.properties), [
     'product.images.scene.url',
     'product.images.scene.alt',
@@ -1217,16 +1223,17 @@ test('the left sample product recommendation card is registered with its two-ima
   assert.equal(settings.values['color.surface'], '#FAF9F7');
   assert.equal(settings.values['font.body'], 'Montserrat, Arial, Helvetica, sans-serif');
   assert.equal(JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8')).properties['font.body'].default, 'Montserrat, Arial, Helvetica, sans-serif');
-  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
-  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
-  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:22px;font-size:min\(22px,5\.333vw\);font-weight:600;line-height:30px;line-height:min\(30px,7\.467vw\);letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+  assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:17px;font-size:min\(17px,3\.733vw\);font-weight:400;line-height:23px;line-height:min\(23px,5\.333vw\);letter-spacing:0;text-align:left;white-space:normal;word-break:normal;overflow-wrap:break-word;/);
+  assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:18px;font-size:min\(18px,4vw\);font-weight:500;line-height:22px;line-height:min\(22px,5\.333vw\);letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)/i);
   assert.match(demo, /\.\/assets\/default-liana-sheer-curtains\.png/);
   assert.match(demo, /\.\/assets\/default-liana-sheer-fabric\.png/);
   assert.match(demo, /fonts\.googleapis\.com\/css2\?family=Montserrat:wght@400;500;600;700/);
-  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;/);
-  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;/);
-  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;/);
+  assert.match(demo, /height="16" style="height:16px;height:min\(16px,3\.2vw\);font-size:0;line-height:0;/);
+  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:22px;font-size:min\(22px,5\.333vw\);font-weight:600;line-height:30px;line-height:min\(30px,7\.467vw\);letter-spacing:0;text-align:left;white-space:nowrap;/);
+  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:17px;font-size:min\(17px,3\.733vw\);font-weight:400;line-height:23px;line-height:min\(23px,5\.333vw\);letter-spacing:0;text-align:left;white-space:normal;/);
+  assert.match(demo, /font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:18px;font-size:min\(18px,4vw\);font-weight:500;line-height:22px;line-height:min\(22px,5\.333vw\);letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;/);
   assert.doesNotMatch(demo, /@media|display:\s*(?:flex|grid)/i);
   assert.match(index, /小样产品推荐卡（左.*product\.sampleProductRecommendationLeft/s);
   assert.match(index, /小样-产品[\s\S]*小样产品推荐卡/s);
@@ -1248,15 +1255,20 @@ test('the sample product recommendation cards expose distinct left and right var
   for (const [key, name, directory] of variants) {
     const entry = registry.find(({ componentKey }) => componentKey === key);
     const template = readFileSync(`${root}/${directory}/component.template.v1.html`, 'utf8');
+    const demo = readFileSync(`${root}/${directory}/效果演示.html`, 'utf8');
     assert.ok(entry, `missing ${key} registry entry`);
     assert.equal(entry.中文名称, name);
     assert.equal(entry.路径.组件模板, `${directory}/component.template.v1.html`);
     assert.equal(existsSync(`${root}/${directory}/效果演示.html`), true, `missing ${name} preview`);
     assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="display:block;[^\"]*text-align:left;/);
     assert.match(template, /width="197"/);
-    assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:18px;font-weight:600;line-height:26px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
-    assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:12px;font-weight:400;line-height:18px;letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
-    assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:14px;font-weight:500;line-height:17px;letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+    assert.match(template, /height="16" style="height:16px;height:min\(16px,3\.2vw\);font-size:0;line-height:0;/);
+    assert.match(template, /data-freshine-slot="product\.title" style="[^"]*font-family:\{\{settings\.font\.body\}\};font-size:22px;font-size:min\(22px,5\.333vw\);font-weight:600;line-height:30px;line-height:min\(30px,7\.467vw\);letter-spacing:0;text-align:left;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+    assert.match(template, /data-freshine-slot="product\.subtitle" style="[^"]*font-size:17px;font-size:min\(17px,3\.733vw\);font-weight:400;line-height:23px;line-height:min\(23px,5\.333vw\);letter-spacing:0;text-align:left;white-space:normal;word-break:normal;overflow-wrap:break-word;/);
+    assert.match(template, /data-freshine-href-slot="product\.url" target="_blank" style="[^"]*font-size:18px;font-size:min\(18px,4vw\);font-weight:500;line-height:22px;line-height:min\(22px,5\.333vw\);letter-spacing:0;text-align:left;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;word-break:normal;overflow-wrap:normal;/);
+    assert.match(demo, /font-size:22px;font-size:min\(22px,5\.333vw\);font-weight:600;line-height:30px;line-height:min\(30px,7\.467vw\)/);
+    assert.match(demo, /font-size:17px;font-size:min\(17px,3\.733vw\);font-weight:400;line-height:23px;line-height:min\(23px,5\.333vw\)/);
+    assert.match(demo, /font-size:18px;font-size:min\(18px,4vw\);font-weight:500;line-height:22px;line-height:min\(22px,5\.333vw\)/);
     assert.doesNotMatch(template, /data-freshine-href-slot="product\.url" target="_blank" style="display:inline-block;/);
   }
 });

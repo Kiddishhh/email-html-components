@@ -84,7 +84,7 @@ Skill 还应收集标题、正文、CTA 文案与链接，以及每个格子的�
 
 修改默认值时，必须同时修改 `settings.defaults.v1.json` 的 `values` 与 `settings.schema.v1.json` 中对应字段的 `default`。颜色使用六位十六进制。邮件客户端无法使用 Lora/Montserrat 时会自动回退到 Georgia/Arial。
 
-标题固定为 Lora `28px / 500（Medium） / 36px`、字间距 `0px`、居中对齐；说明固定为 Montserrat `14px / 500（Medium） / 150%（21px）`、字间距 `0px`、居中对齐。二者与双赠品奖励卡保持同一排版层级，不作为可编辑 CSS 字段。
+标题固定为 Lora `30px / 500（Medium） / 38px`、字间距 `0px`、居中对齐；说明固定为 Montserrat `18px / 500（Medium） / 150%（27px）`、字间距 `0px`、居中对齐。二者与双赠品奖励卡保持同一排版层级，不作为可编辑 CSS 字段。
 
 ## 图片与布局规则
 

@@ -328,6 +328,26 @@ test('sale-grid import updates only the selected six-grid instance with its Shop
   assert.equal(imported.components[1].confirmed, false);
 });
 
+test('sale-grid backend Collection import keeps the existing public CTA while marking its admin-only source', () => {
+  const catalog = buildEditorCatalog({ workspaceRoot });
+  let document = createCampaignDocument({ name: '后台 Collection 导入测试' });
+  document = addComponentInstance(document, catalog, 'collection.saleGrid6');
+  const originalCtaUrl = document.components[0].content['saleCollection.cta.url'];
+
+  const imported = applySaleGridImport(document, document.components[0].instanceId, {
+    collection: { handle: 'private-curtain-sale' },
+    collectionSource: { type: 'admin-handle' },
+    items: Array.from({ length: 6 }, (_, index) => ({
+      image: { url: `https://cdn.example.com/private-${index}.jpg`, alt: `Private curtain ${index}` },
+      linkUrl: `https://freshinelife.com/products/curtain-${index}`,
+      discountLabel: ''
+    }))
+  });
+
+  assert.equal(imported.components[0].content['saleCollection.cta.url'], originalCtaUrl);
+  assert.equal(imported.components[0].source, 'shopify-sale-grid-admin:private-curtain-sale');
+});
+
 test('curtain promotion product import updates only product fields for either card variant', async () => {
   const { applyCurtainPromotionProductImport } = await import('../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs');
   assert.equal(typeof applyCurtainPromotionProductImport, 'function');

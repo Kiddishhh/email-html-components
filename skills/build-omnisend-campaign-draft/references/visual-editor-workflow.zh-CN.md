@@ -6,7 +6,7 @@
 node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 ```
 
-打开 `http://127.0.0.1:4173`。本地草稿、上传回执、图片缓存和已保存模板位于被忽略的 `campaign-drafts/editor-sessions/`；其中不保存 API Key。
+打开 `http://127.0.0.1:4173`。本地草稿、上传回执、预览和图片缓存只在当前编辑器运行期保存，关闭或重启服务即清理；只有手动保存的模板及其专属图片位于被忽略的 `campaign-drafts/editor-templates/`。两类存储均不保存 API Key。
 
 ## 当前操作流程
 
@@ -21,18 +21,17 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 
 顶部模板栏支持保存模板、选择模板继续编辑和删除模板：
 
-- 保存模板记录当前画布、组件顺序、完整 `content`/`settings` 快照及本地图片引用，可自定义名称。
+- 保存模板记录当前画布、组件顺序、完整 `content`/`settings` 快照；若模板使用本地上传图片，会复制为该模板专属图片，可自定义名称。
 - 同名保存必须先确认覆盖。
 - 选择模板会创建一份新的可编辑草稿，不会回写模板；组件确认、整封确认、内容哈希、输出路径和 Omnisend 状态均重置。
-- 删除模板只删除模板记录，不删除由模板创建的草稿或图片。
-- 模板引用本地图片的原路径，不复制图片。原文件移动或删除时，预览会报告资源不可用。
+- 删除模板会删除模板记录及其专属图片；由模板创建的当前编辑草稿仍可继续编辑到服务关闭。不会删除任何组件目录内的素材。
 
 ## 组件编辑
 
 - 四款头图提供“显示顶部导航栏”复选框。关闭时从生成 HTML 移除导航结构和高度；再次开启时恢复该实例保存的文案、链接和颜色。
 - 颜色字段提供色块和 `#RRGGBB` 输入。只有完整六位色号会写入组件快照。
 - 图片字段可以填写公开 HTTPS URL，也可选择本地 PNG、JPEG、WebP 或 GIF 进行预览；单文件不超过 5 MB。
-- `collection.saleGrid6` 支持从 Freshine Page 或 Collection URL 只读导入六件商品。
+- `collection.saleGrid6` 支持从 Freshine Page、已上线 Collection URL，或 Shopify 后台 Collection handle 只读导入六件商品。后台 handle 仅作为数据源：六张商品卡保留 Shopify 返回的商品公开链接，整体 CTA 保持当前组件设置，不会指向未上线 Collection。
 - `collection.curtainPromotionCard` 与 `collection.curtainPromotionCardNoTitle` 支持从 Freshine 商品 URL 只读导入一个商品。导入不会覆盖 CTA 文案、顶部活动文案或配色。
 
 ## 导出 Omnisend HTML
@@ -44,7 +43,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 3. 重新校验静态邮件 HTML；
 4. 把完整 HTML 写入剪切板。
 
-该流程不会创建、更新或发送 Campaign 或 Draft。图片缓存按图片字节 SHA-256 与 API Key 的不可逆哈希隔离账户，不保存 API Key。若剪切板被浏览器拒绝，界面显示只读 HTML 供手动复制，不重新上传图片。
+该流程不会创建、更新或发送 Campaign 或 Draft。图片缓存按图片字节 SHA-256 与 API Key 的不可逆哈希隔离账户，不保存 API Key，并仅在当前编辑器运行期复用。若剪切板被浏览器拒绝，界面显示只读 HTML 供手动复制，不重新上传图片。
 
 ## 上传 Omnisend 草稿
 

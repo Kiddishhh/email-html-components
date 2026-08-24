@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainEditorialTriptych",
+  "values": {
+    "color.surface": "#FBFAF8",
+    "color.text": "#1F1F1F",
+    "color.body": "#6E6761",
+    "font.heading": "Montserrat, Arial, Helvetica, sans-serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif"
+  }
+}

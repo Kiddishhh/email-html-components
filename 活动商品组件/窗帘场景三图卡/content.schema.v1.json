@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainEditorialTriptych",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "hero.image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.image.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.left.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.left.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "pair.left.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.left.caption": { "type": "text", "required": true, "skillPrompt": true },
+    "pair.right.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.right.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "pair.right.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.right.caption": { "type": "text", "required": true, "skillPrompt": true },
+    "intro.title": { "type": "text", "required": true, "skillPrompt": true },
+    "intro.subtitle": { "type": "text", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

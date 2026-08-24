@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { createHash, randomUUID } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -122,7 +122,7 @@ function confirmInstance(document, instanceId) {
 }
 
 export function formatSaleGridImportFailure(output) {
-  const actionable = String(output).match(/Error:\s*((?:sale-grid|activity page|shopify URL) [^\n\r]+)/u)?.[1];
+  const actionable = String(output).match(/Error:\s*((?:sale-grid|activity page|shopify (?:URL|collection handle)) [^\n\r]+)/u)?.[1];
   return new Error(actionable ?? 'Shopify sale-grid import failed');
 }
 
@@ -131,11 +131,13 @@ export function formatCurtainPromotionProductImportFailure(output) {
   return new Error(actionable ?? 'Shopify curtain promotion product import failed');
 }
 
-function importSaleGrid({ workspaceRoot, instance, shopifyUrl }) {
+function importSaleGrid({ workspaceRoot, instance, shopifyUrl, collectionHandle }) {
   if (instance.componentKey !== 'collection.saleGrid6') throw new Error('sale-grid import requires a collection.saleGrid6 instance');
-  if (typeof shopifyUrl !== 'string' || !shopifyUrl.trim()) throw new Error('shopify URL is required');
+  const hasShopifyUrl = typeof shopifyUrl === 'string' && Boolean(shopifyUrl.trim());
+  const hasCollectionHandle = typeof collectionHandle === 'string' && Boolean(collectionHandle.trim());
+  if (hasShopifyUrl === hasCollectionHandle) throw new Error('provide exactly one Shopify URL or collection handle');
   const script = resolve(workspaceRoot, 'skills/build-omnisend-campaign-draft/scripts/fetch-activity-page-sale-grid.mjs');
-  const result = spawnSync(process.execPath, [script, '--shopify-url', shopifyUrl.trim()], {
+  const result = spawnSync(process.execPath, [script, hasCollectionHandle ? '--collection-handle' : '--shopify-url', hasCollectionHandle ? collectionHandle.trim() : shopifyUrl.trim()], {
     cwd: workspaceRoot,
     encoding: 'utf8'
   });
@@ -233,13 +235,20 @@ async function defaultHtmlExporter({ html, assets, apiKey }) {
   return runOmnisendHtmlExportWithApiKey({ html, assets, apiKey });
 }
 
-export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, runDraftUploader = defaultDraftUploader, runHtmlExporter = defaultHtmlExporter }) {
+export async function createCampaignEditorServer({
+  workspaceRoot,
+  sessionRoot,
+  templateRoot = resolve(workspaceRoot, 'campaign-drafts/editor-templates'),
+  runDraftUploader = defaultDraftUploader,
+  runHtmlExporter = defaultHtmlExporter
+}) {
   const catalog = buildEditorCatalog({ workspaceRoot });
   const drafts = new Map();
   const builderPath = resolve(workspaceRoot, 'build-email-template.v1.mjs');
   const publicRoot = resolve(dirname(fileURLToPath(import.meta.url)), 'public');
   const omnisendImageCachePath = resolve(sessionRoot, 'omnisend-image-cache.v1.json');
-  const savedTemplatesPath = resolve(sessionRoot, 'saved-templates.v1.json');
+  const savedTemplatesPath = resolve(templateRoot, 'saved-templates.v1.json');
+  const templateAssetsRoot = resolve(templateRoot, 'assets');
   mkdirSync(sessionRoot, { recursive: true });
 
   function clone(value) {
@@ -256,6 +265,7 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
   let savedTemplates = loadSavedTemplates();
 
   function writeSavedTemplates() {
+    mkdirSync(templateRoot, { recursive: true });
     writeFileSync(savedTemplatesPath, JSON.stringify({ schemaVersion: 1, templates: savedTemplates }, null, 2));
   }
 
@@ -279,18 +289,53 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
     return name;
   }
 
-  function templateSnapshot(draft) {
-    return {
-      canvas: clone(draft.canvas),
-      localAssets: clone(draft.localAssets ?? {}),
-      components: draft.components.map(({ name, directory, componentKey, content, settings }) => ({
-        name,
-        directory,
-        componentKey,
-        content: clone(content),
-        settings: clone(settings)
-      }))
-    };
+  function templateAssetDirectory(templateId) {
+    return resolve(templateAssetsRoot, templateId);
+  }
+
+  function templateSnapshot(draft, templateId) {
+    const assetDirectory = templateAssetDirectory(templateId);
+    const stagingDirectory = resolve(templateAssetsRoot, `.staging-${randomUUID()}`);
+    const localAssets = {};
+    mkdirSync(stagingDirectory, { recursive: true });
+    try {
+      for (const [assetId, asset] of Object.entries(draft.localAssets ?? {})) {
+        const source = resolve(workspaceRoot, asset.path);
+        const sourceRelative = relative(workspaceRoot, source);
+        if (!sourceRelative || sourceRelative.startsWith('..') || !existsSync(source)) throw new Error(`template local asset is missing: ${asset.name}`);
+        const targetDirectory = resolve(stagingDirectory, assetId);
+        mkdirSync(targetDirectory, { recursive: true });
+        const target = resolve(targetDirectory, asset.name);
+        copyFileSync(source, target);
+        localAssets[assetId] = {
+          path: relative(workspaceRoot, resolve(assetDirectory, assetId, asset.name)),
+          name: asset.name
+        };
+      }
+      return {
+        snapshot: {
+          canvas: clone(draft.canvas),
+          localAssets,
+          components: draft.components.map(({ name, directory, componentKey, content, settings }) => ({
+            name,
+            directory,
+            componentKey,
+            content: clone(content),
+            settings: clone(settings)
+          }))
+        },
+        stagingDirectory,
+        assetDirectory
+      };
+    } catch (error) {
+      rmSync(stagingDirectory, { recursive: true, force: true });
+      throw error;
+    }
+  }
+
+  function replaceTemplateAssets({ stagingDirectory, assetDirectory }) {
+    rmSync(assetDirectory, { recursive: true, force: true });
+    if (existsSync(stagingDirectory)) renameSync(stagingDirectory, assetDirectory);
   }
 
   function saveTemplate({ name: rawName, draftId, overwrite = false }) {
@@ -301,17 +346,27 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
     if (existingIndex !== -1 && overwrite !== true) return { conflict: savedTemplates[existingIndex] };
     const now = new Date().toISOString();
     const existing = existingIndex === -1 ? null : savedTemplates[existingIndex];
+    const templateId = existing?.id ?? randomUUID();
+    const snapshot = templateSnapshot(draft, templateId);
     const template = {
       schemaVersion: 1,
-      id: existing?.id ?? randomUUID(),
+      id: templateId,
       name,
       createdAt: existing?.createdAt ?? now,
       updatedAt: now,
-      snapshot: templateSnapshot(draft)
+      snapshot: snapshot.snapshot
     };
-    if (existingIndex === -1) savedTemplates.push(template);
-    else savedTemplates[existingIndex] = template;
-    writeSavedTemplates();
+    try {
+      if (existingIndex === -1) savedTemplates.push(template);
+      else savedTemplates[existingIndex] = template;
+      writeSavedTemplates();
+      replaceTemplateAssets(snapshot);
+    } catch (error) {
+      if (existingIndex === -1) savedTemplates.pop();
+      else savedTemplates[existingIndex] = existing;
+      rmSync(snapshot.stagingDirectory, { recursive: true, force: true });
+      throw error;
+    }
     return { template, overwritten: existingIndex !== -1 };
   }
 
@@ -337,11 +392,27 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
     return document;
   }
 
+  function copyTemplateAssetsToDraft(template, draft) {
+    const uploadDirectory = resolve(dirname(draft.previewPath), 'uploads');
+    const localAssets = {};
+    for (const [assetId, asset] of Object.entries(template.snapshot.localAssets ?? {})) {
+      const source = resolve(workspaceRoot, asset.path);
+      const sourceRelative = relative(workspaceRoot, source);
+      if (!sourceRelative || sourceRelative.startsWith('..') || !existsSync(source)) throw new Error(`template local asset is missing: ${asset.name}`);
+      const filename = `${assetId}-${asset.name}`;
+      const target = resolve(uploadDirectory, filename);
+      mkdirSync(uploadDirectory, { recursive: true });
+      copyFileSync(source, target);
+      localAssets[assetId] = { path: relative(workspaceRoot, target), name: filename };
+    }
+    return localAssets;
+  }
+
   function createDraftFromTemplate(template) {
     const document = createDraft(template.name);
     const counts = new Map();
     document.canvas = clone(template.snapshot.canvas);
-    document.localAssets = clone(template.snapshot.localAssets ?? {});
+    document.localAssets = copyTemplateAssetsToDraft(template, document);
     document.components = template.snapshot.components.map((component) => {
       const count = (counts.get(component.componentKey) ?? 0) + 1;
       counts.set(component.componentKey, count);
@@ -479,6 +550,7 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
         if (index === -1) return json(response, 404, { error: 'template not found' });
         const [deleted] = savedTemplates.splice(index, 1);
         writeSavedTemplates();
+        rmSync(templateAssetDirectory(deleted.id), { recursive: true, force: true });
         return json(response, 200, { deleted: templateSummary(deleted), templates: templateSummaries() });
       }
       if (request.method === 'POST' && path === '/api/drafts') {
@@ -572,7 +644,7 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
         const instance = draft.components.find((component) => component.instanceId === instanceId);
         if (!instance) return json(response, 404, { error: 'component instance not found' });
         const body = await readBody(request);
-        const updated = applySaleGridImport(draft, instanceId, importSaleGrid({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl }));
+        const updated = applySaleGridImport(draft, instanceId, importSaleGrid({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl, collectionHandle: body.collectionHandle }));
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
       }
@@ -644,7 +716,11 @@ export async function createCampaignEditorServer({ workspaceRoot, sessionRoot, r
       return `http://127.0.0.1:${address.port}`;
     },
     async close() {
-      await new Promise((resolveClose, rejectClose) => server.close((error) => error ? rejectClose(error) : resolveClose()));
+      try {
+        await new Promise((resolveClose, rejectClose) => server.close((error) => error ? rejectClose(error) : resolveClose()));
+      } finally {
+        rmSync(sessionRoot, { recursive: true, force: true });
+      }
     }
   };
 }

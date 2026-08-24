@@ -11,8 +11,8 @@ const read = (relativePath) => readFileSync(`${root}/${relativePath}`, 'utf8');
 const builder = `${root}/build-email-template.v1.mjs`;
 const registry = JSON.parse(read('组件清单.json'));
 
-const TITLE = { size: '28px', weight: '500', lineHeight: '36px', letterSpacing: '0px' };
-const SUBTITLE = { size: '14px', weight: '500', lineHeight: '21px', letterSpacing: '0px' };
+const TITLE = { size: '30px', weight: '500', lineHeight: '38px', letterSpacing: '0px' };
+const SUBTITLE = { size: '18px', weight: '500', lineHeight: '27px', letterSpacing: '0px' };
 const ADDRESS = { size: '16px', weight: '400', lineHeight: '25px' };
 
 function escapeRegExp(value) {
@@ -142,7 +142,7 @@ test('location.showroomCard uses the shared title typography and preserves both 
   }
 });
 
-test('double-gift and sale-grid use the shared non-hero header typography', () => {
+test('double-gift, sale-grid, and curtain inspiration use the shared non-hero header typography', () => {
   const gift = renderComponent('gift.rewardGrid2');
   assertTypography(styleForSlot(gift, 'reward.title'), {
     family: 'Lora, Georgia, Times New Roman, serif',
@@ -163,6 +163,16 @@ test('double-gift and sale-grid use the shared non-hero header typography', () =
     ...TITLE
   });
   assertTypography(styleForSlot(saleGrid, 'saleCollection.body'), {
+    family: 'Montserrat, Arial, Helvetica, sans-serif',
+    ...SUBTITLE
+  });
+
+  const inspirationGrid = renderComponent('collection.curtainInspirationGrid4');
+  assertTypography(styleForSlot(inspirationGrid, 'promotion.title'), {
+    family: 'Lora, Georgia, Times New Roman, serif',
+    ...TITLE
+  });
+  assertTypography(styleForSlot(inspirationGrid, 'promotion.subtitle'), {
     family: 'Montserrat, Arial, Helvetica, sans-serif',
     ...SUBTITLE
   });

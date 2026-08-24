@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
 
-import { activityPageProductGridSources, parseActivityPageUrl, parseShopifyProductImportUrl } from '../skills/build-omnisend-campaign-draft/scripts/fetch-activity-page-sale-grid.mjs';
+import { activityPageProductGridSources, parseActivityPageUrl, parseCollectionHandle, parseShopifyProductImportUrl } from '../skills/build-omnisend-campaign-draft/scripts/fetch-activity-page-sale-grid.mjs';
 
 test('accepts a Freshine activity Page URL and extracts its Page handle', () => {
   assert.deepEqual(
@@ -18,6 +18,11 @@ test('accepts a Freshine Collection URL as a direct product and CTA source', () 
     parseShopifyProductImportUrl('https://freshinelife.com/collections/back-to-school-home'),
     { type: 'collection', handle: 'back-to-school-home', url: 'https://freshinelife.com/collections/back-to-school-home' }
   );
+});
+
+test('accepts an unpublished Shopify Collection by its backend handle without a storefront URL', () => {
+  assert.equal(parseCollectionHandle(' back-to-school-home '), 'back-to-school-home');
+  assert.throws(() => parseCollectionHandle('https://freshinelife.com/collections/back-to-school-home'), /collection handle/i);
 });
 
 test('uses the first enabled product grid as the activity page six-grid source', async (t) => {

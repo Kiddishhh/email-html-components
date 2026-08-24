@@ -21,6 +21,20 @@ const editableByComponent = {
     content: ['saleCollection.title', 'saleCollection.body', 'saleCollection.cta.text', 'saleCollection.cta.url'],
     settings: ['color.theme', 'color.surface']
   },
+  'collection.curtainInspirationGrid4': {
+    content: [
+      'promotion.title', 'promotion.subtitle',
+      'grid.image1.url', 'grid.image1.alt', 'grid.image1.clickUrl', 'grid.image1.caption',
+      'grid.image2.url', 'grid.image2.alt', 'grid.image2.clickUrl', 'grid.image2.caption',
+      'grid.image3.url', 'grid.image3.alt', 'grid.image3.clickUrl', 'grid.image3.caption',
+      'grid.image4.url', 'grid.image4.alt', 'grid.image4.clickUrl', 'grid.image4.caption'
+    ],
+    settings: ['grid.showCaptions', 'color.surface']
+  },
+  'collection.curtainEditorialTriptych': {
+    content: ['hero.image.url', 'hero.image.alt', 'hero.image.clickUrl', 'pair.left.url', 'pair.left.alt', 'pair.left.clickUrl', 'pair.left.caption', 'pair.right.url', 'pair.right.alt', 'pair.right.clickUrl', 'pair.right.caption', 'intro.title', 'intro.subtitle'],
+    settings: ['color.surface']
+  },
   'collection.curtainPromotionCard': {
     content: ['promotion.title', 'promotion.subtitle', 'product.badge', 'product.image.url', 'product.image.alt', 'product.image.clickUrl', 'product.title', 'product.description', 'product.cta.text', 'product.cta.url'],
     settings: ['color.surface', 'color.badge']
@@ -113,6 +127,30 @@ const copyByField = {
   'saleCollection.cta.url': ['商品区按钮链接', '六宫格下方按钮点击后打开的活动页地址。'],
   'promotion.title': ['顶部活动标题', '显示在商品主图上方的居中标题。'],
   'promotion.subtitle': ['顶部活动说明', '显示在顶部活动标题下方的居中说明。'],
+  'grid.image1.url': ['左上灵感图', '替换左上窗帘灵感图片；填写公开 HTTPS 图片地址。'],
+  'grid.image1.alt': ['左上灵感图说明', '左上图片无法显示时供读屏工具识别的简短说明。'],
+  'grid.image1.clickUrl': ['左上灵感图链接', '点击左上图片后打开的公开 HTTPS 页面地址。'],
+  'grid.image1.caption': ['左上图片标题', '开启“显示图片下方标题”后，显示在左上图片下方的居中标题。'],
+  'grid.image2.url': ['右上灵感图', '替换右上窗帘灵感图片；填写公开 HTTPS 图片地址。'],
+  'grid.image2.alt': ['右上灵感图说明', '右上图片无法显示时供读屏工具识别的简短说明。'],
+  'grid.image2.clickUrl': ['右上灵感图链接', '点击右上图片后打开的公开 HTTPS 页面地址。'],
+  'grid.image2.caption': ['右上图片标题', '开启“显示图片下方标题”后，显示在右上图片下方的居中标题。'],
+  'grid.image3.url': ['左下灵感图', '替换左下窗帘灵感图片；填写公开 HTTPS 图片地址。'],
+  'grid.image3.alt': ['左下灵感图说明', '左下图片无法显示时供读屏工具识别的简短说明。'],
+  'grid.image3.clickUrl': ['左下灵感图链接', '点击左下图片后打开的公开 HTTPS 页面地址。'],
+  'grid.image3.caption': ['左下图片标题', '开启“显示图片下方标题”后，显示在左下图片下方的居中标题。'],
+  'grid.image4.url': ['右下灵感图', '替换右下窗帘灵感图片；填写公开 HTTPS 图片地址。'],
+  'grid.image4.alt': ['右下灵感图说明', '右下图片无法显示时供读屏工具识别的简短说明。'],
+  'grid.image4.clickUrl': ['右下灵感图链接', '点击右下图片后打开的公开 HTTPS 页面地址。'],
+  'grid.image4.caption': ['右下图片标题', '开启“显示图片下方标题”后，显示在右下图片下方的居中标题。'],
+  'pair.left.url': ['左侧场景图', '替换左侧窗帘场景图；填写公开 HTTPS 图片地址。'],
+  'pair.left.alt': ['左侧场景图说明', '左侧图片无法显示时供读屏工具识别的简短说明。'],
+  'pair.left.clickUrl': ['左侧场景图链接', '点击左侧场景图或文字后打开的公开 HTTPS 页面地址。'],
+  'pair.left.caption': ['左侧场景图文字', '显示在左侧场景图下方的居中文字链接。'],
+  'pair.right.url': ['右侧场景图', '替换右侧窗帘场景图；填写公开 HTTPS 图片地址。'],
+  'pair.right.alt': ['右侧场景图说明', '右侧图片无法显示时供读屏工具识别的简短说明。'],
+  'pair.right.clickUrl': ['右侧场景图链接', '点击右侧场景图或文字后打开的公开 HTTPS 页面地址。'],
+  'pair.right.caption': ['右侧场景图文字', '显示在右侧场景图下方的居中文字链接。'],
   'product.badge': ['促销角标文字', '显示在商品主图左上角的促销信息。'],
   'product.image.url': ['商品主图链接', '替换商品主图；填写公开 HTTPS 图片地址。'],
   'product.image.alt': ['商品主图说明', '图片无法显示时供读屏工具识别的简短说明。'],
@@ -155,6 +193,7 @@ const copyByField = {
   'color.logoBadgeTransparent': ['Logo 徽章透明底色', '首图 Logo 圆形徽章在支持透明度客户端中的背景。'],
   'color.navigationLeft': ['左侧导航底色', '顶部导航左侧促销区域的背景色。'],
   'color.navigationRight': ['右侧导航底色', '顶部导航右侧注册链接区域的背景色。'],
+  'grid.showCaptions': ['显示图片下方标题', '默认关闭；开启后为每张灵感图显示下方居中标题。'],
   'color.surface': ['组件背景色', '仅修改当前组件的底色，不影响邮件整体背景。'],
   'color.heading': ['标题文字色', '修改活动名称和主折扣标题的文字颜色。'],
   'color.text': ['组件文字色', '仅修改当前组件的文字颜色。'],

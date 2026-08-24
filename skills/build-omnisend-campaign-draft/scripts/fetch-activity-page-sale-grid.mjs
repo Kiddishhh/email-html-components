@@ -7,6 +7,7 @@ import { runReadonlyShopify } from './shopify-readonly.mjs';
 
 const DEFAULT_SHOPIFY_STORE = '0qsgrb-pe.myshopify.com';
 const STOREFRONT_ORIGIN = 'https://freshinelife.com';
+const COLLECTION_HANDLE_PATTERN = /^[a-z0-9][a-z0-9-]*$/u;
 
 function readTemplate(path) {
   return JSON.parse(readFileSync(path, 'utf8').replace(/^\/\*[\s\S]*?\*\/\s*/u, ''));
@@ -19,6 +20,12 @@ export function parseShopifyProductImportUrl(value) {
   const match = url.pathname.match(/^\/(pages|collections)\/([a-z0-9][a-z0-9-]*)\/?$/u);
   if (!match) throw new Error('shopify URL must use /pages/<handle> or /collections/<handle>');
   return { type: match[1] === 'pages' ? 'page' : 'collection', handle: match[2], url: url.href };
+}
+
+export function parseCollectionHandle(value) {
+  const handle = typeof value === 'string' ? value.trim() : '';
+  if (!COLLECTION_HANDLE_PATTERN.test(handle)) throw new Error('shopify collection handle is required');
+  return handle;
 }
 
 export function parseActivityPageUrl(value) {
@@ -90,7 +97,15 @@ export function loadActivityPageSaleGrid({ activityPageUrl, store = DEFAULT_SHOP
   };
 }
 
-export function loadShopifyProductImport({ shopifyUrl, store = DEFAULT_SHOPIFY_STORE }) {
+export function loadShopifyProductImport({ shopifyUrl, collectionHandle, store = DEFAULT_SHOPIFY_STORE }) {
+  if (collectionHandle !== undefined) {
+    if (shopifyUrl !== undefined) throw new Error('choose either shopify URL or collection handle');
+    const handle = parseCollectionHandle(collectionHandle);
+    return {
+      ...normalizeSaleGrid(loadSaleGridPayload({ collectionHandle: handle, count: '6', store }), handle),
+      collectionSource: { type: 'admin-handle', handle }
+    };
+  }
   const source = parseShopifyProductImportUrl(shopifyUrl);
   if (source.type === 'page') return loadActivityPageSaleGrid({ activityPageUrl: source.url, store });
   const saleGrid = normalizeSaleGrid(loadSaleGridPayload({ collectionHandle: source.handle, count: '6', store }), source.handle);
@@ -105,12 +120,13 @@ function parseArgs(argv) {
   const options = {};
   for (let index = 0; index < argv.length; index += 1) {
     const option = argv[index];
-    if (!['--shopify-url', '--activity-page-url', '--store'].includes(option) || !argv[index + 1]) throw new Error(`unsupported Shopify sale-grid option: ${option}`);
+    if (!['--shopify-url', '--activity-page-url', '--collection-handle', '--store'].includes(option) || !argv[index + 1]) throw new Error(`unsupported Shopify sale-grid option: ${option}`);
     options[option.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = argv[index + 1];
     index += 1;
   }
   options.shopifyUrl ??= options.activityPageUrl;
-  if (!options.shopifyUrl) throw new Error('shopify URL is required');
+  if (options.shopifyUrl && options.collectionHandle) throw new Error('choose either shopify URL or collection handle');
+  if (!options.shopifyUrl && !options.collectionHandle) throw new Error('shopify URL or collection handle is required');
   options.store ??= DEFAULT_SHOPIFY_STORE;
   return options;
 }

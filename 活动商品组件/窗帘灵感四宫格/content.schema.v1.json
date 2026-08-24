@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainInspirationGrid4",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "promotion.title": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "grid.image1.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image1.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "grid.image1.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image1.caption": { "type": "text", "required": false, "skillPrompt": true },
+    "grid.image2.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image2.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "grid.image2.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image2.caption": { "type": "text", "required": false, "skillPrompt": true },
+    "grid.image3.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image3.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "grid.image3.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image3.caption": { "type": "text", "required": false, "skillPrompt": true },
+    "grid.image4.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image4.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "grid.image4.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "grid.image4.caption": { "type": "text", "required": false, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

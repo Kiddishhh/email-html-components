@@ -4,7 +4,7 @@
 
 ## 当前架构
 
-- [`组件清单.json`](组件清单.json)：19 个组件及文件路径的单一事实来源。
+- [`组件清单.json`](组件清单.json)：全部已登记组件及文件路径的单一事实来源。
 - [`组件索引.md`](组件索引.md)：全部当前组件的管理说明、模板和效果演示入口。
 - `build-email-template.v1.mjs`：校验完整组件快照、内联当前组件 CSS，并按 composition 顺序生成静态 HTML。
 - `skills/build-omnisend-campaign-draft/`：可视化编辑器、注册校验、当前 Skill 与安全指南。
@@ -28,7 +28,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 - 六宫格及单品窗帘促销卡的 Shopify 只读导入；
 - Omnisend HTML 导出和 Draft-only 上传。
 
-本地会话和可再生成的输出写入被 Git 忽略的 `campaign-drafts/` 与 `build/`。
+普通编辑草稿、预览、导出中间文件和图片缓存只存在于当前编辑器运行期，关闭或重启服务即自动清理；仅手动保存的预设模板及其专属本地图片保存在被 Git 忽略的 `campaign-drafts/editor-templates/`。
 
 ## 校验与测试
 

@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { createCampaignEditorServer, formatSaleGridImportFailure } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-server.mjs';
 
 const workspaceRoot = '/Users/ww/Desktop/邮件营销运营/邮件html组件';
@@ -117,6 +117,7 @@ test('editor server creates a free-form campaign, renders it, and serves the gen
   assert.match(client, /normalizeHexColor/);
   assert.match(client, /collection\.curtainPromotionCard/);
   assert.match(client, /collection\.curtainPromotionCardNoTitle/);
+  assert.match(client, /collectionHandle/);
   assert.match(client, /import-shopify-product/);
 });
 
@@ -139,12 +140,17 @@ test('editor server rejects an unregistered component rather than inferring a re
 });
 
 test('editor persists a named template and creates an editable draft from its complete local snapshot', async (t) => {
-  const sessionRoot = mkdtempSync(join(workspaceRoot, 'campaign-drafts/editor-template-persist-'));
-  const firstServer = await createCampaignEditorServer({ workspaceRoot, sessionRoot });
+  const firstSessionRoot = mkdtempSync(join(workspaceRoot, 'build/editor-runtime-test-'));
+  const templateRoot = mkdtempSync(join(workspaceRoot, 'build/editor-templates-test-'));
+  rmSync(templateRoot, { recursive: true, force: true });
+  const firstServer = await createCampaignEditorServer({ workspaceRoot, sessionRoot: firstSessionRoot, templateRoot });
   const firstUrl = await firstServer.listen();
   t.after(async () => {
     try { await firstServer.close(); } catch {}
+    rmSync(firstSessionRoot, { recursive: true, force: true });
+    rmSync(templateRoot, { recursive: true, force: true });
   });
+  assert.equal(existsSync(templateRoot), false, 'template storage must not be created until the user saves a template');
 
   const created = await request(firstUrl, '/api/drafts', {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '夏末活动编辑稿' })
@@ -176,11 +182,21 @@ test('editor persists a named template and creates an editable draft from its co
   assert.equal(saved.response.status, 201, saved.body?.error);
   assert.equal(saved.body.template.name, '夏末双区块模板');
   assert.equal(saved.body.template.componentCount, 2);
+  const localAssetId = localImageReference.slice('asset://'.length);
+  assert.equal(existsSync(join(templateRoot, 'saved-templates.v1.json')), true);
+  const storedTemplates = JSON.parse(readFileSync(join(templateRoot, 'saved-templates.v1.json'), 'utf8'));
+  const storedAsset = storedTemplates.templates[0].snapshot.localAssets[localAssetId];
+  assert.equal(existsSync(resolve(workspaceRoot, storedAsset.path)), true);
 
   await firstServer.close();
-  const secondServer = await createCampaignEditorServer({ workspaceRoot, sessionRoot });
+  assert.equal(existsSync(firstSessionRoot), false, 'ordinary editor drafts must be removed when the editor closes');
+  const secondSessionRoot = mkdtempSync(join(workspaceRoot, 'build/editor-runtime-test-'));
+  const secondServer = await createCampaignEditorServer({ workspaceRoot, sessionRoot: secondSessionRoot, templateRoot });
   const secondUrl = await secondServer.listen();
-  t.after(() => secondServer.close());
+  t.after(async () => {
+    try { await secondServer.close(); } catch {}
+    rmSync(secondSessionRoot, { recursive: true, force: true });
+  });
 
   const listed = await request(secondUrl, '/api/templates');
   assert.equal(listed.response.status, 200);
@@ -199,19 +215,23 @@ test('editor persists a named template and creates an editable draft from its co
   assert.equal(preview.response.status, 200, preview.body?.error);
   const previewHtml = await (await fetch(`${secondUrl}${preview.body.previewUrl}`)).text();
   assert.match(previewHtml, /TEMPLATE SALE/);
-  const localAssetId = localImageReference.slice('asset://'.length);
   const localImageSource = [...previewHtml.matchAll(/<img[^>]+src="([^"]+)"/giu)].map((match) => match[1]).find((source) => source.includes(localAssetId));
   assert.ok(localImageSource, 'template preview should resolve the saved local image reference');
   assert.equal((await fetch(new URL(localImageSource, `${secondUrl}${preview.body.previewUrl}`).href)).status, 200);
 });
 
 test('editor requires explicit overwrite for a duplicate template name', async (t) => {
+  const templateRoot = mkdtempSync(join(workspaceRoot, 'build/editor-templates-test-'));
   const server = await createCampaignEditorServer({
     workspaceRoot,
-    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-template-overwrite-'))
+    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-template-overwrite-')),
+    templateRoot
   });
   const baseUrl = await server.listen();
-  t.after(() => server.close());
+  t.after(async () => {
+    try { await server.close(); } catch {}
+    rmSync(templateRoot, { recursive: true, force: true });
+  });
   const created = await request(baseUrl, '/api/drafts', {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '覆盖测试' })
   });
@@ -242,12 +262,17 @@ test('editor requires explicit overwrite for a duplicate template name', async (
 });
 
 test('deleting a saved template leaves an already-created draft editable', async (t) => {
+  const templateRoot = mkdtempSync(join(workspaceRoot, 'build/editor-templates-test-'));
   const server = await createCampaignEditorServer({
     workspaceRoot,
-    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-template-delete-'))
+    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-template-delete-')),
+    templateRoot
   });
   const baseUrl = await server.listen();
-  t.after(() => server.close());
+  t.after(async () => {
+    try { await server.close(); } catch {}
+    rmSync(templateRoot, { recursive: true, force: true });
+  });
   const created = await request(baseUrl, '/api/drafts', {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: '删除测试' })
   });
@@ -296,7 +321,13 @@ test('editor server renders both sample product card variants in one local previ
   assert.equal(preview.response.status, 200, preview.body?.error);
   const previewResponse = await fetch(`${baseUrl}${preview.body.previewUrl}`);
   assert.equal(previewResponse.status, 200);
-  assert.match(await previewResponse.text(), /Liana sheer curtains in a bright living room/);
+  const previewHtml = await previewResponse.text();
+  assert.match(previewHtml, /Liana sheer curtains in a bright living room/);
+  assert.equal((previewHtml.match(/height:min\(16px,3\.2vw\)/g) ?? []).length, 2);
+  assert.equal((previewHtml.match(/font-size:min\(22px,5\.333vw\)/g) ?? []).length, 2);
+  assert.equal((previewHtml.match(/font-size:min\(17px,3\.733vw\)/g) ?? []).length, 2);
+  assert.equal((previewHtml.match(/font-size:min\(18px,4vw\)/g) ?? []).length, 2);
+  assert.equal((previewHtml.match(/white-space:normal;word-break:normal;overflow-wrap:break-word/g) ?? []).length, 2);
 });
 
 test('editor server keeps Shopify import scoped to a selected sale-grid instance', async (t) => {
@@ -345,7 +376,7 @@ test('editor server limits Shopify single-product import to curtain promotion ca
 test('editor server stores an uploaded local image only in the current draft and renders it', async (t) => {
   const server = await createCampaignEditorServer({
     workspaceRoot,
-    sessionRoot: mkdtempSync(join(workspaceRoot, 'campaign-drafts/editor-upload-test-'))
+    sessionRoot: mkdtempSync(join(workspaceRoot, 'build/editor-runtime-upload-test-'))
   });
   const baseUrl = await server.listen();
   t.after(() => server.close());
@@ -429,7 +460,7 @@ test('editor uploads a prepared Omnisend draft with a one-time API key and no ma
 
 test('editor exports substituted Omnisend HTML without preparing or creating a campaign draft', async (t) => {
   const calls = [];
-  const sessionRoot = mkdtempSync(join(workspaceRoot, 'campaign-drafts/editor-omnisend-html-export-'));
+  const sessionRoot = mkdtempSync(join(workspaceRoot, 'build/editor-runtime-omnisend-html-export-'));
   const server = await createCampaignEditorServer({
     workspaceRoot,
     sessionRoot,
@@ -491,7 +522,7 @@ test('editor exports substituted Omnisend HTML without preparing or creating a c
 
 test('editor persists the Omnisend image cache across exports without storing the runtime key', async (t) => {
   const calls = [];
-  const sessionRoot = mkdtempSync(join(workspaceRoot, 'campaign-drafts/editor-omnisend-image-cache-'));
+  const sessionRoot = mkdtempSync(join(workspaceRoot, 'build/editor-runtime-omnisend-image-cache-'));
   const server = await createCampaignEditorServer({
     workspaceRoot,
     sessionRoot,

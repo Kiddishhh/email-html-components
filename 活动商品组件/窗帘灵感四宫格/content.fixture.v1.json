@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainInspirationGrid4",
+  "fixture": "reference-faithful-local-crops",
+  "values": {
+    "promotion.title": "Upgrade Your Home in Style",
+    "promotion.subtitle": "Refresh Your Home With Our Latest Curtain Designs-Crafted To Bring A Clean, Modern Look And Effortless Comfort For The Year Ahead.",
+    "grid.image1.url": "asset://curtain-grid-1",
+    "grid.image1.alt": "Natural linen Roman shade filtering sunlight at a window",
+    "grid.image1.clickUrl": "https://freshinelife.com/collections/curtains",
+    "grid.image1.caption": "Linen Roman Shades",
+    "grid.image2.url": "asset://curtain-grid-2",
+    "grid.image2.alt": "Green floral Roman shade with a hand lifting the lower edge",
+    "grid.image2.clickUrl": "https://freshinelife.com/collections/roman-shades",
+    "grid.image2.caption": "Floral Roman Shades",
+    "grid.image3.url": "asset://curtain-grid-3",
+    "grid.image3.alt": "Wooden Venetian blinds being adjusted by hand",
+    "grid.image3.clickUrl": "https://freshinelife.com/collections/blinds",
+    "grid.image3.caption": "Venetian Blinds",
+    "grid.image4.url": "asset://curtain-grid-4",
+    "grid.image4.alt": "Woven brown bamboo shade with a hand lifting the bottom edge",
+    "grid.image4.clickUrl": "https://freshinelife.com/collections/bamboo-shades",
+    "grid.image4.caption": "Bamboo Shades"
+  },
+  "localReferenceAssets": {
+    "curtain-grid-1": "assets/default-curtain-grid-1.png",
+    "curtain-grid-2": "assets/default-curtain-grid-2.png",
+    "curtain-grid-3": "assets/default-curtain-grid-3.png",
+    "curtain-grid-4": "assets/default-curtain-grid-4.png"
+  }
+}

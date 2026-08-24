@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainInspirationGrid4",
+  "values": {
+    "grid.showCaptions": false,
+    "color.surface": "#FBFAF8",
+    "color.text": "#1F1F1F",
+    "color.body": "#2C2C2C",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif"
+  }
+}

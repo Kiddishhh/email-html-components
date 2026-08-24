@@ -50,9 +50,24 @@ test('Skill routes current Campaign work through the visual editor and focused r
   assert.match(skill, /600px.*375px/su);
   assert.match(skill, /visual-editor-workflow\.zh-CN\.md/u);
   assert.match(skill, /component-interactions\.zh-CN\.md/u);
+  assert.match(skill, /new-component-standard\.zh-CN\.md/u);
   assert.match(skill, /workflow-and-safety\.zh-CN\.md/u);
   assert.match(skill, /shopify-data-contract\.zh-CN\.md/u);
   assert.doesNotMatch(skill, retiredTerms);
+});
+
+test('new-component standard preserves the approved design, registration, and email-safety boundaries', async () => {
+  const standard = await read('references/new-component-standard.zh-CN.md');
+
+  assert.match(standard, /600px.*375px/su);
+  assert.match(standard, /table.*inline CSS/su);
+  assert.match(standard, /Flex.*Grid/su);
+  assert.match(standard, /独立.*点击链接/su);
+  assert.match(standard, /单独目录.*componentKey/su);
+  assert.match(standard, /组件清单\.json.*单一事实来源/su);
+  assert.match(standard, /效果演示\.html/u);
+  assert.match(standard, /node --test tests\/\*\.test\.mjs/u);
+  assert.match(standard, /不得发送.*排期.*发布/su);
 });
 
 test('current component guide covers every registered component without retired routing language', async () => {
@@ -90,7 +105,7 @@ test('workflow guide keeps local assets and remote writes behind explicit safety
   assert.match(safety, /API Key.*内存/su);
   assert.match(safety, /不得发送.*排期.*发布/su);
   assert.match(safety, /\[\[unsubscribe_link\]\]/u);
-  assert.match(safety, /默认保留.*项目草稿/su);
+  assert.match(safety, /普通草稿.*关闭编辑器时清理/su);
   assert.doesNotMatch(safety, retiredTerms);
 });
 

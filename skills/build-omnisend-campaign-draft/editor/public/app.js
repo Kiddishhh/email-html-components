@@ -494,11 +494,13 @@ async function confirmComponent(instanceId) {
 }
 
 async function importSaleGrid(instanceId) {
-  const shopifyUrl = window.prompt('输入 Freshine 活动页或 Collection 链接（例如 https://freshinelife.com/pages/back-to-school-refresh）');
-  if (!shopifyUrl) return;
+  const source = window.prompt('输入 Freshine 活动页/Collection 链接，或直接输入 Shopify 后台 Collection handle');
+  if (!source) return;
+  const value = source.trim();
+  const body = /^https:\/\//i.test(value) ? { shopifyUrl: value } : { collectionHandle: value };
   try {
     const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-sale-grid`, {
-      method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
+      method: 'POST', body: JSON.stringify(body)
     });
     setDraft(result.draft);
     queuePreview();

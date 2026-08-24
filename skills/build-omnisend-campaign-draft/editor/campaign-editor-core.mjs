@@ -133,7 +133,7 @@ export function applySaleGridImport(document, instanceId, saleGrid) {
   if (index === -1) throw new Error('component instance not found');
   const current = document.components[index];
   if (current.componentKey !== 'collection.saleGrid6') throw new Error('sale-grid import requires a collection.saleGrid6 instance');
-  if (!saleGrid?.collection?.handle || !saleGrid?.collection?.url || !Array.isArray(saleGrid.items) || saleGrid.items.length !== 6) {
+  if (!saleGrid?.collection?.handle || !Array.isArray(saleGrid.items) || saleGrid.items.length !== 6) {
     throw new Error('sale-grid import must contain one collection and exactly six items');
   }
   const content = { ...current.content };
@@ -144,11 +144,12 @@ export function applySaleGridImport(document, instanceId, saleGrid) {
     content[`saleItems[${index}].image.clickUrl`] = item.linkUrl;
     content[`saleItems[${index}].discountLabel`] = item.discountLabel ?? '';
   }
-  content['saleCollection.cta.url'] = saleGrid.ctaUrl ?? saleGrid.collection.url;
+  const ctaUrl = saleGrid.ctaUrl ?? (saleGrid.collectionSource?.type === 'admin-handle' ? null : saleGrid.collection.url);
+  if (ctaUrl) content['saleCollection.cta.url'] = ctaUrl;
   const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
     ...instance,
     content,
-    source: saleGrid.activityPage ? `shopify-activity-page:${saleGrid.activityPage.handle}:${saleGrid.collection.handle}` : `shopify-sale-grid:${saleGrid.collection.handle}`,
+    source: saleGrid.activityPage ? `shopify-activity-page:${saleGrid.activityPage.handle}:${saleGrid.collection.handle}` : saleGrid.collectionSource?.type === 'admin-handle' ? `shopify-sale-grid-admin:${saleGrid.collection.handle}` : `shopify-sale-grid:${saleGrid.collection.handle}`,
     confirmed: false
   } : instance);
   return { ...clone(document), components, confirmed: false };
