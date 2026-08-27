@@ -8,7 +8,7 @@
 4. 数据源分工
 5. 首页 Slide 活动解析
 6. 六宫格商品解析
-7. 单品窗帘促销卡商品解析
+7. 单品窗帘促销卡与四宫格单款商品解析
 8. 折扣计算
 9. 当前脚本接口
 10. 失败处理
@@ -81,11 +81,13 @@ Skill 只允许执行以下 Shopify CLI 命令族：
 
 Collection 的 Admin GraphQL 类型不提供 `onlineStoreUrl`；用 handle 生成 `https://freshinelife.com/collections/{handle}`。
 
-## 7. 单品窗帘促销卡商品解析
+## 7. 单品窗帘促销卡与四宫格单款商品解析
 
 `collection.curtainPromotionCard` 与 `collection.curtainPromotionCardNoTitle` 的“shopify商品导入”接受完整的 Freshine 商品详情页链接：`https://freshinelife.com/products/<handle>` 或 `https://freshinelife.com/collections/<collection-handle>/products/<handle>`。`fetch-single-product.mjs` 从两种路径提取相同的 handle，再经只读 `shopify store execute` 查询一个商品，读取其第一张按 `POSITION` 排序的图片媒体、Alt、`onlineStoreUrl`、标题与首个可售变体；不读取或修改其他商品、Collection、主题或 Shopify 数据。
 
 导入只更新当前选中卡片的 `product.image.url`、`product.image.alt`、`product.image.clickUrl`、`product.cta.url`、`product.title`、`product.description` 与 `product.badge`。商品标题在第一个 `–` 前的文本写入 `product.title`，其后文本写入 `product.description`；没有 `–` 时说明写为空。顶部活动标题/说明、CTA 文案、背景色和角标底色不得被导入覆盖。没有有效折扣时写入空角标，以清除旧促销信息。
+
+`collection.saleGrid4` 使用同一条 URL 解析和只读查询，但编辑器必须先指定第 1–4 格中的一个。导入只更新该格的 `saleItems[n].image.url`、`saleItems[n].image.alt`、`saleItems[n].image.clickUrl` 和 `saleItems[n].discountLabel`；不得覆盖其余三格、组件背景色或标签主题色。
 
 ## 8. 折扣计算
 

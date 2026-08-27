@@ -39,7 +39,7 @@ A valid result means the registry paths, component Schemas, default snapshots, d
 - Local image upload and preview exist only for the current editor run. Saving a template copies its selected local images into that template's dedicated asset directory; component-directory assets are never copied or deleted.
 - Desktop/mobile preview switching and selected-component positioning.
 - `navigation.visible` toggle for all four head-image styles. When disabled, the navigation markup and its height are removed from generated HTML while the saved copy, URL, and colors remain available for re-enabling.
-- Shopify read-only import for the six-product grid and the two single-curtain promotion cards.
+- Shopify read-only import for the six-product grid, four-product discount grid (one selected product per card), and the two single-curtain promotion cards. The navigation promotion CTA is text, color, divider-image, and CTA-link only.
 - Runtime-only Omnisend API Key dialogs with show/hide support. Keys are cleared after success, failure, or cancellation and are never written to drafts, files, parameters, environment variables, logs, or chat.
 
 ## Component and style rules

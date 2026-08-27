@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "footer.doubleDivider",
+  "values": {
+    "color.canvas": "#FAF9F7",
+    "color.background": "#F9F6EE",
+    "color.text": "#000000",
+    "color.link": "rgba(0, 87, 184, 1)",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "space.sectionX": "24px",
+    "space.sectionY": "32px",
+    "space.block": "14px",
+    "content.width": "508px"
+  }
+}

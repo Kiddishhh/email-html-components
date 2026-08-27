@@ -38,8 +38,13 @@ test('editor catalog exposes every registered component as a freely selectable s
 test('editor groups styles by structure before selection and exposes only Skill-directed edits', () => {
   const catalog = buildEditorCatalog({ workspaceRoot });
 
-  assert.deepEqual(structuresForCatalog(catalog), ['头图', '活动商品组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件']);
+  assert.deepEqual(structuresForCatalog(catalog), ['头图', '导航组件', '活动商品组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件']);
   assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2', 'hero.lateSummerSale']);
+  assert.deepEqual(styleKeysForStructure(catalog, '导航组件'), ['navigation.promotionCta']);
+  assert.deepEqual(editableFieldKeys('navigation.promotionCta'), {
+    content: ['promotion.title', 'promotion.divider.url', 'promotion.divider.alt', 'promotion.offer', 'promotion.body', 'promotion.cta.text', 'promotion.cta.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  });
   assert.deepEqual(styleKeysForStructure(catalog, '小样-产品'), [
     'product.sampleProductRecommendationLeft',
     'product.sampleProductRecommendationRight',
@@ -49,7 +54,12 @@ test('editor groups styles by structure before selection and exposes only Skill-
   ]);
   assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'image.benefitsStrip3', 'tool.measurementCard']);
   assert.deepEqual(styleKeysForStructure(catalog, '地址组件'), ['location.showroomCard']);
+  assert.deepEqual(styleKeysForStructure(catalog, '页脚组件'), ['footer.warm', 'footer.doubleDivider']);
   assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background', 'color.text', 'color.link'] });
+  assert.deepEqual(editableFieldKeys('footer.doubleDivider'), {
+    content: [],
+    settings: ['color.canvas', 'color.background', 'color.text', 'color.link']
+  });
   assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), {
     content: [
       'reward.title',
@@ -134,6 +144,10 @@ test('editor groups styles by structure before selection and exposes only Skill-
   assert.deepEqual(editorFieldCopy('footer.warm', 'settings', 'color.link'), {
     label: '页脚链接颜色',
     help: '修改联系邮箱与退订链接的颜色。'
+  });
+  assert.deepEqual(editorFieldCopy('footer.doubleDivider', 'settings', 'color.canvas'), {
+    label: '页脚外层底色',
+    help: '仅修改双分割线页脚的外层画布底色。'
   });
   assert.deepEqual(editorFieldCopy('gift.rewardGrid2', 'content', 'reward.title'), {
     label: '赠品区主标题',
@@ -346,6 +360,37 @@ test('sale-grid backend Collection import keeps the existing public CTA while ma
 
   assert.equal(imported.components[0].content['saleCollection.cta.url'], originalCtaUrl);
   assert.equal(imported.components[0].source, 'shopify-sale-grid-admin:private-curtain-sale');
+});
+
+test('four-grid product import changes only the requested card in the selected component instance', async () => {
+  const { applySaleGrid4ProductImport } = await import('../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs');
+  const catalog = buildEditorCatalog({ workspaceRoot });
+  let document = createCampaignDocument({ name: '四宫格独立商品导入测试' });
+  document = addComponentInstance(document, catalog, 'collection.saleGrid4');
+  document = addComponentInstance(document, catalog, 'collection.saleGrid4');
+  const untouchedInstance = structuredClone(document.components[0]);
+  const untouchedFirstCard = structuredClone(document.components[1].content);
+
+  const imported = applySaleGrid4ProductImport(document, document.components[1].instanceId, 2, {
+    product: {
+      handle: 'elara-linen-curtains',
+      image: { url: 'https://cdn.example.com/elara-primary.webp', alt: 'Elara linen curtains' },
+      linkUrl: 'https://freshinelife.com/products/elara-linen-curtains',
+      title: 'Elara Linen Curtains',
+      description: 'Light-filtering linen drapes',
+      discountLabel: 'SAVE 45%'
+    }
+  });
+
+  assert.deepEqual(imported.components[0], untouchedInstance);
+  assert.equal(imported.components[1].content['saleItems[2].image.url'], 'https://cdn.example.com/elara-primary.webp');
+  assert.equal(imported.components[1].content['saleItems[2].image.alt'], 'Elara linen curtains');
+  assert.equal(imported.components[1].content['saleItems[2].image.clickUrl'], 'https://freshinelife.com/products/elara-linen-curtains');
+  assert.equal(imported.components[1].content['saleItems[2].discountLabel'], 'SAVE 45%');
+  assert.equal(imported.components[1].content['saleItems[0].image.url'], untouchedFirstCard['saleItems[0].image.url']);
+  assert.equal(imported.components[1].source, 'shopify-product:elara-linen-curtains:slot-3');
+  assert.equal(imported.components[1].confirmed, false);
+  assert.equal(imported.confirmed, false);
 });
 
 test('curtain promotion product import updates only product fields for either card variant', async () => {

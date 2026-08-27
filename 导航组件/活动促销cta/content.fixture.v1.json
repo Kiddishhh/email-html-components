@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "navigation.promotionCta",
+  "fixture": "user-supplied-late-summer-sale-promotion-cta",
+  "values": {
+    "promotion.title": "Late Summer Sale",
+    "promotion.divider.url": "https://app.omnisend.com/images/6a8d5f3fd6a9f339787f045b",
+    "promotion.divider.alt": "Decorative divider",
+    "promotion.offer": "UP TO 70% OFF",
+    "promotion.body": "Turn it into a custom pillow made just for your space.",
+    "promotion.cta.text": "SHOP THE SALE >>",
+    "promotion.cta.url": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-fs"
+  }
+}

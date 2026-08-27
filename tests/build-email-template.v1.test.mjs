@@ -11,6 +11,7 @@ const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const builder = `${root}/build-email-template.v1.mjs`;
 const componentDirectory = `${root}/评论组件/可链接整图`;
 const productStyle1Directory = `${root}/小样/产品/样式1`;
+const navigationPromotionCtaDirectory = `${root}/导航组件/活动促销cta`;
 const fixture = JSON.parse(readFileSync(`${componentDirectory}/content.fixture.v1.json`, 'utf8'));
 const defaults = JSON.parse(readFileSync(`${componentDirectory}/settings.defaults.v1.json`, 'utf8'));
 function makeComposition(name, mutate = () => {}) {
@@ -49,6 +50,61 @@ function makeComposition(name, mutate = () => {}) {
 function run(path, ...args) {
   return spawnSync(process.execPath, [builder, path, ...args], { cwd: root, encoding: 'utf8' });
 }
+
+function makeNavigationPromotionCtaComposition(name, mutate = () => {}) {
+  const componentFixture = JSON.parse(readFileSync(`${navigationPromotionCtaDirectory}/content.fixture.v1.json`, 'utf8'));
+  const componentDefaults = JSON.parse(readFileSync(`${navigationPromotionCtaDirectory}/settings.defaults.v1.json`, 'utf8'));
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FFFFFF',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: `/private/tmp/${name}.html`,
+    previewOutput: `/private/tmp/${name}.local-preview.html`,
+    components: [{
+      name: '活动促销 CTA',
+      directory: navigationPromotionCtaDirectory,
+      componentKey: 'navigation.promotionCta',
+      content: { ...componentFixture.values },
+      settings: { ...componentDefaults.values }
+    }]
+  };
+  mutate(composition);
+  const path = `/private/tmp/${name}.composition.json`;
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+  return { composition, path };
+}
+
+test('navigation promotion CTA renders editable copy and all three theme colors', () => {
+  const { composition, path } = makeNavigationPromotionCtaComposition('navigation-promotion-cta');
+  composition.components[0].content['promotion.title'] = 'Late Summer Sale';
+  composition.components[0].content['promotion.offer'] = 'UP TO 70% OFF';
+  composition.components[0].content['promotion.body'] = 'Custom pillows for every space.';
+  composition.components[0].content['promotion.cta.text'] = 'SHOP THE SALE >>';
+  composition.components[0].content['promotion.cta.url'] = 'https://freshinelife.com/pages/freshine-sale';
+  composition.components[0].settings['color.surface'] = '#F5EFDF';
+  composition.components[0].settings['color.text'] = '#1F1F1F';
+  composition.components[0].settings['color.action'] = '#8D1B1B';
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+
+  const result = run(path);
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(composition.output, 'utf8');
+  assert.match(html, /Late Summer Sale/);
+  assert.match(html, /UP TO 70% OFF/);
+  assert.match(html, /Custom pillows for every space\./);
+  assert.match(html, /href="https:\/\/freshinelife\.com\/pages\/freshine-sale"/);
+  assert.match(html, /background-color:#F5EFDF/);
+  assert.match(html, /color:#1F1F1F/);
+  assert.match(html, /border:2px solid #8D1B1B/);
+  assert.match(html, /color:#8D1B1B/);
+  assert.doesNotMatch(html, /\{\{(?:content|settings)\./);
+});
 
 const productStyle1Settings = {
   'color.surface': '#F8F5F1',
@@ -376,7 +432,7 @@ test('renders the no-title curtain promotion card without top copy fields', () =
   assert.equal(registry.find(({ componentKey }) => componentKey === 'collection.curtainPromotionCardNoTitle')?.中文名称, '单品窗帘促销卡（无标题款）');
 });
 
-test('renders the countdown hero styles required by its registered template', () => {
+test('renders the countdown hero with a mobile-scaled content panel', () => {
   const directory = `${root}/头图/倒计时头图`;
   const content = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
@@ -414,6 +470,13 @@ test('renders the countdown hero styles required by its registered template', ()
   assert.match(html, /height:min\(71px,11\.833333vw\)/);
   assert.match(html, /text-decoration:underline/);
   assert.match(html, /letter-spacing:0px/);
+  assert.match(html, /freshine-countdown-hero-background[^>]*style="[^"]*height:120vw;max-height:722px;min-height:368px;/);
+  assert.match(html, /freshine-countdown-hero-stage[^>]*style="[^"]*height:min\(722px,120vw\);/);
+  assert.match(html, /freshine-countdown-panel-content[^>]*style="[^"]*padding:min\(28px,4\.666667vw\) min\(24px,4vw\);/);
+  assert.match(html, /freshine-countdown-brand-logo[^>]*style="[^"]*max-width:min\(108px,18vw\);/);
+  assert.match(html, /freshine-countdown-title[^>]*style="[^"]*width:min\(280px,46\.666667vw\);[^"]*max-width:min\(280px,46\.666667vw\);[^"]*font-size:min\(50px,8\.333333vw\);[^"]*line-height:min\(64px,10\.666667vw\);/);
+  assert.match(html, /freshine-countdown-cta-cell[^>]*style="[^"]*height:min\(44px,7\.333333vw\);/);
+  assert.match(html, /freshine-countdown-hero-panel" role="presentation" width="440" height="480"[^>]*style="[^"]*width:min\(440px,73\.333333vw\);max-width:440px;height:80vw;max-height:480px;/);
 });
 
 test('renders the benefits strip without its deprecated optional link field', () => {
@@ -790,6 +853,7 @@ test('the footer renders seven social icons in the approved display order with c
   assert.match(demo, /api\.whatsapp\.com\/send/);
   assert.match(management, /Facebook、WhatsApp、Threads/);
   assert.match(interactions, /七枚社媒图标/);
+  assert.match(interactions, /YouTube `24px`、Instagram `24px`、Facebook `23px`、TikTok `24px`、Pinterest `24px`、WhatsApp `24px`、Threads `23px`/);
 });
 
 test('the rendered footer normalizes seven social logos inside equal visual cells', () => {
@@ -823,13 +887,13 @@ test('the rendered footer normalizes seven social logos inside equal visual cell
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const rendered = readFileSync(output, 'utf8');
   const expectedSizes = {
-    youtube: 26,
-    instagram: 22,
-    facebook: 22,
+    youtube: 24,
+    instagram: 24,
+    facebook: 23,
     tiktok: 24,
-    pinterest: 23,
-    whatsapp: 22,
-    threads: 24
+    pinterest: 24,
+    whatsapp: 24,
+    threads: 23
   };
 
   for (const [platform, size] of Object.entries(expectedSizes)) {
@@ -847,6 +911,95 @@ test('the rendered footer normalizes seven social logos inside equal visual cell
     assert.match(image, new RegExp(`height:${size}px`));
     assert.match(image, /margin:0 auto/);
   }
+});
+
+test('double divider footer is registered with an independent complete snapshot', () => {
+  const directory = `${root}/页脚组件/双分割线页脚`;
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const entry = registry.find(({ componentKey }) => componentKey === 'footer.doubleDivider');
+
+  assert.ok(entry, 'footer.doubleDivider must be registered as an independent footer style');
+  assert.equal(entry.中文名称, '双分割线页脚');
+  assert.equal(entry.分类, '页脚组件');
+  assert.equal(entry.输出宽度, 600);
+  assert.equal(entry.移动端断点, 375);
+  assert.equal(entry.路径.组件模板, '页脚组件/双分割线页脚/component.template.v1.html');
+
+  for (const file of [
+    'component.template.v1.html',
+    'component.styles.v1.css',
+    'content.schema.v1.json',
+    'content.fixture.v1.json',
+    'settings.schema.v1.json',
+    'settings.defaults.v1.json',
+    'COMPONENT_MANAGEMENT.zh-CN.v1.md',
+    '效果演示.html'
+  ]) {
+    assert.equal(existsSync(`${directory}/${file}`), true, `missing double-divider footer ${file}`);
+  }
+
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  assert.equal(fixture.componentKey, 'footer.doubleDivider');
+  assert.equal(defaults.componentKey, 'footer.doubleDivider');
+  assert.equal(defaults.values['color.canvas'], '#FAF9F7');
+  assert.equal(defaults.values['color.background'], '#F9F6EE');
+});
+
+test('double divider footer renders two 508px dividers and calibrated social logos', () => {
+  const directory = `${root}/页脚组件/双分割线页脚`;
+  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
+  const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const output = '/private/tmp/double-divider-footer.html';
+  const compositionPath = '/private/tmp/double-divider-footer.composition.json';
+  const composition = {
+    schemaVersion: 1,
+    canvas: { backgroundColor: '#FFFFFF', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    output,
+    previewOutput: '/private/tmp/double-divider-footer.local-preview.html',
+    components: [{
+      name: '双分割线页脚',
+      directory,
+      componentKey: 'footer.doubleDivider',
+      content: { ...fixture.values },
+      settings: { ...defaults.values }
+    }]
+  };
+  writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+
+  const result = run(compositionPath);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const rendered = readFileSync(output, 'utf8');
+  const expectedSizes = { youtube: 24, instagram: 24, facebook: 23, tiktok: 24, pinterest: 24, whatsapp: 24, threads: 23 };
+
+  for (const divider of ['top', 'bottom']) {
+    const dividerTag = rendered.match(new RegExp(`<table[^>]*data-freshine-divider="${divider}"[^>]*>`))?.[0];
+    assert.ok(dividerTag, `missing ${divider} divider`);
+    assert.match(dividerTag, /width="508"/);
+    assert.match(dividerTag, /max-width:508px/);
+  }
+  for (const [platform, size] of Object.entries(expectedSizes)) {
+    const cell = rendered.match(new RegExp(`<td[^>]*data-freshine-social-cell="${platform}"[^>]*>`))?.[0];
+    const image = rendered.match(new RegExp(`<img[^>]*data-freshine-social-icon="${platform}"[^>]*>`))?.[0];
+    assert.ok(cell, `missing ${platform} social cell`);
+    assert.match(cell, /width="26"/);
+    assert.match(image, new RegExp(`width="${size}"`));
+    assert.match(image, new RegExp(`height="${size}"`));
+  }
+  assert.equal((rendered.match(/\[\[unsubscribe_link\]\]/g) ?? []).length, 1);
+  assert.doesNotMatch(rendered, /\{\{(?:content|settings)\./);
+});
+
+test('double divider footer documentation and editor reference preserve the fixed visual contract', () => {
+  const index = readFileSync(`${root}/组件索引.md`, 'utf8');
+  const management = readFileSync(`${root}/页脚组件/双分割线页脚/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
+  const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
+
+  assert.match(index, /双分割线页脚（`footer\.doubleDivider`）/);
+  assert.match(management, /508px/);
+  assert.match(management, /YouTube `24px`、Instagram `24px`、Facebook `23px`、TikTok `24px`、Pinterest `24px`、WhatsApp `24px`、Threads `23px`/);
+  assert.match(interactions, /`footer\.doubleDivider`/);
+  assert.match(interactions, /HTML 编辑器只开放 `color\.canvas`、`color\.background`、`color\.text` 与 `color\.link`/);
 });
 
 test('all six sale cards use identical centered wrappers and symmetric spacing', () => {

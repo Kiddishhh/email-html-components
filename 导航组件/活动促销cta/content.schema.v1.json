@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "navigation.promotionCta",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "promotion.title": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.divider.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "promotion.divider.alt": { "type": "text", "role": "image-alt", "required": false, "skillPrompt": true },
+    "promotion.offer": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.body": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

@@ -351,6 +351,29 @@ test('editor server keeps Shopify import scoped to a selected sale-grid instance
   assert.match(rejected.body.error, /sale-grid import requires/);
 });
 
+test('editor server accepts a selected four-grid card import route before validating its product URL', async (t) => {
+  const server = await createCampaignEditorServer({
+    workspaceRoot,
+    sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-four-grid-import-'))
+  });
+  const baseUrl = await server.listen();
+  t.after(() => server.close());
+  const created = await request(baseUrl, '/api/drafts', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({})
+  });
+  const added = await request(baseUrl, `/api/drafts/${created.body.draft.id}/components`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'collection.saleGrid4' })
+  });
+  const instanceId = added.body.draft.components[0].instanceId;
+
+  const rejected = await request(baseUrl, `/api/drafts/${created.body.draft.id}/components/${instanceId}/import-shopify-product/2`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ shopifyUrl: 'https://freshinelife.com/pages/not-a-product' })
+  });
+
+  assert.equal(rejected.response.status, 400);
+  assert.match(rejected.body.error, /shopify product URL must use/);
+});
+
 test('editor server limits Shopify single-product import to curtain promotion cards', async (t) => {
   const server = await createCampaignEditorServer({
     workspaceRoot,

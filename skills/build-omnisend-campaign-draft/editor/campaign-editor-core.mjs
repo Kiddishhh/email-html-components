@@ -16,6 +16,7 @@ function componentDirectory(workspaceRoot, entry) {
 function componentRole(category) {
   const roleByCategory = {
     '头图': 'hero',
+    '导航组件': 'navigation',
     '活动商品组件': 'product',
     '评论组件': 'review',
     '赠品与权益组件': 'benefit',
@@ -150,6 +151,32 @@ export function applySaleGridImport(document, instanceId, saleGrid) {
     ...instance,
     content,
     source: saleGrid.activityPage ? `shopify-activity-page:${saleGrid.activityPage.handle}:${saleGrid.collection.handle}` : saleGrid.collectionSource?.type === 'admin-handle' ? `shopify-sale-grid-admin:${saleGrid.collection.handle}` : `shopify-sale-grid:${saleGrid.collection.handle}`,
+    confirmed: false
+  } : instance);
+  return { ...clone(document), components, confirmed: false };
+}
+
+export function applySaleGrid4ProductImport(document, instanceId, itemIndex, productImport) {
+  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
+  if (index === -1) throw new Error('component instance not found');
+  const current = document.components[index];
+  if (current.componentKey !== 'collection.saleGrid4') throw new Error('four-grid product import requires a collection.saleGrid4 instance');
+  if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex > 3) throw new Error('four-grid product import item index is out of range');
+  const product = productImport?.product;
+  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.discountLabel !== 'string') {
+    throw new Error('four-grid product import returned incomplete product data');
+  }
+  const content = {
+    ...current.content,
+    [`saleItems[${itemIndex}].image.url`]: product.image.url,
+    [`saleItems[${itemIndex}].image.alt`]: product.image.alt ?? '',
+    [`saleItems[${itemIndex}].image.clickUrl`]: product.linkUrl,
+    [`saleItems[${itemIndex}].discountLabel`]: product.discountLabel
+  };
+  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
+    ...instance,
+    content,
+    source: `shopify-product:${product.handle}:slot-${itemIndex + 1}`,
     confirmed: false
   } : instance);
   return { ...clone(document), components, confirmed: false };

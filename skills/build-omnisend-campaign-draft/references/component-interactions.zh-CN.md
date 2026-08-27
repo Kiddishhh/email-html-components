@@ -23,7 +23,7 @@
 ### `hero.countdownOverlay` — 倒计时头图
 
 - 可编辑：背景图/Alt、单一 `countdown.title`、补充文案、CTA、导航文案/链接、Logo、分隔图及导航/主题颜色。
-- 固定：600px 桌面主视觉约 722px 高；375px 主视觉约 560px 高。倒计时标题使用一个字段自然换行，不插入固定 `<br>`。
+- 固定：600px 桌面主视觉约 722px 高；375px 主视觉约 450px 高（368px 下限）。半透明面板为桌面 440×480px、375px 约 275×300px；其内 Logo、分隔图、单一倒计时标题、说明、CTA、内边距和间距均随背景图按 `min()` 同步收缩，倒计时标题仍使用一个字段自然换行，不插入固定 `<br>`。
 
 ### `hero.countdownOverlay2` — 倒计时头图2
 
@@ -34,6 +34,13 @@
 
 - 可编辑：顶部促销条、品牌 Logo、活动名称/主标题/说明、主图/Alt/点击链接、CTA，以及组件、顶部栏、标题、正文和操作颜色。
 - 固定：600px 画布；桌面主图 542×527px；CTA 尺寸及与主图的 27px 叠加量。移动端按比例缩放，不改变图片宽高比。
+
+## 导航组件
+
+### `navigation.promotionCta` — 活动促销 CTA
+
+- 可编辑：活动名称、分隔图/Alt、折扣主文案、说明、CTA 文字/HTTPS 链接，以及组件背景、文字和 CTA 主题色。
+- 固定：600px 画布，上下各 45px 留白；Montserrat 标题 `30px / 600 / 37px`、折扣 `50px / 700 / 62px`、说明 `18px / 400 / 27px`，以及 `284×55px` 的描边圆角 CTA。375px 下按 inline `min()` 渐进缩小；没有 Shopify 导入功能。
 
 ## 活动商品
 
@@ -51,6 +58,11 @@
 
 - 可编辑：区域标题、说明、CTA 文案/链接、操作色和组件底色；六件商品可通过只读 Shopify 活动页、已上线 Collection URL 或后台 Collection handle 导入更新。后台 handle 导入不覆盖当前 CTA。
 - 固定：顶部居中标题使用 Lora `30px / 500（Medium） / 38px`、字间距 `0px`，顶部居中说明使用 Montserrat `18px / 500（Medium） / 150%（27px）`、字间距 `0px`；两列三行商品顺序、商品图对齐；CTA 使用 486px 上限表格和 `width:81%;max-width:486px`，600px 桌面为 486px、375px 移动端约为 304px。
+
+### `collection.saleGrid4` — 四宫格折扣商品
+
+- 可编辑：组件背景色、统一折扣标签主题色，以及四款商品各自的折扣文案、主图、Alt 与整图跳转链接。每款商品可独立输入 Freshine 商品 URL 并只读导入首张主图、链接与折扣；无有效折扣时清空该格标签。
+- 固定：不含标题、说明或 CTA；600px 画布内 `508px` 内容区，两列两行各 `246×246px`，横向间距 `16px`、行间距 `20px`、底部留白 `52px`。375px 下保留两列比例缩放，使用内联 `min()`，不使用 Flex、Grid 或媒体查询。
 
 ### `collection.curtainInspirationGrid4` — 窗帘灵感四宫格
 
@@ -124,4 +136,9 @@
 ### `footer.warm` — 品牌信息页脚
 
 - 可编辑：页脚背景色、正文色和链接色。
-- 固定：品牌信息、地址、联系信息、法律信息、退订链接和七枚社媒图标的顺序。七枚图标按统一视觉大小展示，不以原始图片像素决定显示大小。
+- 固定：品牌信息、地址、联系信息、法律信息、退订链接和七枚社媒图标的顺序。七枚图标保留统一 `26 × 26px` 居中单元，并按当前素材透明留白校准为 YouTube `24px`、Instagram `24px`、Facebook `23px`、TikTok `24px`、Pinterest `24px`、WhatsApp `24px`、Threads `23px`；HTML 编辑器不开放这些几何值，避免替换颜色等常规内容时破坏已验证的视觉平衡。
+
+### `footer.doubleDivider` — 双分割线页脚
+
+- 可编辑：外层画布、内容区、正文和链接颜色。
+- 固定：600px 流式画布中的 508px 内容列；内容区顶部无额外留白的第一条 `#E3E0DE` 细分割线，社媒图标后 24px 的第二条同色细分割线；品牌、地址、联系信息、法律信息和退订链接的顺序。七枚社媒图标按 YouTube、Instagram、Facebook、TikTok、Pinterest、WhatsApp、Threads 顺序位于 `26 × 26px` 居中单元，尺寸为 YouTube `24px`、Instagram `24px`、Facebook `23px`、TikTok `24px`、Pinterest `24px`、WhatsApp `24px`、Threads `23px`。HTML 编辑器只开放 `color.canvas`、`color.background`、`color.text` 与 `color.link`，不开放几何或图标尺寸。

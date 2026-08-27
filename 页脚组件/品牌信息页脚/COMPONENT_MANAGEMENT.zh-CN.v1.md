@@ -34,7 +34,7 @@
 
 默认排版采用浅米色信息层级：17px 半粗品牌标题、细金棕分隔线、13px 地址与联系信息、11px 预约说明和法律信息、紧凑的七枚社媒图标，以及 `rgba(0, 87, 184, 1)` 链接。修改方式：只改 `settings.defaults.v1.json` 的 `values`，并同步把相同默认值写入 `settings.schema.v1.json` 的 `default`。颜色可使用六位十六进制或 CSS `rgba()`。组件不会加载外部字体；Montserrat 不可用的邮件客户端会自动回退到 Arial。
 
-七枚社媒图标使用相同的 `26 × 26px` 居中单元，并根据默认源图自带的透明留白校准图像尺寸：YouTube `26px`、Instagram `22px`、Facebook `22px`、TikTok `24px`、Pinterest `23px`、WhatsApp `22px`、Threads `24px`。这些数值用于统一图形主体的视觉重量，不代表素材文件画布尺寸不一致；更换图标素材后必须重新检查 600px 与移动端实际渲染，不能只比较 `<img>` 外框。
+七枚社媒图标使用相同的 `26 × 26px` 居中单元，并根据默认源图自带的透明留白校准图像尺寸：YouTube `24px`、Instagram `24px`、Facebook `23px`、TikTok `24px`、Pinterest `24px`、WhatsApp `24px`、Threads `23px`。这些数值用于统一图形主体的视觉重量，不代表素材文件画布尺寸不一致；更换图标素材后必须重新检查 600px 与移动端实际渲染，不能只比较 `<img>` 外框。
 
 ## Skill 收集规则
 

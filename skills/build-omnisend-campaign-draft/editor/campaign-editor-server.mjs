@@ -9,6 +9,7 @@ import {
   addComponentInstance,
   attachLocalImage,
   applyCurtainPromotionProductImport,
+  applySaleGrid4ProductImport,
   applySaleGridImport,
   buildEditorCatalog,
   buildLocalAssetMap,
@@ -164,6 +165,22 @@ function importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl }) 
     return JSON.parse(result.stdout);
   } catch {
     throw new Error('Shopify curtain promotion product import returned invalid JSON');
+  }
+}
+
+function importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl }) {
+  if (instance.componentKey !== 'collection.saleGrid4') throw new Error('four-grid product import requires a collection.saleGrid4 instance');
+  if (typeof shopifyUrl !== 'string' || !shopifyUrl.trim()) throw new Error('shopify product URL is required');
+  const script = resolve(workspaceRoot, 'skills/build-omnisend-campaign-draft/scripts/fetch-single-product.mjs');
+  const result = spawnSync(process.execPath, [script, '--shopify-url', shopifyUrl.trim()], {
+    cwd: workspaceRoot,
+    encoding: 'utf8'
+  });
+  if (result.status !== 0) throw formatCurtainPromotionProductImportFailure(result.stderr || result.stdout);
+  try {
+    return JSON.parse(result.stdout);
+  } catch {
+    throw new Error('Shopify four-grid product import returned invalid JSON');
   }
 }
 
@@ -657,6 +674,18 @@ export async function createCampaignEditorServer({
         if (!instance) return json(response, 404, { error: 'component instance not found' });
         const body = await readBody(request);
         const updated = applyCurtainPromotionProductImport(draft, instanceId, importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl }));
+        drafts.set(draftId, updated);
+        return json(response, 200, { draft: draftSummary(updated) });
+      }
+      const saleGrid4ProductImportMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/import-shopify-product\/([0-3])$/u);
+      if (saleGrid4ProductImportMatch && request.method === 'POST') {
+        const [, draftId, instanceId, itemIndex] = saleGrid4ProductImportMatch;
+        const draft = drafts.get(draftId);
+        if (!draft) return json(response, 404, { error: 'draft not found' });
+        const instance = draft.components.find((component) => component.instanceId === instanceId);
+        if (!instance) return json(response, 404, { error: 'component instance not found' });
+        const body = await readBody(request);
+        const updated = applySaleGrid4ProductImport(draft, instanceId, Number(itemIndex), importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl }));
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
       }

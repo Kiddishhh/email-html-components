@@ -1,4 +1,4 @@
-const structureOrder = ['头图', '活动商品组件', '通用图片组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件'];
+const structureOrder = ['头图', '导航组件', '活动商品组件', '通用图片组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件'];
 
 const editableByComponent = {
   'hero.promotionalOverlay': {
@@ -17,8 +17,21 @@ const editableByComponent = {
     content: ['promotion.text', 'promotion.linkText', 'promotion.url', 'brand.logo.url', 'brand.logo.alt', 'brand.logo.clickUrl', 'hero.eyebrow', 'hero.title', 'hero.subtitle', 'hero.image.url', 'hero.image.alt', 'hero.image.clickUrl', 'hero.cta.text', 'hero.cta.url'],
     settings: ['navigation.visible', 'color.surface', 'color.promotionLeft', 'color.promotionRight', 'color.heading', 'color.body', 'color.action']
   },
+  'navigation.promotionCta': {
+    content: ['promotion.title', 'promotion.divider.url', 'promotion.divider.alt', 'promotion.offer', 'promotion.body', 'promotion.cta.text', 'promotion.cta.url'],
+    settings: ['color.surface', 'color.text', 'color.action']
+  },
   'collection.saleGrid6': {
     content: ['saleCollection.title', 'saleCollection.body', 'saleCollection.cta.text', 'saleCollection.cta.url'],
+    settings: ['color.theme', 'color.surface']
+  },
+  'collection.saleGrid4': {
+    content: [
+      'saleItems[0].discountLabel', 'saleItems[0].image.url', 'saleItems[0].image.alt', 'saleItems[0].image.clickUrl',
+      'saleItems[1].discountLabel', 'saleItems[1].image.url', 'saleItems[1].image.alt', 'saleItems[1].image.clickUrl',
+      'saleItems[2].discountLabel', 'saleItems[2].image.url', 'saleItems[2].image.alt', 'saleItems[2].image.clickUrl',
+      'saleItems[3].discountLabel', 'saleItems[3].image.url', 'saleItems[3].image.alt', 'saleItems[3].image.clickUrl'
+    ],
     settings: ['color.theme', 'color.surface']
   },
   'collection.curtainInspirationGrid4': {
@@ -61,6 +74,7 @@ const editableByComponent = {
   },
   'location.showroomCard': { content: [], settings: ['color.surface'] },
   'footer.warm': { content: [], settings: ['color.background', 'color.text', 'color.link'] },
+  'footer.doubleDivider': { content: [], settings: ['color.canvas', 'color.background', 'color.text', 'color.link'] },
   'image.benefitsStrip3': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
   'tool.measurementCard': {
     content: ['measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'],
@@ -125,8 +139,30 @@ const copyByField = {
   'saleCollection.body': ['商品区说明', '显示在六宫格标题下方的活动说明。'],
   'saleCollection.cta.text': ['商品区按钮文字', '六宫格下方引导用户查看活动的按钮文案。'],
   'saleCollection.cta.url': ['商品区按钮链接', '六宫格下方按钮点击后打开的活动页地址。'],
+  'saleItems[0].discountLabel': ['商品 1 折扣标签', '显示在第 1 款商品主图左上角，可由该商品的 Shopify URL 覆盖。'],
+  'saleItems[1].discountLabel': ['商品 2 折扣标签', '显示在第 2 款商品主图左上角，可由该商品的 Shopify URL 覆盖。'],
+  'saleItems[2].discountLabel': ['商品 3 折扣标签', '显示在第 3 款商品主图左上角，可由该商品的 Shopify URL 覆盖。'],
+  'saleItems[3].discountLabel': ['商品 4 折扣标签', '显示在第 4 款商品主图左上角，可由该商品的 Shopify URL 覆盖。'],
+  'saleItems[0].image.url': ['商品 1 主图', '填写公开 HTTPS 图片地址，或使用“导入商品 1”从 Shopify 填入。'],
+  'saleItems[1].image.url': ['商品 2 主图', '填写公开 HTTPS 图片地址，或使用“导入商品 2”从 Shopify 填入。'],
+  'saleItems[2].image.url': ['商品 3 主图', '填写公开 HTTPS 图片地址，或使用“导入商品 3”从 Shopify 填入。'],
+  'saleItems[3].image.url': ['商品 4 主图', '填写公开 HTTPS 图片地址，或使用“导入商品 4”从 Shopify 填入。'],
+  'saleItems[0].image.alt': ['商品 1 图片说明', '用于商品 1 主图的可访问性说明。'],
+  'saleItems[1].image.alt': ['商品 2 图片说明', '用于商品 2 主图的可访问性说明。'],
+  'saleItems[2].image.alt': ['商品 3 图片说明', '用于商品 3 主图的可访问性说明。'],
+  'saleItems[3].image.alt': ['商品 4 图片说明', '用于商品 4 主图的可访问性说明。'],
+  'saleItems[0].image.clickUrl': ['商品 1 跳转链接', '商品 1 的整张主图点击后打开此 HTTPS 地址。'],
+  'saleItems[1].image.clickUrl': ['商品 2 跳转链接', '商品 2 的整张主图点击后打开此 HTTPS 地址。'],
+  'saleItems[2].image.clickUrl': ['商品 3 跳转链接', '商品 3 的整张主图点击后打开此 HTTPS 地址。'],
+  'saleItems[3].image.clickUrl': ['商品 4 跳转链接', '商品 4 的整张主图点击后打开此 HTTPS 地址。'],
   'promotion.title': ['顶部活动标题', '显示在商品主图上方的居中标题。'],
   'promotion.subtitle': ['顶部活动说明', '显示在顶部活动标题下方的居中说明。'],
+  'promotion.divider.url': ['装饰分隔图链接', '替换活动名称下方的公开 HTTPS 分隔图片。'],
+  'promotion.divider.alt': ['装饰分隔图说明', '分隔图无法显示时供读屏工具识别的简短说明。'],
+  'promotion.offer': ['折扣主文案', '显示为大号加粗的活动核心折扣内容。'],
+  'promotion.body': ['活动补充说明', '显示在折扣主文案下方的居中说明。'],
+  'promotion.cta.text': ['活动 CTA 文字', '显示在促销 CTA 描边按钮内的文字。'],
+  'promotion.cta.url': ['活动 CTA 链接', '点击促销 CTA 后打开的公开 HTTPS 活动页面。'],
   'grid.image1.url': ['左上灵感图', '替换左上窗帘灵感图片；填写公开 HTTPS 图片地址。'],
   'grid.image1.alt': ['左上灵感图说明', '左上图片无法显示时供读屏工具识别的简短说明。'],
   'grid.image1.clickUrl': ['左上灵感图链接', '点击左上图片后打开的公开 HTTPS 页面地址。'],
@@ -225,9 +261,18 @@ const copyByComponentField = {
     'content.brand.logo.url': ['品牌 Logo 图片', '替换夏末折扣首图顶部使用的品牌 Logo 图片。'],
     'settings.color.body': ['正文文字色', '修改活动补充说明的文字颜色。']
   },
+  'navigation.promotionCta': {
+    'content.promotion.title': ['活动名称', '显示在促销 CTA 区块顶部的居中文字。']
+  },
   'footer.warm': {
     'settings.color.text': ['页脚正文颜色', '修改页脚的常规文字颜色。'],
     'settings.color.link': ['页脚链接颜色', '修改联系邮箱与退订链接的颜色。']
+  },
+  'footer.doubleDivider': {
+    'settings.color.canvas': ['页脚外层底色', '仅修改双分割线页脚的外层画布底色。'],
+    'settings.color.background': ['页脚内容区底色', '仅修改双分割线页脚内容区域的底色。'],
+    'settings.color.text': ['页脚正文颜色', '修改双分割线页脚的常规文字颜色。'],
+    'settings.color.link': ['页脚链接颜色', '修改双分割线页脚中联系邮箱与退订链接的颜色。']
   }
 };
 
