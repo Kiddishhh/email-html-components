@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.saleGrid6WithTitle",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "saleCollection.title": { "type": "text", "required": true, "skillPrompt": true },
+    "saleCollection.body": { "type": "text", "required": true, "skillPrompt": true },
+    "saleCollection.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "saleCollection.cta.url": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "saleItems[0].name": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[0].discountLabel": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[0].image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" }, "saleItems[0].image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true }, "saleItems[0].image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "saleItems[1].name": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[1].discountLabel": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[1].image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" }, "saleItems[1].image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true }, "saleItems[1].image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "saleItems[2].name": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[2].discountLabel": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[2].image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" }, "saleItems[2].image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true }, "saleItems[2].image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "saleItems[3].name": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[3].discountLabel": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[3].image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" }, "saleItems[3].image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true }, "saleItems[3].image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "saleItems[4].name": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[4].discountLabel": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[4].image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" }, "saleItems[4].image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true }, "saleItems[4].image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true },
+    "saleItems[5].name": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[5].discountLabel": { "type": "text", "required": true, "skillPrompt": true }, "saleItems[5].image.url": { "type": "url", "role": "background-image-source", "required": true, "skillPrompt": true, "protocol": "https" }, "saleItems[5].image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true }, "saleItems[5].image.clickUrl": { "type": "url", "role": "link-target", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

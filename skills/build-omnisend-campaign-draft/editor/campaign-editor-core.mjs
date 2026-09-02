@@ -182,6 +182,38 @@ export function applySaleGrid4ProductImport(document, instanceId, itemIndex, pro
   return { ...clone(document), components, confirmed: false };
 }
 
+function compactProductName(title) {
+  const normalized = String(title ?? '').trim().replace(/^freshine\s+/iu, '');
+  return normalized.split(/\s+/u)[0] || 'Product';
+}
+
+export function applySaleGrid6WithTitleProductImport(document, instanceId, itemIndex, productImport) {
+  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
+  if (index === -1) throw new Error('component instance not found');
+  const current = document.components[index];
+  if (current.componentKey !== 'collection.saleGrid6WithTitle') throw new Error('six-grid title product import requires a collection.saleGrid6WithTitle instance');
+  if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex > 5) throw new Error('six-grid title product import item index is out of range');
+  const product = productImport?.product;
+  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.title !== 'string' || typeof product.discountLabel !== 'string') {
+    throw new Error('six-grid title product import returned incomplete product data');
+  }
+  const content = {
+    ...current.content,
+    [`saleItems[${itemIndex}].name`]: compactProductName(product.title),
+    [`saleItems[${itemIndex}].image.url`]: product.image.url,
+    [`saleItems[${itemIndex}].image.alt`]: product.image.alt ?? '',
+    [`saleItems[${itemIndex}].image.clickUrl`]: product.linkUrl,
+    [`saleItems[${itemIndex}].discountLabel`]: product.discountLabel
+  };
+  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
+    ...instance,
+    content,
+    source: `shopify-product:${product.handle}:slot-${itemIndex + 1}`,
+    confirmed: false
+  } : instance);
+  return { ...clone(document), components, confirmed: false };
+}
+
 export function applyCurtainPromotionProductImport(document, instanceId, productImport) {
   const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
   if (index === -1) throw new Error('component instance not found');

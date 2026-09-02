@@ -1,0 +1,7 @@
+/* collection.saleGrid6WithTitle: email-safe two-column card stack. */
+.freshine-component { width:100%; border-collapse:collapse; }
+.freshine-sale-title-card { width:46%; max-width:236px; }
+.freshine-sale-title-spacer { width:8%; max-width:42px; }
+.freshine-sale-title-image { width:100%; height:min(236px,46vw); }
+.freshine-sale-title-image-link { height:calc(min(236px,46vw) - min(33px,6.4vw)); }
+.freshine-sale-title-badge { height:min(20px,4.3vw); padding:min(6px,1.6vw) 0 min(7px,1.9vw); }

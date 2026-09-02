@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.saleGrid6WithTitle",
+  "values": {
+    "color.surface": "#FFFDFA",
+    "color.heading": "#1F1F1F",
+    "color.body": "#7C706A",
+    "color.theme": "#8D1B1B",
+    "color.badgeText": "#FFFFFF",
+    "color.buttonText": "#FFFFFF",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+    "font.action": "Montserrat, Arial, Helvetica, sans-serif",
+    "radius.button": "4px"
+  }
+}

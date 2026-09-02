@@ -59,6 +59,11 @@
 - 可编辑：区域标题、说明、CTA 文案/链接、操作色和组件底色；六件商品可通过只读 Shopify 活动页、已上线 Collection URL 或后台 Collection handle 导入更新。后台 handle 导入不覆盖当前 CTA。
 - 固定：顶部居中标题使用 Lora `30px / 500（Medium） / 38px`、字间距 `0px`，顶部居中说明使用 Montserrat `18px / 500（Medium） / 150%（27px）`、字间距 `0px`；两列三行商品顺序、商品图对齐；CTA 使用 486px 上限表格和 `width:81%;max-width:486px`，600px 桌面为 486px、375px 移动端约为 304px。
 
+### `collection.saleGrid6WithTitle` — 六宫格折扣推荐（标题款）
+
+- 可编辑：标题、副标题、底部 CTA、六款商品的名称/折扣/主图/Alt/链接，以及组件背景、文字与促销颜色。每个商品格都有独立“导入商品 1–6”入口，使用 Freshine 商品 URL 只读导入首图、商品名和首个可售变体折扣。
+- 固定：标题为 Lora `30px / 500 / 45px`，副标题为 Montserrat `16px / 500 / 24px`、`#7C706A`，顶端间距为 42px；商品图为 236×236px 的居中 cover 裁切，图片底部为 33px 统一折扣条，商品名称为 Montserrat `18px / 500 / 22px`。600px 画布中两列三行，底部 CTA 上限为 520px、`width:86%`。
+
 ### `collection.saleGrid4` — 四宫格折扣商品
 
 - 可编辑：组件背景色、统一折扣标签主题色，以及四款商品各自的折扣文案、主图、Alt 与整图跳转链接。每款商品可独立输入 Freshine 商品 URL 并只读导入首张主图、链接与折扣；无有效折扣时清空该格标签。
