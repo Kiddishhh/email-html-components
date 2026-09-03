@@ -34,6 +34,19 @@ const editableByComponent = {
     ],
     settings: ['color.theme', 'color.surface']
   },
+  'collection.saleGrid6WithTitle': {
+    content: [
+      'saleCollection.title', 'saleCollection.body',
+      'saleItems[0].name', 'saleItems[0].discountLabel', 'saleItems[0].image.url', 'saleItems[0].image.alt', 'saleItems[0].image.clickUrl',
+      'saleItems[1].name', 'saleItems[1].discountLabel', 'saleItems[1].image.url', 'saleItems[1].image.alt', 'saleItems[1].image.clickUrl',
+      'saleItems[2].name', 'saleItems[2].discountLabel', 'saleItems[2].image.url', 'saleItems[2].image.alt', 'saleItems[2].image.clickUrl',
+      'saleItems[3].name', 'saleItems[3].discountLabel', 'saleItems[3].image.url', 'saleItems[3].image.alt', 'saleItems[3].image.clickUrl',
+      'saleItems[4].name', 'saleItems[4].discountLabel', 'saleItems[4].image.url', 'saleItems[4].image.alt', 'saleItems[4].image.clickUrl',
+      'saleItems[5].name', 'saleItems[5].discountLabel', 'saleItems[5].image.url', 'saleItems[5].image.alt', 'saleItems[5].image.clickUrl',
+      'saleCollection.cta.text', 'saleCollection.cta.url'
+    ],
+    settings: ['color.surface', 'color.heading', 'color.body', 'color.theme', 'color.badgeText', 'color.buttonText']
+  },
   'collection.curtainInspirationGrid4': {
     content: [
       'promotion.title', 'promotion.subtitle',
@@ -232,6 +245,8 @@ const copyByField = {
   'grid.showCaptions': ['显示图片下方标题', '默认关闭；开启后为每张灵感图显示下方居中标题。'],
   'color.surface': ['组件背景色', '仅修改当前组件的底色，不影响邮件整体背景。'],
   'color.heading': ['标题文字色', '修改活动名称和主折扣标题的文字颜色。'],
+  'color.body': ['副标题文字色', '仅修改组件副标题的文字颜色。'],
+  'color.badgeText': ['折扣文字色', '仅修改商品图片底部折扣条的文字颜色。'],
   'color.text': ['组件文字色', '仅修改当前组件的文字颜色。'],
   'color.action': ['CTA 操作色', '仅修改当前组件 CTA 的按钮或强调色。'],
   'color.badge': ['促销角标底色', '仅修改商品主图左上角促销角标的背景色。'],
@@ -329,6 +344,21 @@ export function editableComponentKeys() {
 export function editorFieldCopy(componentKey, group, key) {
   const fields = editableFieldKeys(componentKey);
   if (!fields[group]?.includes(key)) throw new Error(`field is not editable in this component: ${componentKey}.${group}.${key}`);
+  const saleGridTitleMatch = componentKey === 'collection.saleGrid6WithTitle'
+    ? key.match(/^saleItems\[([0-5])\]\.(name|discountLabel|image\.url|image\.alt|image\.clickUrl)$/u)
+    : null;
+  if (saleGridTitleMatch) {
+    const [, index, field] = saleGridTitleMatch;
+    const item = Number(index) + 1;
+    const copy = {
+      name: [`商品 ${item} 名称`, `显示为“Shop … >>”的商品名称；由导入商品 ${item} 自动填入。`],
+      discountLabel: [`商品 ${item} 折扣标签`, `显示在商品 ${item} 图片底部的促销条；由 Shopify 价格自动填入。`],
+      'image.url': [`商品 ${item} 主图`, `填写公开 HTTPS 图片地址，或使用“导入商品 ${item}”从 Shopify 填入。`],
+      'image.alt': [`商品 ${item} 图片说明`, `用于商品 ${item} 主图的可访问性说明。`],
+      'image.clickUrl': [`商品 ${item} 跳转链接`, `点击商品 ${item} 图片或名称后打开的 HTTPS 地址。`]
+    };
+    return { label: copy[field][0], help: copy[field][1] };
+  }
   const [label, help] = copyByComponentField[componentKey]?.[`${group}.${key}`]
     ?? copyByField[key]
     ?? ['可编辑内容', '修改此项后会自动刷新当前组件预览。'];

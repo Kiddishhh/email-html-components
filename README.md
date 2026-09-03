@@ -25,7 +25,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 - 选择结构项后定位到对应预览区域；
 - 组件字段、颜色、本地图片和头图导航开关；
 - 模板保存、选择、覆盖和删除；
-- 六宫格及单品窗帘促销卡的 Shopify 只读导入；
+- 六宫格、逐格标题款六宫格及单品窗帘促销卡的 Shopify 只读导入；
 - Omnisend HTML 导出和 Draft-only 上传。
 
 普通编辑草稿、预览、导出中间文件和图片缓存只存在于当前编辑器运行期，关闭或重启服务即自动清理；仅手动保存的预设模板及其专属本地图片保存在被 Git 忽略的 `campaign-drafts/editor-templates/`。

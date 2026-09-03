@@ -406,6 +406,16 @@ function renderInspector() {
       actions.append(importButton);
     }
   }
+  if (instance.componentKey === 'collection.saleGrid6WithTitle') {
+    for (let itemIndex = 0; itemIndex < 6; itemIndex += 1) {
+      const importButton = document.createElement('button');
+      importButton.type = 'button';
+      importButton.className = 'button';
+      importButton.textContent = `导入商品 ${itemIndex + 1}`;
+      importButton.addEventListener('click', () => importSaleGrid6WithTitleProduct(instance.instanceId, itemIndex));
+      actions.append(importButton);
+    }
+  }
   confirmState.hidden = false;
   confirmState.className = `confirm-state${instance.confirmed ? ' ready' : ''}`;
   confirmState.textContent = instance.confirmed ? '已锁定' : '待确认';
@@ -534,6 +544,20 @@ async function importCurtainPromotionProduct(instanceId) {
 }
 
 async function importSaleGrid4Product(instanceId, itemIndex) {
+  const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
+  if (!shopifyUrl) return;
+  try {
+    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
+      method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
+    });
+    setDraft(result.draft);
+    queuePreview();
+  } catch (error) {
+    window.alert(error.message);
+  }
+}
+
+async function importSaleGrid6WithTitleProduct(instanceId, itemIndex) {
   const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
   if (!shopifyUrl) return;
   try {

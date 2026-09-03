@@ -32,6 +32,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 - 颜色字段提供色块和 `#RRGGBB` 输入。只有完整六位色号会写入组件快照。
 - 图片字段可以填写公开 HTTPS URL，也可选择本地 PNG、JPEG、WebP 或 GIF 进行预览；单文件不超过 5 MB。
 - `collection.saleGrid6` 支持从 Freshine Page、已上线 Collection URL，或 Shopify 后台 Collection handle 只读导入六件商品。后台 handle 仅作为数据源：六张商品卡保留 Shopify 返回的商品公开链接，整体 CTA 保持当前组件设置，不会指向未上线 Collection。
+- `collection.saleGrid6WithTitle` 为逐格导入的标题款六宫格：分别使用“导入商品 1–6”输入 Freshine 商品 URL。导入只更新当前格的商品名、首图、Alt、链接和折扣，不影响其余五格、标题、副标题或 CTA。
 - `collection.curtainPromotionCard` 与 `collection.curtainPromotionCardNoTitle` 支持从 Freshine 商品 URL 只读导入一个商品。导入不会覆盖 CTA 文案、顶部活动文案或配色。
 
 ## 导出 Omnisend HTML

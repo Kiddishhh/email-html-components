@@ -10,6 +10,7 @@ import {
   attachLocalImage,
   applyCurtainPromotionProductImport,
   applySaleGrid4ProductImport,
+  applySaleGrid6WithTitleProductImport,
   applySaleGridImport,
   buildEditorCatalog,
   buildLocalAssetMap,
@@ -677,7 +678,7 @@ export async function createCampaignEditorServer({
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
       }
-      const saleGrid4ProductImportMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/import-shopify-product\/([0-3])$/u);
+      const saleGrid4ProductImportMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/import-shopify-product\/([0-5])$/u);
       if (saleGrid4ProductImportMatch && request.method === 'POST') {
         const [, draftId, instanceId, itemIndex] = saleGrid4ProductImportMatch;
         const draft = drafts.get(draftId);
@@ -685,7 +686,10 @@ export async function createCampaignEditorServer({
         const instance = draft.components.find((component) => component.instanceId === instanceId);
         if (!instance) return json(response, 404, { error: 'component instance not found' });
         const body = await readBody(request);
-        const updated = applySaleGrid4ProductImport(draft, instanceId, Number(itemIndex), importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl }));
+        const productImport = importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl });
+        const updated = instance.componentKey === 'collection.saleGrid6WithTitle'
+          ? applySaleGrid6WithTitleProductImport(draft, instanceId, Number(itemIndex), productImport)
+          : applySaleGrid4ProductImport(draft, instanceId, Number(itemIndex), productImport);
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
       }
