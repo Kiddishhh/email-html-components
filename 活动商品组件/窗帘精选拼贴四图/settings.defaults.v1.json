@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainEditorialMosaic4",
+  "values": {
+    "color.surface": "#FFFDFA",
+    "color.heading": "#242323",
+    "color.body": "#7C706A",
+    "color.cardFallback": "#E8E3DD",
+    "color.cta": "#242323"
+  }
+}

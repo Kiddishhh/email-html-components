@@ -1,0 +1,6 @@
+/* review.trustpilotImage component style source.
+ * The email generator inlines this component's layout styles. Keep selectors
+ * scoped; do not add @media, @import, global selectors, Flex/Grid, or positioning.
+ */
+.freshine-trustpilot-review-card { width:100%; max-width:600px; border-collapse:collapse; }
+.freshine-trustpilot-review-card img { border:0; outline:none; text-decoration:none; }

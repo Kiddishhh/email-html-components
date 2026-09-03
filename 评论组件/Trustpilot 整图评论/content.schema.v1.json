@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.trustpilotImage",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "brand.header.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true },
+    "brand.header.alt": { "type": "text", "role": "image-alt", "required": true },
+    "review.stars.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true },
+    "review.stars.alt": { "type": "text", "role": "image-alt", "required": true },
+    "review.verifiedCheck.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true },
+    "review.verifiedCheck.alt": { "type": "text", "role": "image-alt", "required": true },
+    "reviews[0].author": { "type": "text", "role": "review-author", "required": true, "skillPrompt": true },
+    "reviews[0].title": { "type": "text", "role": "review-title", "required": true, "skillPrompt": true },
+    "reviews[0].body": { "type": "text", "role": "review-body", "required": true, "skillPrompt": true },
+    "reviews[0].date": { "type": "text", "role": "review-date", "required": true, "skillPrompt": true },
+    "reviews[1].author": { "type": "text", "role": "review-author", "required": true, "skillPrompt": true },
+    "reviews[1].title": { "type": "text", "role": "review-title", "required": true, "skillPrompt": true },
+    "reviews[1].body": { "type": "text", "role": "review-body", "required": true, "skillPrompt": true },
+    "reviews[1].date": { "type": "text", "role": "review-date", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

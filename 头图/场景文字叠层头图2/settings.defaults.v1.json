@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.sceneOverlayCta2",
+  "values": {
+    "navigation.visible": true,
+    "color.navigationLeft": "#981E20",
+    "color.navigationRight": "#891718",
+    "color.navigationText": "#FFFFFF",
+    "color.surface": "#3C2D25",
+    "color.text": "#FFFFFF"
+  }
+}

@@ -14,6 +14,7 @@ const allowedCssProperties = new Set(['background-color', 'background-position',
 
 function readJson(path) { return JSON.parse(readFileSync(path, 'utf8')); }
 function escapeText(value) { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'); }
+function escapeTextWithLineBreaks(value) { return escapeText(value).replace(/\r\n?|\n/g, '<br>'); }
 function escapeAttribute(value) { return escapeText(value).replaceAll('"', '&quot;'); }
 function write(path, value) { mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, value, 'utf8'); }
 function validUrl(value) { return /^(https:|mailto:|tel:)/.test(value); }
@@ -190,6 +191,9 @@ function renderComponent(instance) {
   html = html.replace(/\{\{content\.([^}]+)\}\}/g, (_, key) => {
     if (!(key in content)) throw new Error(`${instance.componentKey}: unresolved content.${key}`);
     const definition = contentSchema.properties[key];
+    if (instance.componentKey === 'review.trustpilotImage' && definition.role === 'review-body') {
+      return escapeTextWithLineBreaks(content[key]);
+    }
     return definition.type === 'url' || definition.role === 'image-alt' ? escapeAttribute(content[key]) : escapeText(content[key]);
   });
   html = html.replace(/\{\{settings\.([^}]+)\}\}/g, (_, key) => {
@@ -220,7 +224,7 @@ const preview = `<!doctype html>
   <title>Freshine Email Local Preview</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&amp;family=Montserrat:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400&amp;display=swap" rel="stylesheet">
 </head>
 <body style="margin:0;padding:0;background-color:${outerBackgroundColor};">
 <table data-freshine-preview-shell="omnisend-custom-html" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;"><tr><td align="center"><table role="presentation" width="${contentWidth}" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:${contentWidth}px;border-collapse:collapse;"><tr><td align="center" style="padding:0;">

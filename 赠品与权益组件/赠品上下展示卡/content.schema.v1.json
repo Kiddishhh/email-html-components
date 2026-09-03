@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "gift.verticalImagePair",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "images[0].url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "images[0].alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "images[1].url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "images[1].alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "gift.linkUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

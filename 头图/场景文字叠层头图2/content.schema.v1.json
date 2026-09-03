@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.sceneOverlayCta2",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "navigation.message": { "type": "text", "required": true, "skillPrompt": true },
+    "navigation.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "navigation.cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.backgroundImage.url": { "type": "url", "role": "background-image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.backgroundImage.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.linkUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "brand.logo.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "brand.logo.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.eyebrow": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.title": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.subtitle": { "type": "text", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.trustpilotImage",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {},
+  "additionalProperties": false
+}

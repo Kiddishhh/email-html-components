@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.trustpilotImage",
+  "fixture": "default-trustpilot-review-card",
+  "localReferenceAssets": {
+    "trustpilot-header": "assets/trustpilot-header.png",
+    "trustpilot-five-stars": "assets/trustpilot-five-stars.png",
+    "trustpilot-verified-check": "assets/trustpilot-verified-check.png"
+  },
+  "values": {
+    "brand.header.url": "asset://trustpilot-header",
+    "brand.header.alt": "Trustpilot rating 4.5 out of 5",
+    "review.stars.url": "asset://trustpilot-five-stars",
+    "review.stars.alt": "Five star review",
+    "review.verifiedCheck.url": "asset://trustpilot-verified-check",
+    "review.verifiedCheck.alt": "Verified",
+    "reviews[0].author": "Evan Parker",
+    "reviews[0].title": "Put These Custom Curtains In The Guest...",
+    "reviews[0].body": "put these custom curtains in the guest room and wow. it feels like a fancy hotel but still cozy. they block out that annoying afternoon sun perfectly too. guests love the vibe.",
+    "reviews[0].date": "4 Days Ago",
+    "reviews[1].author": "Debbie",
+    "reviews[1].title": "Great Affordable Custom Drapes",
+    "reviews[1].body": "The site was easy to navigate. I however made the mistake of ordering the wrong width 1st time. My drapes are a single pinch pleat and I did not read the measurement suggestions...",
+    "reviews[1].date": "Dec 21, 2025"
+  }
+}

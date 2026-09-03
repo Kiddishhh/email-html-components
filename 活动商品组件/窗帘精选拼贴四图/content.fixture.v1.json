@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainEditorialMosaic4",
+  "fixture": "fresh-look-season-editorial-mosaic",
+  "values": {
+    "promotion.title": "A FRESH LOOK FOR THE SEASON",
+    "promotion.subtitle": "Beautiful curtains, thoughtfully designed for your home.",
+    "mosaic.items[0].image.url": "https://app.omnisend.com/images/6a96adcab313445127d1b63e",
+    "mosaic.items[0].image.alt": "Emilia smart motorized cotton Roman shade in a contemporary room",
+    "mosaic.items[0].clickUrl": "https://freshinelife.com/products/emilia-smart-motorized-cotton-roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "mosaic.items[1].image.url": "https://app.omnisend.com/images/6a96ae04c723a01883e37dab",
+    "mosaic.items[1].image.alt": "Celina smart motorized linen Roman shade in a warm interior",
+    "mosaic.items[1].clickUrl": "https://freshinelife.com/collections/all-shades-blinds/products/celina-smart-motorized-linen-roman-shade?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "mosaic.items[2].image.url": "https://app.omnisend.com/images/6a916b423d73af51eb2cab44",
+    "mosaic.items[2].image.alt": "Amara extra long linen curtains in a sunlit living room",
+    "mosaic.items[2].clickUrl": "https://freshinelife.com/collections/best-seller/products/amara-extra-long-linen-curtains-elegant-light-filtering-drapes?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "mosaic.items[3].image.url": "https://app.omnisend.com/images/6a96ae9db313445127d1b658",
+    "mosaic.items[3].image.alt": "Celina linen curtain in a bright modern room",
+    "mosaic.items[3].clickUrl": "https://freshinelife.com/products/celina-linen-curtain?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "cta.text": "REFRESH YOUR HOME",
+    "cta.url": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+  }
+}

@@ -53,6 +53,12 @@
 - 可编辑：场景图/Alt、单一主标题（按画布宽度自动换行）、两行说明、CTA 文字/HTTPS 链接、文字色、CTA 操作色，以及默认开启的 `navigation.visible` 顶部导航栏开关。Logo 为固定白色品牌资产。
 - 固定：外层全宽、内层居中的 `max-width:600px` 画布中，场景图为 `600×778px` 竖版背景；可选的 71px 双栏顶部促销导航使用固定默认文案与配色，关闭时整行移除。其余为顶部 `106×106px` 白色描边圆环和 `89px` Logo，Lora `47px / 500 / 54px` 的单一标题字段（可自动换为两行）、Montserrat `18px / 400 / 27px` 两行说明，以及 `322×52px` 无圆角 CTA。375px 下画布严格收缩为 375px，并使用 inline `min()` 等比缩放；不含 Shopify 导入。
 
+### `hero.sceneOverlayCta2` — 场景文字叠层头图2
+
+- 可编辑：顶部促销文案、右侧导航链接文字/HTTPS 链接、背景图/Alt、整张场景头图 HTTPS 链接、Logo/Alt、活动名称、主折扣、一个自然换行的补充说明字段、导航显示开关，以及导航左/右/文字、场景降级与叠加文字颜色。
+- 固定：600px 画布由默认显示的 56px 双栏导航与 632px 场景主体构成；导航左右为 `76% / 24%`，关闭 `navigation.visible` 后该行和占位高度完全移除。场景以 `center top`、`cover` 和固定 180° 暗色渐变呈现，Logo 为 104px，文字依次为 Lora Medium `39px/50px`、Montserrat ExtraBold `62px/76px`、Montserrat Regular `21px/31.5px`；补充说明位于 410px 内容区自然换行。
+- 链接边界：`SIGN UP` 仅使用 `navigation.cta.url`；导航下方的 Logo、三层文案和场景区域只使用 `hero.linkUrl`。默认两条链接均保留 `utm_source=omnisend&utm_medium=email&utm_id=cover-fc`。默认素材仅供本地预览，导出前必须成为公开 HTTPS 图片；不进行 Shopify 导入。
+
 ### `hero.romanShadeDiscount` — 罗马帘专属折扣头图
 
 - 可编辑：竖版场景图/Alt、圆形 Logo/Alt/独立链接、提示文案、折扣前缀、主折扣、说明、CTA 文案/HTTPS 链接、文字与描边色、按钮底色，以及默认开启的 `navigation.visible` 顶部导航开关。装饰标签保留用户原始素材，不另加链接。
@@ -128,6 +134,12 @@
 - 可编辑：顶部标题/说明、四张灵感图片、各自 Alt 和独立点击链接、各图下方标题，以及组件底色；`grid.showCaptions` 默认关闭，开启时显示图片标题，关闭时不输出标题及其额外留白。
 - 固定：600px 画布中的内容区为 510px；两列各 247px，横向间距为 16px。标题关闭时行间为 16px；开启时，图片标题使用 Montserrat `16px / 500 / 22px`、居中自然换行，图文间距 11px，且上下两行间距增至 32px。顶部居中标题使用 Lora `30px / 500（Medium） / 38px`，说明使用 Montserrat `18px / 500 / 27px`。四张图保持正方形比例，375px 下按容器等比缩小；不使用 Flex 或 Grid。
 
+### `collection.curtainEditorialMosaic4` — 窗帘精选拼贴四图
+
+- 可编辑：顶部标题/说明、四组图片 URL/Alt/独立链接、底部 CTA 文案/链接，以及组件背景、标题、说明、图片降级和 CTA 颜色；不提供 Shopify 导入。
+- 固定：600px 画布内 526px 拼贴区，左列是两个 `259×258px` 图，右列依次是 `259×323px`、`259×194px` 图；列间距 8px、行间距 10px。375px 下全部按内联 `min()` 等比缩放，保留双列和非等高拼贴。
+- 链接：四张图片和底部 CTA 各自独立可点击；默认使用用户提供的 Freshine URL，全部保留 `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`。默认图片为公开 HTTPS Omnisend 素材。
+
 ### `collection.curtainEditorialTriptych` — 窗帘场景三图卡
 
 - 可编辑：一张上方场景大图、两张下方场景图、三张图各自的 Alt 和 HTTPS 链接、两张下方图片的文字链接、底部标题/说明和组件底色。该组件已登记为 HTML 编辑器中的自由组合样式。
@@ -156,6 +168,12 @@
 
 - 当前快照固定两条评论与 15 枚装饰星图，不提供编辑字段。
 - 组件没有 CTA 或链接；文字与星图必须完整可读。
+
+### `review.trustpilotImage` — Trustpilot 评论卡
+
+- 可编辑：两张评论卡各自的评论者、标题、正文与日期，共 8 个文本字段；不开放链接、评分、颜色、几何或 Shopify 导入字段。
+- 固定：Trustpilot 页眉、五星、认证勾选与 `Verified` 标识使用组件内置素材；组件没有热点或链接，600px 桌面内容内的评论卡最大宽度为 546px，并使用内联 `min()` 尺寸声明适配 375px 目标宽度。
+- 默认素材仅用于本地预览；正式 Omnisend 导出前必须把三个 `asset://` 素材替换为公开 HTTPS 图片。
 
 ## 小样与产品推荐
 
@@ -198,6 +216,12 @@
 - 默认两张 524×308px 照片从 `容器 117.png` 精确裁切，内含 `FREE GIFTS` 徽章；不使用 CSS/SVG 重绘。两个 CTA 共用透明购物袋图标，底部使用原稿裁切的礼物图标。
 - 只有两条红色 CTA 可点击，默认均指向 `https://freshinelife.com/`；图片和其他文字不绑定链接。展示文案不会设置 Shopify 满额赠品规则。
 - 本地素材是四个 `asset://double-gift-address-*` 预览输入；最终导出前需全部换成公开 HTTPS 地址。该组件独立于 `gift.showcase2` 和 `gift.rewardGrid2`。
+
+### `gift.verticalImagePair` — 赠品上下展示卡
+
+- 可编辑：上方整图 URL/Alt、下方整图 URL/Alt，以及两张图共用的一个公开 HTTPS 链接；不开放颜色、文案、几何或 Shopify 导入字段。
+- 固定：两张用户提供的 1200×676px 原图不裁切、不重绘、无间隔上下拼接。桌面为两张 600×338px 图片、整体 600×676px；375px 下通过 `width:100%; height:auto` 保持比例为整体约 375×422.5px。
+- 链接边界：上、下两张整图分别可点击，默认均为 `https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=cover-rc`。本地 `asset://gift-vertical-pillow-cover` 与 `asset://gift-vertical-eye-mask` 仅供预览，正式导出前必须替换为公开 HTTPS 图片。
 
 ### `gift.rewardGrid2` — 双赠品奖励卡
 

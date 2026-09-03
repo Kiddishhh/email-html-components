@@ -33,6 +33,10 @@ const editableByComponent = {
     content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.title', 'hero.subtitle.line1', 'hero.subtitle.line2', 'hero.cta.text', 'hero.cta.url'],
     settings: ['navigation.visible', 'color.text', 'color.action']
   },
+  'hero.sceneOverlayCta2': {
+    content: ['navigation.message', 'navigation.cta.text', 'navigation.cta.url', 'hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.linkUrl', 'brand.logo.url', 'brand.logo.alt', 'hero.eyebrow', 'hero.title', 'hero.subtitle'],
+    settings: ['navigation.visible', 'color.navigationLeft', 'color.navigationRight', 'color.navigationText', 'color.surface', 'color.text']
+  },
   'hero.romanShadeDiscount': {
     content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.logo.url', 'hero.logo.alt', 'hero.logo.clickUrl', 'hero.eyebrow', 'hero.title', 'hero.discount', 'hero.subtitle', 'hero.cta.text', 'hero.cta.url'],
     settings: ['navigation.visible', 'color.text', 'color.action']
@@ -112,6 +116,17 @@ const editableByComponent = {
     ],
     settings: ['grid.showCaptions', 'color.surface']
   },
+  'collection.curtainEditorialMosaic4': {
+    content: [
+      'promotion.title', 'promotion.subtitle',
+      'mosaic.items[0].image.url', 'mosaic.items[0].image.alt', 'mosaic.items[0].clickUrl',
+      'mosaic.items[1].image.url', 'mosaic.items[1].image.alt', 'mosaic.items[1].clickUrl',
+      'mosaic.items[2].image.url', 'mosaic.items[2].image.alt', 'mosaic.items[2].clickUrl',
+      'mosaic.items[3].image.url', 'mosaic.items[3].image.alt', 'mosaic.items[3].clickUrl',
+      'cta.text', 'cta.url'
+    ],
+    settings: ['color.surface', 'color.heading', 'color.body', 'color.cardFallback', 'color.cta']
+  },
   'collection.curtainEditorialTriptych': {
     content: ['hero.image.url', 'hero.image.alt', 'hero.image.clickUrl', 'pair.left.url', 'pair.left.alt', 'pair.left.clickUrl', 'pair.left.caption', 'pair.right.url', 'pair.right.alt', 'pair.right.clickUrl', 'pair.right.caption', 'intro.title', 'intro.subtitle'],
     settings: ['color.surface']
@@ -166,6 +181,10 @@ const editableByComponent = {
     ],
     settings: ['color.canvas', 'color.card', 'color.text', 'color.accent', 'color.muted']
   },
+  'gift.verticalImagePair': {
+    content: ['images[0].url', 'images[0].alt', 'images[1].url', 'images[1].alt', 'gift.linkUrl'],
+    settings: []
+  },
   'location.showroomCard': { content: [], settings: ['color.surface'] },
   'footer.warm': { content: [], settings: ['color.background', 'color.text', 'color.link'] },
   'footer.doubleDivider': { content: [], settings: ['color.canvas', 'color.background', 'color.text', 'color.link'] },
@@ -181,6 +200,10 @@ const editableByComponent = {
   'tool.freeMeasurementGuidance': {
     content: ['guide.title', 'guide.subtitle', 'guide.image.url', 'guide.image.alt', 'guide.image.clickUrl'],
     settings: ['color.surface', 'color.text']
+  },
+  'review.trustpilotImage': {
+    content: ['reviews[0].author', 'reviews[0].title', 'reviews[0].body', 'reviews[0].date', 'reviews[1].author', 'reviews[1].title', 'reviews[1].body', 'reviews[1].date'],
+    settings: []
   },
   'review.textList2': { content: [], settings: [] },
   'product.sampleProductRecommendationLeft': {
@@ -456,6 +479,29 @@ const copyByComponentField = {
     'settings.color.discount': ['折扣标签底色', '统一修改三张图片左上角折扣标签的底色。'],
     'settings.color.cta': ['CTA 描边与文字色', '仅修改底部 CTA 的描边和文字颜色。']
   },
+  'collection.curtainEditorialMosaic4': {
+    'content.promotion.title': ['顶部标题', '默认 A FRESH LOOK FOR THE SEASON；保持单行可读。'],
+    'content.promotion.subtitle': ['顶部说明', '默认 Beautiful curtains, thoughtfully designed for your home.'],
+    'content.mosaic.items[0].image.url': ['左上拼贴图片', '替换 259×258px 左上图片；填写公开 HTTPS 图片地址。'],
+    'content.mosaic.items[0].image.alt': ['左上图片说明', '图片无法显示或读屏工具使用的简短说明。'],
+    'content.mosaic.items[0].clickUrl': ['左上图片链接', '左上图片独立跳转的公开 HTTPS 链接。'],
+    'content.mosaic.items[1].image.url': ['左下拼贴图片', '替换 259×258px 左下图片；填写公开 HTTPS 图片地址。'],
+    'content.mosaic.items[1].image.alt': ['左下图片说明', '图片无法显示或读屏工具使用的简短说明。'],
+    'content.mosaic.items[1].clickUrl': ['左下图片链接', '左下图片独立跳转的公开 HTTPS 链接。'],
+    'content.mosaic.items[2].image.url': ['右上拼贴图片', '替换 259×323px 右上图片；填写公开 HTTPS 图片地址。'],
+    'content.mosaic.items[2].image.alt': ['右上图片说明', '图片无法显示或读屏工具使用的简短说明。'],
+    'content.mosaic.items[2].clickUrl': ['右上图片链接', '右上图片独立跳转的公开 HTTPS 链接。'],
+    'content.mosaic.items[3].image.url': ['右下拼贴图片', '替换 259×194px 右下图片；填写公开 HTTPS 图片地址。'],
+    'content.mosaic.items[3].image.alt': ['右下图片说明', '图片无法显示或读屏工具使用的简短说明。'],
+    'content.mosaic.items[3].clickUrl': ['右下图片链接', '右下图片独立跳转的公开 HTTPS 链接。'],
+    'content.cta.text': ['底部 CTA 文案', '默认 REFRESH YOUR HOME。'],
+    'content.cta.url': ['底部 CTA 链接', '默认活动页链接，保留 cover-rc UTM 参数。'],
+    'settings.color.surface': ['组件背景色', '默认 #FFFDFA，仅作用于当前组件。'],
+    'settings.color.heading': ['标题颜色', '默认 #242323，仅作用于顶部标题。'],
+    'settings.color.body': ['说明颜色', '默认 #7C706A，仅作用于顶部说明。'],
+    'settings.color.cardFallback': ['图片降级底色', '默认 #E8E3DD；图片无法加载时显示。'],
+    'settings.color.cta': ['CTA 描边与文字色', '默认 #242323，同时作用于底部 CTA 边框和文字。']
+  },
   'collection.saleGrid4WithTitle': {
     'content.saleCollection.title': ['推荐区标题', '默认 You May Also Like；保留原稿的 Montserrat 无衬线样式。'],
     'content.saleCollection.body': ['推荐区说明', '显示在标题下方，按当前画布宽度自然换行。'],
@@ -575,6 +621,23 @@ const copyByComponentField = {
     'settings.color.accent': ['价值与 CTA 红色', '默认 #991B1B；同时修改两组价值文案和 CTA 底色。'],
     'settings.color.muted': ['辅助文字色', '修改顶部说明、两条赠送规则和底部提示。']
   },
+  'gift.verticalImagePair': {
+    'content.images[0].url': ['上方赠品整图', '替换上方完整赠品图片；建议使用 1200×676px 的公开 HTTPS PNG 或 JPG。'],
+    'content.images[0].alt': ['上方赠品图片说明', '上方图片无法显示或读屏工具使用的简短说明。'],
+    'content.images[1].url': ['下方赠品整图', '替换下方完整赠品图片；建议使用 1200×676px 的公开 HTTPS PNG 或 JPG。'],
+    'content.images[1].alt': ['下方赠品图片说明', '下方图片无法显示或读屏工具使用的简短说明。'],
+    'content.gift.linkUrl': ['两张赠品图点击链接', '上、下两张整图共用的公开 HTTPS 链接；默认带 Omnisend cover-rc 追踪参数。']
+  },
+  'review.trustpilotImage': {
+    'content.reviews[0].author': ['评论 1：评论者', '第一张评论卡的评论者姓名。'],
+    'content.reviews[0].title': ['评论 1：标题', '第一张评论卡的评论标题。'],
+    'content.reviews[0].body': ['评论 1：正文', '第一张评论卡的正文内容。'],
+    'content.reviews[0].date': ['评论 1：日期', '第一张评论卡右上方显示的日期。'],
+    'content.reviews[1].author': ['评论 2：评论者', '第二张评论卡的评论者姓名。'],
+    'content.reviews[1].title': ['评论 2：标题', '第二张评论卡的评论标题。'],
+    'content.reviews[1].body': ['评论 2：正文', '第二张评论卡的正文内容。'],
+    'content.reviews[1].date': ['评论 2：日期', '第二张评论卡右上方显示的日期。']
+  },
   'hero.lateSummerSale': {
     'content.brand.logo.url': ['品牌 Logo 图片', '替换夏末折扣首图顶部使用的品牌 Logo 图片。'],
     'settings.color.body': ['正文文字色', '修改活动补充说明的文字颜色。']
@@ -602,6 +665,25 @@ const copyByComponentField = {
     'content.hero.subtitle': ['活动补充说明', '使用一个字段在固定宽度内自然换行；建议保持两行以内。'],
     'settings.color.surface': ['图片降级底色', '默认 #C8B79D；用于图片无法显示时的降级背景。'],
     'settings.color.text': ['叠加文字颜色', '统一修改活动名称、主折扣和补充说明的颜色。']
+  },
+  'hero.sceneOverlayCta2': {
+    'content.navigation.message': ['导航促销文案', '显示在顶部左侧 76% 区域；建议保持一行短文案。'],
+    'content.navigation.cta.text': ['导航按钮文字', '显示在顶部右侧下划线链接内；建议保持简短。'],
+    'content.navigation.cta.url': ['导航按钮链接', '点击顶部右侧导航按钮后打开的公开 HTTPS 链接。'],
+    'content.hero.backgroundImage.url': ['场景背景图', '替换 600×632px Labor Day 场景头图背景；建议使用接近默认竖版比例的高清图。'],
+    'content.hero.backgroundImage.alt': ['场景图说明', '背景图无法显示或读屏工具使用的简短说明。'],
+    'content.hero.linkUrl': ['整张头图点击链接', '点击导航下方的 Logo、文案或场景区域时统一打开的公开 HTTPS 链接。'],
+    'content.brand.logo.url': ['品牌 Logo 图片', '替换场景上方的 104px Logo；建议使用正方形透明 PNG。'],
+    'content.brand.logo.alt': ['Logo 图片说明', 'Logo 无法显示或读屏工具使用的简短说明。'],
+    'content.hero.eyebrow': ['活动名称', '默认 Labor Day Sale；建议保持单行短文案。'],
+    'content.hero.title': ['主折扣标题', '默认 UP TO 65% Off；建议保持单行短文案。'],
+    'content.hero.subtitle': ['活动补充说明', '置于 410px 内容区并自然换行；建议保持两行以内。'],
+    'settings.navigation.visible': ['显示顶部导航', '关闭后会完整移除 56px 顶部导航；其余场景主体位置保持不变。'],
+    'settings.color.navigationLeft': ['导航左侧底色', '默认 #981E20，仅作用于顶部左侧促销文案区域。'],
+    'settings.color.navigationRight': ['导航右侧底色', '默认 #891718，仅作用于顶部右侧链接区域。'],
+    'settings.color.navigationText': ['导航文字色', '统一修改顶部促销文案与导航链接颜色。'],
+    'settings.color.surface': ['图片降级底色', '默认 #3C2D25；用于背景图无法显示时的降级显示。'],
+    'settings.color.text': ['叠加文字颜色', '统一修改 Logo 下方的三层活动文案。']
   },
   'navigation.promotionCta': {
     'content.promotion.title': ['活动名称', '显示在促销 CTA 区块顶部的居中文字。']

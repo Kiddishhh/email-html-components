@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.sceneOverlayCta2",
+  "fixture": "labor-day-sale-reference-demo",
+  "localReferenceAssets": {
+    "labor-day-scene": "assets/default-labor-day-scene.jpg",
+    "labor-day-logo": "assets/default-labor-day-logo.png"
+  },
+  "values": {
+    "navigation.message": "Unlock An Extra 15% Off Your First Order At Freshine",
+    "navigation.cta.text": "SIGN UP",
+    "navigation.cta.url": "https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=cover-fc",
+    "hero.backgroundImage.url": "asset://labor-day-scene",
+    "hero.backgroundImage.alt": "Warm living room with floor-to-ceiling curtains and a dining table",
+    "hero.linkUrl": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-fc",
+    "brand.logo.url": "asset://labor-day-logo",
+    "brand.logo.alt": "Freshine",
+    "hero.eyebrow": "Labor Day Sale",
+    "hero.title": "UP TO 65% Off",
+    "hero.subtitle": "EXTRA $600OFF&UP TO 20%OFF SITEWIDE"
+  }
+}

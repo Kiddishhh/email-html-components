@@ -140,6 +140,26 @@
     "规范版本": 1
   },
   {
+    "中文名称": "场景文字叠层头图2",
+    "分类": "头图",
+    "componentKey": "hero.sceneOverlayCta2",
+    "默认主题": "labor-day-scene-overlay",
+    "默认变体": "split-navigation-full-click-sale-scene",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/场景文字叠层头图2/component.template.v1.html",
+      "内容契约": "头图/场景文字叠层头图2/content.schema.v1.json",
+      "设置契约": "头图/场景文字叠层头图2/settings.schema.v1.json",
+      "默认测试数据": "头图/场景文字叠层头图2/content.fixture.v1.json",
+      "默认设置": "头图/场景文字叠层头图2/settings.defaults.v1.json",
+      "中文管理说明": "头图/场景文字叠层头图2/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/场景文字叠层头图2/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "罗马帘专属折扣头图",
     "分类": "头图",
     "componentKey": "hero.romanShadeDiscount",
@@ -380,6 +400,26 @@
     "规范版本": 1
   },
   {
+    "中文名称": "窗帘精选拼贴四图",
+    "分类": "活动商品组件",
+    "componentKey": "collection.curtainEditorialMosaic4",
+    "默认主题": "fresh-look-editorial-mosaic",
+    "默认变体": "four-independent-linked-images",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/窗帘精选拼贴四图/component.template.v1.html",
+      "内容契约": "活动商品组件/窗帘精选拼贴四图/content.schema.v1.json",
+      "设置契约": "活动商品组件/窗帘精选拼贴四图/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/窗帘精选拼贴四图/content.fixture.v1.json",
+      "默认设置": "活动商品组件/窗帘精选拼贴四图/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/窗帘精选拼贴四图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/窗帘精选拼贴四图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "窗帘场景三图卡",
     "分类": "活动商品组件",
     "componentKey": "collection.curtainEditorialTriptych",
@@ -495,6 +535,26 @@
       "默认设置": "赠品与权益组件/双赠品展示卡2/settings.defaults.v1.json",
       "中文管理说明": "赠品与权益组件/双赠品展示卡2/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "赠品与权益组件/双赠品展示卡2/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "赠品上下展示卡",
+    "分类": "赠品与权益组件",
+    "componentKey": "gift.verticalImagePair",
+    "默认主题": "vertical-gift-image-pair",
+    "默认变体": "two-full-width-linked-images-stacked",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/赠品上下展示卡/component.template.v1.html",
+      "内容契约": "赠品与权益组件/赠品上下展示卡/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/赠品上下展示卡/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/赠品上下展示卡/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/赠品上下展示卡/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/赠品上下展示卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/赠品上下展示卡/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
@@ -655,6 +715,26 @@
       "默认设置": "页脚组件/简约联系页脚/settings.defaults.v1.json",
       "中文管理说明": "页脚组件/简约联系页脚/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "页脚组件/简约联系页脚/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "Trustpilot 评论卡",
+    "分类": "评论组件",
+    "componentKey": "review.trustpilotImage",
+    "默认主题": "trustpilot-review-card",
+    "默认变体": "editable-two-review-cards",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "评论组件/Trustpilot 整图评论/component.template.v1.html",
+      "内容契约": "评论组件/Trustpilot 整图评论/content.schema.v1.json",
+      "设置契约": "评论组件/Trustpilot 整图评论/settings.schema.v1.json",
+      "默认测试数据": "评论组件/Trustpilot 整图评论/content.fixture.v1.json",
+      "默认设置": "评论组件/Trustpilot 整图评论/settings.defaults.v1.json",
+      "中文管理说明": "评论组件/Trustpilot 整图评论/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "评论组件/Trustpilot 整图评论/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "gift.verticalImagePair",
+  "fixture": "vertical-gift-reference-images",
+  "localReferenceAssets": {
+    "gift-vertical-pillow-cover": "assets/default-pillow-cover.png",
+    "gift-vertical-eye-mask": "assets/default-silk-eye-mask.png"
+  },
+  "values": {
+    "images[0].url": "asset://gift-vertical-pillow-cover",
+    "images[0].alt": "Random Pillow Cover with FREE GIFTS badge and Spend $999+ offer",
+    "images[1].url": "asset://gift-vertical-eye-mask",
+    "images[1].alt": "Silk Eye Mask with FREE GIFTS badge and Spend $699+ offer",
+    "gift.linkUrl": "https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+  }
+}

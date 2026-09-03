@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.curtainEditorialMosaic4",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#FFFDFA", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.heading": { "type": "string", "default": "#242323", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.body": { "type": "string", "default": "#7C706A", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.cardFallback": { "type": "string", "default": "#E8E3DD", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.cta": { "type": "string", "default": "#242323", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}

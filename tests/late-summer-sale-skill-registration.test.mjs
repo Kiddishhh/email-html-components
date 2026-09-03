@@ -55,6 +55,7 @@ test('Campaign editor loads the registered late-summer hero with its complete de
     'hero.gradientScenePromotion',
     'hero.circleLogoSceneOverlay',
     'hero.sceneOverlayCta',
+    'hero.sceneOverlayCta2',
     'hero.romanShadeDiscount'
   ]);
 
