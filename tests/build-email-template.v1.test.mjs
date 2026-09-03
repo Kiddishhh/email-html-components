@@ -6,12 +6,14 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
+import { addComponentInstance, buildEditorCatalog, buildLocalAssetMap, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const builder = `${root}/build-email-template.v1.mjs`;
 const componentDirectory = `${root}/评论组件/可链接整图`;
 const productStyle1Directory = `${root}/小样/产品/样式1`;
 const navigationPromotionCtaDirectory = `${root}/导航组件/活动促销cta`;
+const sceneOverlayHeroDirectory = `${root}/头图/场景文字叠层头图`;
 const fixture = JSON.parse(readFileSync(`${componentDirectory}/content.fixture.v1.json`, 'utf8'));
 const defaults = JSON.parse(readFileSync(`${componentDirectory}/settings.defaults.v1.json`, 'utf8'));
 function makeComposition(name, mutate = () => {}) {
@@ -51,6 +53,99 @@ function run(path, ...args) {
   return spawnSync(process.execPath, [builder, path, ...args], { cwd: root, encoding: 'utf8' });
 }
 
+test('scene comparison review resolves original assets and renders editable copy with only the tracked CTA linked', () => {
+  const key = 'review.sceneComparison';
+  const catalog = buildEditorCatalog({ workspaceRoot: root });
+  const entry = catalog.find((item) => item.componentKey === key);
+  assert.ok(entry, 'the scene comparison review must be selectable in the editor');
+  assert.equal(entry.category, '评论组件');
+  const document = addComponentInstance(createCampaignDocument({ name: 'scene-comparison-review' }), catalog, key);
+  const instance = document.components[0];
+  const fields = editableFieldKeys(key);
+  assert.deepEqual(fields.content, Object.keys(instance.content));
+  assert.ok(fields.content.includes('review.body'));
+  assert.ok(fields.content.includes('cta.url'));
+  const assets = buildLocalAssetMap(document, { workspaceRoot: root });
+  assert.equal(Object.keys(assets).length, 4);
+  for (const asset of Object.values(assets)) assert.ok(existsSync(join(root, asset.path)), asset.path);
+  const temporary = mkdtempSync(join(tmpdir(), 'freshine-scene-review-'));
+  const output = join(temporary, 'email.html');
+  const previewOutput = join(temporary, 'preview.html');
+  const path = join(temporary, 'composition.json');
+  const { name, directory, componentKey, content, settings } = instance;
+  const composition = { schemaVersion: 1, canvas: document.canvas, assets, output, previewOutput, components: [{ name, directory, componentKey, content, settings }] };
+  writeFileSync(path, JSON.stringify(composition));
+  let result = run(path, '--defer-local-assets');
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const deferred = readFileSync(output, 'utf8');
+  for (const id of Object.keys(assets)) assert.ok(deferred.includes(`asset://${id}`));
+  result = run(path, '--preview-local-assets');
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.doesNotMatch(readFileSync(previewOutput, 'utf8'), /asset:\/\//);
+
+  // Simulate the existing exporter replacing local sources, without any remote upload.
+  for (const [field, value] of Object.entries(instance.content)) {
+    if (value.startsWith('asset://')) instance.content[field] = `https://cdn.example.com/${value.slice(8)}.png`;
+  }
+  instance.content['review.author'] = 'Edited & Reviewed';
+  instance.content['review.body'] = 'Edited review <copy> remains text.';
+  instance.content['product.color'] = 'Color: Test';
+  instance.content['cta.text'] = 'Shop The Look >>';
+  writeFileSync(path, JSON.stringify(composition));
+  result = run(path);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(output, 'utf8');
+  assert.match(html, /Edited &amp; Reviewed/);
+  assert.match(html, /Edited review &lt;copy&gt; remains text\./);
+  assert.match(html, /Color: Test/);
+  assert.match(html, /Marisol Linen Curtains/);
+  assert.match(html, /Shop The Look &gt;&gt;/);
+  assert.equal((html.match(/<img\b/g) ?? []).length, 4);
+  assert.equal((html.match(/<a\b/g) ?? []).length, 1);
+  assert.match(html, /<td[^>]*style="[^"]*font-size:0;line-height:0;[^"]*">\s*<a[^>]*data-freshine-href-slot="cta\.url"/, 'the CTA wrapper must not introduce a desktop-size text baseline in the mobile layout');
+  assert.match(html, /href="https:\/\/freshinelife\.com\/collections\/extra-long-curtains\/products\/marisol-linen-curtains-large-windows-elegant-pleated-drapes-for-living-room-bedroom\?utm_source=omnisend&amp;utm_medium=email&amp;utm_id=cover-rc"/);
+  assert.match(html, /width:100%;max-width:600px/);
+  assert.match(html, /table-layout:fixed/);
+  assert.doesNotMatch(html, /<style\b|<script\b|<iframe\b|<form\b|<svg\b|<div\b|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|asset:\/\/|file:\/\/|data:image|\{\{/i);
+});
+
+test('four-product recommendation renders editable copy, four paired product links and a separate discount CTA', () => {
+  const componentKey = 'collection.saleGrid4WithTitle';
+  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
+  const entry = registry.find((item) => item.componentKey === componentKey);
+  assert.ok(entry, 'the titled four-product recommendation must be registered');
+  const directory = entry.路径.组件模板.replace('/component.template.v1.html', '');
+  const content = JSON.parse(readFileSync(`${root}/${directory}/content.fixture.v1.json`, 'utf8')).values;
+  const settings = JSON.parse(readFileSync(`${root}/${directory}/settings.defaults.v1.json`, 'utf8')).values;
+  const temporary = mkdtempSync(join(tmpdir(), 'freshine-grid4-title-'));
+  const output = join(temporary, 'email.html');
+  const path = join(temporary, 'composition.json');
+  content['saleCollection.title'] = 'Selected & Recommended';
+  content['saleItems[2].cta.text'] = 'SHOP TEST >>';
+  content['saleItems[2].image.clickUrl'] = 'https://freshinelife.com/products/test-product';
+  content['saleCollection.cta.url'] = 'https://freshinelife.com/discount/TEST';
+  writeFileSync(path, JSON.stringify({
+    schemaVersion: 1,
+    canvas: { backgroundColor: '#FFFDF9', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    output, previewOutput: join(temporary, 'preview.html'),
+    components: [{ name: entry.中文名称, directory, componentKey, content, settings }]
+  }));
+  const result = run(path);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(output, 'utf8');
+  assert.match(html, /Selected &amp; Recommended/);
+  assert.match(html, /SHOP TEST &gt;&gt;/);
+  const visibleHtml = html.replace(/<!--[\s\S]*?-->/g, '');
+  assert.equal((visibleHtml.match(/href="https:\/\/freshinelife.com\/products\/test-product"/g) ?? []).length, 2);
+  assert.match(html, /<v:rect[^>]*href="https:\/\/freshinelife.com\/products\/test-product"/);
+  assert.match(html, /href="https:\/\/freshinelife.com\/discount\/TEST"/);
+  assert.equal((html.match(/data-freshine-slot="saleItems\[\d\]\.discountLabel"/g) ?? []).length, 4);
+  assert.equal((html.match(/role="img"/g) ?? []).length, 4);
+  assert.doesNotMatch(html, /<style\b|<script\b|<div\b|display:(?:flex|grid)|position:absolute|asset:\/\//);
+  assert.match(html, /font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:30px/);
+  assert.ok(editableFieldKeys(componentKey).content.includes('saleItems[2].cta.text'));
+});
+
 function makeNavigationPromotionCtaComposition(name, mutate = () => {}) {
   const componentFixture = JSON.parse(readFileSync(`${navigationPromotionCtaDirectory}/content.fixture.v1.json`, 'utf8'));
   const componentDefaults = JSON.parse(readFileSync(`${navigationPromotionCtaDirectory}/settings.defaults.v1.json`, 'utf8'));
@@ -78,6 +173,89 @@ function makeNavigationPromotionCtaComposition(name, mutate = () => {}) {
   writeFileSync(path, JSON.stringify(composition, null, 2));
   return { composition, path };
 }
+
+function makeSceneOverlayHeroComposition(name, mutate = () => {}) {
+  const componentFixture = JSON.parse(readFileSync(`${sceneOverlayHeroDirectory}/content.fixture.v1.json`, 'utf8'));
+  const componentDefaults = JSON.parse(readFileSync(`${sceneOverlayHeroDirectory}/settings.defaults.v1.json`, 'utf8'));
+  const composition = {
+    schemaVersion: 1,
+    canvas: {
+      backgroundColor: '#FFFFFF',
+      outerBackgroundColor: '#FFFFFF',
+      contentWidth: 600,
+      mobileTargetWidth: 375,
+      verticalPadding: 0
+    },
+    output: `/private/tmp/${name}.html`,
+    previewOutput: `/private/tmp/${name}.local-preview.html`,
+    assets: {
+      'measurement-service-scene': {
+        path: '头图/场景文字叠层头图/assets/default-measurement-service.png',
+        name: 'default-measurement-service.png'
+      },
+      'measurement-service-logo': {
+        path: '头图/场景文字叠层头图/assets/default-logo-white.png',
+        name: 'default-logo-white.png'
+      }
+    },
+    components: [{
+      name: '场景文字叠层头图',
+      directory: sceneOverlayHeroDirectory,
+      componentKey: 'hero.sceneOverlayCta',
+      content: { ...componentFixture.values },
+      settings: { ...componentDefaults.values }
+    }]
+  };
+  mutate(composition);
+  const path = `/private/tmp/${name}.composition.json`;
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+  return { composition, path };
+}
+
+test('scene overlay hero renders its cropped local scene with editable white copy and action', () => {
+  const { composition, path } = makeSceneOverlayHeroComposition('scene-overlay-hero');
+  const result = run(path, '--preview-local-assets');
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const preview = readFileSync(composition.previewOutput, 'utf8');
+  assert.match(preview, /default-measurement-service\.png/);
+  assert.match(preview, /default-logo-white\.png/);
+  assert.match(preview, /width="600" height="778"/);
+  assert.match(preview, /data-freshine-slot="hero\.title"[^>]*white-space:normal[^>]*>1-ON-1 MEASURING SERVICE<\/span>/);
+  assert.match(preview, /BOOK YOUR FREE SESSION/);
+  assert.match(preview, /https:\/\/freshinelife\.com\/pages\/measurement-tool/);
+  assert.match(preview, /border:1px solid #FFFFFF/);
+  assert.match(preview, /background-color:#A71919/);
+  assert.doesNotMatch(preview, /\{\{(?:content|settings)\./);
+
+  const template = readFileSync(`${sceneOverlayHeroDirectory}/component.template.v1.html`, 'utf8');
+  const demo = readFileSync(`${sceneOverlayHeroDirectory}/效果演示.html`, 'utf8');
+  const fixedCanvasShell = /<td align="center" valign="top"[^>]*>\s*<table role="presentation" width="600"[^>]*style="width:100%;max-width:600px;border-collapse:collapse;margin:0 auto;">/s;
+  assert.match(template, fixedCanvasShell);
+  assert.match(demo, fixedCanvasShell);
+});
+
+test('scene overlay hero applies independently editable copy and theme colors', () => {
+  const { composition, path } = makeSceneOverlayHeroComposition('scene-overlay-hero-custom');
+  composition.components[0].content['hero.title'] = 'TAILORED FOR YOU';
+  composition.components[0].content['hero.subtitle.line2'] = 'Guidance from a curtain expert.';
+  composition.components[0].content['hero.cta.text'] = 'RESERVE A SESSION';
+  composition.components[0].content['hero.cta.url'] = 'https://freshinelife.com/pages/book-measuring';
+  composition.components[0].settings['color.text'] = '#FFF7EA';
+  composition.components[0].settings['color.action'] = '#8D1B1B';
+  writeFileSync(path, JSON.stringify(composition, null, 2));
+
+  const result = run(path, '--preview-local-assets');
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const preview = readFileSync(composition.previewOutput, 'utf8');
+  assert.match(preview, /data-freshine-slot="hero\.title"[^>]*>TAILORED FOR YOU<\/span>/);
+  assert.match(preview, /Guidance from a curtain expert\./);
+  assert.match(preview, /RESERVE A SESSION/);
+  assert.match(preview, /href="https:\/\/freshinelife\.com\/pages\/book-measuring"/);
+  assert.match(preview, /color:#FFF7EA/);
+  assert.match(preview, /background-color:#8D1B1B/);
+});
 
 test('navigation promotion CTA renders editable copy and all three theme colors', () => {
   const { composition, path } = makeNavigationPromotionCtaComposition('navigation-promotion-cta');
@@ -203,18 +381,18 @@ test('product style1 uses a compact desktop split layout with a thin sample fram
   assert.match(template, /width="548"/);
   assert.match(template, /padding:53px \{\{settings\.spacing\.horizontal\}\} 0/);
   assert.match(template, /padding:0 \{\{settings\.spacing\.contentHorizontal\}\};padding:0 clamp\(18px,calc\(16vw - 54px\),\{\{settings\.spacing\.contentHorizontal\}\}\);/);
-  assert.match(template, /width="202"[^>]*style="display:block;position:relative;top:-\{\{settings\.spacing\.detailOverlap\}\};margin-bottom:-\{\{settings\.spacing\.detailOverlap\}\};width:100%;max-width:\{\{settings\.image\.detailWidth\}\};[^\"]*margin-right:10px;margin-left:auto/);
+  assert.match(template, /width="202"[^>]*style="display:block;position:relative;top:-\{\{settings\.spacing\.detailOverlap\}\};margin-bottom:-\{\{settings\.spacing\.detailOverlap\}\};width:100%;max-width:\{\{settings\.image\.detailWidth\}\};[^\"]*margin-right:10px;margin-right:min\(10px,1\.666667vw\);margin-left:auto/);
   assert.match(template, /border:1px solid \{\{settings\.color\.detailBorder\}\}/);
-  assert.match(template, /padding:34px 0 54px;text-align:left;vertical-align:top/);
-  assert.match(template, /width:59%;padding:34px 0 54px;text-align:left;vertical-align:top/);
+  assert.match(template, /padding:34px 0 54px;padding:min\(34px,5\.666667vw\) 0 min\(54px,9vw\);text-align:left;vertical-align:top/);
+  assert.match(template, /width:59%;padding:34px 0 54px;padding:min\(34px,5\.666667vw\) 0 min\(54px,9vw\);text-align:left;vertical-align:top/);
   assert.doesNotMatch(template, /min-width:210px|width:clamp\(200px/);
-  assert.match(demo, /padding:0 42px;padding:0 clamp\(18px,calc\(16vw - 54px\),42px\);/);
-  assert.match(demo, /width:59%;padding:34px 0 54px;text-align:left;vertical-align:top/);
+  assert.match(demo, /padding:0 42px;padding:0 min\(42px,7vw\);padding:0 clamp\(18px,calc\(16vw - 54px\),42px\);/);
+  assert.match(demo, /width:59%;padding:34px 0 54px;padding:min\(34px,5\.666667vw\) 0 min\(54px,9vw\);text-align:left;vertical-align:top/);
   assert.match(template, /width="194" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:194px;/);
   assert.match(template, /padding:0 \{\{settings\.spacing\.detailShadow\}\} \{\{settings\.spacing\.detailShadow\}\} 0/);
   assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:22px;font-size:min\(22px,5\.333vw\);font-weight:600;line-height:150%;letter-spacing:0px;text-align:left/);
   assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:17px;font-size:min\(17px,3\.733vw\);font-weight:400;line-height:150%;letter-spacing:0px;text-align:left/);
-  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:16px;font-size:min\(16px,4vw\);font-weight:500;line-height:15px;letter-spacing:0px;text-align:center/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:16px;font-size:min\(16px,4vw\);font-weight:500;line-height:15px;line-height:min\(15px,2\.5vw\);letter-spacing:0px;text-align:center/);
   assert.doesNotMatch(template, /box-shadow|position\s*:\s*(?:absolute|fixed|sticky)/i);
 });
 
@@ -226,7 +404,7 @@ test('product style1 local assets resolve together in a preview', () => {
   const preview = readFileSync(composition.previewOutput, 'utf8');
   assert.match(preview, /default-main-image\.png/);
   assert.match(preview, /default-detail-image\.png/);
-  assert.match(preview, /display:block;position:relative;top:-56px;margin-bottom:-56px;width:100%;max-width:202px;[^\"]*margin-right:10px;margin-left:auto/);
+  assert.match(preview, /display:block;position:relative;top:-56px;margin-bottom:-56px;width:100%;max-width:202px;[^\"]*margin-right:10px;margin-right:min\(10px,1\.666667vw\);margin-left:auto/);
   assert.match(preview, /padding:0 4px 4px 0/);
   assert.match(preview, /border:1px solid #E9E4DF/);
   assert.doesNotMatch(preview, /box-shadow|position\s*:\s*(?:absolute|fixed|sticky)/i);
@@ -760,7 +938,7 @@ test('the footer renders its appointment disclaimer as an address-style line bef
   assert.equal(fixture.values['footer.address.disclaimer'], '(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)');
   assert.equal(defaultFooter.content['footer.address.disclaimer'], '(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)');
   assert.ok(countryPosition < disclaimerPosition && disclaimerPosition < phonePosition, 'the disclaimer must stay between country and phone');
-  assert.match(template, /data-freshine-slot="footer\.address\.disclaimer" style="color:\{\{settings\.color\.text\}\};font-family:\{\{settings\.font\.body\}\};font-size:11px;font-weight:400;line-height:17px;text-align:center;"/);
+  assert.match(template, /data-freshine-slot="footer\.address\.disclaimer" style="color:\{\{settings\.color\.text\}\};font-family:\{\{settings\.font\.body\}\};font-size:11px;font-size:min\(11px,1\.833333vw\);font-weight:400;line-height:17px;line-height:min\(17px,2\.833333vw\);text-align:center;"/);
 });
 
 test('the footer follows the approved information hierarchy with black text and blue links', () => {
@@ -773,10 +951,10 @@ test('the footer follows the approved information hierarchy with black text and 
   const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
 
   assert.match(template, /max-width:\{\{settings\.content\.width\}\}/);
-  assert.match(template, /font-size:17px;font-weight:600;line-height:22px/);
+  assert.match(template, /font-size:17px;font-size:min\(17px,2\.833333vw\);font-weight:600;line-height:22px;line-height:min\(22px,3\.666667vw\)/);
   assert.match(template, /height="1" bgcolor="#C9B99B"/);
   assert.match(template, /data-freshine-social-cell="youtube"[^>]*padding:0 4px/);
-  assert.match(template, /color:\{\{settings\.color\.text\}\}[^>]*font-size:11px;font-weight:400;line-height:17px/);
+  assert.match(template, /color:\{\{settings\.color\.text\}\}[^>]*font-size:11px;font-size:min\(11px,1\.833333vw\);font-weight:400;line-height:17px;line-height:min\(17px,2\.833333vw\)/);
   assert.match(template, /color:\{\{settings\.color\.link\}\}[^>]*text-decoration:none/);
   assert.match(template, /href="\[\[unsubscribe_link\]\]"/);
   assert.equal(defaults.values['color.text'], '#000000');
@@ -847,13 +1025,37 @@ test('the footer renders seven social icons in the approved display order with c
   }
   assert.equal(fixture.values['footer.social.facebookUrl'], 'https://www.facebook.com/freshinecurtains/');
   assert.equal(fixture.values['footer.social.threadsUrl'], 'https://www.threads.com/@freshinecurtains');
-  assert.equal(fixture.values['footer.social.whatsappUrl'], 'https://api.whatsapp.com/send/?phone=17477171985&text=Hello&type=phone_number&app_absent=0');
+  assert.equal(fixture.values['footer.social.whatsappUrl'], 'https://api.whatsapp.com/send/?phone=19496916598&text=Hello&type=phone_number&app_absent=0');
   assert.match(demo, /facebook\.com\/freshinecurtains/);
   assert.match(demo, /threads\.com\/@freshinecurtains/);
   assert.match(demo, /api\.whatsapp\.com\/send/);
   assert.match(management, /Facebook、WhatsApp、Threads/);
   assert.match(interactions, /七枚社媒图标/);
   assert.match(interactions, /YouTube `24px`、Instagram `24px`、Facebook `23px`、TikTok `24px`、Pinterest `24px`、WhatsApp `24px`、Threads `23px`/);
+});
+
+test('every registered footer default renders the current WhatsApp support destination', () => {
+  const catalog = buildEditorCatalog({ workspaceRoot: root });
+  let document = createCampaignDocument({ name: 'footer-whatsapp-defaults' });
+  for (const componentKey of ['footer.warm', 'footer.doubleDivider']) {
+    document = addComponentInstance(document, catalog, componentKey);
+  }
+  const temporary = mkdtempSync(join(tmpdir(), 'freshine-footer-whatsapp-'));
+  const output = join(temporary, 'email.html');
+  const compositionPath = join(temporary, 'composition.json');
+  writeFileSync(compositionPath, JSON.stringify({
+    schemaVersion: 1,
+    canvas: document.canvas,
+    output,
+    previewOutput: join(temporary, 'preview.html'),
+    components: document.components.map(({ name, directory, componentKey, content, settings }) => ({ name, directory, componentKey, content, settings }))
+  }));
+
+  const result = run(compositionPath);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const rendered = readFileSync(output, 'utf8');
+  const expectedHref = 'href="https://api.whatsapp.com/send/?phone=19496916598&amp;text=Hello&amp;type=phone_number&amp;app_absent=0"';
+  assert.equal(rendered.split(expectedHref).length - 1, 2);
 });
 
 test('the rendered footer normalizes seven social logos inside equal visual cells', () => {
@@ -1013,7 +1215,7 @@ test('all six sale cards use identical centered wrappers and symmetric spacing',
     assert.match(wrapper, /style="width:100%;max-width:250px;"/);
     assert.doesNotMatch(wrapper, /align="(?:left|right)"/);
   }
-  assert.equal((template.match(/align="center" valign="top" style="padding:0 7px 20px;"/g) ?? []).length, 6);
+  assert.equal((template.match(/align="center" valign="top" style="padding:0 7px 20px;padding:0 min\(7px,1\.166667vw\) min\(20px,3\.333333vw\);"/g) ?? []).length, 6);
   assert.equal((template.match(/class="freshine-sale-image-table"[^>]*align="center"/g) ?? []).length, 6);
   assert.doesNotMatch(template, /padding:0 14px 20px 0|padding:0 0 20px 14px/);
 });
@@ -1025,8 +1227,8 @@ test('the sale grid CTA keeps its desktop maximum and mobile-side breathing room
   const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
   const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
 
-  assert.match(template, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
-  assert.match(demo, /<td align="center" style="padding:8px 0 42px;">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
+  assert.match(template, /<td align="center" style="padding:8px 0 42px;padding:min\(8px,1\.333333vw\) 0 min\(42px,7vw\);">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
+  assert.match(demo, /<td align="center" style="padding:8px 0 42px;padding:min\(8px,1\.333333vw\) 0 min\(42px,7vw\);">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
   for (const source of [management, interactions]) {
     assert.match(source, /CTA.*486px/s);
     assert.match(source, /width:81%.*max-width:486px/s);
@@ -1041,10 +1243,10 @@ test('the sale grid uses the double-gift title and subtitle type scale', () => {
   const giftTemplate = readFileSync(`${gifts}/component.template.v1.html`, 'utf8');
   const giftDefaults = JSON.parse(readFileSync(`${gifts}/settings.defaults.v1.json`, 'utf8'));
 
-  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-weight:500;line-height:38px;letter-spacing:0px;text-align:center/);
-  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-weight:500;line-height:27px;letter-spacing:0px;text-align:center/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-weight:500;line-height:38px;letter-spacing:0px;text-align:center/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-weight:500;line-height:27px;letter-spacing:0px;text-align:center/);
+  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-size:min\(30px,5vw\);font-weight:500;line-height:38px;line-height:min\(38px,6\.333333vw\);letter-spacing:0px;text-align:center/);
+  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-size:min\(18px,3vw\);font-weight:500;line-height:27px;line-height:min\(27px,4\.5vw\);letter-spacing:0px;text-align:center/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-size:min\(30px,5vw\);font-weight:500;line-height:38px;line-height:min\(38px,6\.333333vw\);letter-spacing:0px;text-align:center/);
+  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-size:min\(18px,3vw\);font-weight:500;line-height:27px;line-height:min\(27px,4\.5vw\);letter-spacing:0px;text-align:center/);
   assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:\{\{settings\.font\.headingSize\}\};font-weight:\{\{settings\.font\.headingWeight\}\};line-height:\{\{settings\.font\.headingLineHeight\}\};letter-spacing:0px;text-align:center/);
   assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:\{\{settings\.font\.bodySize\}\};font-weight:\{\{settings\.font\.bodyWeight\}\};line-height:\{\{settings\.font\.bodyLineHeight\}\};letter-spacing:0px;text-align:center/);
   assert.equal(giftDefaults.values['font.headingSize'], '30px');
@@ -1063,6 +1265,95 @@ test('the default upper gift links to the pillow-cover collection', () => {
 
   assert.equal(fixture.values['reward.items[0].url'], target);
   assert.match(demo, new RegExp(`<a href="${target}" data-freshine-href-slot="reward\\.items\\[0\\]\\.url"`));
+});
+
+test('double-gift showcase keeps independent photos and editable gift copy with two homepage CTAs', () => {
+  const componentKey = 'gift.showcase2';
+  const catalog = buildEditorCatalog({ workspaceRoot: root });
+  assert.ok(catalog.some((item) => item.componentKey === componentKey), 'the new double-gift showcase must be selectable');
+  let document = addComponentInstance(createCampaignDocument(), catalog, 'gift.rewardGrid2');
+  const reward = structuredClone(document.components[0]);
+  document = addComponentInstance(document, catalog, componentKey);
+  assert.deepEqual(document.components[0], reward);
+  assert.deepEqual(editableFieldKeys(componentKey), {
+    content: [
+      'gifts[0].image.url', 'gifts[0].image.alt', 'gifts[0].title', 'gifts[0].value', 'gifts[0].description', 'gifts[0].cta.text', 'gifts[0].cta.url', 'gifts[0].note',
+      'gifts[1].image.url', 'gifts[1].image.alt', 'gifts[1].title', 'gifts[1].value', 'gifts[1].description', 'gifts[1].cta.text', 'gifts[1].cta.url', 'gifts[1].note'
+    ],
+    settings: ['color.surface', 'color.text', 'color.accent', 'color.muted']
+  });
+  const current = document.components[1];
+  const assets = buildLocalAssetMap(document, { workspaceRoot: root });
+  const upper = assets[current.content['gifts[0].image.url'].slice('asset://'.length)];
+  const lower = assets[current.content['gifts[1].image.url'].slice('asset://'.length)];
+  assert.notEqual(upper.path, lower.path);
+  assert.match(upper.path, /双赠品展示卡\/assets\/silk-eye-mask-photo\.png$/);
+  assert.match(lower.path, /双赠品展示卡\/assets\/random-pillow-cover-photo\.png$/);
+  assert.match(current.content['gifts[0].image.alt'], /Silk Eye Mask/);
+  assert.match(current.content['gifts[1].image.alt'], /Random Pillow Cover/);
+  assert.equal(current.content['gifts[0].cta.url'], 'https://freshinelife.com/');
+  assert.equal(current.content['gifts[1].cta.url'], 'https://freshinelife.com/');
+  assert.equal(current.content['gifts[0].cta.text'], 'SPEND $699+');
+  assert.equal(current.content['gifts[1].cta.text'], 'SPEND $999+');
+  assert.equal(current.content['gifts[0].note'], 'Spend $699 or more and receive a complimentary silk eye mask.');
+  assert.equal(current.content['gifts[1].note'], 'Spend $999 or more and receive a complimentary pillow cover.');
+});
+
+test('double-gift showcase renders editable text with two separate CTA-only links and rejects unsafe CTA URLs', () => {
+  const componentKey = 'gift.showcase2';
+  const catalog = buildEditorCatalog({ workspaceRoot: root });
+  assert.ok(catalog.some((item) => item.componentKey === componentKey), 'the new double-gift showcase must be selectable');
+  const document = addComponentInstance(createCampaignDocument(), catalog, componentKey);
+  const current = document.components[0];
+  const temporary = mkdtempSync(join(tmpdir(), 'freshine-double-gift-showcase-'));
+  const output = join(temporary, 'email.html');
+  const path = join(temporary, 'composition.json');
+  const composition = {
+    schemaVersion: 1, canvas: document.canvas, output, previewOutput: join(temporary, 'preview.html'),
+    components: [{ name: current.name, directory: current.directory, componentKey,
+      content: { ...current.content,
+        'gifts[0].image.url': 'https://cdn.example.com/eye-mask-new.png',
+        'gifts[0].image.alt': 'Eye mask & comfort',
+        'gifts[0].title': 'Silk & Sleep',
+        'gifts[0].cta.text': 'GET EYE MASK',
+        'gifts[0].cta.url': 'https://freshinelife.com/collections/test-eye-mask',
+        'gifts[1].image.url': 'https://cdn.example.com/pillow-original.png',
+        'gifts[1].image.alt': 'Pillow <gift>',
+        'gifts[1].cta.url': 'https://freshinelife.com/collections/test-pillows',
+        'cta.icon.url': 'https://cdn.example.com/shopping-bag.png' },
+      settings: { ...current.settings, 'color.surface': '#123456' }
+    }]
+  };
+  writeFileSync(path, JSON.stringify(composition));
+  const result = run(path);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const html = readFileSync(output, 'utf8');
+  const images = [...html.matchAll(/<img\b[^>]*data-freshine-slot="gifts[^>]*>/g)].map(([tag]) => tag);
+  assert.equal(images.length, 2);
+  assert.match(images[0], /src="https:\/\/cdn\.example\.com\/eye-mask-new\.png"/);
+  assert.match(images[0], /alt="Eye mask &amp; comfort"/);
+  assert.match(images[1], /src="https:\/\/cdn\.example\.com\/pillow-original\.png"/);
+  assert.match(images[1], /alt="Pillow &lt;gift&gt;"/);
+  for (const image of images) assert.match(image, /display:block;[^\"]*width:100%;[^\"]*height:auto/);
+  for (const image of images) assert.match(image, /font-size:14px;line-height:18px/, 'photo-blocked alt text must remain visible');
+  assert.match(html, /Silk &amp; Sleep/);
+  assert.match(html, /VALUE \$59\.9/);
+  assert.match(html, /VALUE \$89\.9/);
+  assert.match(html, /GET EYE MASK/);
+  assert.match(html, /Spend \$699 or more and receive a complimentary silk eye mask\./);
+  assert.match(html, /Spend \$999 or more and receive a complimentary pillow cover\./);
+  const links = [...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>/g)];
+  assert.deepEqual(links.map((match) => match[1]), ['https://freshinelife.com/collections/test-eye-mask', 'https://freshinelife.com/collections/test-pillows']);
+  assert.equal((html.match(/src="https:\/\/cdn\.example\.com\/shopping-bag\.png"/g) ?? []).length, 2);
+  assert.doesNotMatch(html, /<a\b[^>]*>\s*<img[^>]*data-freshine-slot="gifts/);
+  assert.match(html, /max-width:600px/);
+  assert.match(html, /background-color:#123456/);
+  assert.doesNotMatch(html, /<style\b|<script\b|<iframe\b|<form\b|display:(?:flex|grid)|position:(?:absolute|fixed)|asset:\/\//);
+  composition.components[0].content['gifts[1].cta.url'] = 'javascript:alert(1)';
+  writeFileSync(path, JSON.stringify(composition));
+  const unsafe = run(path);
+  assert.notEqual(unsafe.status, 0);
+  assert.match(unsafe.stderr, /gifts\[1\]\.cta\.url has unsafe URL/);
 });
 
 test('the default benefits image uses the supplied local component asset', () => {
@@ -1493,8 +1784,8 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   assert.match(template, /width="237"[^>]*margin:0 10px 0 auto/);
   assert.match(template, /width="217" height="245" data-freshine-slot="product\.images\.detail"/);
   assert.match(template, /padding:79px 0 0 18px/);
-  assert.match(template, /width:45\.9854015%;padding:28px 0 0;vertical-align:top;text-align:right;/);
-  assert.match(template, /padding:9px;background-color:#FFFFFF;border:1px solid #D8D0C5;/);
+  assert.match(template, /width:45\.9854015%;padding:28px 0 0;padding:min\(28px,4\.666667vw\) 0 0;vertical-align:top;text-align:right;/);
+  assert.match(template, /padding:9px;padding:min\(9px,1\.5vw\);background-color:#FFFFFF;border:1px solid #D8D0C5;/);
   assert.match(template, /data-freshine-slot="intro\.title"/);
   assert.match(template, /data-freshine-slot="intro\.subtitle"/);
   assert.doesNotMatch(template, /data-freshine-slot="intro\.subtitle\.line[123]"/);
@@ -1538,7 +1829,7 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   assert.equal(renderResult.status, 0, renderResult.stderr || renderResult.stdout);
   assert.match(preview, /width="548"/);
   assert.match(preview, /margin:0 10px 0 auto/);
-  assert.match(preview, /padding:28px 0 0;vertical-align:top;text-align:right;/);
+  assert.match(preview, /padding:28px 0 0;padding:min\(28px,4\.666667vw\) 0 0;vertical-align:top;text-align:right;/);
   assert.match(preview, /border:1px solid #D8D0C5/);
   assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E7%AA%97%E5%B8%98%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1II/assets/default-celina-bedroom.png'));
   const finalComposition = structuredClone(composition);
@@ -1604,9 +1895,9 @@ test('the no-title curtain recommendation card keeps the editorial product layou
 
   assert.match(template, /width="548" height="495" data-freshine-slot="product\.images\.scene"/);
   assert.match(template, /padding:79px 0 0 18px/);
-  assert.match(template, /width:45\.9854015%;padding:28px 0 0;vertical-align:top;text-align:right;/);
+  assert.match(template, /width:45\.9854015%;padding:28px 0 0;padding:min\(28px,4\.666667vw\) 0 0;vertical-align:top;text-align:right;/);
   assert.match(template, /width="237"[^>]*margin:0 10px 0 auto/);
-  assert.match(template, /padding:9px;background-color:#FFFFFF;border:1px solid #D8D0C5;/);
+  assert.match(template, /padding:9px;padding:min\(9px,1\.5vw\);background-color:#FFFFFF;border:1px solid #D8D0C5;/);
   assert.doesNotMatch(template, /intro\.|Upgrade Your Home in Style/);
   assert.deepEqual(Object.keys(contentSchema.properties), [
     'product.images.scene.url', 'product.images.scene.alt', 'product.images.detail.url', 'product.images.detail.alt',
@@ -1682,7 +1973,7 @@ test('the measurement tool card is a registered 600px editable component with it
   assert.match(template, /width="548" height="493"[^>]*data-freshine-slot="measurement\.image"/);
   assert.match(template, /data-freshine-slot="measurement\.image" style="[^"]*width:100%;height:auto;/);
   assert.match(fixture.localReferenceAssets['measurement-tool'], /default-measurement-tool-cropped\.png$/);
-  assert.match(template, /data-freshine-slot="measurement\.title" style="[^"]*font-size:26px;font-weight:600;line-height:36px;letter-spacing:0;text-align:left;/);
+  assert.match(template, /data-freshine-slot="measurement\.title" style="[^"]*font-size:26px;font-size:min\(26px,4\.333333vw\);font-weight:600;line-height:36px;line-height:min\(36px,6vw\);letter-spacing:0;text-align:left;/);
   assert.match(template, /data-freshine-href-slot="measurement\.cta\.url"[^>]*data-freshine-slot="measurement\.cta\.label"/);
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|<div\b/i);
   assert.match(demo, /\.\/assets\/default-measurement-tool-cropped\.png/);

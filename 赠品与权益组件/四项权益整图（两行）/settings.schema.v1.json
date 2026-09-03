@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsStrip4TwoRows",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}

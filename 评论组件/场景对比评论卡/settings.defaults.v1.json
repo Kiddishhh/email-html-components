@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.sceneComparison",
+  "values": {
+    "color.surface": "#F5F2ED",
+    "color.text": "#1F1F1F",
+    "color.action": "#1F1F1F"
+  }
+}

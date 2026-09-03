@@ -89,6 +89,12 @@ Collection 的 Admin GraphQL 类型不提供 `onlineStoreUrl`；用 handle 生�
 
 `collection.saleGrid4` 使用同一条 URL 解析和只读查询，但编辑器必须先指定第 1–4 格中的一个。导入只更新该格的 `saleItems[n].image.url`、`saleItems[n].image.alt`、`saleItems[n].image.clickUrl` 和 `saleItems[n].discountLabel`；不得覆盖其余三格、组件背景色或标签主题色。
 
+`collection.saleGrid4WithTitle` 使用同一逐格导入流程，另将选中格的 `saleItems[n].cta.text` 更新为 Shopify 商品标题，避免更换商品后保留旧名称。其余三格、顶部标题/说明、底部按钮及所有颜色不变；缺少商品标题时不覆盖旧内容。
+
+`collection.productGrid4NoSidePadding` 复用同一逐格导入流程，并将选中格的 `saleItems[n].cta.text` 更新为 Shopify 商品标题。只更新该格图片、Alt、商品链接、折扣和按钮文字；其余三格、顶部标题/说明及所有颜色保持不变，缺少商品标题时不得覆盖旧内容。
+
+`collection.saleGrid4DetailWithTitle` 同样使用逐格导入，但将完整 Shopify 标题写入 `saleItems[n].name`，把首个可售变体的 `price` 与有效 `compareAtPrice` 格式化为美元字符串写入 `saleItems[n].price.current` 和 `.price.compareAt`。商品链接在写入 `saleItems[n].image.clickUrl` 前统一追加或覆盖 `utm_source=omnisend`、`utm_medium=email`、`utm_id=cover-rc`；图片和 CTA 共用该链接，商品名称与价格不附带链接。CTA 文案保持当前值；无有效划线价时原价与折扣标签写为空。
+
 ## 8. 折扣计算
 
 对 Shopify 排序中的首个可售变体执行与实时主题 `selected_or_first_available_variant` 一致的规则：

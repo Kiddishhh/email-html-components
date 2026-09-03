@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "navigation.eventCountdown",
+  "fixture": "user-supplied-static-event-countdown-navigation",
+  "values": {
+    "countdown.title": "ONLY 3 DAYS!",
+    "benefit.1.text": "Free Gift On $699+",
+    "benefit.2.text": "Free Gift On $999+",
+    "benefit.3.text": "Free Shipping",
+    "promotion.cta.text": "SHOP THE HOLIDAY SALE >>",
+    "promotion.cta.url": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+  }
+}

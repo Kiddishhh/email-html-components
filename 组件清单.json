@@ -80,6 +80,86 @@
     "规范版本": 1
   },
   {
+    "中文名称": "渐变场景活动头图",
+    "分类": "头图",
+    "componentKey": "hero.gradientScenePromotion",
+    "默认主题": "gradient-scene-promotion",
+    "默认变体": "full-click-background-logo-copy",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/渐变场景活动头图/component.template.v1.html",
+      "内容契约": "头图/渐变场景活动头图/content.schema.v1.json",
+      "设置契约": "头图/渐变场景活动头图/settings.schema.v1.json",
+      "默认测试数据": "头图/渐变场景活动头图/content.fixture.v1.json",
+      "默认设置": "头图/渐变场景活动头图/settings.defaults.v1.json",
+      "中文管理说明": "头图/渐变场景活动头图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/渐变场景活动头图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "圆标场景叠字头图",
+    "分类": "头图",
+    "componentKey": "hero.circleLogoSceneOverlay",
+    "默认主题": "circle-logo-scene-overlay",
+    "默认变体": "full-click-top-circle-logo-bottom-copy",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/圆标场景叠字头图/component.template.v1.html",
+      "内容契约": "头图/圆标场景叠字头图/content.schema.v1.json",
+      "设置契约": "头图/圆标场景叠字头图/settings.schema.v1.json",
+      "默认测试数据": "头图/圆标场景叠字头图/content.fixture.v1.json",
+      "默认设置": "头图/圆标场景叠字头图/settings.defaults.v1.json",
+      "中文管理说明": "头图/圆标场景叠字头图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/圆标场景叠字头图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "场景文字叠层头图",
+    "分类": "头图",
+    "componentKey": "hero.sceneOverlayCta",
+    "默认主题": "scene-overlay-light-copy",
+    "默认变体": "portrait-room-scene-circle-logo-cta",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/场景文字叠层头图/component.template.v1.html",
+      "内容契约": "头图/场景文字叠层头图/content.schema.v1.json",
+      "设置契约": "头图/场景文字叠层头图/settings.schema.v1.json",
+      "默认测试数据": "头图/场景文字叠层头图/content.fixture.v1.json",
+      "默认设置": "头图/场景文字叠层头图/settings.defaults.v1.json",
+      "中文管理说明": "头图/场景文字叠层头图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/场景文字叠层头图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "罗马帘专属折扣头图",
+    "分类": "头图",
+    "componentKey": "hero.romanShadeDiscount",
+    "默认主题": "roman-shade-warm-brown",
+    "默认变体": "portrait-exclusive-discount",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/罗马帘专属折扣头图/component.template.v1.html",
+      "内容契约": "头图/罗马帘专属折扣头图/content.schema.v1.json",
+      "设置契约": "头图/罗马帘专属折扣头图/settings.schema.v1.json",
+      "默认测试数据": "头图/罗马帘专属折扣头图/content.fixture.v1.json",
+      "默认设置": "头图/罗马帘专属折扣头图/settings.defaults.v1.json",
+      "中文管理说明": "头图/罗马帘专属折扣头图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/罗马帘专属折扣头图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "活动促销 CTA",
     "分类": "导航组件",
     "componentKey": "navigation.promotionCta",
@@ -95,6 +175,26 @@
       "默认设置": "导航组件/活动促销cta/settings.defaults.v1.json",
       "中文管理说明": "导航组件/活动促销cta/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "导航组件/活动促销cta/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "活动倒计时导航",
+    "分类": "导航组件",
+    "componentKey": "navigation.eventCountdown",
+    "默认主题": "event-countdown-navigation",
+    "默认变体": "static-countdown-benefits-cta",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "导航组件/活动倒计时导航/component.template.v1.html",
+      "内容契约": "导航组件/活动倒计时导航/content.schema.v1.json",
+      "设置契约": "导航组件/活动倒计时导航/settings.schema.v1.json",
+      "默认测试数据": "导航组件/活动倒计时导航/content.fixture.v1.json",
+      "默认设置": "导航组件/活动倒计时导航/settings.defaults.v1.json",
+      "中文管理说明": "导航组件/活动倒计时导航/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "导航组件/活动倒计时导航/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
@@ -200,6 +300,66 @@
     "规范版本": 1
   },
   {
+    "中文名称": "四宫格折扣推荐（标题款）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.saleGrid4WithTitle",
+    "默认主题": "warm-shade-recommendations",
+    "默认变体": "style-xxvii",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/四宫格折扣推荐（标题款）/component.template.v1.html",
+      "内容契约": "活动商品组件/四宫格折扣推荐（标题款）/content.schema.v1.json",
+      "设置契约": "活动商品组件/四宫格折扣推荐（标题款）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/四宫格折扣推荐（标题款）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/四宫格折扣推荐（标题款）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/四宫格折扣推荐（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/四宫格折扣推荐（标题款）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "四宫格商品推荐（无左右边距）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.productGrid4NoSidePadding",
+    "默认主题": "full-bleed-product-grid4",
+    "默认变体": "two-row-tall-products-no-side-padding",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/四宫格商品推荐（无左右边距）/component.template.v1.html",
+      "内容契约": "活动商品组件/四宫格商品推荐（无左右边距）/content.schema.v1.json",
+      "设置契约": "活动商品组件/四宫格商品推荐（无左右边距）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/四宫格商品推荐（无左右边距）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/四宫格商品推荐（无左右边距）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/四宫格商品推荐（无左右边距）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/四宫格商品推荐（无左右边距）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "四宫格详情折扣（标题款）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.saleGrid4DetailWithTitle",
+    "默认主题": "curtain-detail-sale-grid",
+    "默认变体": "reference-style-xxvii-detail-pricing",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/四宫格详情折扣（标题款）/component.template.v1.html",
+      "内容契约": "活动商品组件/四宫格详情折扣（标题款）/content.schema.v1.json",
+      "设置契约": "活动商品组件/四宫格详情折扣（标题款）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/四宫格详情折扣（标题款）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/四宫格详情折扣（标题款）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/四宫格详情折扣（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/四宫格详情折扣（标题款）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "窗帘灵感四宫格",
     "分类": "活动商品组件",
     "componentKey": "collection.curtainInspirationGrid4",
@@ -235,6 +395,26 @@
       "默认设置": "活动商品组件/窗帘场景三图卡/settings.defaults.v1.json",
       "中文管理说明": "活动商品组件/窗帘场景三图卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "活动商品组件/窗帘场景三图卡/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "三图推荐（CTA+标题）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.romanShadeMultiRecommendation",
+    "默认主题": "roman-shade-warm-editorial",
+    "默认变体": "title-hero-pair-outline-cta",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/三图推荐（CTA+标题）/component.template.v1.html",
+      "内容契约": "活动商品组件/三图推荐（CTA+标题）/content.schema.v1.json",
+      "设置契约": "活动商品组件/三图推荐（CTA+标题）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/三图推荐（CTA+标题）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/三图推荐（CTA+标题）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/三图推荐（CTA+标题）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/三图推荐（CTA+标题）/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
@@ -280,6 +460,46 @@
     "规范版本": 1
   },
   {
+    "中文名称": "双赠品展示卡",
+    "分类": "赠品与权益组件",
+    "componentKey": "gift.showcase2",
+    "默认主题": "reference-editorial-gifts",
+    "默认变体": "eye-mask-first-cta",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/双赠品展示卡/component.template.v1.html",
+      "内容契约": "赠品与权益组件/双赠品展示卡/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/双赠品展示卡/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/双赠品展示卡/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/双赠品展示卡/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/双赠品展示卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/双赠品展示卡/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "双赠品展示卡2",
+    "分类": "赠品与权益组件",
+    "componentKey": "gift.doubleGiftAddressShowcase",
+    "默认主题": "pinch-pleat-tiered-gifts",
+    "默认变体": "side-by-side-tiered",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/双赠品展示卡2/component.template.v1.html",
+      "内容契约": "赠品与权益组件/双赠品展示卡2/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/双赠品展示卡2/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/双赠品展示卡2/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/双赠品展示卡2/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/双赠品展示卡2/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/双赠品展示卡2/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "展厅地址卡",
     "分类": "地址组件",
     "componentKey": "location.showroomCard",
@@ -315,6 +535,66 @@
       "默认设置": "赠品与权益组件/三项权益整图/settings.defaults.v1.json",
       "中文管理说明": "赠品与权益组件/三项权益整图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "赠品与权益组件/三项权益整图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "四项权益整图",
+    "分类": "赠品与权益组件",
+    "componentKey": "image.benefitsStrip4",
+    "默认主题": "benefits-strip-4",
+    "默认变体": "non-linked-full-image",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/四项权益整图/component.template.v1.html",
+      "内容契约": "赠品与权益组件/四项权益整图/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/四项权益整图/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/四项权益整图/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/四项权益整图/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/四项权益整图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/四项权益整图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "四项权益整图（两行）",
+    "分类": "赠品与权益组件",
+    "componentKey": "image.benefitsStrip4TwoRows",
+    "默认主题": "benefits-strip-4-two-rows",
+    "默认变体": "non-linked-full-image",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/四项权益整图（两行）/component.template.v1.html",
+      "内容契约": "赠品与权益组件/四项权益整图（两行）/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/四项权益整图（两行）/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/四项权益整图（两行）/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/四项权益整图（两行）/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/四项权益整图（两行）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/四项权益整图（两行）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "权益+地址组合卡",
+    "分类": "赠品与权益组件",
+    "componentKey": "image.benefitsAddressCard",
+    "默认主题": "benefits-address-card",
+    "默认变体": "non-linked-full-image",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/权益+地址组合卡/component.template.v1.html",
+      "内容契约": "赠品与权益组件/权益+地址组合卡/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/权益+地址组合卡/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/权益+地址组合卡/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/权益+地址组合卡/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/权益+地址组合卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/权益+地址组合卡/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
@@ -360,6 +640,26 @@
     "规范版本": 1
   },
   {
+    "中文名称": "简约联系页脚",
+    "分类": "页脚组件",
+    "componentKey": "footer.minimalContact",
+    "默认主题": "minimal-contact-editorial",
+    "默认变体": "address-contact-social-legal",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "页脚组件/简约联系页脚/component.template.v1.html",
+      "内容契约": "页脚组件/简约联系页脚/content.schema.v1.json",
+      "设置契约": "页脚组件/简约联系页脚/settings.schema.v1.json",
+      "默认测试数据": "页脚组件/简约联系页脚/content.fixture.v1.json",
+      "默认设置": "页脚组件/简约联系页脚/settings.defaults.v1.json",
+      "中文管理说明": "页脚组件/简约联系页脚/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "页脚组件/简约联系页脚/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "双条文字评论",
     "分类": "评论组件",
     "componentKey": "review.textList2",
@@ -375,6 +675,26 @@
       "默认设置": "评论组件/双条文字评论/settings.defaults.v1.json",
       "中文管理说明": "评论组件/双条文字评论/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "评论组件/双条文字评论/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "场景对比评论卡",
+    "分类": "评论组件",
+    "componentKey": "review.sceneComparison",
+    "默认主题": "warm-scene-review",
+    "默认变体": "viii-two-column-checkerboard",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "评论组件/场景对比评论卡/component.template.v1.html",
+      "内容契约": "评论组件/场景对比评论卡/content.schema.v1.json",
+      "设置契约": "评论组件/场景对比评论卡/settings.schema.v1.json",
+      "默认测试数据": "评论组件/场景对比评论卡/content.fixture.v1.json",
+      "默认设置": "评论组件/场景对比评论卡/settings.defaults.v1.json",
+      "中文管理说明": "评论组件/场景对比评论卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "评论组件/场景对比评论卡/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
@@ -495,6 +815,26 @@
       "默认设置": "赠品与权益组件/尺寸测量工具卡/settings.defaults.v1.json",
       "中文管理说明": "赠品与权益组件/尺寸测量工具卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "赠品与权益组件/尺寸测量工具卡/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "免费测量引导卡",
+    "分类": "赠品与权益组件",
+    "componentKey": "tool.freeMeasurementGuidance",
+    "默认主题": "free-measurement-guidance",
+    "默认变体": "heading-and-scene-no-cta",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/免费测量引导卡/component.template.v1.html",
+      "内容契约": "赠品与权益组件/免费测量引导卡/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/免费测量引导卡/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/免费测量引导卡/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/免费测量引导卡/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/免费测量引导卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/免费测量引导卡/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1

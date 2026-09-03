@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "navigation.eventCountdown",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#F5F1ED", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.text": { "type": "string", "default": "#1F1F1F", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.action": { "type": "string", "default": "#8D1B1B", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}

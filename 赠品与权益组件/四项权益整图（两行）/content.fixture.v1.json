@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsStrip4TwoRows",
+  "fixture": "default-four-benefits-strip-two-rows",
+  "localPreviewAsset": "assets/default-benefits-strip-4-two-rows.png",
+  "localReferenceAssets": {
+    "benefits-strip-4-two-rows": "assets/default-benefits-strip-4-two-rows.png"
+  },
+  "values": {
+    "image.url": "asset://benefits-strip-4-two-rows",
+    "image.alt": "Freshine benefits: 7–14 day delivery, free shipping, free design, and measurement tool"
+  }
+}

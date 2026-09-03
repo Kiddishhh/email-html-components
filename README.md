@@ -25,10 +25,26 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 - 选择结构项后定位到对应预览区域；
 - 组件字段、颜色、本地图片和头图导航开关；
 - 模板保存、选择、覆盖和删除；
-- 六宫格及单品窗帘促销卡的 Shopify 只读导入；
+- 六宫格、各款四宫格及单品窗帘促销卡的 Shopify 只读导入（四宫格逐格导入）；
 - Omnisend HTML 导出和 Draft-only 上传。
 
 普通编辑草稿、预览、导出中间文件和图片缓存只存在于当前编辑器运行期，关闭或重启服务即自动清理；仅手动保存的预设模板及其专属本地图片保存在被 Git 忽略的 `campaign-drafts/editor-templates/`。
+
+“渐变场景活动头图”已登记为 `hero.gradientScenePromotion`，在“头图”分类中选择。它保留用户提供模板的 600×761px 场景、底部渐变、97px Logo、三层活动文案和整块点击链接，375px 下等比收缩；背景、Logo、Alt、文案、链接及当前组件颜色可编辑，几何与渐变参数固定。详见[组件管理说明](头图/渐变场景活动头图/COMPONENT_MANAGEMENT.zh-CN.v1.md)。
+
+“圆标场景叠字头图”已登记为 `hero.circleLogoSceneOverlay`，在“头图”分类中选择。它使用 600×761px 全幅场景、顶部 120px 圆形 Logo 和底部三层居中文字，375px 下等比收缩；背景、Logo、Alt、整图链接、文案及当前组件颜色可编辑，固定无渐变、导航和独立 CTA。详见[组件管理说明](头图/圆标场景叠字头图/COMPONENT_MANAGEMENT.zh-CN.v1.md)。
+
+“四宫格折扣推荐（标题款）”已登记为 `collection.saleGrid4WithTitle`，在“活动商品组件”分类中选择；当前折扣、带UTM的商品链接和Roman Shades底部CTA详见[组件管理说明](活动商品组件/四宫格折扣推荐（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md)。编辑器启动时缓存目录与默认值；旧服务需在保护未保存草稿后重启，或另用空闲端口启动，不能仅靠刷新网页加载新默认值。
+
+“四宫格商品推荐（无左右边距）”已登记为 `collection.productGrid4NoSidePadding`，在“活动商品组件”分类中选择。保留600px满宽两列布局、289×361px商品图、22px列间距和四个逐格Shopify只读导入入口；详见[组件管理说明](活动商品组件/四宫格商品推荐（无左右边距）/COMPONENT_MANAGEMENT.zh-CN.v1.md)。
+
+“四宫格详情折扣（标题款）”已登记为 `collection.saleGrid4DetailWithTitle`，在“活动商品组件”分类中选择。它保留样式XXVII的标题、两列商品图、纯文本商品名/价格及独立 SHOP NOW CTA；只有图片与CTA可点击，四格均支持只读 Shopify 导入并自动补齐指定 UTM。详见[组件管理说明](活动商品组件/四宫格详情折扣（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md)。
+
+“四项权益整图（两行）”已登记为 `image.benefitsStrip4TwoRows`，在“赠品与权益组件”分类中选择，保留原有单行组件。默认使用完整的两行权益原图；支持替换整图、Alt 和外部背景色，不绑定链接。详见[组件管理说明](赠品与权益组件/四项权益整图（两行）/COMPONENT_MANAGEMENT.zh-CN.v1.md)。
+
+“双赠品展示卡”已登记为 `gift.showcase2`，在“赠品与权益组件”分类中选择。按新版参考图制作600px交错图文布局，眼罩在上、抱枕套在下；照片、Alt、名称、价值、卖点、CTA文字/链接及赠送规则独立配置，两个CTA默认均指向 `https://freshinelife.com/`。已确认满$699赠眼罩、满$999赠抱枕套。详见[组件管理说明](赠品与权益组件/双赠品展示卡/COMPONENT_MANAGEMENT.zh-CN.v1.md)。原“双赠品奖励卡”保持不变。
+
+“双赠品展示卡2”已登记为 `gift.doubleGiftAddressShowcase`，在“赠品与权益组件”分类中选择。它按 `容器 117.png` 制作 600px 并列阶梯赠品布局：两张默认图片从原稿精确裁切，只有两条红色满额 CTA 可点击，标题、价值、规则、底部提示和五组颜色可编辑。详见[组件管理说明](赠品与权益组件/双赠品展示卡2/COMPONENT_MANAGEMENT.zh-CN.v1.md)。现有两款双赠品组件保持不变。
 
 ## 校验与测试
 

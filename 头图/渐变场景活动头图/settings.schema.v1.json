@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.gradientScenePromotion",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#FBFAF8", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.text": { "type": "string", "default": "#202020", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}

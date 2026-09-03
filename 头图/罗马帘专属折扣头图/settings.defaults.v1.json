@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.romanShadeDiscount",
+  "values": {
+    "navigation.visible": true,
+    "color.navigationLeft": "#604211",
+    "color.navigationRight": "#6B492C",
+    "color.navigationText": "#FFFFFF",
+    "color.text": "#6B492C",
+    "color.action": "#6B492C",
+    "color.heroFallback": "#C6BCAC"
+  }
+}

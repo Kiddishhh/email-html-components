@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.sceneOverlayCta",
+  "fixture": "one-on-one-measuring-service-reference-demo",
+  "localReferenceAssets": {
+    "measurement-service-scene": "assets/default-measurement-service.png",
+    "measurement-service-logo": "assets/default-logo-white.png"
+  },
+  "values": {
+    "hero.backgroundImage.url": "asset://measurement-service-scene",
+    "hero.backgroundImage.alt": "Living room with ivory curtains, French doors, and a seated woman",
+    "hero.logo.url": "asset://measurement-service-logo",
+    "hero.logo.alt": "Freshine white wordmark",
+    "hero.title": "1-ON-1 MEASURING SERVICE",
+    "hero.subtitle.line1": "Work With An Expert To Receive Personalized Measuring",
+    "hero.subtitle.line2": "Guidance Before Placing Your Order.",
+    "hero.cta.text": "BOOK YOUR FREE SESSION",
+    "hero.cta.url": "https://freshinelife.com/pages/measurement-tool"
+  }
+}

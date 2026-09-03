@@ -1,0 +1,22 @@
+{
+  "componentKey": "image.benefitsStrip4TwoRows",
+  "editorUrl": "http://127.0.0.1:4188",
+  "desktop": {
+    "complete": true,
+    "height": 438,
+    "links": 0,
+    "scrollWidth": 600,
+    "viewport": 600,
+    "width": 600
+  },
+  "mobile": {
+    "complete": true,
+    "height": 273.75,
+    "links": 0,
+    "scrollWidth": 375,
+    "viewport": 375,
+    "width": 375
+  },
+  "editorLogs": [],
+  "previewLogs": []
+}

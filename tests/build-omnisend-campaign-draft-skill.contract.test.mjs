@@ -70,6 +70,18 @@ test('new-component standard preserves the approved design, registration, and em
   assert.match(standard, /不得发送.*排期.*发布/su);
 });
 
+test('new-component standard mandates the 600px-to-375px proportional inline mobile contract', async () => {
+  const skill = await read('SKILL.md');
+  const standard = await read('references/new-component-standard.zh-CN.md');
+
+  assert.match(skill, /移动端等比制造规范/u);
+  assert.match(standard, /600px.*375px.*62\.5%/su);
+  assert.match(standard, /font-size:Npx;.*font-size:min\(Npx,N\/6vw\)/su);
+  assert.match(standard, /不缩放.*font-size:0.*1px/su);
+  assert.match(standard, /component\.template\.v1\.html.*效果演示\.html/su);
+  assert.match(standard, /normalize-inline-mobile-dimensions\.mjs --check/u);
+});
+
 test('current component guide covers every registered component without retired routing language', async () => {
   const registry = JSON.parse(readFileSync(join(workspaceRoot, '组件清单.json'), 'utf8'));
   const guide = await read('references/component-interactions.zh-CN.md');

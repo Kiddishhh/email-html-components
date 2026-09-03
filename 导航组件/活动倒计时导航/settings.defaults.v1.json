@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "navigation.eventCountdown",
+  "values": {
+    "color.surface": "#F5F1ED",
+    "color.text": "#1F1F1F",
+    "color.action": "#8D1B1B"
+  }
+}

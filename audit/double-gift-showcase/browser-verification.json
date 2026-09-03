@@ -1,0 +1,238 @@
+{
+  "desktop": {
+    "component": {
+      "height": 673.7578125,
+      "width": 600,
+      "x": 0,
+      "y": 0
+    },
+    "documentWidth": 600,
+    "dpr": 2,
+    "images": [
+      {
+        "alt": "FREE GIFTS — Silk Eye Mask, $59.9. 100% blackout, double-sided comfort.",
+        "complete": true,
+        "height": 335.7578125,
+        "natural": [
+          1208,
+          676
+        ],
+        "src": "assets/default-silk-eye-mask.png",
+        "width": 600,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "alt": "FREE GIFTS — Random Pillow Cover, $89.9. One of Our Featured Designs.",
+        "complete": true,
+        "height": 338,
+        "natural": [
+          1200,
+          676
+        ],
+        "src": "assets/default-random-pillow-cover.png",
+        "width": 600,
+        "x": 0,
+        "y": 335.7578125
+      }
+    ],
+    "links": 0,
+    "viewport": [
+      600,
+      740
+    ]
+  },
+  "mobile": {
+    "component": {
+      "height": 421.09375,
+      "width": 375
+    },
+    "documentWidth": 375,
+    "dpr": 1,
+    "images": [
+      {
+        "complete": true,
+        "height": 209.84375,
+        "width": 375,
+        "y": 0
+      },
+      {
+        "complete": true,
+        "height": 211.25,
+        "width": 375,
+        "y": 209.84375
+      }
+    ],
+    "links": 0,
+    "viewport": [
+      375,
+      480
+    ]
+  },
+  "demoConsole": [],
+  "comparison600": {
+    "dpr": 2,
+    "reference": [
+      {
+        "h": 335.7578125,
+        "loaded": true,
+        "w": 600
+      },
+      {
+        "h": 338,
+        "loaded": true,
+        "w": 600
+      }
+    ],
+    "viewport": [
+      1280,
+      780
+    ],
+    "component": {
+      "height": 673.7578125,
+      "width": 600
+    }
+  },
+  "comparison375": {
+    "height": 421.09375,
+    "width": 375
+  },
+  "editorDesktop": {
+    "height": 673.7578125,
+    "images": [
+      {
+        "alt": "FREE GIFTS — Silk Eye Mask, $59.9. 100% blackout, double-sided comfort.",
+        "complete": true,
+        "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-silk-eye-mask.png"
+      },
+      {
+        "alt": "FREE GIFTS — Random Pillow Cover, $89.9. One of Our Featured Designs.",
+        "complete": true,
+        "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-random-pillow-cover.png"
+      }
+    ],
+    "links": 0,
+    "scrollWidth": 600,
+    "width": 600
+  },
+  "altEdit": [
+    {
+      "alt": "Eye mask QA & comfort",
+      "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-silk-eye-mask.png"
+    },
+    {
+      "alt": "FREE GIFTS — Random Pillow Cover, $89.9. One of Our Featured Designs.",
+      "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-random-pillow-cover.png"
+    }
+  ],
+  "imageReplacement": [
+    {
+      "alt": "FREE GIFTS — Silk Eye Mask, $59.9. 100% blackout, double-sided comfort.",
+      "complete": true,
+      "natural": [
+        1200,
+        676
+      ],
+      "src": "uploads/editor-upload-ece4676a-b225-4451-b3c3-edf79351dba8.png"
+    },
+    {
+      "alt": "FREE GIFTS — Random Pillow Cover, $89.9. One of Our Featured Designs.",
+      "complete": true,
+      "natural": [
+        1200,
+        676
+      ],
+      "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-random-pillow-cover.png"
+    }
+  ],
+  "editorMobile": {
+    "height": 421.09375,
+    "images": [
+      {
+        "alt": "FREE GIFTS — Silk Eye Mask, $59.9. 100% blackout, double-sided comfort.",
+        "complete": true,
+        "height": 209.84375,
+        "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-silk-eye-mask.png",
+        "width": 375
+      },
+      {
+        "alt": "FREE GIFTS — Random Pillow Cover, $89.9. One of Our Featured Designs.",
+        "complete": true,
+        "height": 211.25,
+        "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-random-pillow-cover.png",
+        "width": 375
+      }
+    ],
+    "links": 0,
+    "scrollWidth": 375,
+    "width": 375
+  },
+  "editorFinal": {
+    "height": 673.7578125,
+    "images": [
+      {
+        "alt": "FREE GIFTS — Silk Eye Mask, $59.9. 100% blackout, double-sided comfort.",
+        "complete": true,
+        "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-silk-eye-mask.png"
+      },
+      {
+        "alt": "FREE GIFTS — Random Pillow Cover, $89.9. One of Our Featured Designs.",
+        "complete": true,
+        "src": "../../../%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/assets/default-random-pillow-cover.png"
+      }
+    ],
+    "links": 0,
+    "scrollWidth": 600,
+    "width": 600
+  },
+  "editorConsole": [],
+  "comparisonConsole": [
+    {
+      "level": "error",
+      "message": "Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.",
+      "timestamp": "2026-08-28T07:43:12.845Z"
+    }
+  ],
+  "postReviewDesktop": {
+    "height": 673.7578125,
+    "images": [
+      {
+        "fontSize": "14px",
+        "lineHeight": "18px",
+        "loaded": true
+      },
+      {
+        "fontSize": "14px",
+        "lineHeight": "18px",
+        "loaded": true
+      }
+    ],
+    "viewport": [
+      600,
+      740
+    ],
+    "width": 600
+  },
+  "postReviewMobile": {
+    "documentWidth": 375,
+    "height": 421.09375,
+    "width": 375
+  },
+  "altFallback": [
+    {
+      "alt": "FREE GIFTS — Silk Eye Mask, $59.9. 100% blackout, double-sided comfort.",
+      "fontSize": "14px",
+      "height": 18,
+      "lineHeight": "18px",
+      "loaded": false
+    },
+    {
+      "alt": "FREE GIFTS — Random Pillow Cover, $89.9. One of Our Featured Designs.",
+      "fontSize": "14px",
+      "height": 18,
+      "lineHeight": "18px",
+      "loaded": false
+    }
+  ],
+  "postReviewConsole": []
+}

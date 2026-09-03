@@ -160,19 +160,32 @@ export function applySaleGrid4ProductImport(document, instanceId, itemIndex, pro
   const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
   if (index === -1) throw new Error('component instance not found');
   const current = document.components[index];
-  if (current.componentKey !== 'collection.saleGrid4') throw new Error('four-grid product import requires a collection.saleGrid4 instance');
+  const detailComponentKey = 'collection.saleGrid4DetailWithTitle';
+  if (!['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', detailComponentKey].includes(current.componentKey)) throw new Error('four-grid product import requires a four-grid component instance');
   if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex > 3) throw new Error('four-grid product import item index is out of range');
   const product = productImport?.product;
-  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.discountLabel !== 'string') {
+  const detailProductIsIncomplete = current.componentKey === detailComponentKey && (
+    typeof product?.fullTitle !== 'string' || !product.fullTitle.trim() ||
+    typeof product?.price !== 'string' || !product.price.trim() ||
+    typeof product?.compareAtPrice !== 'string'
+  );
+  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.discountLabel !== 'string' || (['collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding'].includes(current.componentKey) && (typeof product.title !== 'string' || !product.title.trim())) || detailProductIsIncomplete) {
     throw new Error('four-grid product import returned incomplete product data');
   }
+  const importedLinkUrl = current.componentKey === detailComponentKey ? appendCampaignUtm(product.linkUrl) : product.linkUrl;
   const content = {
     ...current.content,
     [`saleItems[${itemIndex}].image.url`]: product.image.url,
     [`saleItems[${itemIndex}].image.alt`]: product.image.alt ?? '',
-    [`saleItems[${itemIndex}].image.clickUrl`]: product.linkUrl,
+    [`saleItems[${itemIndex}].image.clickUrl`]: importedLinkUrl,
     [`saleItems[${itemIndex}].discountLabel`]: product.discountLabel
   };
+  if (['collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding'].includes(current.componentKey)) content[`saleItems[${itemIndex}].cta.text`] = product.title;
+  if (current.componentKey === detailComponentKey) {
+    content[`saleItems[${itemIndex}].name`] = product.fullTitle.trim();
+    content[`saleItems[${itemIndex}].price.current`] = product.price;
+    content[`saleItems[${itemIndex}].price.compareAt`] = product.compareAtPrice;
+  }
   const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
     ...instance,
     content,
@@ -212,6 +225,14 @@ export function applySaleGrid6WithTitleProductImport(document, instanceId, itemI
     confirmed: false
   } : instance);
   return { ...clone(document), components, confirmed: false };
+}
+
+function appendCampaignUtm(value) {
+  const url = new URL(value);
+  url.searchParams.set('utm_source', 'omnisend');
+  url.searchParams.set('utm_medium', 'email');
+  url.searchParams.set('utm_id', 'cover-rc');
+  return url.toString();
 }
 
 export function applyCurtainPromotionProductImport(document, instanceId, productImport) {

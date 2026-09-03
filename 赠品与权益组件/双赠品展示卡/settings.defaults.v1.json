@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "gift.showcase2",
+  "values": {
+    "color.surface": "#F5F1ED",
+    "color.text": "#1F1F1F",
+    "color.accent": "#8D1B1B",
+    "color.muted": "#7C706A",
+    "font.heading": "Lora, Georgia, Times New Roman, serif",
+    "font.body": "Montserrat, Arial, Helvetica, sans-serif"
+  }
+}

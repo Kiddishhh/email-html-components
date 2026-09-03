@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.romanShadeDiscount",
+  "fixture": "roman-shade-exclusive-discount-reference",
+  "localReferenceAssets": {
+    "roman-shade-scene": "assets/roman-shade-scene.png",
+    "roman-shade-logo": "assets/roman-shade-logo.png",
+    "roman-shade-tag": "assets/roman-shade-tag.png"
+  },
+  "values": {
+    "hero.backgroundImage.url": "asset://roman-shade-scene",
+    "hero.backgroundImage.alt": "Father and child reading on a sofa beside linen Roman shades",
+    "hero.logo.url": "asset://roman-shade-logo",
+    "hero.logo.alt": "Freshine",
+    "hero.logo.clickUrl": "https://freshinelife.com/",
+    "hero.eyebrow": "Your Exclusive Discount",
+    "hero.title": "UP   TO",
+    "hero.discount": "70% Off",
+    "hero.subtitle": "Bring Home The Look You Love",
+    "hero.cta.text": "Decorate your home now",
+    "hero.cta.url": "https://freshinelife.com/collections/roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-fs",
+    "decoration.tag.url": "asset://roman-shade-tag"
+  }
+}

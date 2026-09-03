@@ -170,7 +170,7 @@ function importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl }) 
 }
 
 function importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl }) {
-  if (instance.componentKey !== 'collection.saleGrid4') throw new Error('four-grid product import requires a collection.saleGrid4 instance');
+  if (!['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle'].includes(instance.componentKey)) throw new Error('four-grid product import requires a four-grid component instance');
   if (typeof shopifyUrl !== 'string' || !shopifyUrl.trim()) throw new Error('shopify product URL is required');
   const script = resolve(workspaceRoot, 'skills/build-omnisend-campaign-draft/scripts/fetch-single-product.mjs');
   const result = spawnSync(process.execPath, [script, '--shopify-url', shopifyUrl.trim()], {

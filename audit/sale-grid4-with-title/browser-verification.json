@@ -1,0 +1,74 @@
+{
+  "desktop": {
+    "viewport": [
+      600,
+      960
+    ],
+    "component": [
+      600,
+      933
+    ],
+    "scrollWidth": 600,
+    "images": [
+      {
+        "x": 45,
+        "y": 190,
+        "width": 246,
+        "height": 246
+      },
+      {
+        "x": 307.9921875,
+        "y": 190,
+        "width": 246.0078125,
+        "height": 246
+      },
+      {
+        "x": 45,
+        "y": 491,
+        "width": 246,
+        "height": 246
+      },
+      {
+        "x": 307.9921875,
+        "y": 491,
+        "width": 246.0078125,
+        "height": 246
+      }
+    ]
+  },
+  "mobile": {
+    "viewport": [
+      375,
+      700
+    ],
+    "component": [
+      375,
+      619.75
+    ],
+    "scrollWidth": 375,
+    "imageSize": [
+      153.75,
+      153.75
+    ],
+    "imageRowY": [
+      137.875,
+      328.75
+    ],
+    "ctaLinkHeight": 44
+  },
+  "editorChecks": {
+    "titleEditReflectedInPreview": true,
+    "labelColorEditReflectedInAllFourTags": true,
+    "defaultsRestored": true,
+    "mobileIframeClientAndScrollWidth": [
+      375,
+      375
+    ],
+    "consoleErrorsAndWarnings": []
+  },
+  "limitations": [
+    "Browser link click dispatched but target=_blank destination was not exposed by browser runtime; DOM hrefs verified.",
+    "Real email inbox rendering not tested.",
+    "Discount CTA is a demo collection URL until the user provides the approved offer link."
+  ]
+}

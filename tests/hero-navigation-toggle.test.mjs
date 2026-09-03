@@ -38,6 +38,16 @@ const heroes = [
     componentKey: 'hero.lateSummerSale',
     navigationMarker: 'freshine-late-summer-promotion',
     retainedMarker: 'freshine-late-summer-logo'
+  },
+  {
+    componentKey: 'hero.sceneOverlayCta',
+    navigationMarker: 'freshine-scene-overlay-navigation',
+    retainedMarker: 'freshine-scene-overlay-hero-background'
+  },
+  {
+    componentKey: 'hero.romanShadeDiscount',
+    navigationMarker: 'freshine-roman-shade-navigation',
+    retainedMarker: 'freshine-roman-shade-background'
   }
 ];
 

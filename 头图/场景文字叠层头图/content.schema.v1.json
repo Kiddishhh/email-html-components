@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.sceneOverlayCta",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "hero.backgroundImage.url": { "type": "url", "role": "background-image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.backgroundImage.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.logo.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": false },
+    "hero.logo.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": false },
+    "hero.title": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.subtitle.line1": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.subtitle.line2": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,62 @@
+{
+  "url": "http://127.0.0.1:4180/",
+  "desktop": {
+    "discounts": [
+      "SAVE 30%",
+      "SAVE 40%",
+      "SAVE 35%",
+      "SAVE 50%"
+    ],
+    "links": [
+      {
+        "href": "https://freshinelife.com/products/emilia-smart-motorized-cotton-roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[0].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/products/ilythra-cotton-linen-roman-shades-soft-textured-elegance?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[1].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/products/emilia-smart-motorized-cotton-roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[0].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/products/ilythra-cotton-linen-roman-shades-soft-textured-elegance?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[1].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/products/elowen-smart-motorized-heavyweight-roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[2].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/products/orianne-smart-motorized-100-blackout-roller-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[3].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/products/elowen-smart-motorized-heavyweight-roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[2].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/products/orianne-smart-motorized-100-blackout-roller-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleItems[3].image.clickUrl"
+      },
+      {
+        "href": "https://freshinelife.com/collections/roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+        "slot": "saleCollection.cta.url"
+      }
+    ],
+    "scrollWidth": 600,
+    "width": 600
+  },
+  "mobile": {
+    "discounts": [
+      "SAVE 30%",
+      "SAVE 40%",
+      "SAVE 35%",
+      "SAVE 50%"
+    ],
+    "scrollWidth": 375,
+    "width": 375
+  },
+  "console": []
+}

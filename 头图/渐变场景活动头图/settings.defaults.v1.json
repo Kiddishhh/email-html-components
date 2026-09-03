@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.gradientScenePromotion",
+  "values": {
+    "color.surface": "#FBFAF8",
+    "color.text": "#202020"
+  }
+}

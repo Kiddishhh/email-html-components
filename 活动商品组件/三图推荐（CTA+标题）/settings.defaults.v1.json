@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.romanShadeMultiRecommendation",
+  "values": {
+    "color.surface": "#FCF9F5",
+    "color.text": "#724E30",
+    "color.discount": "#A71E22",
+    "color.cta": "#724E30"
+  }
+}

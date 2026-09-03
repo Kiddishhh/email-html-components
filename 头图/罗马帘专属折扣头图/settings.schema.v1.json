@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.romanShadeDiscount",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "navigation.visible": { "type": "boolean", "default": true, "themeable": false, "skillPrompt": false },
+    "color.navigationLeft": { "type": "string", "default": "#604211", "themeable": false, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.navigationRight": { "type": "string", "default": "#6B492C", "themeable": false, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.navigationText": { "type": "string", "default": "#FFFFFF", "themeable": false, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.text": { "type": "string", "default": "#6B492C", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.action": { "type": "string", "default": "#6B492C", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.heroFallback": { "type": "string", "default": "#C6BCAC", "themeable": false, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}

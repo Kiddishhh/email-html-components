@@ -1,0 +1,51 @@
+{
+  "componentKey": "gift.doubleGiftAddressShowcase",
+  "componentName": "双赠品展示卡2",
+  "renameVerification": {
+    "editorUrl": "http://127.0.0.1:4199/",
+    "catalogName": "双赠品展示卡2",
+    "directory": "赠品与权益组件/双赠品展示卡2"
+  },
+  "editorUrl": "http://127.0.0.1:4197/",
+  "previewUrl": "http://127.0.0.1:4197/previews/1e5b6aed-ca92-4aa7-800e-bf9bd635e810/",
+  "desktop": {
+    "viewportWidth": 600,
+    "componentWidth": 600,
+    "componentHeight": 488,
+    "componentScrollWidth": 600,
+    "documentScrollWidth": 600,
+    "screenshot": "implementation-600.png"
+  },
+  "mobile": {
+    "viewportWidth": 375,
+    "componentWidth": 375,
+    "componentHeight": 304.9765625,
+    "componentScrollWidth": 375,
+    "documentScrollWidth": 375,
+    "screenshot": "implementation-375.png"
+  },
+  "editorInteraction": {
+    "category": "赠品与权益组件",
+    "style": "双赠品展示卡2 · side-by-side-tiered",
+    "addedSuccessfully": true,
+    "desktopIframeWidth": 600,
+    "mobileIframeWidth": 375,
+    "editableContentFieldCount": 17,
+    "editableColorSettingCount": 5
+  },
+  "assets": {
+    "allImagesLoaded": true,
+    "productImageNaturalSize": "524x308",
+    "ctaCount": 2,
+    "ctaTargets": [
+      "https://freshinelife.com/",
+      "https://freshinelife.com/"
+    ]
+  },
+  "console": {
+    "editorWarningsOrErrors": [],
+    "previewWarningsOrErrors": [],
+    "comparisonWarningsOrErrors": [],
+    "frameworkOverlayCount": 0
+  }
+}

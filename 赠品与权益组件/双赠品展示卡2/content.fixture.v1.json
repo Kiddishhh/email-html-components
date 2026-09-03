@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "gift.doubleGiftAddressShowcase",
+  "fixture": "default-double-gift-address-showcase",
+  "localReferenceAssets": {
+    "double-gift-address-silk-eye-mask": "assets/default-silk-eye-mask-card-photo.png",
+    "double-gift-address-pillow-cover": "assets/default-pillow-cover-card-photo.png",
+    "double-gift-address-shopping-bag": "assets/shopping-bag-white.png"
+  },
+  "values": {
+    "intro.title": "Pinch Pleat",
+    "intro.subtitle": "Two Tiers Of Gifts With Your Order. More To Love.",
+    "gifts[0].image.url": "asset://double-gift-address-silk-eye-mask",
+    "gifts[0].image.alt": "Woman resting with a silk eye mask and a FREE GIFTS badge",
+    "gifts[0].title": "Free Silk Eye Mask",
+    "gifts[0].value": "Value $59.9",
+    "gifts[0].cta.text": "SPEND $699+",
+    "gifts[0].cta.url": "https://freshinelife.com/",
+    "gifts[0].note": "Spend $699 Or More And Receive A Complimentary Silk Eye Mask.",
+    "gifts[1].image.url": "asset://double-gift-address-pillow-cover",
+    "gifts[1].image.alt": "Decorative pillow cover on a sofa with a FREE GIFTS badge",
+    "gifts[1].title": "Free Pillow Cover",
+    "gifts[1].value": "Value $89.9",
+    "gifts[1].cta.text": "SPEND $999+",
+    "gifts[1].cta.url": "https://freshinelife.com/",
+    "gifts[1].note": "Spend $999 Or More And Receive A Complimentary Pillow Cover.",
+    "footer.note": "Gifts Will Be Automatically Added To Your Cart.",
+    "cta.icon.url": "asset://double-gift-address-shopping-bag",
+    "footer.icon.url": "https://app.omnisend.com/images/6a97926cc723a01883e3ab18"
+  }
+}

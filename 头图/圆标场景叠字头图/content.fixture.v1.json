@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.circleLogoSceneOverlay",
+  "fixture": "circle-logo-scene-overlay-reference",
+  "localReferenceAssets": {
+    "circle-logo-scene-background": "assets/default-scene.png",
+    "circle-logo-scene-logo": "assets/default-logo.png"
+  },
+  "values": {
+    "hero.backgroundImage.url": "asset://circle-logo-scene-background",
+    "hero.backgroundImage.alt": "Sunlit dining room with floor-to-ceiling ivory curtains and sculptural pendant lights",
+    "hero.linkUrl": "https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=cover-fc",
+    "brand.logo.url": "asset://circle-logo-scene-logo",
+    "brand.logo.alt": "Freshine",
+    "hero.eyebrow": "Labor Day Sale",
+    "hero.title": "UP TO 65% Off",
+    "hero.subtitle": "EXTRA $600OFF&UP TO 20%OFF SITEWIDE"
+  }
+}

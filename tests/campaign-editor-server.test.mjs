@@ -351,7 +351,7 @@ test('editor server keeps Shopify import scoped to a selected sale-grid instance
   assert.match(rejected.body.error, /sale-grid import requires/);
 });
 
-test('editor server accepts a selected four-grid card import route before validating its product URL', async (t) => {
+for (const componentKey of ['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle']) test(`editor server accepts ${componentKey} selected card import route before validating its product URL`, async (t) => {
   const server = await createCampaignEditorServer({
     workspaceRoot,
     sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-four-grid-import-'))
@@ -362,8 +362,9 @@ test('editor server accepts a selected four-grid card import route before valida
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({})
   });
   const added = await request(baseUrl, `/api/drafts/${created.body.draft.id}/components`, {
-    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey: 'collection.saleGrid4' })
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ componentKey })
   });
+  assert.equal(added.response.status, 200, added.body.error);
   const instanceId = added.body.draft.components[0].instanceId;
 
   const rejected = await request(baseUrl, `/api/drafts/${created.body.draft.id}/components/${instanceId}/import-shopify-product/2`, {

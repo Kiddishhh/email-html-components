@@ -189,7 +189,8 @@ function renderComponent(instance) {
   let html = renderSettingConditionals(template, instance.settings, settingsSchema, instance.componentKey);
   html = html.replace(/\{\{content\.([^}]+)\}\}/g, (_, key) => {
     if (!(key in content)) throw new Error(`${instance.componentKey}: unresolved content.${key}`);
-    return contentSchema.properties[key].type === 'url' ? escapeAttribute(content[key]) : escapeText(content[key]);
+    const definition = contentSchema.properties[key];
+    return definition.type === 'url' || definition.role === 'image-alt' ? escapeAttribute(content[key]) : escapeText(content[key]);
   });
   html = html.replace(/\{\{settings\.([^}]+)\}\}/g, (_, key) => {
     if (!(key in instance.settings)) throw new Error(`${instance.componentKey}: unresolved settings.${key}`);

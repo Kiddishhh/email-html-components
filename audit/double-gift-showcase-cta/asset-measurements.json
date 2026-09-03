@@ -1,0 +1,33 @@
+{
+  "sourceSize": [
+    1200,
+    1354
+  ],
+  "sourceSha256": "e55ed5ab31754c220db8d59f68b98b911d5c40b3310c50c02edc2608649ea2b2",
+  "photoCrops": {
+    "silk-eye-mask-photo.png": [
+      0,
+      0,
+      604,
+      678
+    ],
+    "random-pillow-cover-photo.png": [
+      604,
+      678,
+      1200,
+      1354
+    ]
+  },
+  "iconCrop": [
+    782,
+    428,
+    812,
+    462
+  ],
+  "colors": {
+    "surface": "#F5F1ED",
+    "text": "#1F1F1F",
+    "accent": "#8D1B1B",
+    "muted": "#7C706A"
+  }
+}

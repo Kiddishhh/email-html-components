@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.gradientScenePromotion",
+  "fixture": "late-summer-gradient-scene-reference",
+  "localReferenceAssets": {
+    "gradient-scene-background": "assets/default-scene.jpg",
+    "gradient-scene-logo": "assets/default-logo.png"
+  },
+  "values": {
+    "hero.backgroundImage.url": "asset://gradient-scene-background",
+    "hero.backgroundImage.alt": "Bright living room with ivory curtains and a lounge chair",
+    "hero.linkUrl": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_campaign=late_summer_sale&utm_content=hero",
+    "brand.logo.url": "asset://gradient-scene-logo",
+    "brand.logo.alt": "Freshine",
+    "hero.eyebrow": "Late Summer Sale",
+    "hero.title": "UP TO 70% Off",
+    "hero.subtitle": "EXTRA $600OFF&UP TO 20%OFF SITEWIDE"
+  }
+}

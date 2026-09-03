@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.saleGrid4WithTitle",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": {
+      "type": "string",
+      "default": "#FFFDF9",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.theme": {
+      "type": "string",
+      "default": "#8D1B1B",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.heading": {
+      "type": "string",
+      "default": "#6B492C",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.body": {
+      "type": "string",
+      "default": "#7C706A",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.action": {
+      "type": "string",
+      "default": "#6B522C",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
+  },
+  "additionalProperties": false
+}

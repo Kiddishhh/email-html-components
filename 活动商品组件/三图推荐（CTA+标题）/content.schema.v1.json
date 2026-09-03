@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.romanShadeMultiRecommendation",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "intro.title": { "type": "text", "required": true, "skillPrompt": true },
+    "intro.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.image.url": { "type": "url", "role": "background-image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.image.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.discountLabel": { "type": "text", "required": false, "skillPrompt": true },
+    "pair.left.image.url": { "type": "url", "role": "background-image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.left.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "pair.left.image.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.left.discountLabel": { "type": "text", "required": false, "skillPrompt": true },
+    "pair.right.image.url": { "type": "url", "role": "background-image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.right.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "pair.right.image.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "pair.right.discountLabel": { "type": "text", "required": false, "skillPrompt": true },
+    "cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

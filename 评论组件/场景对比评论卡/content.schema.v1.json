@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.sceneComparison",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "scene.before.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "scene.before.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "scene.after.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "scene.after.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "review.avatar.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "review.avatar.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "review.stars.url": {
+      "type": "url",
+      "role": "image-source",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    },
+    "review.stars.alt": {
+      "type": "text",
+      "role": "image-alt",
+      "required": true,
+      "skillPrompt": true
+    },
+    "review.author": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "review.body": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.color": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.header": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.lining": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "product.memory": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "cta.text": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "cta.url": {
+      "type": "url",
+      "role": "link-target",
+      "protocol": "https",
+      "required": true,
+      "skillPrompt": true
+    }
+  },
+  "additionalProperties": false
+}

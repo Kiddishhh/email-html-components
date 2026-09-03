@@ -1,0 +1,27 @@
+{
+  "viewport": {
+    "width": 600,
+    "height": 900,
+    "devicePixelRatio": 2,
+    "clientWidth": 600,
+    "scrollWidth": 600
+  },
+  "component": {
+    "width": 600,
+    "height": 761
+  },
+  "logo": {
+    "x": 240,
+    "y": 60,
+    "width": 120,
+    "height": 120,
+    "naturalWidth": 238,
+    "naturalHeight": 238
+  },
+  "copy": {
+    "eyebrow": { "x": 12, "y": 484, "width": 576, "height": 46 },
+    "title": { "x": 12, "y": 549.9921875, "width": 576, "height": 80 },
+    "subtitle": { "x": 95, "y": 641.9921875, "width": 410, "height": 62 }
+  },
+  "href": "https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=cover-fc"
+}

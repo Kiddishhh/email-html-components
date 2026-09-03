@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "tool.freeMeasurementGuidance",
+  "values": {
+    "color.surface": "#FCF9F5",
+    "color.text": "#724E30"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsAddressCard",
+  "fixture": "default-benefits-address-card",
+  "localPreviewAsset": "assets/default-benefits-address-card.png",
+  "localReferenceAssets": {
+    "benefits-address-card": "assets/default-benefits-address-card.png"
+  },
+  "values": {
+    "image.url": "asset://benefits-address-card",
+    "image.alt": "Freshine custom window treatments and services, delivery and payment benefits, and Irvine showroom address"
+  }
+}

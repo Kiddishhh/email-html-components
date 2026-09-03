@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "navigation.eventCountdown",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "countdown.title": { "type": "text", "required": true, "skillPrompt": true },
+    "benefit.1.text": { "type": "text", "required": true, "skillPrompt": true },
+    "benefit.2.text": { "type": "text", "required": true, "skillPrompt": true },
+    "benefit.3.text": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "promotion.cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

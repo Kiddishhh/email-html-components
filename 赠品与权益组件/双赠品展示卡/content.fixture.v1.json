@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "gift.showcase2",
+  "fixture": "default-double-gift-showcase-cta",
+  "localReferenceAssets": {
+    "gift-showcase-eye-mask-photo": "assets/silk-eye-mask-photo.png",
+    "gift-showcase-pillow-cover-photo": "assets/random-pillow-cover-photo.png",
+    "gift-showcase-shopping-bag": "assets/shopping-bag-white.png"
+  },
+  "values": {
+    "gifts[0].image.url": "asset://gift-showcase-eye-mask-photo",
+    "gifts[0].image.alt": "Silk Eye Mask with FREE GIFTS badge",
+    "gifts[0].title": "Silk Eye Mask",
+    "gifts[0].value": "VALUE $59.9",
+    "gifts[0].description": "100% blackout, double-sided comfort.",
+    "gifts[0].cta.text": "SPEND $699+",
+    "gifts[0].cta.url": "https://freshinelife.com/",
+    "gifts[0].note": "Spend $699 or more and receive a complimentary silk eye mask.",
+    "gifts[1].image.url": "asset://gift-showcase-pillow-cover-photo",
+    "gifts[1].image.alt": "Random Pillow Cover with FREE GIFTS badge",
+    "gifts[1].title": "Random Pillow Cover",
+    "gifts[1].value": "VALUE $89.9",
+    "gifts[1].description": "One of Our Featured Designs",
+    "gifts[1].cta.text": "SPEND $999+",
+    "gifts[1].cta.url": "https://freshinelife.com/",
+    "gifts[1].note": "Spend $999 or more and receive a complimentary pillow cover.",
+    "cta.icon.url": "asset://gift-showcase-shopping-bag"
+  }
+}

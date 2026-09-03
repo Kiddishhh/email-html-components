@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.romanShadeMultiRecommendation",
+  "fixture": "user-supplied-roman-shade-multi-recommendation-v",
+  "values": {
+    "intro.title": "Custom-Made Roman Shades",
+    "intro.subtitle": "A Perfect Fit, Easy To Install, With Hundreds Of Fabrics And Colors To Choose From.",
+    "hero.image.url": "https://app.omnisend.com/images/6a90ffbcbb7c87eee29c65d7",
+    "hero.image.alt": "No-drill motorized Roman blinds with tool-free installation, easy setup, no damage and strong hold benefits",
+    "hero.image.clickUrl": "https://freshinelife.com/collections/roman-shades/products/elara-no-drill-linen-blend-roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "hero.discountLabel": "SAVE 33%",
+    "pair.left.image.url": "https://app.omnisend.com/images/6a9100229b5e376dc52c4d0c",
+    "pair.left.image.alt": "Smart motorized light-filtering roller shade with Matter and smart-home compatibility",
+    "pair.left.image.clickUrl": "https://freshinelife.com/collections/all-shades-blinds/products/elyna-smart-motorized-60-light-filtering-roller-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "pair.left.discountLabel": "SAVE 35%",
+    "pair.right.image.url": "https://app.omnisend.com/images/6a91042bbb7c87eee29c662f",
+    "pair.right.image.alt": "Smart motorized linen Roman shade with Matter and smart-home compatibility",
+    "pair.right.image.clickUrl": "https://freshinelife.com/collections/all-shades-blinds/products/celina-smart-motorized-linen-roman-shade?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "pair.right.discountLabel": "SAVE 50%",
+    "cta.text": "Decorate Your Home Now",
+    "cta.url": "https://freshinelife.com/collections/roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+  }
+}

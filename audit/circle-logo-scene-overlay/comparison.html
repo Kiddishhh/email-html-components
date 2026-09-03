@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>圆标场景叠字头图 · 同屏对照</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 8px; background: #ece9e4; color: #202020; font-family: Arial, Helvetica, sans-serif; }
+    h1 { margin: 0 0 18px; font-size: 20px; font-weight: 600; }
+    .comparison { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+    figure { margin: 0; padding: 4px; background: #fff; box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+    figcaption { margin: 0 0 10px; font-size: 13px; font-weight: 600; }
+    img { display: block; width: 600px; height: 761px; object-fit: cover; object-position: top; }
+    img.implementation { object-fit: none; object-position: left top; }
+    .mobile img { width: 375px; height: 476px; }
+  </style>
+</head>
+<body>
+  <h1>圆标场景叠字头图 · 最终视觉对照</h1>
+  <div class="comparison">
+    <figure>
+      <figcaption>设计稿（1200×1522，显示为 600×761）</figcaption>
+      <img src="reference-design.png" alt="设计稿">
+    </figure>
+    <figure>
+      <figcaption>组件终稿（600×761）</figcaption>
+      <img class="implementation" src="implementation-desktop-600.png" alt="组件桌面终稿">
+    </figure>
+    <figure class="mobile">
+      <figcaption>组件移动版（375×476）</figcaption>
+      <img class="implementation" src="implementation-mobile-375.png" alt="组件移动终稿">
+    </figure>
+  </div>
+</body>
+</html>

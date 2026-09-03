@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.circleLogoSceneOverlay",
+  "values": {
+    "color.surface": "#C8B79D",
+    "color.text": "#FFFFFF"
+  }
+}

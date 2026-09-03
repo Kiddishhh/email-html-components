@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "tool.freeMeasurementGuidance",
+  "fixture": "default-free-measurement-guidance",
+  "localPreviewAsset": "assets/default-free-measurement-guidance-scene.png",
+  "localReferenceAssets": {
+    "free-measurement-guidance-scene": "assets/default-free-measurement-guidance-scene.png"
+  },
+  "values": {
+    "guide.title": "Not Sure Where to Start?",
+    "guide.subtitle": "No Worries. Get Free 24/7 Assistance From Our Team.",
+    "guide.image.url": "asset://free-measurement-guidance-scene",
+    "guide.image.alt": "Woman measuring a window with a tape measure",
+    "guide.image.clickUrl": "https://freshinelife.com/pages/help-me-measure?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+  }
+}

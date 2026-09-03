@@ -46,6 +46,10 @@ function discountLabel(price, compareAtPrice) {
   return `SAVE ${Math.round(((compareAtPrice - price) * 100) / compareAtPrice)}%`;
 }
 
+function formatUsd(value) {
+  return `$${value.toFixed(2)}`;
+}
+
 function graphQlRoot(payload) {
   return payload?.data ?? payload;
 }
@@ -101,8 +105,11 @@ export function normalizeSingleProduct(payload, handle) {
         alt: primaryMedia.alt || `${product.title} product image`
       },
       linkUrl: product.onlineStoreUrl || `${storefrontBaseUrl}/products/${handle}`,
+      fullTitle: String(product.title).trim(),
       title: title.title,
       description: title.description,
+      price: formatUsd(price),
+      compareAtPrice: compareAtPrice !== null && compareAtPrice > price ? formatUsd(compareAtPrice) : '',
       discountLabel: discountLabel(price, compareAtPrice)
     }
   };

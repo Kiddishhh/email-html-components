@@ -24,8 +24,11 @@ test('imports one Shopify product and splits its title into a card title and sel
         alt: 'Amara curtains in a sunlit living room'
       },
       linkUrl: 'https://freshinelife.com/products/amara-extra-long-linen-curtains',
+      fullTitle: 'Amara Extra Long Linen Curtains – Elegant Light-Filtering Drapes',
       title: 'Amara Extra Long Linen Curtains',
       description: 'Elegant Light-Filtering Drapes',
+      price: '$119.00',
+      compareAtPrice: '$170.00',
       discountLabel: 'SAVE 30%'
     }
   });

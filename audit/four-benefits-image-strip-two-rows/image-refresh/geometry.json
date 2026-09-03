@@ -1,0 +1,23 @@
+{
+  "source": "产品块 8/免费测量IV.png",
+  "sha256": "f7271e9b24812f634a34ad45ca7f8ec513532964a8f9103ed5a31768b1918c05",
+  "desktop": {
+    "height": 540,
+    "loaded": true,
+    "naturalHeight": 1080,
+    "naturalWidth": 1200,
+    "width": 600
+  },
+  "mobile": {
+    "height": 337.5,
+    "loaded": true,
+    "naturalHeight": 1080,
+    "naturalWidth": 1200,
+    "width": 375
+  },
+  "mobileViewport": {
+    "scrollWidth": 375,
+    "width": 375
+  },
+  "errors": []
+}

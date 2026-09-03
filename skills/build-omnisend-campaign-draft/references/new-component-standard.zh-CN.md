@@ -16,6 +16,15 @@
 - 组件内顶层居中标题/说明遵循现有组件基线；如设计稿或现有同类组件有已确认的不同层级，以其视觉契约为准。未暴露给编辑器的几何、字体、间距和结构保持固定。
 - 高度还原以实际 `效果演示.html` 和编辑器预览为依据；HTTP 可用或源码存在不构成视觉验收证据。
 
+### 600px → 375px 等比移动端制造规范
+
+- 所有组件以 600px 为视觉基准，375px 时受控尺寸按 62.5% 等比收缩，保持已经确认的列数、图片比例、链接边界、文案与颜色；不因移动端自动改成单列。
+- 每个受控的桌面像素值必须先保留固定值，再紧跟同属性的 inline `min()` 覆写。例如 `font-size:Npx;font-size:min(Npx,N/6vw)`；`line-height`、固定 `width` / `height`、`padding`、`margin` 与 `border-radius` 均按同一规则处理。负边距使用 `max(-Npx,-N/6vw)`。
+- 同一组件不得出现图片已经缩小、而字体、行高、卡片尺寸、按钮尺寸或留白仍为固定桌面像素的混合状态。`component.template.v1.html` 和 `效果演示.html` 必须同步使用相同的移动规则。
+- 不缩放百分比尺寸、`auto`、`0`、`font-size:0` 占位符、1px 描边/分隔线，以及已通过 `width:100%;height:auto` 流式保持比例的纯整图。不要为满足规则而把这些例外写成无意义的 `min()`。
+- 不支持 `min()` 的客户端会保留前置的桌面 CSS 回退；这不等同于 Gmail、Outlook、Apple Mail 或 Omnisend 收件箱实测。提交前必须分别说明本地静态/预览验证与真实收件箱验证边界。
+- 新建或修改版式后运行 `node scripts/normalize-inline-mobile-dimensions.mjs --check` 与 `node --test tests/mobile-proportional-contract.test.mjs`。前者检查全部已登记模板与演示文件，后者禁止未来组件遗漏等比覆写。
+
 ## 图片、链接与默认素材
 
 - 默认素材来自用户提供的设计稿时，先取得裁切或使用授权；将每个可替换图块保存为组件目录下的本地素材，并在 fixture 中以 `asset://` 和 `localReferenceAssets` 声明。

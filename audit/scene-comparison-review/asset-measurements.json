@@ -1,0 +1,41 @@
+{
+  "source": "/Users/ww/Downloads/评论/VIII.jpg",
+  "sha256": "4af9aeb3feefd03624d52914286c01435d9a6033a77e6c26e7e02ba7e08ee1a0",
+  "sourceSize": [
+    1200,
+    1354
+  ],
+  "crops": {
+    "before": [
+      0,
+      0,
+      600,
+      676
+    ],
+    "after": [
+      600,
+      676,
+      1200,
+      1354
+    ],
+    "avatar": [
+      648,
+      74,
+      756,
+      182
+    ],
+    "stars": [
+      782,
+      136,
+      992,
+      176
+    ]
+  },
+  "method": "Exact source pixel extraction; no generated or substituted imagery",
+  "surface": "#F5F2ED",
+  "text": "#1F1F1F",
+  "canvas": [
+    600,
+    677
+  ]
+}

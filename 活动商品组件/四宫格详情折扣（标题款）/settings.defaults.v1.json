@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.saleGrid4DetailWithTitle",
+  "values": {
+    "color.surface": "#FBF9F6",
+    "color.heading": "#1F1F1F",
+    "color.body": "#817872",
+    "color.text": "#1F1F1F",
+    "color.theme": "#991B1E",
+    "color.badgeText": "#FFFFFF",
+    "color.compareAt": "#847A75",
+    "color.cta": "#991B1E",
+    "color.ctaText": "#FFFFFF"
+  }
+}

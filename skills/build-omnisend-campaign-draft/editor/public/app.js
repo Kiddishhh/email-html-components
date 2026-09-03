@@ -396,7 +396,7 @@ function renderInspector() {
     importButton.addEventListener('click', () => importCurtainPromotionProduct(instance.instanceId));
     actions.append(importButton);
   }
-  if (instance.componentKey === 'collection.saleGrid4') {
+  if (['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle'].includes(instance.componentKey)) {
     for (let itemIndex = 0; itemIndex < 4; itemIndex += 1) {
       const importButton = document.createElement('button');
       importButton.type = 'button';

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "review.sceneComparison",
+  "fixture": "user-supplied-viii-scene-review",
+  "values": {
+    "scene.before.url": "asset://scene-review-before",
+    "scene.before.alt": "Double-height living room before installing floor-to-ceiling curtains",
+    "scene.after.url": "asset://scene-review-after",
+    "scene.after.alt": "The same living room with white Marisol linen curtains",
+    "review.avatar.url": "asset://scene-review-avatar",
+    "review.avatar.alt": "Uliana Grabciuc",
+    "review.stars.url": "asset://scene-review-stars",
+    "review.stars.alt": "5 out of 5 stars",
+    "review.author": "Uliana Grabciuc",
+    "review.body": "One of my favorite features of our home is the 20-foot ceilings. I knew right away I wanted floor-to-ceiling curtains to add warmth to the space while also softening some of the sunshine.",
+    "product.title": "Marisol Linen Curtains",
+    "product.color": "Color: White K1011",
+    "product.header": "Header: Pinch Pleat - Double",
+    "product.lining": "Lining Type: White_Shading Rate 50%",
+    "product.memory": "Thermal Memory Shaping",
+    "cta.text": "Shop The Look >>",
+    "cta.url": "https://freshinelife.com/collections/extra-long-curtains/products/marisol-linen-curtains-large-windows-elegant-pleated-drapes-for-living-room-bedroom?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+  },
+  "localReferenceAssets": {
+    "scene-review-before": "assets/before.png",
+    "scene-review-after": "assets/after.png",
+    "scene-review-avatar": "assets/avatar.png",
+    "scene-review-stars": "assets/stars.png"
+  }
+}

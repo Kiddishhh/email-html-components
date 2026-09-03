@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsAddressCard",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#F8F4EE", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}

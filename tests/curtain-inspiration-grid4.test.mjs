@@ -83,8 +83,8 @@ test('curtain inspiration grid registers four independently linked images in the
   assert.match(template, /width="247"/);
   assert.match(template, /padding:52px 0 52px/);
   assert.match(template, /width:85%;max-width:510px/);
-  assert.match(template, /font-family:\{\{settings\.font\.heading\}\};font-size:30px;font-weight:500;line-height:38px/);
-  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:18px;font-weight:500;line-height:27px/);
+  assert.match(template, /font-family:\{\{settings\.font\.heading\}\};font-size:30px;font-size:min\(30px,5vw\);font-weight:500;line-height:38px;line-height:min\(38px,6\.333333vw\)/);
+  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:18px;font-size:min\(18px,3vw\);font-weight:500;line-height:27px;line-height:min\(27px,4\.5vw\)/);
   assert.equal(settingsSchema.properties['grid.showCaptions'].type, 'boolean');
   assert.equal(settingsDefaults.values['grid.showCaptions'], false);
   assert.match(template, /FRESHINE_IF_SETTING:grid\.showCaptions/);
@@ -100,13 +100,13 @@ test('curtain inspiration captions are omitted by default and rendered only when
   const hidden = renderGrid(false);
   assert.equal(hidden.result.status, 0, hidden.result.stderr || hidden.result.stdout);
   assert.doesNotMatch(hidden.html, /Linen Roman Shades|grid\.image1\.caption|FRESHINE_IF_SETTING/);
-  assert.equal((hidden.html.match(/colspan="3" height="16" style="height:16px;font-size:0;line-height:0;"/g) ?? []).length, 1);
+  assert.equal((hidden.html.match(/colspan="3" height="16" style="height:16px;height:min\(16px,2\.666667vw\);font-size:0;line-height:0;"/g) ?? []).length, 1);
 
   const visible = renderGrid(true);
   assert.equal(visible.result.status, 0, visible.result.stderr || visible.result.stdout);
   for (const caption of ['Linen Roman Shades', 'Floral Roman Shades', 'Venetian Blinds', 'Bamboo Shades']) {
     assert.match(visible.html, new RegExp(caption));
   }
-  assert.equal((visible.html.match(/colspan="3" height="16" style="height:16px;font-size:0;line-height:0;"/g) ?? []).length, 2);
+  assert.equal((visible.html.match(/colspan="3" height="16" style="height:16px;height:min\(16px,2\.666667vw\);font-size:0;line-height:0;"/g) ?? []).length, 2);
   assert.doesNotMatch(visible.html, /FRESHINE_IF_SETTING|FRESHINE_END_IF_SETTING/);
 });

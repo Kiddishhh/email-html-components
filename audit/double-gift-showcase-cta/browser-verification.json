@@ -1,0 +1,295 @@
+{
+  "initial": {
+    "height": 677,
+    "links": [
+      {
+        "height": 39,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $699+",
+        "width": 221
+      },
+      {
+        "height": 39,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $999+",
+        "width": 221
+      }
+    ],
+    "text": [
+      {
+        "height": 38,
+        "slot": "gifts[0].title",
+        "width": 188.4609375,
+        "x": 356.765625,
+        "y": 49.9921875
+      },
+      {
+        "height": 22,
+        "slot": "gifts[0].value",
+        "width": 114.546875,
+        "x": 393.7265625,
+        "y": 103.9921875
+      },
+      {
+        "height": 44,
+        "slot": "gifts[0].description",
+        "width": 256.953125,
+        "x": 322.5234375,
+        "y": 141.9921875
+      },
+      {
+        "height": 18,
+        "slot": "gifts[0].cta.text",
+        "width": 97.5625,
+        "x": 413.21875,
+        "y": 213.484375
+      },
+      {
+        "height": 29.5,
+        "slot": "gifts[0].note",
+        "width": 204.7421875,
+        "x": 348.625,
+        "y": 257.984375
+      },
+      {
+        "height": 76,
+        "slot": "gifts[1].title",
+        "width": 206.9453125,
+        "x": 47.5234375,
+        "y": 388.9921875
+      },
+      {
+        "height": 22,
+        "slot": "gifts[1].value",
+        "width": 115.8046875,
+        "x": 93.09375,
+        "y": 480.9921875
+      },
+      {
+        "height": 22,
+        "slot": "gifts[1].description",
+        "width": 263.328125,
+        "x": 19.3359375,
+        "y": 518.9921875
+      },
+      {
+        "height": 18,
+        "slot": "gifts[1].cta.text",
+        "width": 97.421875,
+        "x": 113.2890625,
+        "y": 568.484375
+      },
+      {
+        "height": 29.5,
+        "slot": "gifts[1].note",
+        "width": 204.6171875,
+        "x": 48.6875,
+        "y": 612.984375
+      }
+    ],
+    "width": 600
+  },
+  "mobile": {
+    "dpr": 1,
+    "height": 423.125,
+    "images": [
+      {
+        "height": 211.875,
+        "loaded": true,
+        "src": "assets/silk-eye-mask-photo.png",
+        "width": 188.75
+      },
+      {
+        "height": 10.6171875,
+        "loaded": true,
+        "src": "assets/shopping-bag-white.png",
+        "width": 9.375
+      },
+      {
+        "height": 10.6171875,
+        "loaded": true,
+        "src": "assets/shopping-bag-white.png",
+        "width": 9.375
+      },
+      {
+        "height": 211.25,
+        "loaded": true,
+        "src": "assets/random-pillow-cover-photo.png",
+        "width": 186.25
+      }
+    ],
+    "links": [
+      {
+        "height": 24.375,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $699+",
+        "width": 138.125
+      },
+      {
+        "height": 24.375,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $999+",
+        "width": 138.125
+      }
+    ],
+    "scrollWidth": 375,
+    "viewport": 375,
+    "width": 375
+  },
+  "editorBefore": {
+    "height": 677,
+    "links": [
+      {
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $699+"
+      },
+      {
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $999+"
+      }
+    ],
+    "text": "\t\nSilk Eye Mask\nVALUE $59.9\n100% blackout, double-sided comfort.\n\n SPEND $699+\n\nSpend $699 or more and receive a complimentary silk eye mask.\n\n\nRandom Pillow Cover\nVALUE $89.9\nOne of Our Featured Designs\n\n SPEND $999+\n\nSpend $999 or more and receive a complimentary pillow cover.\n\t",
+    "width": 600
+  },
+  "editorEdited": {
+    "links": [
+      {
+        "href": "https://freshinelife.com/?gift=eye-mask",
+        "text": "SPEND $699+"
+      },
+      {
+        "href": "https://freshinelife.com/",
+        "text": "VIEW PILLOW"
+      }
+    ],
+    "text": "\t\nSilk Eye Mask TEST\nVALUE $59.9\n100% blackout, double-sided comfort.\n\n SPEND $699+\n\nSpend $699 or more and receive a complimentary silk eye mask.\n\n\nRandom Pillow Cover\nVALUE $89.9\nOne of Our Featured Designs\n\n VIEW PILLOW\n\nSpend $999 or more and receive a complimentary pillow cover.\n\t"
+  },
+  "editorMobile": {
+    "height": 423.125,
+    "links": [
+      {
+        "height": 24.375,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $699+",
+        "width": 138.125
+      },
+      {
+        "height": 24.375,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $999+",
+        "width": 138.125
+      }
+    ],
+    "scrollWidth": 375,
+    "text": "\t\nSilk Eye Mask\nVALUE $59.9\n100% blackout, double-sided comfort.\n\n SPEND $699+\n\nSpend $699 or more and receive a complimentary silk eye mask.\n\n\nRandom Pillow Cover\nVALUE $89.9\nOne of Our Featured Designs\n\n SPEND $999+\n\nSpend $999 or more and receive a complimentary pillow cover.\n\t",
+    "width": 375
+  },
+  "editorConsole": [],
+  "editorFinal": {
+    "height": 677,
+    "links": [
+      {
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $699+"
+      },
+      {
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $999+"
+      }
+    ],
+    "scrollWidth": 600,
+    "width": 600
+  },
+  "desktop": {
+    "dpr": 1,
+    "height": 677,
+    "links": [
+      {
+        "height": 39,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $699+",
+        "width": 221
+      },
+      {
+        "height": 39,
+        "href": "https://freshinelife.com/",
+        "text": "SPEND $999+",
+        "width": 221
+      }
+    ],
+    "scrollWidth": 600,
+    "viewport": [
+      600,
+      740
+    ],
+    "width": 600
+  },
+  "demoConsole": [],
+  "firstClickTabs": [
+    {
+      "id": "3",
+      "providerTabId": "browser-use:3f7f7bbd-74a9-45dc-862d-3eae3c7b674d",
+      "title": "Freshine Campaign Editor",
+      "url": "http://127.0.0.1:4189/"
+    },
+    {
+      "id": "6",
+      "providerTabId": "browser-use:50a9c7c0-5c29-48ba-b1b5-02abca4b57bb",
+      "title": "Freshine Email Local Preview",
+      "url": "http://127.0.0.1:4189/%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA.html"
+    }
+  ],
+  "secondClickTabs": [
+    {
+      "id": "8",
+      "title": "Freshine Email Local Preview",
+      "url": "http://127.0.0.1:4189/%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA.html"
+    },
+    {
+      "id": "9",
+      "title": "双赠品CTA：原稿与实现",
+      "url": "http://127.0.0.1:4189/audit/double-gift-showcase-cta/comparison-600.html"
+    },
+    {
+      "id": "10",
+      "title": "双赠品CTA：原稿与实现",
+      "url": "http://127.0.0.1:4190/audit/double-gift-showcase-cta/comparison-375.html"
+    },
+    {
+      "id": "11",
+      "title": "Freshine Campaign Editor",
+      "url": "http://127.0.0.1:4190/"
+    },
+    {
+      "id": "12",
+      "title": "Freshine Email Local Preview",
+      "url": "http://127.0.0.1:4190/%E8%B5%A0%E5%93%81%E4%B8%8E%E6%9D%83%E7%9B%8A%E7%BB%84%E4%BB%B6/%E5%8F%8C%E8%B5%A0%E5%93%81%E5%B1%95%E7%A4%BA%E5%8D%A1/%E6%95%88%E6%9E%9C%E6%BC%94%E7%A4%BA.html"
+    }
+  ],
+  "ctaClickObservation": "Both getByRole link clicks completed; target=_blank destination tabs were not exposed by this browser session. Default hrefs verified in demo and editor, landing-page load not asserted.",
+  "comparisonConsole600": [
+    {
+      "level": "error",
+      "message": "Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.",
+      "timestamp": "2026-08-28T09:15:37.989Z"
+    }
+  ],
+  "comparisonConsole375": [
+    {
+      "level": "error",
+      "message": "Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.",
+      "timestamp": "2026-08-28T09:18:01.282Z"
+    }
+  ],
+  "mobileStandalone": {
+    "dpr": 1,
+    "height": 423.125,
+    "scrollWidth": 375,
+    "viewport": [
+      375,
+      480
+    ],
+    "width": 375
+  },
+  "mobileDemoConsole": []
+}

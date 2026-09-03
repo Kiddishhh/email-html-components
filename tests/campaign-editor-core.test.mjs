@@ -39,8 +39,12 @@ test('editor groups styles by structure before selection and exposes only Skill-
   const catalog = buildEditorCatalog({ workspaceRoot });
 
   assert.deepEqual(structuresForCatalog(catalog), ['头图', '导航组件', '活动商品组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件']);
-  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2', 'hero.lateSummerSale']);
-  assert.deepEqual(styleKeysForStructure(catalog, '导航组件'), ['navigation.promotionCta']);
+  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2', 'hero.lateSummerSale', 'hero.gradientScenePromotion', 'hero.circleLogoSceneOverlay', 'hero.sceneOverlayCta', 'hero.romanShadeDiscount']);
+  assert.deepEqual(editableFieldKeys('hero.sceneOverlayCta'), {
+    content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.title', 'hero.subtitle.line1', 'hero.subtitle.line2', 'hero.cta.text', 'hero.cta.url'],
+    settings: ['navigation.visible', 'color.text', 'color.action']
+  });
+  assert.deepEqual(styleKeysForStructure(catalog, '导航组件'), ['navigation.promotionCta', 'navigation.eventCountdown']);
   assert.deepEqual(editableFieldKeys('navigation.promotionCta'), {
     content: ['promotion.title', 'promotion.divider.url', 'promotion.divider.alt', 'promotion.offer', 'promotion.body', 'promotion.cta.text', 'promotion.cta.url'],
     settings: ['color.surface', 'color.text', 'color.action']
@@ -52,13 +56,17 @@ test('editor groups styles by structure before selection and exposes only Skill-
     'product.curtainRecommendationNoTitle',
     'product.sampleStyle1'
   ]);
-  assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'image.benefitsStrip3', 'tool.measurementCard']);
+  assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'gift.showcase2', 'gift.doubleGiftAddressShowcase', 'image.benefitsStrip3', 'image.benefitsStrip4', 'image.benefitsStrip4TwoRows', 'image.benefitsAddressCard', 'tool.measurementCard', 'tool.freeMeasurementGuidance']);
   assert.deepEqual(styleKeysForStructure(catalog, '地址组件'), ['location.showroomCard']);
-  assert.deepEqual(styleKeysForStructure(catalog, '页脚组件'), ['footer.warm', 'footer.doubleDivider']);
+  assert.deepEqual(styleKeysForStructure(catalog, '页脚组件'), ['footer.warm', 'footer.doubleDivider', 'footer.minimalContact']);
   assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background', 'color.text', 'color.link'] });
   assert.deepEqual(editableFieldKeys('footer.doubleDivider'), {
     content: [],
     settings: ['color.canvas', 'color.background', 'color.text', 'color.link']
+  });
+  assert.deepEqual(editableFieldKeys('footer.minimalContact'), {
+    content: [],
+    settings: ['color.background', 'color.text', 'color.link']
   });
   assert.deepEqual(editableFieldKeys('gift.rewardGrid2'), {
     content: [
@@ -362,12 +370,13 @@ test('sale-grid backend Collection import keeps the existing public CTA while ma
   assert.equal(imported.components[0].source, 'shopify-sale-grid-admin:private-curtain-sale');
 });
 
-test('four-grid product import changes only the requested card in the selected component instance', async () => {
+for (const componentKey of ['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding']) test(`${componentKey} product import changes only the requested card in the selected component instance`, async () => {
   const { applySaleGrid4ProductImport } = await import('../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs');
   const catalog = buildEditorCatalog({ workspaceRoot });
   let document = createCampaignDocument({ name: '四宫格独立商品导入测试' });
-  document = addComponentInstance(document, catalog, 'collection.saleGrid4');
-  document = addComponentInstance(document, catalog, 'collection.saleGrid4');
+  assert.ok(catalog.some((item) => item.componentKey === componentKey), `${componentKey} must be registered`);
+  document = addComponentInstance(document, catalog, componentKey);
+  document = addComponentInstance(document, catalog, componentKey);
   const untouchedInstance = structuredClone(document.components[0]);
   const untouchedFirstCard = structuredClone(document.components[1].content);
 
@@ -388,7 +397,59 @@ test('four-grid product import changes only the requested card in the selected c
   assert.equal(imported.components[1].content['saleItems[2].image.clickUrl'], 'https://freshinelife.com/products/elara-linen-curtains');
   assert.equal(imported.components[1].content['saleItems[2].discountLabel'], 'SAVE 45%');
   assert.equal(imported.components[1].content['saleItems[0].image.url'], untouchedFirstCard['saleItems[0].image.url']);
+  if (['collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding'].includes(componentKey)) {
+    assert.equal(imported.components[1].content['saleItems[2].cta.text'], 'Elara Linen Curtains');
+    assert.equal(imported.components[1].content['saleCollection.cta.url'], untouchedFirstCard['saleCollection.cta.url']);
+    assert.equal(imported.components[1].content['saleItems[0].cta.text'], untouchedFirstCard['saleItems[0].cta.text']);
+    for (const title of [undefined, '', '   ', 123]) {
+      assert.throws(() => applySaleGrid4ProductImport(document, document.components[1].instanceId, 2, {
+        product: { handle: 'invalid-title', image: { url: 'https://cdn.example.com/image.jpg' }, linkUrl: 'https://freshinelife.com/products/invalid-title', discountLabel: '', title }
+      }), /incomplete product data/);
+    }
+  }
+  assert.deepEqual(imported.components[1].settings, document.components[1].settings);
+  assert.deepEqual(document.components[1].content, untouchedFirstCard);
   assert.equal(imported.components[1].source, 'shopify-product:elara-linen-curtains:slot-3');
+  assert.equal(imported.components[1].confirmed, false);
+  assert.equal(imported.confirmed, false);
+});
+
+test('detail four-grid import updates one card with UTM link, full title and prices while preserving plain CTA copy', async () => {
+  const { applySaleGrid4ProductImport } = await import('../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs');
+  const catalog = buildEditorCatalog({ workspaceRoot });
+  let document = createCampaignDocument({ name: '四宫格详情折扣导入测试' });
+  document = addComponentInstance(document, catalog, 'collection.saleGrid4DetailWithTitle');
+  document = addComponentInstance(document, catalog, 'collection.saleGrid4DetailWithTitle');
+  const untouchedInstance = structuredClone(document.components[0]);
+  const untouchedCard = structuredClone(document.components[1].content);
+
+  const imported = applySaleGrid4ProductImport(document, document.components[1].instanceId, 2, {
+    product: {
+      handle: 'nova-semi-sheer-curtains',
+      image: { url: 'https://cdn.example.com/nova-primary.webp', alt: 'Nova curtains in a bright living room' },
+      linkUrl: 'https://freshinelife.com/products/nova-semi-sheer-curtains?variant=123',
+      fullTitle: 'Nova Semi-Sheer Curtains for Large Windows – Elegant Drapes for Living Room & Bedroom',
+      title: 'Nova Semi-Sheer Curtains for Large Windows',
+      description: 'Elegant Drapes for Living Room & Bedroom',
+      price: '$47.90',
+      compareAtPrice: '$79.90',
+      discountLabel: 'SAVE 40%'
+    }
+  });
+
+  const cardPrefix = 'saleItems[2]';
+  assert.deepEqual(imported.components[0], untouchedInstance);
+  assert.equal(imported.components[1].content[`${cardPrefix}.image.url`], 'https://cdn.example.com/nova-primary.webp');
+  assert.equal(imported.components[1].content[`${cardPrefix}.image.alt`], 'Nova curtains in a bright living room');
+  assert.equal(imported.components[1].content[`${cardPrefix}.image.clickUrl`], 'https://freshinelife.com/products/nova-semi-sheer-curtains?variant=123&utm_source=omnisend&utm_medium=email&utm_id=cover-rc');
+  assert.equal(imported.components[1].content[`${cardPrefix}.name`], 'Nova Semi-Sheer Curtains for Large Windows – Elegant Drapes for Living Room & Bedroom');
+  assert.equal(imported.components[1].content[`${cardPrefix}.price.current`], '$47.90');
+  assert.equal(imported.components[1].content[`${cardPrefix}.price.compareAt`], '$79.90');
+  assert.equal(imported.components[1].content[`${cardPrefix}.discountLabel`], 'SAVE 40%');
+  assert.equal(imported.components[1].content[`${cardPrefix}.cta.text`], untouchedCard[`${cardPrefix}.cta.text`]);
+  assert.equal(imported.components[1].content['saleItems[0].name'], untouchedCard['saleItems[0].name']);
+  assert.deepEqual(imported.components[1].settings, document.components[1].settings);
+  assert.equal(imported.components[1].source, 'shopify-product:nova-semi-sheer-curtains:slot-3');
   assert.equal(imported.components[1].confirmed, false);
   assert.equal(imported.confirmed, false);
 });

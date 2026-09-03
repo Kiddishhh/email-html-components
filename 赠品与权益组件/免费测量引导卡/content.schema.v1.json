@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "tool.freeMeasurementGuidance",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "guide.title": { "type": "text", "required": true, "skillPrompt": true },
+    "guide.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "guide.image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "guide.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "guide.image.clickUrl": { "type": "url", "role": "click-url", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

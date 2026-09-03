@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.sceneOverlayCta",
+  "values": {
+    "navigation.visible": true,
+    "color.navigationLeft": "#B4A096",
+    "color.navigationRight": "#8D1B1B",
+    "color.navigationText": "#FFFFFF",
+    "color.heroFallback": "#7C8183",
+    "color.text": "#FFFFFF",
+    "color.action": "#A71919",
+    "color.actionText": "#FFFFFF"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.circleLogoSceneOverlay",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#C8B79D", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.text": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}
