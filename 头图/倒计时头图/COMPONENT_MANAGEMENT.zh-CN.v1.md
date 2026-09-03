@@ -14,7 +14,7 @@
 
 | 视觉位置 | 字段 | 默认内容 |
 | --- | --- | --- |
-| 左侧导航 | `navigation.text` | `Unlock $100 Off Your First Order At Freshine` |
+| 左侧导航 | `navigation.text` | `Unlock An Extra 15% Off Your First Order At Freshine` |
 | 右侧导航文字 | `navigation.linkText` | `SIGN UP` |
 | 右侧导航链接 | `navigation.url` | `https://freshinelife.com/` |
 | 背景图与 Alt | `hero.backgroundImage.url` / `.alt` | 独立、可替换图片 |

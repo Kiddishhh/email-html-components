@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "componentKey": "hero.countdownOverlay2",
   "values": {
-    "promotion.text": "Unlock $100 Off Your First Order at Freshine",
+    "promotion.text": "Unlock An Extra 15% Off Your First Order At Freshine",
     "promotion.linkText": "SIGN UP",
     "promotion.url": "https://freshinelife.com/",
     "brand.logo.url": "asset://countdown-hero-2-logo",

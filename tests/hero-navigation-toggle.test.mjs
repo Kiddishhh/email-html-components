@@ -48,8 +48,15 @@ const heroes = [
     componentKey: 'hero.romanShadeDiscount',
     navigationMarker: 'freshine-roman-shade-navigation',
     retainedMarker: 'freshine-roman-shade-background'
+  },
+  {
+    componentKey: 'hero.sceneOverlayCta2',
+    navigationMarker: 'freshine-scene-overlay-hero-2-navigation',
+    retainedMarker: 'freshine-scene-overlay-hero-2-background'
   }
 ];
+
+const defaultNavigationMessage = 'Unlock An Extra 15% Off Your First Order At Freshine';
 
 function renderHero(componentKey, navigationVisible, name) {
   const catalog = buildEditorCatalog({ workspaceRoot: root });
@@ -116,5 +123,13 @@ test('the email builder removes a disabled navigation block from every hero with
     assert.doesNotMatch(hidden.html, new RegExp(navigationMarker));
     assert.match(hidden.html, new RegExp(retainedMarker));
     assert.doesNotMatch(hidden.html, /FRESHINE_IF_SETTING|FRESHINE_END_IF_SETTING/);
+  }
+});
+
+test('every hero with a navigation bar renders the approved default left navigation message', () => {
+  for (const { componentKey } of heroes) {
+    const rendered = renderHero(componentKey, true, `${componentKey.replaceAll('.', '-')}-default-navigation-message`);
+    assert.equal(rendered.result.status, 0, rendered.result.stderr || rendered.result.stdout);
+    assert.match(rendered.html, new RegExp(defaultNavigationMessage), `${componentKey} must render the approved left navigation default`);
   }
 });

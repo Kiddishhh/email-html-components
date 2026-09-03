@@ -30,7 +30,7 @@
 
 ## 顶部导航
 
-- 沿用 `hero.sceneOverlayCta` 的双栏导航结构，位于场景主体上方，尺寸和字体采用本组件规格。默认左侧文案为 `Unlock $100 Off Your First Order at Freshine`，右侧为带下划线的 `SIGN UP`，跳转 `https://freshinelife.com/`；文案和链接固定，不新增编辑器输入。
+- 沿用 `hero.sceneOverlayCta` 的双栏导航结构，位于场景主体上方，尺寸和字体采用本组件规格。默认左侧文案为 `Unlock An Extra 15% Off Your First Order At Freshine`，右侧为带下划线的 `SIGN UP`，跳转 `https://freshinelife.com/`；文案和链接固定，不新增编辑器输入。
 - 左侧底色 `color.navigationLeft` 为 `#604211`（`rgba(96,66,17,1)`），右侧底色 `color.navigationRight` 为 `#6B492C`（`rgba(107,73,44,1)`），文字色 `color.navigationText` 为 `#FFFFFF`。
 - 左右列宽 `75.5% / 24.5%`；桌面导航为 `600×56px`，移动端高度使用 `min(56px, 9.333334vw)`，375px 下为 `35px`。左右文字均使用 Montserrat，字重 `500`，桌面字号/行高 `16px / 20px`，字间距 `0px`、居中；移动端保留 `min(16px, 3vw) / min(20px, 4vw)`，375px 下为 `11.25px / 15px`。
 - `navigation.visible=false` 时整行移除，不留空白占位；场景、Logo、折扣内容及原 CTA（含 UTM）保持不变。

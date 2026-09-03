@@ -53,7 +53,7 @@ test('Roman shade discount renders the approved navigation while preserving copy
   assert.equal([...navigation.matchAll(/height="56"/g)].length, 2, 'both navigation cells must use the approved 56px height');
   assert.match(navigation, /height:min\(56px,9\.333334vw\)/);
   assert.match(navigation, /color:#FFFFFF/);
-  assert.match(navigation, /Unlock \$100 Off Your First Order at Freshine/);
+  assert.match(navigation, /Unlock An Extra 15% Off Your First Order At Freshine/);
   assert.match(navigation, /href="https:\/\/freshinelife.com\/"[\s\S]*?>SIGN UP<\/a>/);
   const navigationTextStyles = [...navigation.matchAll(/<(?:span|a)\b[^>]*\bstyle="([^"]*)"/g)].map(match => match[1]);
   assert.equal(navigationTextStyles.length, 2);
