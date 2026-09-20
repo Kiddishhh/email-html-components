@@ -9,6 +9,7 @@ import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/edito
 import { addComponentInstance, applySaleGrid4ProductImport, buildEditorCatalog, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
 import { componentContracts } from './helpers/registry.mjs';
 import { canvas } from './helpers/composition.mjs';
+import { assertCampaignUtm } from './helpers/utm.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'collection.sceneSaleGrid6PriceWithTitle';
@@ -102,9 +103,7 @@ test('scene price six-grid Shopify import updates one of six cards and preserves
   assert.equal(imported.components[1].content['saleItems[5].discountLabel'], product.discountLabel);
   const importedUrl = new URL(imported.components[1].content['saleItems[5].image.clickUrl']);
   assert.equal(importedUrl.searchParams.get('variant'), '123');
-  assert.equal(importedUrl.searchParams.get('utm_source'), 'omnisend');
-  assert.equal(importedUrl.searchParams.get('utm_medium'), 'email');
-  assert.equal(importedUrl.searchParams.get('utm_id'), 'cover-rc');
+  assertCampaignUtm(importedUrl);
   assert.equal(imported.components[1].content['cta.text'], before.content['cta.text']);
   assert.equal(imported.components[1].content['promotion.title'], before.content['promotion.title']);
   assert.deepEqual(imported.components[1].settings, before.settings);

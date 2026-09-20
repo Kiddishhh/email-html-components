@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { componentContracts, componentDirectory, registeredComponent, root } from './helpers/registry.mjs';
 import { canvas } from './helpers/composition.mjs';
+import { assertCampaignUtm } from './helpers/utm.mjs';
 
 const componentKey = 'collection.saleGrid4DetailWithTitle';
 
@@ -50,9 +51,7 @@ test('detail four-grid defaults match the approved products and UTM policy', () 
     assert.equal(fixture[`saleItems[${index}].price.compareAt`], compareAt);
     assert.equal(fixture[`saleItems[${index}].discountLabel`], badge);
     const url = new URL(fixture[`saleItems[${index}].image.clickUrl`]);
-    assert.equal(url.searchParams.get('utm_source'), 'omnisend');
-    assert.equal(url.searchParams.get('utm_medium'), 'email');
-    assert.equal(url.searchParams.get('utm_id'), 'cover-rc');
+    assertCampaignUtm(url);
     assert.equal(fixture[`saleItems[${index}].cta.text`], 'SHOP NOW');
   }
 });

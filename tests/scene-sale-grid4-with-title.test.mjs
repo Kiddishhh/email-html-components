@@ -14,6 +14,7 @@ import {
   createCampaignDocument
 } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
 import { canvas } from './helpers/composition.mjs';
+import { assertCampaignUtm } from './helpers/utm.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'collection.sceneSaleGrid4WithTitle';
@@ -119,9 +120,7 @@ test('scene four-grid Shopify import updates one card name and tracked link only
   assert.equal(imported.components[1].content['saleItems[2].discountLabel'], 'SAVE 40%');
   const url = new URL(imported.components[1].content['saleItems[2].image.clickUrl']);
   assert.equal(url.searchParams.get('variant'), '123');
-  assert.equal(url.searchParams.get('utm_source'), 'omnisend');
-  assert.equal(url.searchParams.get('utm_medium'), 'email');
-  assert.equal(url.searchParams.get('utm_id'), 'cover-rc');
+  assertCampaignUtm(url);
   assert.equal(imported.components[1].content['saleItems[0].name'], before.content['saleItems[0].name']);
   assert.equal(imported.components[1].content['saleCollection.title'], before.content['saleCollection.title']);
   assert.deepEqual(imported.components[1].settings, before.settings);
