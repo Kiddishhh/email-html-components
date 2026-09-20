@@ -178,7 +178,7 @@ GET Campaign 和 Email Content，确认 Campaign ID、Content ID、`status: draf
 
 - [ ] **Step 2: 完整 PUT Email Content**
 
-保留 `generalSettings`、单一 section/row/column/htmlCode 的有效 ID；只替换 `htmlCode.body` 为新生成 HTML，并保留 `公共样式/移动端适配样式.css` 作为 `htmlCode.style`。
+保留 `generalSettings`、单一 section/row/column/htmlCode 的有效 ID；只替换 `htmlCode.body` 为新生成 HTML，并保留 `移动端适配样式.css` 作为 `htmlCode.style`（该文件当时位于 `公共样式/`，2026-09-20 整理时已移至 `docs/公共样式参考/`）。
 
 - [ ] **Step 3: 服务端回读验证**
 
