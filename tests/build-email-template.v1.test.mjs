@@ -1,4 +1,5 @@
 import { assertTextRole } from './helpers/typography.mjs';
+import { canvas, writeComposition } from './helpers/composition.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { cpSync, existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
@@ -18,18 +19,9 @@ const sceneOverlayHeroDirectory = `${root}/头图/场景文字叠层头图`;
 const fixture = JSON.parse(readFileSync(`${componentDirectory}/content.fixture.v1.json`, 'utf8'));
 const defaults = JSON.parse(readFileSync(`${componentDirectory}/settings.defaults.v1.json`, 'utf8'));
 function makeComposition(name, mutate = () => {}) {
-  const composition = {
-    schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FBFAF8',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
-    output: `/private/tmp/${name}.html`,
-    previewOutput: `/private/tmp/${name}.local-preview.html`,
-    components: [{
+  return writeComposition({
+    name,
+    component: {
       name: '可链接整图',
       directory: componentDirectory,
       componentKey: 'image.clickableFullWidth',
@@ -42,12 +34,9 @@ function makeComposition(name, mutate = () => {}) {
         ...defaults.values,
         'color.surface': '#123456'
       }
-    }]
-  };
-  mutate(composition);
-  const path = `/private/tmp/${name}.composition.json`;
-  writeFileSync(path, JSON.stringify(composition, null, 2));
-  return { composition, path };
+    },
+    mutate
+  });
 }
 
 function run(path, ...args) {
@@ -127,7 +116,7 @@ test('four-product recommendation renders editable copy, four paired product lin
   content['saleCollection.cta.url'] = 'https://freshinelife.com/discount/TEST';
   writeFileSync(path, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FFFDF9', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FFFDF9'),
     output, previewOutput: join(temporary, 'preview.html'),
     components: [{ name: entry.中文名称, directory, componentKey, content, settings }]
   }));
@@ -150,45 +139,26 @@ test('four-product recommendation renders editable copy, four paired product lin
 function makeNavigationPromotionCtaComposition(name, mutate = () => {}) {
   const componentFixture = JSON.parse(readFileSync(`${navigationPromotionCtaDirectory}/content.fixture.v1.json`, 'utf8'));
   const componentDefaults = JSON.parse(readFileSync(`${navigationPromotionCtaDirectory}/settings.defaults.v1.json`, 'utf8'));
-  const composition = {
-    schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FFFFFF',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
-    output: `/private/tmp/${name}.html`,
-    previewOutput: `/private/tmp/${name}.local-preview.html`,
-    components: [{
+  return writeComposition({
+    name,
+    backgroundColor: '#FFFFFF',
+    component: {
       name: '活动促销 CTA',
       directory: navigationPromotionCtaDirectory,
       componentKey: 'navigation.promotionCta',
       content: { ...componentFixture.values },
       settings: { ...componentDefaults.values }
-    }]
-  };
-  mutate(composition);
-  const path = `/private/tmp/${name}.composition.json`;
-  writeFileSync(path, JSON.stringify(composition, null, 2));
-  return { composition, path };
+    },
+    mutate
+  });
 }
 
 function makeSceneOverlayHeroComposition(name, mutate = () => {}) {
   const componentFixture = JSON.parse(readFileSync(`${sceneOverlayHeroDirectory}/content.fixture.v1.json`, 'utf8'));
   const componentDefaults = JSON.parse(readFileSync(`${sceneOverlayHeroDirectory}/settings.defaults.v1.json`, 'utf8'));
-  const composition = {
-    schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FFFFFF',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
-    output: `/private/tmp/${name}.html`,
-    previewOutput: `/private/tmp/${name}.local-preview.html`,
+  return writeComposition({
+    name,
+    backgroundColor: '#FFFFFF',
     assets: {
       'measurement-service-scene': {
         path: '头图/场景文字叠层头图/assets/default-measurement-service.png',
@@ -199,18 +169,15 @@ function makeSceneOverlayHeroComposition(name, mutate = () => {}) {
         name: 'default-logo-white.png'
       }
     },
-    components: [{
+    component: {
       name: '场景文字叠层头图',
       directory: sceneOverlayHeroDirectory,
       componentKey: 'hero.sceneOverlayCta',
       content: { ...componentFixture.values },
       settings: { ...componentDefaults.values }
-    }]
-  };
-  mutate(composition);
-  const path = `/private/tmp/${name}.composition.json`;
-  writeFileSync(path, JSON.stringify(composition, null, 2));
-  return { composition, path };
+    },
+    mutate
+  });
 }
 
 test('scene overlay hero renders its cropped local scene with editable white copy and action', () => {
@@ -304,17 +271,9 @@ const productStyle1Settings = {
 };
 
 function makeProductStyle1Composition(name, mutate = () => {}) {
-  const composition = {
-    schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#F8F5F1',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
-    output: `/private/tmp/${name}.html`,
-    previewOutput: `/private/tmp/${name}.local-preview.html`,
+  return writeComposition({
+    name,
+    backgroundColor: '#F8F5F1',
     assets: {
       'product-main': {
         path: '小样/产品/样式1/assets/default-main-image.png',
@@ -325,7 +284,7 @@ function makeProductStyle1Composition(name, mutate = () => {}) {
         name: 'product-detail.png'
       }
     },
-    components: [{
+    component: {
       name: '产品样式1',
       directory: '小样/产品/样式1',
       componentKey: 'product.sampleStyle1',
@@ -340,12 +299,9 @@ function makeProductStyle1Composition(name, mutate = () => {}) {
         'product.cta.url': 'https://freshinelife.com/collections/sheer-curtains'
       },
       settings: { ...productStyle1Settings }
-    }]
-  };
-  mutate(composition);
-  const path = `/private/tmp/${name}.composition.json`;
-  writeFileSync(path, JSON.stringify(composition, null, 2));
-  return { composition, path };
+    },
+    mutate
+  });
 }
 
 test('product style1 uses a compact desktop split layout with a thin sample frame', () => {
@@ -459,13 +415,7 @@ test('renders a linked curtain promotion card with its instance background color
   const directory = `${root}/活动商品组件/单品窗帘促销卡`;
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FBFAF8',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#FBFAF8'),
     output: '/private/tmp/curtain-promotion-card.html',
     previewOutput: '/private/tmp/curtain-promotion-card.local-preview.html',
     components: [{
@@ -520,13 +470,7 @@ test('uses the curtain card local default image only in its local preview', () =
   const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FBFAF8',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#FBFAF8'),
     output: '/private/tmp/curtain-promotion-card-default.html',
     previewOutput: '/private/tmp/curtain-promotion-card-default.local-preview.html',
     assets: {
@@ -559,13 +503,7 @@ test('renders the no-title curtain promotion card without top copy fields', () =
   const directory = `${root}/活动商品组件/单品窗帘促销卡（无标题款）`;
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FBFAF8',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#FBFAF8'),
     output: '/private/tmp/curtain-promotion-card-no-title.html',
     previewOutput: '/private/tmp/curtain-promotion-card-no-title.local-preview.html',
     components: [{
@@ -617,13 +555,7 @@ test('renders the countdown hero with a mobile-scaled content panel', () => {
   const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FBFAF8',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#FBFAF8'),
     output: '/private/tmp/countdown-hero-css.html',
     previewOutput: '/private/tmp/countdown-hero-css.local-preview.html',
     assets: Object.fromEntries(Object.entries(content.localReferenceAssets).map(([id, relativePath]) => [id, {
@@ -664,13 +596,7 @@ test('renders the benefits strip without its deprecated optional link field', ()
   const settings = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FBFAF8',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#FBFAF8'),
     output: '/private/tmp/benefits-strip-optional-link.html',
     previewOutput: '/private/tmp/benefits-strip-optional-link.local-preview.html',
     assets: {
@@ -1067,13 +993,7 @@ test('the rendered footer normalizes seven social logos inside equal visual cell
   const compositionPath = '/private/tmp/footer-social-visual-normalization.composition.json';
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#652A0D',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#652A0D'),
     output,
     previewOutput: '/private/tmp/footer-social-visual-normalization.local-preview.html',
     components: [{
@@ -1157,7 +1077,7 @@ test('double divider footer renders two 508px dividers and calibrated social log
   const compositionPath = '/private/tmp/double-divider-footer.composition.json';
   const composition = {
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FFFFFF', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FFFFFF'),
     output,
     previewOutput: '/private/tmp/double-divider-footer.local-preview.html',
     components: [{
@@ -1430,35 +1350,22 @@ function makeTextReviewComposition(name, {
 } = {}) {
   const textReviewFixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const textReviewDefaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
-  const output = `/private/tmp/${name}.html`;
-  const previewOutput = `/private/tmp/${name}.local-preview.html`;
-  const path = `/private/tmp/${name}.composition.json`;
-  writeFileSync(path, JSON.stringify({
-    schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FDFCFB',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
-    output,
-    previewOutput,
+  return writeComposition({
+    name,
     assets: {
       'review-star': {
         path: '评论组件/双条文字评论/assets/review-star.png',
         name: 'review-star.png'
       }
     },
-    components: [{
+    component: {
       name: '双条文字评论',
       directory,
       componentKey: 'review.textList2',
       content: { ...textReviewFixture.values, ...content },
       settings: { ...textReviewDefaults.values, 'color.surface': background }
-    }]
-  }, null, 2));
-  return { output, previewOutput, path };
+    }
+  });
 }
 
 test('the text review list renders fifteen fixed decorative stars without links or unresolved slots', () => {
@@ -1641,13 +1548,7 @@ test('the left sample product recommendation card is registered with its two-ima
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FAF9F7',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#FAF9F7'),
     output: '/private/tmp/sample-product-recommendation.static-safe.html',
     previewOutput: '/private/tmp/sample-product-recommendation.local-preview.html',
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
@@ -1780,13 +1681,7 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
-    canvas: {
-      backgroundColor: '#FAF9F7',
-      outerBackgroundColor: '#FFFFFF',
-      contentWidth: 600,
-      mobileTargetWidth: 375,
-      verticalPadding: 0
-    },
+    canvas: canvas('#FAF9F7'),
     output: '/private/tmp/curtain-recommendation-overlay.static-safe.html',
     previewOutput: '/private/tmp/curtain-recommendation-overlay.local-preview.html',
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
@@ -1912,7 +1807,7 @@ test('the no-title curtain recommendation card keeps the editorial product layou
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FAF9F7', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FAF9F7'),
     output: '/private/tmp/curtain-recommendation-no-title.static-safe.html',
     previewOutput: '/private/tmp/curtain-recommendation-no-title.local-preview.html',
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, { path: `小样-产品/窗帘产品推荐卡II（无标题版）/${path}`, name: path.split('/').at(-1) }])),
@@ -1982,7 +1877,7 @@ test('the measurement tool card is a registered 600px editable component with it
   const index = readFileSync(`${root}/组件索引.md`, 'utf8');
   const composition = {
     schemaVersion: 1,
-    canvas: { backgroundColor: '#F7F5F1', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#F7F5F1'),
     output: '/private/tmp/measurement-tool-card.static-safe.html',
     previewOutput: '/private/tmp/measurement-tool-card.local-preview.html',
     assets: { 'measurement-tool': { path: '赠品与权益组件/尺寸测量工具卡/assets/default-measurement-tool.jpg', name: 'default-measurement-tool.jpg' } },
