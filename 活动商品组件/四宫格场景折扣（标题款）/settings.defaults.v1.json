@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.sceneSaleGrid4WithTitle",
+  "values": {
+    "color.surface": "#F8F5F1",
+    "color.heading": "#242323",
+    "color.body": "#000000",
+    "color.product": "#242323",
+    "color.theme": "#991B1E",
+    "color.badgeText": "#FFFFFF"
+  }
+}

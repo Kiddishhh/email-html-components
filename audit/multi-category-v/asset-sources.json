@@ -1,0 +1,37 @@
+{
+  "reference": "/Users/ww/Downloads/产品块/多类推荐V.png",
+  "sourcePixels": [
+    1200,
+    2626
+  ],
+  "sourceCrops": {
+    "1": [
+      66,
+      270,
+      580,
+      914
+    ],
+    "2": [
+      620,
+      270,
+      1134,
+      914
+    ],
+    "3": [
+      66,
+      1040,
+      580,
+      1682
+    ],
+    "6": [
+      620,
+      1810,
+      1134,
+      2454
+    ]
+  },
+  "replacementImageSources": {
+    "motorized-roman-shades": "https://cdn.shopify.com/s/files/1/0901/6888/5527/collections/Fiora-Cotton-Roman-Shades-MBH9520-3-6_4b0ffcb0-0b68-4461-8715-cd53d72b44f4.jpg?v=1768478927",
+    "see-through-sheer-curtains": "https://cdn.shopify.com/s/files/1/0901/6888/5527/collections/See_Through_Sheer_1e3c4c20-5c51-4855-aad4-862a9c047f37.webp?v=1786007403"
+  }
+}

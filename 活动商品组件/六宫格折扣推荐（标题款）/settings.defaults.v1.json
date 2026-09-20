@@ -4,7 +4,7 @@
   "values": {
     "color.surface": "#FFFDFA",
     "color.heading": "#1F1F1F",
-    "color.body": "#7C706A",
+    "color.body": "#000000",
     "color.theme": "#8D1B1B",
     "color.badgeText": "#FFFFFF",
     "color.buttonText": "#FFFFFF",

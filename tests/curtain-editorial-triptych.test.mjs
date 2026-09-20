@@ -1,3 +1,4 @@
+import { assertTextRole } from './helpers/typography.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -60,15 +61,15 @@ test('curtain editorial triptych registers the reference-faithful three-image co
   assert.equal(fixture.values['pair.left.url'], 'asset://curtain-editorial-left');
   assert.equal(fixture.values['pair.right.url'], 'asset://curtain-editorial-right');
   assert.equal(settingsSchema.properties['color.surface'].default, '#FBFAF8');
-  assert.equal(settingsSchema.properties['font.heading'].default, 'Montserrat, Arial, Helvetica, sans-serif');
-  assert.equal(settingsDefaults.values['font.heading'], 'Montserrat, Arial, Helvetica, sans-serif');
+  assert.equal(settingsSchema.properties['font.heading'].default, 'Lora, Georgia, Times New Roman, serif');
+  assert.equal(settingsDefaults.values['font.heading'], 'Lora, Georgia, Times New Roman, serif');
   assert.match(template, /width="538" height="536"/);
   assert.match(template, /width="256" height="319"/);
   assert.match(template, /width:89\.667%;max-width:538px/);
   assert.match(template, /width:87\.333%;max-width:524px/);
   assert.match(template, /width="12"/);
-  assert.match(template, /font-family:\{\{settings\.font\.heading\}\};font-size:30px;font-size:min\(30px,6\.933vw\);font-weight:500;line-height:150%;letter-spacing:0px;text-align:center/);
-  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:16px;font-size:min\(16px,3\.733vw\);font-weight:500;line-height:150%;letter-spacing:0px;text-align:center/);
+  assertTextRole(template, 'intro.title', 'heading');
+  assertTextRole(template, 'intro.subtitle', 'subtitle');
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|<div\b/i);
   assert.deepEqual(editableFieldKeys(componentKey), { content: contentFields, settings: ['color.surface'] });
 });
@@ -93,11 +94,11 @@ test('curtain editorial triptych demo centers its 600px canvas and internal cont
   assert.match(demo, /width="524"[^>]+align="center"[^>]+max-width:524px[^>]+margin:0 auto/);
 });
 
-test('curtain editorial triptych demo uses the approved centered Montserrat Medium title styles', () => {
+test('curtain editorial triptych demo uses the shared heading and subtitle styles', () => {
   const demo = readFileSync(`${directory}/效果演示.html`, 'utf8');
 
-  assert.match(demo, /Dining Room<\/span>.*font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:16px;font-size:min\(16px,3\.733vw\);font-weight:500;line-height:150%;letter-spacing:0px;text-align:center/s);
-  assert.match(demo, /font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:30px;font-size:min\(30px,6\.933vw\);font-weight:500;line-height:150%;letter-spacing:0px;text-align:center;[^>]*>Dining Room/);
+  assertTextRole(demo, 'intro.subtitle', 'subtitle');
+  assertTextRole(demo, 'intro.title', 'heading');
 });
 
 test('curtain editorial triptych adds a responsive divider below the intro copy', () => {

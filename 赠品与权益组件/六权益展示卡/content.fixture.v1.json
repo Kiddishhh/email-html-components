@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsShowcase6",
+  "fixture": "default-benefits-showcase-6-card",
+  "localPreviewAsset": "assets/default-benefits-showcase-6-card.jpg",
+  "localReferenceAssets": {
+    "benefits-showcase-6-card": "assets/default-benefits-showcase-6-card.jpg"
+  },
+  "values": {
+    "image.url": "asset://benefits-showcase-6-card",
+    "image.alt": "Our Custom Window Treatments & Services: Perfectly Handmade; Timeless Elegance; Premium Neutrals; 7-14 Day Delivery; Free Shipping; Secure Payments"
+  }
+}

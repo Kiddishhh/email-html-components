@@ -21,3 +21,16 @@
 ## 数据与安全边界
 
 默认四张图片和商品链接来自用户提供模板，链接保留原有 UTM。背景图使用公开 HTTPS、`background` 属性和内联 CSS；完成本地测试只表示组件与编辑器契约正常，不等于 Omnisend 或真实 Gmail、Outlook、Apple Mail 收件箱验收。本任务不发送、排期、发布或上传远程内容。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：saleCollection.title
+- subtitle：saleCollection.body
+- caption：saleItems[0].cta.text, saleItems[1].cta.text, saleItems[2].cta.text, saleItems[3].cta.text
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

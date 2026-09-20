@@ -27,7 +27,7 @@
     },
     "color.body": {
       "type": "string",
-      "default": "#7C706A",
+      "default": "#000000",
       "themeable": true,
       "skillPrompt": true,
       "pattern": "^#[0-9A-Fa-f]{6}$"

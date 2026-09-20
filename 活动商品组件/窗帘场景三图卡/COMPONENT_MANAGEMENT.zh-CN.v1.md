@@ -33,3 +33,16 @@
 - 模板、Schema、默认数据、样式、`效果演示.html` 和本说明位于当前组件目录；组件还登记在 `组件清单.json`、`组件索引.md`、编辑器字段契约与组件交互说明中，并已作为 HTML 编辑器的自由组合样式可选。
 - `效果演示.html` 仅供浏览器在 600px / 375px 视觉检查，不能直接导入 Omnisend。
 - 静态校验和本地预览不等同于 Omnisend 或收件箱渲染。发布前仍需在 Omnisend Desktop/Mobile 预览，并向 Gmail、Outlook 和 Apple Mail 发测试邮件。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：intro.title
+- subtitle：intro.subtitle
+- caption：pair.left.caption, pair.right.caption
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

@@ -41,6 +41,10 @@ const editableByComponent = {
     content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.logo.url', 'hero.logo.alt', 'hero.logo.clickUrl', 'hero.eyebrow', 'hero.title', 'hero.discount', 'hero.subtitle', 'hero.cta.text', 'hero.cta.url'],
     settings: ['navigation.visible', 'color.text', 'color.action']
   },
+  'hero.couponSceneOverlay': {
+    content: ['navigation.message', 'navigation.cta.text', 'navigation.cta.url', 'intro.title', 'intro.subtitle', 'offer.image.url', 'offer.image.alt', 'hero.image.url', 'hero.image.alt', 'cta.text', 'cta.url'],
+    settings: ['navigation.visible', 'color.surface', 'color.promotion', 'color.heading', 'color.body', 'color.action']
+  },
   'navigation.promotionCta': {
     content: ['promotion.title', 'promotion.divider.url', 'promotion.divider.alt', 'promotion.offer', 'promotion.body', 'promotion.cta.text', 'promotion.cta.url'],
     settings: ['color.surface', 'color.text', 'color.action']
@@ -50,7 +54,7 @@ const editableByComponent = {
     settings: ['color.surface', 'color.text', 'color.action']
   },
   'collection.saleGrid6': {
-    content: ['saleCollection.title', 'saleCollection.body', 'saleCollection.cta.text', 'saleCollection.cta.url'],
+    content: ['saleCollection.title', 'saleCollection.body', 'saleCollection.cta.text', 'saleCollection.cta.url', 'saleItems[0].name', 'saleItems[1].name', 'saleItems[2].name', 'saleItems[3].name', 'saleItems[4].name', 'saleItems[5].name'],
     settings: ['color.theme', 'color.surface']
   },
   'collection.saleGrid6WithTitle': {
@@ -86,6 +90,16 @@ const editableByComponent = {
     ],
     settings: ['color.surface', 'color.theme', 'color.heading', 'color.body', 'color.action']
   },
+  'collection.sceneSaleGrid4WithTitle': {
+    content: [
+      'saleCollection.title', 'saleCollection.body',
+      'saleItems[0].discountLabel', 'saleItems[0].image.url', 'saleItems[0].image.alt', 'saleItems[0].image.clickUrl', 'saleItems[0].name',
+      'saleItems[1].discountLabel', 'saleItems[1].image.url', 'saleItems[1].image.alt', 'saleItems[1].image.clickUrl', 'saleItems[1].name',
+      'saleItems[2].discountLabel', 'saleItems[2].image.url', 'saleItems[2].image.alt', 'saleItems[2].image.clickUrl', 'saleItems[2].name',
+      'saleItems[3].discountLabel', 'saleItems[3].image.url', 'saleItems[3].image.alt', 'saleItems[3].image.clickUrl', 'saleItems[3].name'
+    ],
+    settings: ['color.surface', 'color.heading', 'color.body', 'color.product', 'color.theme', 'color.badgeText']
+  },
   'collection.productGrid4NoSidePadding': {
     content: [
       'saleCollection.title', 'saleCollection.body',
@@ -105,6 +119,31 @@ const editableByComponent = {
       'saleItems[3].discountLabel', 'saleItems[3].image.url', 'saleItems[3].image.alt', 'saleItems[3].image.clickUrl', 'saleItems[3].name', 'saleItems[3].price.current', 'saleItems[3].price.compareAt', 'saleItems[3].cta.text'
     ],
     settings: ['color.surface', 'color.heading', 'color.body', 'color.text', 'color.theme', 'color.badgeText', 'color.compareAt', 'color.cta', 'color.ctaText']
+  },
+  'collection.saleGrid6DetailWithTitle': {
+    content: [
+      'promotion.title', 'promotion.subtitle',
+      'saleItems[0].discountLabel', 'saleItems[0].image.url', 'saleItems[0].image.alt', 'saleItems[0].image.clickUrl', 'saleItems[0].name', 'saleItems[0].price.current', 'saleItems[0].price.compareAt', 'saleItems[0].cta.text',
+      'saleItems[1].discountLabel', 'saleItems[1].image.url', 'saleItems[1].image.alt', 'saleItems[1].image.clickUrl', 'saleItems[1].name', 'saleItems[1].price.current', 'saleItems[1].price.compareAt', 'saleItems[1].cta.text',
+      'saleItems[2].discountLabel', 'saleItems[2].image.url', 'saleItems[2].image.alt', 'saleItems[2].image.clickUrl', 'saleItems[2].name', 'saleItems[2].price.current', 'saleItems[2].price.compareAt', 'saleItems[2].cta.text',
+      'saleItems[3].discountLabel', 'saleItems[3].image.url', 'saleItems[3].image.alt', 'saleItems[3].image.clickUrl', 'saleItems[3].name', 'saleItems[3].price.current', 'saleItems[3].price.compareAt', 'saleItems[3].cta.text',
+      'saleItems[4].discountLabel', 'saleItems[4].image.url', 'saleItems[4].image.alt', 'saleItems[4].image.clickUrl', 'saleItems[4].name', 'saleItems[4].price.current', 'saleItems[4].price.compareAt', 'saleItems[4].cta.text',
+      'saleItems[5].discountLabel', 'saleItems[5].image.url', 'saleItems[5].image.alt', 'saleItems[5].image.clickUrl', 'saleItems[5].name', 'saleItems[5].price.current', 'saleItems[5].price.compareAt', 'saleItems[5].cta.text'
+    ],
+    settings: ['color.surface', 'color.heading', 'color.body', 'color.text', 'color.theme', 'color.badgeText', 'color.compareAt', 'color.cta', 'color.ctaText']
+  },
+  'collection.sceneSaleGrid6PriceWithTitle': {
+    content: [
+      'promotion.title', 'decoration.divider.url', 'promotion.subtitle',
+      'saleItems[0].discountLabel', 'saleItems[0].image.url', 'saleItems[0].image.alt', 'saleItems[0].image.clickUrl', 'saleItems[0].name', 'saleItems[0].price.current', 'saleItems[0].price.compareAt',
+      'saleItems[1].discountLabel', 'saleItems[1].image.url', 'saleItems[1].image.alt', 'saleItems[1].image.clickUrl', 'saleItems[1].name', 'saleItems[1].price.current', 'saleItems[1].price.compareAt',
+      'saleItems[2].discountLabel', 'saleItems[2].image.url', 'saleItems[2].image.alt', 'saleItems[2].image.clickUrl', 'saleItems[2].name', 'saleItems[2].price.current', 'saleItems[2].price.compareAt',
+      'saleItems[3].discountLabel', 'saleItems[3].image.url', 'saleItems[3].image.alt', 'saleItems[3].image.clickUrl', 'saleItems[3].name', 'saleItems[3].price.current', 'saleItems[3].price.compareAt',
+      'saleItems[4].discountLabel', 'saleItems[4].image.url', 'saleItems[4].image.alt', 'saleItems[4].image.clickUrl', 'saleItems[4].name', 'saleItems[4].price.current', 'saleItems[4].price.compareAt',
+      'saleItems[5].discountLabel', 'saleItems[5].image.url', 'saleItems[5].image.alt', 'saleItems[5].image.clickUrl', 'saleItems[5].name', 'saleItems[5].price.current', 'saleItems[5].price.compareAt',
+      'decoration.footer.url', 'cta.text', 'cta.url'
+    ],
+    settings: ['color.surface', 'color.heading', 'color.body', 'color.product', 'color.theme', 'color.badgeText', 'color.price', 'color.compareAt', 'color.cta', 'color.ctaText']
   },
   'collection.curtainInspirationGrid4': {
     content: [
@@ -131,6 +170,7 @@ const editableByComponent = {
     content: ['hero.image.url', 'hero.image.alt', 'hero.image.clickUrl', 'pair.left.url', 'pair.left.alt', 'pair.left.clickUrl', 'pair.left.caption', 'pair.right.url', 'pair.right.alt', 'pair.right.clickUrl', 'pair.right.caption', 'intro.title', 'intro.subtitle'],
     settings: ['color.surface']
   },
+  'collection.multiCategoryRecommendationV': {"content": ["intro.title", "intro.subtitle", "collections[0].image.url", "collections[0].image.alt", "collections[0].title", "collections[0].clickUrl", "collections[1].image.url", "collections[1].image.alt", "collections[1].title", "collections[1].clickUrl", "collections[2].image.url", "collections[2].image.alt", "collections[2].title", "collections[2].clickUrl", "collections[3].image.url", "collections[3].image.alt", "collections[3].title", "collections[3].clickUrl", "collections[4].image.url", "collections[4].image.alt", "collections[4].title", "collections[4].clickUrl", "collections[5].image.url", "collections[5].image.alt", "collections[5].title", "collections[5].clickUrl"], "settings": ["color.surface", "color.heading", "color.body", "color.caption"]},
   'collection.romanShadeMultiRecommendation': {
     content: [
       'intro.title', 'intro.subtitle',
@@ -165,12 +205,13 @@ const editableByComponent = {
     ],
     settings: ['color.surface']
   },
+  'gift.warmRedPairIV': {"content": ["intro.title", "intro.rule1", "intro.rule2", "gifts[0].image.url", "gifts[0].image.alt", "gifts[0].clickUrl", "gifts[1].image.url", "gifts[1].image.alt", "gifts[1].clickUrl"], "settings": ["color.surface", "color.text"]},
   'gift.showcase2': {
     content: [
-      'gifts[0].image.url', 'gifts[0].image.alt', 'gifts[0].title', 'gifts[0].value', 'gifts[0].description', 'gifts[0].cta.text', 'gifts[0].cta.url', 'gifts[0].note',
-      'gifts[1].image.url', 'gifts[1].image.alt', 'gifts[1].title', 'gifts[1].value', 'gifts[1].description', 'gifts[1].cta.text', 'gifts[1].cta.url', 'gifts[1].note'
+      'gifts[0].image.url', 'gifts[0].image.alt', 'gifts[0].title', 'gifts[0].value', 'gifts[0].description', 'gifts[0].cta.text', 'gifts[0].cta.url',
+      'gifts[1].image.url', 'gifts[1].image.alt', 'gifts[1].title', 'gifts[1].value', 'gifts[1].description', 'gifts[1].cta.text', 'gifts[1].cta.url'
     ],
-    settings: ['color.surface', 'color.text', 'color.accent', 'color.muted']
+    settings: ['color.surface', 'color.text', 'color.accent']
   },
   'gift.doubleGiftAddressShowcase': {
     content: [
@@ -193,6 +234,7 @@ const editableByComponent = {
   'image.benefitsStrip4': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
   'image.benefitsStrip4TwoRows': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
   'image.benefitsAddressCard': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
+  'image.benefitsShowcase6': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
   'tool.measurementCard': {
     content: ['measurement.image.url', 'measurement.image.alt', 'measurement.title', 'measurement.subtitle', 'measurement.cta.label', 'measurement.cta.url'],
     settings: ['color.surface', 'color.text', 'color.action']
@@ -464,6 +506,7 @@ const copyByComponentField = {
       "仅影响左下下划线 CTA。"
     ]
   },
+  'collection.multiCategoryRecommendationV': {"content.intro.title": ["主标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.intro.subtitle": ["副标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[0].image.url": ["分类 1 图片地址", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[0].image.alt": ["分类 1 图片说明", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[0].title": ["分类 1 分类标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[0].clickUrl": ["分类 1 跳转链接", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[1].image.url": ["分类 2 图片地址", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[1].image.alt": ["分类 2 图片说明", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[1].title": ["分类 2 分类标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[1].clickUrl": ["分类 2 跳转链接", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[2].image.url": ["分类 3 图片地址", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[2].image.alt": ["分类 3 图片说明", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[2].title": ["分类 3 分类标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[2].clickUrl": ["分类 3 跳转链接", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[3].image.url": ["分类 4 图片地址", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[3].image.alt": ["分类 4 图片说明", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[3].title": ["分类 4 分类标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[3].clickUrl": ["分类 4 跳转链接", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[4].image.url": ["分类 5 图片地址", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[4].image.alt": ["分类 5 图片说明", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[4].title": ["分类 5 分类标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[4].clickUrl": ["分类 5 跳转链接", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[5].image.url": ["分类 6 图片地址", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[5].image.alt": ["分类 6 图片说明", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[5].title": ["分类 6 分类标题", "图片和分类标题共用对应分类链接；字体和布局固定。"], "content.collections[5].clickUrl": ["分类 6 跳转链接", "图片和分类标题共用对应分类链接；字体和布局固定。"], "settings.color.surface": ["背景色", "仅影响当前组件。"], "settings.color.heading": ["主标题颜色", "仅影响当前组件。"], "settings.color.body": ["副标题颜色", "仅影响当前组件。"], "settings.color.caption": ["分类标题颜色", "仅影响当前组件。"]},
   'collection.romanShadeMultiRecommendation': {
     'content.intro.title': ['推荐区标题', '默认 Custom-Made Roman Shades；按当前画布宽度自然换行。'],
     'content.intro.subtitle': ['推荐区说明', '显示在标题下方，默认按设计稿的两行节奏换行。'],
@@ -498,12 +541,12 @@ const copyByComponentField = {
     'content.cta.url': ['底部 CTA 链接', '默认活动页链接，保留 cover-rc UTM 参数。'],
     'settings.color.surface': ['组件背景色', '默认 #FFFDFA，仅作用于当前组件。'],
     'settings.color.heading': ['标题颜色', '默认 #242323，仅作用于顶部标题。'],
-    'settings.color.body': ['说明颜色', '默认 #7C706A，仅作用于顶部说明。'],
+    'settings.color.body': ['说明颜色', '默认 #000000，仅作用于顶部说明。'],
     'settings.color.cardFallback': ['图片降级底色', '默认 #E8E3DD；图片无法加载时显示。'],
     'settings.color.cta': ['CTA 描边与文字色', '默认 #242323，同时作用于底部 CTA 边框和文字。']
   },
   'collection.saleGrid4WithTitle': {
-    'content.saleCollection.title': ['推荐区标题', '默认 You May Also Like；保留原稿的 Montserrat 无衬线样式。'],
+    'content.saleCollection.title': ['推荐区标题', '默认 You May Also Like；使用 Lora 400、30px/38px 居中标题。'],
     'content.saleCollection.body': ['推荐区说明', '显示在标题下方，按当前画布宽度自然换行。'],
     'content.saleCollection.cta.text': ['底部按钮文案', '默认 APPLY DISCOUNT；此文字不会创建或自动应用折扣。'],
     'content.saleCollection.cta.url': ['底部按钮链接', '默认使用已确认的 Roman Shades 集合页并保留 UTM；集合页链接本身不自动应用优惠码。'],
@@ -515,6 +558,20 @@ const copyByComponentField = {
     'settings.color.heading': ['主标题和按钮边框色', '仅修改推荐区主标题与底部按钮描边。'],
     'settings.color.body': ['副标题文字色', '仅修改顶部推荐说明的颜色。'],
     'settings.color.action': ['商品链接和按钮文字色', '修改四组图片下方链接与底部按钮文字的颜色。']
+  },
+  'collection.sceneSaleGrid4WithTitle': {
+    'content.saleCollection.title': ['推荐区标题', '默认 Upgrade Your Home in Style；使用 Lora 衬线字体。'],
+    'content.saleCollection.body': ['推荐区说明', '显示在标题下方，按画布宽度自然换行。'],
+    'content.saleItems[0].name': ['商品 1 名称', '左上商品名称，与主图共用商品链接；导入后更新为 Shopify 商品标题。'],
+    'content.saleItems[1].name': ['商品 2 名称', '右上商品名称，与主图共用商品链接；导入后更新为 Shopify 商品标题。'],
+    'content.saleItems[2].name': ['商品 3 名称', '左下商品名称，与主图共用商品链接；导入后更新为 Shopify 商品标题。'],
+    'content.saleItems[3].name': ['商品 4 名称', '右下商品名称，与主图共用商品链接；导入后更新为 Shopify 商品标题。'],
+    'settings.color.surface': ['组件背景色', '修改整个四宫格组件的暖白背景。'],
+    'settings.color.heading': ['标题文字色', '仅修改顶部 Lora 标题颜色。'],
+    'settings.color.body': ['副标题文字色', '仅修改顶部说明文字颜色。'],
+    'settings.color.product': ['商品名称色', '统一修改四个商品名称的颜色。'],
+    'settings.color.theme': ['折扣标签底色', '统一修改四个折扣标签的底色。'],
+    'settings.color.badgeText': ['折扣标签文字色', '统一修改四个折扣标签的文字颜色。']
   },
   'collection.productGrid4NoSidePadding': {
     'content.saleCollection.title': ['推荐区标题', '默认 Three Days Left to Refresh；使用 Lora 衬线字体。'],
@@ -558,6 +615,55 @@ const copyByComponentField = {
     'settings.color.cta': ['CTA 背景色', '统一修改四个 SHOP NOW 按钮底色。'],
     'settings.color.ctaText': ['CTA 文字色', '统一修改四个 SHOP NOW 按钮文字。']
   },
+  'collection.saleGrid6DetailWithTitle': {
+    'content.promotion.title': ['顶部标题', '默认 Upgrade Your Home In Style；商品导入不会修改。'],
+    'content.promotion.subtitle': ['顶部说明', '显示在标题下方并按画布宽度自然换行；商品导入不会修改。'],
+    'content.saleItems[0].name': ['商品 1 名称', '纯文本，不附带链接；导入商品 1 后更新为 Shopify 完整商品名。'],
+    'content.saleItems[1].name': ['商品 2 名称', '纯文本，不附带链接；导入商品 2 后更新为 Shopify 完整商品名。'],
+    'content.saleItems[2].name': ['商品 3 名称', '纯文本，不附带链接；导入商品 3 后更新为 Shopify 完整商品名。'],
+    'content.saleItems[3].name': ['商品 4 名称', '纯文本，不附带链接；导入商品 4 后更新为 Shopify 完整商品名。'],
+    'content.saleItems[0].price.current': ['商品 1 折扣价', '纯文本；导入商品 1 后更新为首个可售变体价格。'],
+    'content.saleItems[1].price.current': ['商品 2 折扣价', '纯文本；导入商品 2 后更新为首个可售变体价格。'],
+    'content.saleItems[2].price.current': ['商品 3 折扣价', '纯文本；导入商品 3 后更新为首个可售变体价格。'],
+    'content.saleItems[3].price.current': ['商品 4 折扣价', '纯文本；导入商品 4 后更新为首个可售变体价格。'],
+    'content.saleItems[0].price.compareAt': ['商品 1 原价', '纯文本并带删除线；无有效划线价时留空。'],
+    'content.saleItems[1].price.compareAt': ['商品 2 原价', '纯文本并带删除线；无有效划线价时留空。'],
+    'content.saleItems[2].price.compareAt': ['商品 3 原价', '纯文本并带删除线；无有效划线价时留空。'],
+    'content.saleItems[3].price.compareAt': ['商品 4 原价', '纯文本并带删除线；无有效划线价时留空。'],
+    'content.saleItems[0].cta.text': ['商品 1 CTA', '默认 SHOP NOW；只有图片和此 CTA 使用商品链接。'],
+    'content.saleItems[1].cta.text': ['商品 2 CTA', '默认 SHOP NOW；只有图片和此 CTA 使用商品链接。'],
+    'content.saleItems[2].cta.text': ['商品 3 CTA', '默认 SHOP NOW；只有图片和此 CTA 使用商品链接。'],
+    'content.saleItems[3].cta.text': ['商品 4 CTA', '默认 SHOP NOW；只有图片和此 CTA 使用商品链接。'],
+    'settings.color.surface': ['组件背景色', '仅修改该组件背景。'],
+    'settings.color.heading': ['顶部标题颜色', '仅修改顶部主标题。'],
+    'settings.color.body': ['顶部说明颜色', '仅修改顶部说明。'],
+    'settings.color.text': ['商品名称和折扣价颜色', '商品名称与价格保持纯文本。'],
+    'settings.color.theme': ['折扣标签底色', '统一修改六个图片右上角标签。'],
+    'settings.color.badgeText': ['折扣标签文字色', '统一修改六个折扣标签文字。'],
+    'settings.color.compareAt': ['划线原价颜色', '仅修改六个原价文字。'],
+    'settings.color.cta': ['CTA 背景色', '统一修改六个 SHOP NOW 按钮底色。'],
+    'settings.color.ctaText': ['CTA 文字色', '统一修改六个 SHOP NOW 按钮文字。'],
+    'content.saleItems[4].name': ['商品 5 名称', '纯文本；导入后更新为 Shopify 完整商品名。'],
+    'content.saleItems[5].name': ['商品 6 名称', '纯文本；导入后更新为 Shopify 完整商品名。'],
+  },
+  'collection.sceneSaleGrid6PriceWithTitle': {
+    'content.promotion.title': ['顶部标题', '默认 Fall Favorites For Every Room；商品导入不会修改。'],
+    'content.decoration.divider.url': ['标题分隔装饰', '默认使用透明植物分隔图；正式导出请替换为公开 HTTPS 图片。'],
+    'content.promotion.subtitle': ['顶部说明', '显示在植物分隔图下方；商品导入不会修改。'],
+    'content.decoration.footer.url': ['CTA 枝叶装饰', '默认使用透明金色枝叶图；正式导出请替换为公开 HTTPS 图片。'],
+    'content.cta.text': ['底部 CTA 文案', '默认 SHOP THE FALL EVENT；商品导入不会修改。'],
+    'content.cta.url': ['底部 CTA 链接', '默认 Freshine Sale 页面并保留 cover-rc UTM。'],
+    'settings.color.surface': ['组件背景色', '仅修改 600px 邮件组件内部暖白背景。'],
+    'settings.color.heading': ['顶部标题颜色', '仅修改 Lora 主标题。'],
+    'settings.color.body': ['顶部说明颜色', '仅修改 Montserrat 副标题。'],
+    'settings.color.product': ['商品名称颜色', '统一修改六个图片下商品名。'],
+    'settings.color.theme': ['折扣标签底色', '统一修改六个图片左上角矩形标签。'],
+    'settings.color.badgeText': ['折扣标签文字色', '统一修改六个折扣标签文字。'],
+    'settings.color.price': ['折扣价颜色', '统一修改六个当前折扣价。'],
+    'settings.color.compareAt': ['划线原价颜色', '统一修改六个 compare-at 原价。'],
+    'settings.color.cta': ['底部 CTA 背景色', '仅修改底部宽按钮背景。'],
+    'settings.color.ctaText': ['底部 CTA 文字色', '仅修改底部宽按钮文字。']
+  },
   'hero.romanShadeDiscount': {
     'content.hero.backgroundImage.url': ['罗马帘场景背景', '替换背景图片；建议使用 1200×1522px 竖图，默认素材按参考图精确裁剪。'],
     'content.hero.logo.url': ['品牌 Logo 图片', '替换圆形 Logo 图片；建议使用正方形、透明背景的 PNG，默认 206×206px。'],
@@ -565,6 +671,25 @@ const copyByComponentField = {
     'content.hero.discount': ['主折扣文案', '默认 70% Off；独立于折扣前缀编辑，建议保持短文案。'],
     'settings.color.text': ['折扣文字和描边色', '修改当前组件的折扣、说明文字与上方描边；默认 #6B492C。'],
     'settings.color.action': ['按钮背景色', '仅修改 CTA 背景色；白色按钮文字和原始 Logo、装饰图标保持不变。']
+  },
+  'hero.couponSceneOverlay': {
+    'content.navigation.message': ['顶部导航文案', '保持单行显示；文案过长会压缩同一行内的可用空间。'],
+    'content.navigation.cta.text': ['顶部导航链接文字', '右侧下划线链接文字，默认 SIGN UP。'],
+    'content.navigation.cta.url': ['顶部导航链接', '点击顶部 SIGN UP 后打开的公开 HTTPS 页面。'],
+    'content.intro.title': ['主标题', '居中 Montserrat Medium 标题；建议保持一行。'],
+    'content.intro.subtitle': ['副标题', '居中 Montserrat Medium 说明，默认颜色 #7C706A。'],
+    'content.offer.image.url': ['优惠券图片', '替换完整优惠券视觉；正式输出请填写公开 HTTPS 图片地址。'],
+    'content.offer.image.alt': ['优惠券图片说明', '图片无法显示或读屏工具使用的简短说明。'],
+    'content.hero.image.url': ['场景图片', '替换正方形场景图；正式输出请填写公开 HTTPS 图片地址。'],
+    'content.hero.image.alt': ['场景图片说明', '图片无法显示或读屏工具使用的简短说明。'],
+    'content.cta.text': ['主 CTA 文字', '居中的 SHOP NOW 操作按钮文字。'],
+    'content.cta.url': ['主 CTA 链接', '点击 SHOP NOW 后打开的公开 HTTPS 活动页。'],
+    'settings.navigation.visible': ['显示顶部导航', '关闭后移除整行导航及其高度，其他内容位置保持不变。'],
+    'settings.color.surface': ['组件背景色', '仅修改 600px / 375px 组件画布内的 #F5F2ED 底色。'],
+    'settings.color.promotion': ['顶部导航底色', '仅修改顶部促销导航的棕色底色。'],
+    'settings.color.heading': ['主标题颜色', '仅修改 Fall Home Refresh 标题颜色。'],
+    'settings.color.body': ['副标题颜色', '默认 #7C706A，仅修改居中副标题颜色。'],
+    'settings.color.action': ['主 CTA 背景色', '仅修改与场景图叠层的 SHOP NOW 按钮底色。']
   },
   'gift.rewardGrid2': {
     'content.reward.title': ['赠品区主标题', '显示在两条赠品规则上方的主标题。'],
@@ -575,27 +700,25 @@ const copyByComponentField = {
     'content.reward.items[1].image.url': ['下方赠品图片', '替换第二张完整赠品活动图；填写公开 HTTPS 图片地址。'],
     'content.reward.items[1].image.alt': ['下方赠品图片说明', '第二张赠品图无法显示时供读屏工具识别的简短说明。']
   },
+  'gift.warmRedPairIV': {"content.intro.title": ["活动标题", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.intro.rule1": ["眼罩赠品条件", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.intro.rule2": ["枕套赠品条件", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.gifts[0].image.url": ["眼罩卡片图片", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.gifts[0].image.alt": ["眼罩图片说明", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.gifts[0].clickUrl": ["眼罩图片链接", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.gifts[1].image.url": ["枕套卡片图片", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.gifts[1].image.alt": ["枕套图片说明", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "content.gifts[1].clickUrl": ["枕套图片链接", "顶部文案可编辑；卡片中的价值标签和名称属于原图，替换整张图片时一并更新。"], "settings.color.surface": ["背景色", "仅当前组件；默认匹配原图边角背景。"], "settings.color.text": ["顶部文字色", "修改标题及两行赠品条件。"]},
   'gift.showcase2': {
     'content.gifts[0].image.url': ['上方眼罩照片', '左侧照片，建议604×678px；FREE GIFTS徽章在图内，文字与CTA在右侧独立编辑。'],
     'content.gifts[0].image.alt': ['眼罩照片说明', '图片未加载或读屏工具使用的替代文本。'],
     'content.gifts[0].title': ['眼罩名称', '右上方衬线标题。'],
     'content.gifts[0].value': ['眼罩价值', '默认VALUE $59.9，不表示实际售价或自动折扣。'],
     'content.gifts[0].description': ['眼罩卖点', '默认两行卖点，保持简短以贴合原稿。'],
-    'content.gifts[0].cta.text': ['眼罩CTA文字', '默认SPEND $699+；与下方赠送规则保持一致。'],
+    'content.gifts[0].cta.text': ['眼罩CTA文字', '默认SPEND $699+。'],
     'content.gifts[0].cta.url': ['眼罩CTA链接', '独立按钮链接，默认https://freshinelife.com/；照片不绑定链接。'],
-    'content.gifts[0].note': ['眼罩赠送规则', '已确认满$699赠眼罩；修改门槛时同步CTA文字。'],
     'content.gifts[1].image.url': ['下方抱枕套照片', '右侧照片，建议596×676px；FREE GIFTS徽章在图内，文字与CTA在左侧独立编辑。'],
     'content.gifts[1].image.alt': ['抱枕套照片说明', '图片未加载或读屏工具使用的替代文本。'],
     'content.gifts[1].title': ['抱枕套名称', '左下方衬线标题，默认自然换成两行。'],
     'content.gifts[1].value': ['抱枕套价值', '默认VALUE $89.9，不表示实际售价或自动折扣。'],
     'content.gifts[1].description': ['抱枕套卖点', '默认One of Our Featured Designs。'],
-    'content.gifts[1].cta.text': ['抱枕套CTA文字', '默认SPEND $999+；与下方赠送规则保持一致。'],
+    'content.gifts[1].cta.text': ['抱枕套CTA文字', '默认SPEND $999+。'],
     'content.gifts[1].cta.url': ['抱枕套CTA链接', '独立按钮链接，默认https://freshinelife.com/；照片不绑定链接。'],
-    'content.gifts[1].note': ['抱枕套赠送规则', '已确认满$999赠抱枕套；修改门槛时同步CTA文字。'],
     'settings.color.surface': ['图文版块底色', '设置文字区域及外部底色；不改变照片中的颜色。'],
     'settings.color.text': ['商品名称与卖点文字色', '仅作用于可编辑名称和卖点。'],
-    'settings.color.accent': ['价值与CTA底色', '默认#8D1B1B；CTA文字和购物袋图标固定白色。'],
-    'settings.color.muted': ['赠送规则文字色', '仅作用于两个按钮下方的赠送规则。']
+    'settings.color.accent': ['价值、CTA与标签底色', '默认#8D1B1B；同步修改价格、CTA及FREE GIFTS标签底色，标签文字、CTA文字和购物袋图标固定白色。']
   },
   'gift.doubleGiftAddressShowcase': {
     'content.intro.title': ['顶部标题', '默认 Pinch Pleat，按画布宽度自然换行。'],
@@ -763,6 +886,39 @@ export function editableComponentKeys() {
 export function editorFieldCopy(componentKey, group, key) {
   const fields = editableFieldKeys(componentKey);
   if (!fields[group]?.includes(key)) throw new Error(`field is not editable in this component: ${componentKey}.${group}.${key}`);
+  const scenePriceSixMatch = componentKey === 'collection.sceneSaleGrid6PriceWithTitle' && group === 'content'
+    ? key.match(/^saleItems\[([0-5])\]\.(discountLabel|image\.url|image\.alt|image\.clickUrl|name|price\.current|price\.compareAt)$/u) : null;
+  if (scenePriceSixMatch) {
+    const item = Number(scenePriceSixMatch[1]) + 1;
+    const copy = {
+      discountLabel: ['折扣标签', '图片左上角矩形标签；留空隐藏，Shopify 导入会按价格自动计算。'],
+      'image.url': ['方形主图', '填写公开 HTTPS 图片地址，或导入所选 Shopify 商品。'],
+      'image.alt': ['图片说明', '图片的可访问性说明。'],
+      'image.clickUrl': ['商品链接', '点击方形商品图后打开；导入时自动保留 cover-rc UTM。'],
+      name: ['商品名称', '显示在图片下方；导入时填入 Shopify 完整商品名。'],
+      'price.current': ['折扣价', '醒目显示；导入时更新为首个可售变体价格。'],
+      'price.compareAt': ['原价', '带删除线；无有效 compare-at 价格时留空。']
+    }[scenePriceSixMatch[2]];
+    return { label: `商品 ${item} ${copy[0]}`, help: copy[1] };
+  }
+  const detailSixMatch = componentKey === 'collection.saleGrid6DetailWithTitle' && group === 'content'
+    ? key.match(/^saleItems\[([0-5])\]\.(discountLabel|image\.url|image\.alt|image\.clickUrl|name|price\.current|price\.compareAt|cta\.text)$/u) : null;
+  if (detailSixMatch) {
+    const item = Number(detailSixMatch[1]) + 1;
+    const copy = {
+      discountLabel: ['折扣标签', '图片右上角圆标；填写 SAVE 40% 可分行显示，百分比加粗；留空隐藏。Shopify 导入自动计算。'],
+      'image.url': ['主图', '填写公开 HTTPS 图片地址，或导入所选 Shopify 商品。'],
+      'image.alt': ['图片说明', '图片的可访问性说明。'],
+      'image.clickUrl': ['商品链接', '图片和 CTA 共用此链接；导入时保留指定 UTM。'],
+      name: ['名称', '纯文本，导入时填入完整商品名。'],
+      'price.current': ['折扣价', '导入时更新为首个可售变体价格。'],
+      'price.compareAt': ['原价', '带删除线；无有效划线价时留空。'],
+      'cta.text': ['CTA', '默认 SHOP NOW，商品导入保留当前按钮文案。']
+    }[detailSixMatch[2]];
+    return { label: `商品 ${item} ${copy[0]}`, help: copy[1] };
+  }
+  const summerNameMatch = componentKey === 'collection.saleGrid6' && key.match(/^saleItems\[([0-5])\]\.name$/u);
+  if (summerNameMatch) return { label: `商品 ${Number(summerNameMatch[1]) + 1} 名称`, help: '显示在图片下方的商品名称，Shopify 导入时自动填入，可手动修改。' };
   const saleGridTitleMatch = componentKey === 'collection.saleGrid6WithTitle'
     ? key.match(/^saleItems\[([0-5])\]\.(name|discountLabel|image\.url|image\.alt|image\.clickUrl)$/u)
     : null;

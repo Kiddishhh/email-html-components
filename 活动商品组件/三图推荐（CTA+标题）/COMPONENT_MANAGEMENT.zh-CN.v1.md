@@ -31,3 +31,15 @@
 模板、Schema、默认快照、演示和本说明位于当前目录；注册信息、编辑器字段说明、组件交互说明和回归测试同步在根目录与 Campaign Skill 下。运行 `node render-demo.mjs` 重建 `效果演示.html`，再运行组件测试、完整合约校验和全量回归。
 
 本地浏览器预览不等同 Omnisend 或实际收件箱。正式投递前需在 Omnisend Desktop/Mobile 预览，并向 Gmail、Outlook、Apple Mail 发测试邮件。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：intro.title
+- subtitle：intro.subtitle
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

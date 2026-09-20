@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "gift.warmRedPairIV",
+  "fixture": "user-reference-warm-red-gift-iv",
+  "localReferenceAssets": {
+    "warm-red-gift-iv-1": "assets/gift-1.png",
+    "warm-red-gift-iv-2": "assets/gift-2.png"
+  },
+  "values": {
+    "intro.title": "Free Gifts – Limited Time!",
+    "intro.rule1": "Spend $699+ And Get Free Eye Mask",
+    "intro.rule2": "Spend $999+ And Get Free Pillow Cover",
+    "gifts[0].image.url": "asset://warm-red-gift-iv-1",
+    "gifts[0].image.alt": "$59.9 Value — Ice Silk Eye Mask",
+    "gifts[0].clickUrl": "https://freshinelife.com?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "gifts[1].image.url": "asset://warm-red-gift-iv-2",
+    "gifts[1].image.alt": "$89.9 Value — Random Pillow Cover",
+    "gifts[1].clickUrl": "https://freshinelife.com?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+  }
+}

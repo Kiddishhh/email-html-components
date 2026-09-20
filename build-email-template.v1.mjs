@@ -1,3 +1,5 @@
+import { renderDetailDiscountBadges } from './scripts/render-detail-discount-badges.mjs';
+import { renderScenePriceDiscountBadges } from './scripts/render-scene-price-discount-badges.mjs';
 import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 
@@ -188,6 +190,8 @@ function renderComponent(instance) {
   validateContent(content, contentSchema, instance.componentKey, localAssetKeys);
   validateSettings(instance.settings, settingsSchema, instance.componentKey);
   let html = renderSettingConditionals(template, instance.settings, settingsSchema, instance.componentKey);
+  if (instance.componentKey === 'collection.saleGrid6DetailWithTitle') html = renderDetailDiscountBadges(html, content);
+  if (instance.componentKey === 'collection.sceneSaleGrid6PriceWithTitle') html = renderScenePriceDiscountBadges(html, content);
   html = html.replace(/\{\{content\.([^}]+)\}\}/g, (_, key) => {
     if (!(key in content)) throw new Error(`${instance.componentKey}: unresolved content.${key}`);
     const definition = contentSchema.properties[key];

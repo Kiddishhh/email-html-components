@@ -1,3 +1,4 @@
+import { assertTextRole } from './helpers/typography.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { cpSync, existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
@@ -142,7 +143,7 @@ test('four-product recommendation renders editable copy, four paired product lin
   assert.equal((html.match(/data-freshine-slot="saleItems\[\d\]\.discountLabel"/g) ?? []).length, 4);
   assert.equal((html.match(/role="img"/g) ?? []).length, 4);
   assert.doesNotMatch(html, /<style\b|<script\b|<div\b|display:(?:flex|grid)|position:absolute|asset:\/\//);
-  assert.match(html, /font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:30px/);
+  assertTextRole(html, 'saleCollection.title', 'heading');
   assert.ok(editableFieldKeys(componentKey).content.includes('saleItems[2].cta.text'));
 });
 
@@ -1207,15 +1208,17 @@ test('double divider footer documentation and editor reference preserve the fixe
 test('all six sale cards use identical centered wrappers and symmetric spacing', () => {
   const directory = `${root}/活动商品组件/六宫格折扣商品组件`;
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
-  const wrappers = [...template.matchAll(/<table class="freshine-sale-stack[^"]*"[^>]*>/g)].map(([tag]) => tag);
+  const wrappers = [...template.matchAll(/<td class="freshine-sale-card"[^>]*>/g)].map(([tag]) => tag);
 
   assert.equal(wrappers.length, 6);
   for (const wrapper of wrappers) {
-    assert.match(wrapper, /width="250"/);
-    assert.match(wrapper, /style="width:100%;max-width:250px;"/);
+    assert.match(wrapper, /width="47\.348%"/);
+    assert.match(wrapper, /valign="top"/);
     assert.doesNotMatch(wrapper, /align="(?:left|right)"/);
   }
-  assert.equal((template.match(/align="center" valign="top" style="padding:0 7px 20px;padding:0 min\(7px,1\.166667vw\) min\(20px,3\.333333vw\);"/g) ?? []).length, 6);
+  assert.equal((template.match(/height="225" valign="bottom" style="height:225px;height:min\(225px,37\.5vw\);font-size:0;line-height:0;"/g) ?? []).length, 6);
+  assert.match(template, /table-layout:fixed/);
+  assert.equal((template.match(/width="5\.304%"/g) ?? []).length, 3);
   assert.equal((template.match(/class="freshine-sale-image-table"[^>]*align="center"/g) ?? []).length, 6);
   assert.doesNotMatch(template, /padding:0 14px 20px 0|padding:0 0 20px 14px/);
 });
@@ -1227,15 +1230,15 @@ test('the sale grid CTA keeps its desktop maximum and mobile-side breathing room
   const management = readFileSync(`${directory}/COMPONENT_MANAGEMENT.zh-CN.v1.md`, 'utf8');
   const interactions = readFileSync(`${root}/skills/build-omnisend-campaign-draft/references/component-interactions.zh-CN.md`, 'utf8');
 
-  assert.match(template, /<td align="center" style="padding:8px 0 42px;padding:min\(8px,1\.333333vw\) 0 min\(42px,7vw\);">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
-  assert.match(demo, /<td align="center" style="padding:8px 0 42px;padding:min\(8px,1\.333333vw\) 0 min\(42px,7vw\);">\s*<table role="presentation" width="486"[^>]*style="width:81%;max-width:486px;border-collapse:separate;margin:0 auto;">/s);
+  assert.match(template, /<td align="center" style="padding:8px 0 42px;padding:min\(8px,1\.333333vw\) 0 min\(42px,7vw\);">\s*<table role="presentation" width="528"[^>]*style="width:88%;max-width:528px;border-collapse:separate;margin:0 auto;">/s);
+  assert.match(demo, /<td align="center" style="padding:8px 0 42px;padding:min\(8px,1\.333333vw\) 0 min\(42px,7vw\);">\s*<table role="presentation" width="528"[^>]*style="width:88%;max-width:528px;border-collapse:separate;margin:0 auto;">/s);
   for (const source of [management, interactions]) {
-    assert.match(source, /CTA.*486px/s);
-    assert.match(source, /width:81%.*max-width:486px/s);
+    assert.match(source, /CTA.*528px/s);
+    assert.match(source, /width:88%.*max-width:528px/s);
   }
 });
 
-test('the sale grid uses the double-gift title and subtitle type scale', () => {
+test('the sale grid uses its approved summer title and subtitle type scale', () => {
   const saleGrid = `${root}/活动商品组件/六宫格折扣商品组件`;
   const gifts = `${root}/赠品与权益组件/双赠品奖励卡`;
   const template = readFileSync(`${saleGrid}/component.template.v1.html`, 'utf8');
@@ -1243,12 +1246,12 @@ test('the sale grid uses the double-gift title and subtitle type scale', () => {
   const giftTemplate = readFileSync(`${gifts}/component.template.v1.html`, 'utf8');
   const giftDefaults = JSON.parse(readFileSync(`${gifts}/settings.defaults.v1.json`, 'utf8'));
 
-  assert.match(template, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-size:min\(30px,5vw\);font-weight:500;line-height:38px;line-height:min\(38px,6\.333333vw\);letter-spacing:0px;text-align:center/);
-  assert.match(template, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-size:min\(18px,3vw\);font-weight:500;line-height:27px;line-height:min\(27px,4\.5vw\);letter-spacing:0px;text-align:center/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.title" style="[^\"]*font-size:30px;font-size:min\(30px,5vw\);font-weight:500;line-height:38px;line-height:min\(38px,6\.333333vw\);letter-spacing:0px;text-align:center/);
-  assert.match(demo, /data-freshine-slot="saleCollection\.body" style="[^\"]*font-size:18px;font-size:min\(18px,3vw\);font-weight:500;line-height:27px;line-height:min\(27px,4\.5vw\);letter-spacing:0px;text-align:center/);
-  assert.match(giftTemplate, /data-freshine-slot="reward\.title" style="[^\"]*font-size:\{\{settings\.font\.headingSize\}\};font-weight:\{\{settings\.font\.headingWeight\}\};line-height:\{\{settings\.font\.headingLineHeight\}\};letter-spacing:0px;text-align:center/);
-  assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]" style="[^\"]*font-size:\{\{settings\.font\.bodySize\}\};font-weight:\{\{settings\.font\.bodyWeight\}\};line-height:\{\{settings\.font\.bodyLineHeight\}\};letter-spacing:0px;text-align:center/);
+  assertTextRole(template, 'saleCollection.title', 'heading');
+  assertTextRole(template, 'saleCollection.body', 'subtitle');
+  assertTextRole(demo, 'saleCollection.title', 'heading');
+  assertTextRole(demo, 'saleCollection.body', 'subtitle');
+  assert.match(giftTemplate, /data-freshine-slot="reward\.title"[^>]*font-weight:\{\{settings\.font\.headingWeight\}\}/);
+  assert.match(giftTemplate, /data-freshine-slot="reward\.rules\[0\]"[^>]*font-size:\{\{settings\.font\.bodySize\}\}/);
   assert.equal(giftDefaults.values['font.headingSize'], '30px');
   assert.equal(giftDefaults.values['font.headingWeight'], '500');
   assert.equal(giftDefaults.values['font.headingLineHeight'], '38px');
@@ -1277,26 +1280,26 @@ test('double-gift showcase keeps independent photos and editable gift copy with 
   assert.deepEqual(document.components[0], reward);
   assert.deepEqual(editableFieldKeys(componentKey), {
     content: [
-      'gifts[0].image.url', 'gifts[0].image.alt', 'gifts[0].title', 'gifts[0].value', 'gifts[0].description', 'gifts[0].cta.text', 'gifts[0].cta.url', 'gifts[0].note',
-      'gifts[1].image.url', 'gifts[1].image.alt', 'gifts[1].title', 'gifts[1].value', 'gifts[1].description', 'gifts[1].cta.text', 'gifts[1].cta.url', 'gifts[1].note'
+      'gifts[0].image.url', 'gifts[0].image.alt', 'gifts[0].title', 'gifts[0].value', 'gifts[0].description', 'gifts[0].cta.text', 'gifts[0].cta.url',
+      'gifts[1].image.url', 'gifts[1].image.alt', 'gifts[1].title', 'gifts[1].value', 'gifts[1].description', 'gifts[1].cta.text', 'gifts[1].cta.url'
     ],
-    settings: ['color.surface', 'color.text', 'color.accent', 'color.muted']
+    settings: ['color.surface', 'color.text', 'color.accent']
   });
   const current = document.components[1];
   const assets = buildLocalAssetMap(document, { workspaceRoot: root });
   const upper = assets[current.content['gifts[0].image.url'].slice('asset://'.length)];
   const lower = assets[current.content['gifts[1].image.url'].slice('asset://'.length)];
   assert.notEqual(upper.path, lower.path);
-  assert.match(upper.path, /双赠品展示卡\/assets\/silk-eye-mask-photo\.png$/);
-  assert.match(lower.path, /双赠品展示卡\/assets\/random-pillow-cover-photo\.png$/);
+  assert.match(upper.path, /双赠品展示卡\/assets\/silk-eye-mask-base\.png$/);
+  assert.match(lower.path, /双赠品展示卡\/assets\/random-pillow-cover-base\.png$/);
   assert.match(current.content['gifts[0].image.alt'], /Silk Eye Mask/);
   assert.match(current.content['gifts[1].image.alt'], /Random Pillow Cover/);
   assert.equal(current.content['gifts[0].cta.url'], 'https://freshinelife.com/');
   assert.equal(current.content['gifts[1].cta.url'], 'https://freshinelife.com/');
   assert.equal(current.content['gifts[0].cta.text'], 'SPEND $699+');
   assert.equal(current.content['gifts[1].cta.text'], 'SPEND $999+');
-  assert.equal(current.content['gifts[0].note'], 'Spend $699 or more and receive a complimentary silk eye mask.');
-  assert.equal(current.content['gifts[1].note'], 'Spend $999 or more and receive a complimentary pillow cover.');
+  assert.equal(Object.hasOwn(current.content, 'gifts[0].note'), false);
+  assert.equal(Object.hasOwn(current.content, 'gifts[1].note'), false);
 });
 
 test('double-gift showcase renders editable text with two separate CTA-only links and rejects unsafe CTA URLs', () => {
@@ -1321,27 +1324,53 @@ test('double-gift showcase renders editable text with two separate CTA-only link
         'gifts[1].image.alt': 'Pillow <gift>',
         'gifts[1].cta.url': 'https://freshinelife.com/collections/test-pillows',
         'cta.icon.url': 'https://cdn.example.com/shopping-bag.png' },
-      settings: { ...current.settings, 'color.surface': '#123456' }
+      settings: { ...current.settings, 'color.surface': '#123456', 'color.accent': '#245A49' }
     }]
   };
   writeFileSync(path, JSON.stringify(composition));
   const result = run(path);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const html = readFileSync(output, 'utf8');
-  const images = [...html.matchAll(/<img\b[^>]*data-freshine-slot="gifts[^>]*>/g)].map(([tag]) => tag);
+  const giftTitleTags = [...html.matchAll(/<span\b[^>]*data-freshine-slot="gifts\[[01]\]\.title"[^>]*>/g)].map(([tag]) => tag);
+  assert.equal(giftTitleTags.length, 2);
+  for (const tag of giftTitleTags) {
+    assert.match(tag, /font-family:Lora, Georgia, Times New Roman, serif/);
+    assert.match(tag, /font-size:30px;font-size:min\(30px,5vw\)/);
+    assert.match(tag, /font-weight:400/);
+    assert.match(tag, /line-height:38px;line-height:min\(38px,6\.333333vw\)/);
+    assert.match(tag, /letter-spacing:0px;text-align:center/);
+  }
+  const giftDescriptionTags = [...html.matchAll(/<span\b[^>]*data-freshine-slot="gifts\[[01]\]\.description"[^>]*>/g)].map(([tag]) => tag);
+  assert.equal(giftDescriptionTags.length, 2);
+  for (const tag of giftDescriptionTags) {
+    assert.match(tag, /font-family:Montserrat, Arial, Helvetica, sans-serif/);
+    assert.match(tag, /font-size:18px;font-size:min\(18px,3vw\)/);
+    assert.match(tag, /font-weight:400/);
+    assert.match(tag, /line-height:22px;line-height:min\(22px,3\.666667vw\)/);
+    assert.match(tag, /letter-spacing:0px;text-align:center/);
+  }
+  const images = [...html.matchAll(/<td\b[^>]*data-freshine-slot="gifts[^>]*>/g)].map(([tag]) => tag);
   assert.equal(images.length, 2);
-  assert.match(images[0], /src="https:\/\/cdn\.example\.com\/eye-mask-new\.png"/);
-  assert.match(images[0], /alt="Eye mask &amp; comfort"/);
-  assert.match(images[1], /src="https:\/\/cdn\.example\.com\/pillow-original\.png"/);
-  assert.match(images[1], /alt="Pillow &lt;gift&gt;"/);
-  for (const image of images) assert.match(image, /display:block;[^\"]*width:100%;[^\"]*height:auto/);
-  for (const image of images) assert.match(image, /font-size:14px;line-height:18px/, 'photo-blocked alt text must remain visible');
+  assert.match(images[0], /background="https:\/\/cdn\.example\.com\/eye-mask-new\.png"/);
+  assert.match(images[0], /aria-label="Eye mask &amp; comfort"/);
+  assert.match(images[1], /background="https:\/\/cdn\.example\.com\/pillow-original\.png"/);
+  assert.match(images[1], /aria-label="Pillow &lt;gift&gt;"/);
+  for (const image of images) assert.match(image, /background-size:100% 100%/);
+  const badges = [...html.matchAll(/<td\b[^>]*class="freshine-gift-showcase-badge"[^>]*>/g)].map(([tag]) => tag);
+  assert.equal(badges.length, 2, 'both photos must have a separate live badge');
+  for (const badge of badges) assert.match(badge, /background-color:#245A49/);
+  assert.equal((html.match(/FREE<br>GIFTS/g) ?? []).length, 2);
+  assert.match(html, /color:#245A49[^>]*>\s*<!-- FRESHINE_SLOT_START:gifts\[0\].value/);
+  assert.match(html, /bgcolor="#245A49"[^>]*>\s*<a href=/);
   assert.match(html, /Silk &amp; Sleep/);
   assert.match(html, /VALUE \$59\.9/);
   assert.match(html, /VALUE \$89\.9/);
   assert.match(html, /GET EYE MASK/);
-  assert.match(html, /Spend \$699 or more and receive a complimentary silk eye mask\./);
-  assert.match(html, /Spend \$999 or more and receive a complimentary pillow cover\./);
+  assert.doesNotMatch(html, /Spend \$(?:699|999) or more and receive a complimentary/);
+  assert.doesNotMatch(html, /data-freshine-slot="gifts\[[01]\]\.note"/);
+  assert.match(html, /<td align="center" valign="top" style="padding:29px 45px;padding:min\(29px,4\.833333vw\) min\(45px,7\.5vw\);text-align:center;vertical-align:top;">/);
+  assert.match(html, /width="510"[^>]*style="width:100%;max-width:510px/);
+  assert.equal((html.match(/class="freshine-gift-showcase-copy"[^>]*valign="middle"[^>]*style="[^\"]*padding:0;vertical-align:middle/g) ?? []).length, 2);
   const links = [...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>/g)];
   assert.deepEqual(links.map((match) => match[1]), ['https://freshinelife.com/collections/test-eye-mask', 'https://freshinelife.com/collections/test-pillows']);
   assert.equal((html.match(/src="https:\/\/cdn\.example\.com\/shopping-bag\.png"/g) ?? []).length, 2);

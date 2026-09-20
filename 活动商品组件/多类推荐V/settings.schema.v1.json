@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.multiCategoryRecommendationV",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": {
+      "type": "string",
+      "default": "#FBFAF8",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.heading": {
+      "type": "string",
+      "default": "#222222",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.body": {
+      "type": "string",
+      "default": "#000000",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.caption": {
+      "type": "string",
+      "default": "#222222",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
+  },
+  "additionalProperties": false
+}

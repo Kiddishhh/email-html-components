@@ -1,0 +1,65 @@
+{
+  "component": {
+    "bottom": 577.9765625,
+    "height": 577.9765625,
+    "left": 0,
+    "right": 600,
+    "top": 0,
+    "width": 600,
+    "x": 0,
+    "y": 0
+  },
+  "images": [
+    {
+      "loaded": true,
+      "rect": {
+        "bottom": 529.484375,
+        "height": 340,
+        "left": 26.5,
+        "right": 286.5,
+        "top": 189.484375,
+        "width": 260,
+        "x": 26.5,
+        "y": 189.484375
+      }
+    },
+    {
+      "loaded": true,
+      "rect": {
+        "bottom": 529.484375,
+        "height": 340,
+        "left": 313.5,
+        "right": 573.5,
+        "top": 189.484375,
+        "width": 260,
+        "x": 313.5,
+        "y": 189.484375
+      }
+    }
+  ],
+  "scroll": 600,
+  "text": [
+    {
+      "font": "Lora, Georgia, serif",
+      "line": "44px",
+      "size": "34px",
+      "text": "Free Gifts – Limited Time!",
+      "weight": "500"
+    },
+    {
+      "font": "Montserrat, Arial, Helvetica, sans-serif",
+      "line": "25px",
+      "size": "17px",
+      "text": "Spend $699+ And Get Free Eye Mask",
+      "weight": "500"
+    },
+    {
+      "font": "Montserrat, Arial, Helvetica, sans-serif",
+      "line": "25px",
+      "size": "17px",
+      "text": "Spend $999+ And Get Free Pillow Cover",
+      "weight": "500"
+    }
+  ],
+  "width": 600
+}

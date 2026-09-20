@@ -26,3 +26,5 @@ HTML 编辑器仅开放 `color.background`、`color.text` 和 `color.link`。地
 - `效果演示.html`：以默认快照渲染的 600px 本地视觉参考。
 
 导出前，图片及网页链接必须保持公开 HTTPS；此组件不创建、更新、发送、排期或发布 Omnisend Campaign/Draft。
+
+- 退订文字 `Unsubscribe` 固定使用 `#D4D0CA`，不随 `color.link` 改色；`[[unsubscribe_link]]` 保持原样。

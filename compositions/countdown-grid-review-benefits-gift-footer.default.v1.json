@@ -114,11 +114,18 @@
         "saleItems[2].image.clickUrl": "https://freshinelife.com/collections/curtains",
         "saleItems[3].image.clickUrl": "https://freshinelife.com/collections/curtain-hardware",
         "saleItems[4].image.clickUrl": "https://freshinelife.com/collections/sheer-curtains",
-        "saleItems[5].image.clickUrl": "https://freshinelife.com/collections/curtains"
+        "saleItems[5].image.clickUrl": "https://freshinelife.com/collections/curtains",
+        "saleItems[0].name": "Celina Linen Curtains",
+        "saleItems[1].name": "Amara Linen Curtains",
+        "saleItems[2].name": "Elara Curtains",
+        "saleItems[3].name": "Celina Curtain Fabric",
+        "saleItems[4].name": "Sheer Curtains",
+        "saleItems[5].name": "Custom Curtains"
       },
       "settings": {
         "color.surface": "#FBFAF8",
         "color.text": "#1F1F1F",
+        "color.body": "#000000",
         "color.theme": "#9D1D20",
         "color.buttonText": "#FFFFFF",
         "font.heading": "Lora, Georgia, Times New Roman, serif",

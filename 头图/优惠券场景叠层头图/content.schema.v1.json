@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.couponSceneOverlay",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "navigation.message": { "type": "text", "required": true, "skillPrompt": true },
+    "navigation.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "navigation.cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "intro.title": { "type": "text", "required": true, "skillPrompt": true },
+    "intro.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "offer.image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "offer.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

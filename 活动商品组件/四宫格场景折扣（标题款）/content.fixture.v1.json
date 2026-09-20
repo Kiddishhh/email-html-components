@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.sceneSaleGrid4WithTitle",
+  "fixture": "style-xxvii-scene-product-grid",
+  "localReferenceAssets": {
+    "scene-grid4-product-1": "assets/product-1-elara.jpg",
+    "scene-grid4-product-2": "assets/product-2-ilythra.webp",
+    "scene-grid4-product-3": "assets/product-3-amara.jpg",
+    "scene-grid4-product-4": "assets/product-4-elyna.webp"
+  },
+  "values": {
+    "saleCollection.title": "Upgrade Your Home in Style",
+    "saleCollection.body": "Refresh Your Home With Our Latest Curtain Designs-Crafted To Bring A Clean, Modern Look And Effortless Comfort For The Year Ahead.",
+    "saleItems[0].discountLabel": "SAVE 50%",
+    "saleItems[0].image.url": "asset://scene-grid4-product-1",
+    "saleItems[0].image.alt": "Elara linen blend curtains in a bright living room",
+    "saleItems[0].image.clickUrl": "https://freshinelife.com/products/elara-linen-blend-curtains?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "saleItems[0].name": "Elara Linen Blend Curtains",
+    "saleItems[1].discountLabel": "SAVE 50%",
+    "saleItems[1].image.url": "asset://scene-grid4-product-2",
+    "saleItems[1].image.alt": "Ilythra cotton linen Roman shades in a bright dining room",
+    "saleItems[1].image.clickUrl": "https://freshinelife.com/products/ilythra-cotton-linen-roman-shades-soft-textured-elegance?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "saleItems[1].name": "Ilythra Cotton Linen Roman Shades",
+    "saleItems[2].discountLabel": "SAVE 50%",
+    "saleItems[2].image.url": "asset://scene-grid4-product-3",
+    "saleItems[2].image.alt": "Amara extra long linen curtains in a dining room",
+    "saleItems[2].image.clickUrl": "https://freshinelife.com/products/amara-extra-long-linen-curtains-elegant-light-filtering-drapes?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "saleItems[2].name": "Amara Extra Long Linen Curtains",
+    "saleItems[3].discountLabel": "SAVE 35%",
+    "saleItems[3].image.url": "asset://scene-grid4-product-4",
+    "saleItems[3].image.alt": "Elyna motorized roller shades with smart home compatibility",
+    "saleItems[3].image.clickUrl": "https://freshinelife.com/products/elyna-smart-motorized-60-light-filtering-roller-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "saleItems[3].name": "Elyna Motorized Roller Shades"
+  }
+}

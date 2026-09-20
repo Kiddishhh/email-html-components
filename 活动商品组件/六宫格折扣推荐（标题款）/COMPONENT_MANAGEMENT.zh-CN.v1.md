@@ -19,3 +19,16 @@
 - 每个 `saleItems[n]` 的 `name`、`discountLabel`、`image.url`、`image.alt`、`image.clickUrl`
 
 组件不包含网页级标签、脚本、样式标签或退订内容。导入 Omnisend 前，仍应完成 Desktop/Mobile/Dark Mode 预览和邮件客户端测试。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：saleCollection.title
+- subtitle：saleCollection.body
+- caption：saleItems[0].name, saleItems[1].name, saleItems[2].name, saleItems[3].name, saleItems[4].name, saleItems[5].name
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

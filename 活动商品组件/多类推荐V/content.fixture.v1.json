@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.multiCategoryRecommendationV",
+  "fixture": "multi-category-v-reference",
+  "localReferenceAssets": {
+    "multi-v-1": "assets/collection-1.jpg",
+    "multi-v-2": "assets/collection-2.jpg",
+    "multi-v-3": "assets/collection-3.jpg",
+    "multi-v-4": "assets/collection-4.jpg",
+    "multi-v-5": "assets/collection-5.jpg",
+    "multi-v-6": "assets/collection-6.jpg"
+  },
+  "values": {
+    "intro.title": "Explore Our Collections",
+    "intro.subtitle": "From natural linen to smart motorization.",
+    "collections[0].image.url": "asset://multi-v-1",
+    "collections[0].image.alt": "Linen Curtains room scene",
+    "collections[0].title": "LINEN CURTAINS",
+    "collections[0].clickUrl": "https://freshinelife.com/collections/linen-curtains",
+    "collections[1].image.url": "asset://multi-v-2",
+    "collections[1].image.alt": "Blackout room scene",
+    "collections[1].title": "BLACKOUT",
+    "collections[1].clickUrl": "https://freshinelife.com/collections/blackout-curtains",
+    "collections[2].image.url": "asset://multi-v-3",
+    "collections[2].image.alt": "Roman Shades room scene",
+    "collections[2].title": "ROMAN SHADES",
+    "collections[2].clickUrl": "https://freshinelife.com/collections/roman-shades",
+    "collections[3].image.url": "asset://multi-v-4",
+    "collections[3].image.alt": "Motorization room scene",
+    "collections[3].title": "MOTORIZATION",
+    "collections[3].clickUrl": "https://freshinelife.com/collections/motorization",
+    "collections[4].image.url": "asset://multi-v-5",
+    "collections[4].image.alt": "See Through Sheer room scene",
+    "collections[4].title": "SEE THROUGH SHEER",
+    "collections[4].clickUrl": "https://freshinelife.com/collections/see-through-sheer-curtains",
+    "collections[5].image.url": "asset://multi-v-6",
+    "collections[5].image.alt": "Bamboo Shades room scene",
+    "collections[5].title": "BAMBOO SHADES",
+    "collections[5].clickUrl": "https://freshinelife.com/collections/bamboo-shades"
+  }
+}

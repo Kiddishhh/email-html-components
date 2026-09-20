@@ -1,3 +1,4 @@
+import { assertTextRole } from './helpers/typography.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
@@ -75,7 +76,7 @@ test('full-width product grid is selectable with its complete defaults and edito
   assert.equal(instance.content['saleItems[3].cta.text'], 'SHOP AMARA >>');
   assert.equal(instance.settings['color.surface'], '#FBFAF8');
   assert.equal(instance.settings['color.heading'], '#1F1F1F');
-  assert.equal(instance.settings['color.body'], '#7C706A');
+  assert.equal(instance.settings['color.body'], '#000000');
   assert.equal(instance.settings['color.theme'], '#8D1B1B');
   assert.equal(instance.settings['color.action'], '#1F1F1F');
 });
@@ -107,8 +108,8 @@ test('full-width product grid renders the approved 600px and proportional 375px 
   const html = readFileSync(previewOutput, 'utf8');
   assert.match(html, /class="freshine-product-grid4-no-side-padding"[^>]*width="600"[^>]*max-width:600px/);
   assert.match(html, /padding-top:46px;padding-top:min\(46px,7\.666667vw\)/);
-  assert.match(html, /font-family:Lora,Georgia,'Times New Roman',serif;font-size:30px;font-size:min\(30px,5vw\);font-weight:400;line-height:40px;line-height:min\(40px,6\.666667vw\)/);
-  assert.match(html, /font-size:16px;font-size:min\(16px,2\.666667vw\);font-weight:500;line-height:24px;line-height:min\(24px,4vw\)/);
+  assertTextRole(html, 'saleCollection.title', 'heading');
+  assertTextRole(html, 'saleCollection.body', 'subtitle');
   assert.equal((html.match(/width="289" height="361"/g) ?? []).length, 4);
   assert.equal((html.match(/width:48\.166667%;height:361px;height:min\(361px,60\.166667vw\)/g) ?? []).length, 4);
   assert.equal((html.match(/width="22"[^>]*width:3\.666667%/g) ?? []).length, 4);

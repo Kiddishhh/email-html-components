@@ -4,7 +4,7 @@
   "values": {
     "color.surface": "#FFFDFA",
     "color.heading": "#242323",
-    "color.body": "#7C706A",
+    "color.body": "#000000",
     "color.cardFallback": "#E8E3DD",
     "color.cta": "#242323"
   }

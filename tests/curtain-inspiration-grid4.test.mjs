@@ -1,3 +1,4 @@
+import { assertTextRole } from './helpers/typography.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -83,12 +84,12 @@ test('curtain inspiration grid registers four independently linked images in the
   assert.match(template, /width="247"/);
   assert.match(template, /padding:52px 0 52px/);
   assert.match(template, /width:85%;max-width:510px/);
-  assert.match(template, /font-family:\{\{settings\.font\.heading\}\};font-size:30px;font-size:min\(30px,5vw\);font-weight:500;line-height:38px;line-height:min\(38px,6\.333333vw\)/);
-  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:18px;font-size:min\(18px,3vw\);font-weight:500;line-height:27px;line-height:min\(27px,4\.5vw\)/);
+  assertTextRole(template, 'promotion.title', 'heading');
+  assertTextRole(template, 'promotion.subtitle', 'subtitle');
   assert.equal(settingsSchema.properties['grid.showCaptions'].type, 'boolean');
   assert.equal(settingsDefaults.values['grid.showCaptions'], false);
   assert.match(template, /FRESHINE_IF_SETTING:grid\.showCaptions/);
-  assert.match(template, /font-family:\{\{settings\.font\.body\}\};font-size:16px;font-size:min\(16px,4\.267vw\);font-weight:500;line-height:22px/);
+  assertTextRole(template, 'grid.image1.caption', 'caption');
   assert.doesNotMatch(template, /<style\b|@media|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|<div\b/i);
   assert.deepEqual(editableFieldKeys(componentKey), {
     content: ['promotion.title', 'promotion.subtitle', ...imageFields],

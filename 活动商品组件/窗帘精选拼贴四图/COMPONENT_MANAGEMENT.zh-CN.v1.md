@@ -25,3 +25,15 @@
 - 本地验证覆盖注册、字段契约、四图非等高几何、五个链接、邮件安全输出及 600px/375px 比例规则。
 - 本地预览不等于 Omnisend 编辑器保存或 Gmail、Outlook、Apple Mail 收件箱的像素级验收。
 - 本组件创建不授权上传、创建、更新、发送、排期或发布 Omnisend Campaign。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：promotion.title
+- subtitle：promotion.subtitle
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

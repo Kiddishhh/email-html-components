@@ -4,10 +4,34 @@
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {
-    "color.surface": { "type": "string", "default": "#FCF9F5", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.text": { "type": "string", "default": "#724E30", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.discount": { "type": "string", "default": "#A71E22", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.cta": { "type": "string", "default": "#724E30", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+    "color.surface": {
+      "type": "string",
+      "default": "#FCF9F5",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#724E30",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.discount": {
+      "type": "string",
+      "default": "#A71E22",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.cta": {
+      "type": "string",
+      "default": "#724E30",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
   },
   "additionalProperties": false
 }

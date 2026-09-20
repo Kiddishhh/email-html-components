@@ -46,8 +46,8 @@ test('权益+地址组合卡完整保留经确认原图且不拆分、不裁切�
   const png = readFileSync(assetPath);
   assert.equal(png.toString('ascii', 1, 4), 'PNG');
   assert.equal(png.readUInt32BE(16), 1200);
-  assert.equal(png.readUInt32BE(20), 1704);
-  assert.equal(createHash('sha256').update(png).digest('hex'), '5050a09a88d3ea4bc41cca50ff8c14b1af940c78863d39728e6f9ee3da0a8425');
+  assert.equal(png.readUInt32BE(20), 1698);
+  assert.equal(createHash('sha256').update(png).digest('hex'), '48a8bfc0d46142b2d92864835243406c8156f607d4fc1bd0f8ef37e9f3b2198f');
 
   const template = readFileSync(resolve(directory, 'component.template.v1.html'), 'utf8');
   assert.doesNotMatch(template, /<a\b|href=|image\.linkUrl|object-fit|clip-path|position:(?:absolute|fixed)/i);

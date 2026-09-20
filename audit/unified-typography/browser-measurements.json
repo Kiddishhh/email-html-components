@@ -1,0 +1,2928 @@
+[
+  {
+    "key": "navigation.promotionCta",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 251.46875,
+        "x": 174.265625,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.body",
+        "role": "subtitle",
+        "width": 464,
+        "x": 68,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "navigation.eventCountdown",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "countdown.title",
+        "role": "heading",
+        "width": 544.03125,
+        "x": 27.984375,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainPromotionCard",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 544,
+        "x": 28,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(36, 35, 33)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 544,
+        "x": 28,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 540.03125,
+        "x": 29.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(36, 35, 33)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainPromotionCardNoTitle",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 540.03125,
+        "x": 29.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(36, 35, 33)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid6",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 538,
+        "x": 31,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 538,
+        "x": 31,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 249.984375,
+        "x": 36,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 250.015625,
+        "x": 313.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 249.984375,
+        "x": 36,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 250.015625,
+        "x": 313.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[4].name",
+        "role": "caption",
+        "width": 249.984375,
+        "x": 36,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[5].name",
+        "role": "caption",
+        "width": 250.015625,
+        "x": 313.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid6WithTitle",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 540,
+        "x": 30,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 540,
+        "x": 30,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 236.4375,
+        "x": 43,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 236.453125,
+        "x": 320.546875,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 236.4375,
+        "x": 43,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 236.453125,
+        "x": 320.546875,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[4].name",
+        "role": "caption",
+        "width": 236.4375,
+        "x": 43,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[5].name",
+        "role": "caption",
+        "width": 236.453125,
+        "x": 320.546875,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid4WithTitle",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 510,
+        "x": 45,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(107, 73, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 510,
+        "x": 45,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].cta.text",
+        "role": "caption",
+        "width": 246,
+        "x": 45,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].cta.text",
+        "role": "caption",
+        "width": 246.015625,
+        "x": 307.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].cta.text",
+        "role": "caption",
+        "width": 246,
+        "x": 45,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].cta.text",
+        "role": "caption",
+        "width": 246.015625,
+        "x": 307.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.sceneSaleGrid4WithTitle",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 510,
+        "x": 45,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 510,
+        "x": 45,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 246,
+        "x": 46,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 246,
+        "x": 308,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 246,
+        "x": 46,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 246,
+        "x": 308,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.productGrid4NoSidePadding",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 560.03125,
+        "x": 19.984375,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 540,
+        "x": 30,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].cta.text",
+        "role": "caption",
+        "width": 289,
+        "x": 0,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].cta.text",
+        "role": "caption",
+        "width": 289,
+        "x": 311,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].cta.text",
+        "role": "caption",
+        "width": 289,
+        "x": 0,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].cta.text",
+        "role": "caption",
+        "width": 289,
+        "x": 311,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid4DetailWithTitle",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 540,
+        "x": 30,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 530,
+        "x": 30,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 247,
+        "x": 40.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 247,
+        "x": 312.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 247,
+        "x": 40.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 247,
+        "x": 312.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid6DetailWithTitle",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 540,
+        "x": 30,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 530,
+        "x": 30,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 247,
+        "x": 40.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 247,
+        "x": 312.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 247,
+        "x": 40.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 247,
+        "x": 312.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[4].name",
+        "role": "caption",
+        "width": 247,
+        "x": 40.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[5].name",
+        "role": "caption",
+        "width": 247,
+        "x": 312.5,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainInspirationGrid4",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 510,
+        "x": 45,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 510,
+        "x": 45,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image1.caption",
+        "role": "caption",
+        "width": 246.984375,
+        "x": 45,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image2.caption",
+        "role": "caption",
+        "width": 247.015625,
+        "x": 307.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image3.caption",
+        "role": "caption",
+        "width": 246.984375,
+        "x": 45,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image4.caption",
+        "role": "caption",
+        "width": 247.015625,
+        "x": 307.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainEditorialMosaic4",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 560.03125,
+        "x": 19.984375,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 560.03125,
+        "x": 19.984375,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainEditorialTriptych",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "pair.left.caption",
+        "role": "caption",
+        "width": 255.984375,
+        "x": 38,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "pair.right.caption",
+        "role": "caption",
+        "width": 255.984375,
+        "x": 306,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 538,
+        "x": 31,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 538,
+        "x": 31,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.romanShadeMultiRecommendation",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 560.03125,
+        "x": 19.984375,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(114, 78, 48)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 500,
+        "x": 50,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.multiCategoryRecommendationV",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 600,
+        "x": 0,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 600,
+        "x": 0,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[0].title",
+        "role": "caption",
+        "width": 257,
+        "x": 33,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[1].title",
+        "role": "caption",
+        "width": 257.015625,
+        "x": 309.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[2].title",
+        "role": "caption",
+        "width": 257,
+        "x": 33,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[3].title",
+        "role": "caption",
+        "width": 257.015625,
+        "x": 309.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[4].title",
+        "role": "caption",
+        "width": 257,
+        "x": 33,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[5].title",
+        "role": "caption",
+        "width": 257.015625,
+        "x": 309.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.rewardGrid2",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "reward.title",
+        "role": "heading",
+        "width": 544,
+        "x": 28,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 29, 27)",
+        "overflow": false
+      },
+      {
+        "slot": "reward.rules[0]",
+        "role": "subtitle",
+        "width": 544,
+        "x": 28,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "reward.rules[1]",
+        "role": "subtitle",
+        "width": 544,
+        "x": 28,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.showcase2",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "gifts[0].title",
+        "role": "caption",
+        "width": 266,
+        "x": 318,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "gifts[1].title",
+        "role": "caption",
+        "width": 270,
+        "x": 16,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.warmRedPairIV",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 600,
+        "x": 0,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.rule1",
+        "role": "subtitle",
+        "width": 600,
+        "x": 0,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.rule2",
+        "role": "subtitle",
+        "width": 600,
+        "x": 0,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.doubleGiftAddressShowcase",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 552,
+        "x": 24,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 552,
+        "x": 24,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "gifts[0].title",
+        "role": "caption",
+        "width": 238,
+        "x": 44,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "gifts[1].title",
+        "role": "caption",
+        "width": 238,
+        "x": 318,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "location.showroomCard",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "showroom.title",
+        "role": "heading",
+        "width": 460,
+        "x": 25.984375,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "review.sceneComparison",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 286.015625,
+        "x": 13.984375,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.sampleProductRecommendationLeft",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 197,
+        "x": 377,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      },
+      {
+        "slot": "product.subtitle",
+        "role": "subtitle",
+        "width": 197,
+        "x": 377,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.sampleProductRecommendationRight",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 197,
+        "x": 26,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      },
+      {
+        "slot": "product.subtitle",
+        "role": "subtitle",
+        "width": 197,
+        "x": 26,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.curtainRecommendationOverlay",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 548,
+        "x": 26,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 548,
+        "x": 26,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "product.name",
+        "role": "caption",
+        "width": 278,
+        "x": 44,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.curtainRecommendationNoTitle",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.name",
+        "role": "caption",
+        "width": 278,
+        "x": 44,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.sampleStyle1",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 304.4375,
+        "x": 42,
+        "size": "16px",
+        "weight": "500",
+        "line": "20px",
+        "align": "left",
+        "color": "rgb(36, 36, 36)",
+        "overflow": false
+      },
+      {
+        "slot": "product.subtitle",
+        "role": "subtitle",
+        "width": 304.4375,
+        "x": 42,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "tool.measurementCard",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "measurement.title",
+        "role": "heading",
+        "width": 529,
+        "x": 45,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(37, 37, 37)",
+        "overflow": false
+      },
+      {
+        "slot": "measurement.subtitle",
+        "role": "subtitle",
+        "width": 529,
+        "x": 45,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "tool.freeMeasurementGuidance",
+    "width": 600,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "guide.title",
+        "role": "heading",
+        "width": 560.03125,
+        "x": 19.984375,
+        "size": "30px",
+        "weight": "400",
+        "line": "38px",
+        "align": "center",
+        "color": "rgb(114, 78, 48)",
+        "overflow": false
+      },
+      {
+        "slot": "guide.subtitle",
+        "role": "subtitle",
+        "width": 560.03125,
+        "x": 19.984375,
+        "size": "18px",
+        "weight": "500",
+        "line": "27px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "navigation.promotionCta",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 157.171875,
+        "x": 108.90625,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.body",
+        "role": "subtitle",
+        "width": 284,
+        "x": 45.5,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "navigation.eventCountdown",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "countdown.title",
+        "role": "heading",
+        "width": 334.03125,
+        "x": 20.484375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainPromotionCard",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 340,
+        "x": 17.5,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(36, 35, 33)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 340,
+        "x": 17.5,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 337.53125,
+        "x": 18.734375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(36, 35, 33)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainPromotionCardNoTitle",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 337.53125,
+        "x": 18.734375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(36, 35, 33)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid6",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 336.25,
+        "x": 19.375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 336.25,
+        "x": 19.375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 156.234375,
+        "x": 22.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 156.265625,
+        "x": 196.234375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 156.234375,
+        "x": 22.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 156.265625,
+        "x": 196.234375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[4].name",
+        "role": "caption",
+        "width": 156.234375,
+        "x": 22.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[5].name",
+        "role": "caption",
+        "width": 156.265625,
+        "x": 196.234375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid6WithTitle",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 337.5,
+        "x": 18.75,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 337.5,
+        "x": 18.75,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 172.5,
+        "x": 0,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 172.5,
+        "x": 202.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 172.5,
+        "x": 0,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 172.5,
+        "x": 202.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[4].name",
+        "role": "caption",
+        "width": 172.5,
+        "x": 0,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[5].name",
+        "role": "caption",
+        "width": 172.5,
+        "x": 202.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid4WithTitle",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 318.75,
+        "x": 28.125,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(107, 73, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 318.75,
+        "x": 28.125,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].cta.text",
+        "role": "caption",
+        "width": 153.75,
+        "x": 28.125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].cta.text",
+        "role": "caption",
+        "width": 153.765625,
+        "x": 192.484375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].cta.text",
+        "role": "caption",
+        "width": 153.75,
+        "x": 28.125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].cta.text",
+        "role": "caption",
+        "width": 153.765625,
+        "x": 192.484375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(107, 82, 44)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.sceneSaleGrid4WithTitle",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 318.75,
+        "x": 28.125,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 318.75,
+        "x": 28.125,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 153.75,
+        "x": 28.75,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 153.75,
+        "x": 192.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 153.75,
+        "x": 28.75,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 153.75,
+        "x": 192.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.productGrid4NoSidePadding",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "saleCollection.title",
+        "role": "heading",
+        "width": 350.03125,
+        "x": 12.484375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleCollection.body",
+        "role": "subtitle",
+        "width": 337.5,
+        "x": 18.75,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].cta.text",
+        "role": "caption",
+        "width": 180.625,
+        "x": 0,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].cta.text",
+        "role": "caption",
+        "width": 180.625,
+        "x": 194.375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].cta.text",
+        "role": "caption",
+        "width": 180.625,
+        "x": 0,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].cta.text",
+        "role": "caption",
+        "width": 180.625,
+        "x": 194.375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid4DetailWithTitle",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 337.5,
+        "x": 18.75,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 337.5,
+        "x": 18.75,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 25.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 195.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 25.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 195.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.saleGrid6DetailWithTitle",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 337.5,
+        "x": 18.75,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 337.5,
+        "x": 18.75,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[0].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 25.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[1].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 195.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[2].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 25.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[3].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 195.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[4].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 25.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "saleItems[5].name",
+        "role": "caption",
+        "width": 154.375,
+        "x": 195.3125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainInspirationGrid4",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 318.75,
+        "x": 28.125,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 318.75,
+        "x": 28.125,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image1.caption",
+        "role": "caption",
+        "width": 154.359375,
+        "x": 28.125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image2.caption",
+        "role": "caption",
+        "width": 154.390625,
+        "x": 192.484375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image3.caption",
+        "role": "caption",
+        "width": 154.359375,
+        "x": 28.125,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      },
+      {
+        "slot": "grid.image4.caption",
+        "role": "caption",
+        "width": 154.390625,
+        "x": 192.484375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(44, 44, 44)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainEditorialMosaic4",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "promotion.title",
+        "role": "heading",
+        "width": 350.03125,
+        "x": 12.484375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(36, 35, 35)",
+        "overflow": false
+      },
+      {
+        "slot": "promotion.subtitle",
+        "role": "subtitle",
+        "width": 350.03125,
+        "x": 12.484375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.curtainEditorialTriptych",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "pair.left.caption",
+        "role": "caption",
+        "width": 159.984375,
+        "x": 23.75,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "pair.right.caption",
+        "role": "caption",
+        "width": 159.984375,
+        "x": 191.25,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 336.25,
+        "x": 19.375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 336.25,
+        "x": 19.375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.romanShadeMultiRecommendation",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 350.03125,
+        "x": 12.484375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(114, 78, 48)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 350.03125,
+        "x": 12.484375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "collection.multiCategoryRecommendationV",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 375,
+        "x": 0,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 375,
+        "x": 0,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[0].title",
+        "role": "caption",
+        "width": 160.625,
+        "x": 20.625,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[1].title",
+        "role": "caption",
+        "width": 160.640625,
+        "x": 193.734375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[2].title",
+        "role": "caption",
+        "width": 160.625,
+        "x": 20.625,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[3].title",
+        "role": "caption",
+        "width": 160.640625,
+        "x": 193.734375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[4].title",
+        "role": "caption",
+        "width": 160.625,
+        "x": 20.625,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "collections[5].title",
+        "role": "caption",
+        "width": 160.640625,
+        "x": 193.734375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.rewardGrid2",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "reward.title",
+        "role": "heading",
+        "width": 340,
+        "x": 17.5,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 29, 27)",
+        "overflow": false
+      },
+      {
+        "slot": "reward.rules[0]",
+        "role": "subtitle",
+        "width": 340,
+        "x": 17.5,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "reward.rules[1]",
+        "role": "subtitle",
+        "width": 340,
+        "x": 17.5,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.showcase2",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "gifts[0].title",
+        "role": "caption",
+        "width": 166.25,
+        "x": 198.75,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "gifts[1].title",
+        "role": "caption",
+        "width": 168.75,
+        "x": 10,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.warmRedPairIV",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 375,
+        "x": 0,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(34, 34, 34)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.rule1",
+        "role": "subtitle",
+        "width": 375,
+        "x": 0,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.rule2",
+        "role": "subtitle",
+        "width": 375,
+        "x": 0,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "gift.doubleGiftAddressShowcase",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 345,
+        "x": 15,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 345,
+        "x": 15,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "gifts[0].title",
+        "role": "caption",
+        "width": 148.75,
+        "x": 27.5,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      },
+      {
+        "slot": "gifts[1].title",
+        "role": "caption",
+        "width": 148.75,
+        "x": 198.75,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "location.showroomCard",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "showroom.title",
+        "role": "heading",
+        "width": 342.53125,
+        "x": 16.234375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "review.sceneComparison",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 178.765625,
+        "x": 8.734375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(31, 31, 31)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.sampleProductRecommendationLeft",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 123.140625,
+        "x": 235.625,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      },
+      {
+        "slot": "product.subtitle",
+        "role": "subtitle",
+        "width": 123.140625,
+        "x": 235.625,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.sampleProductRecommendationRight",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 123.125,
+        "x": 16.234375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      },
+      {
+        "slot": "product.subtitle",
+        "role": "subtitle",
+        "width": 123.125,
+        "x": 16.234375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.curtainRecommendationOverlay",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "intro.title",
+        "role": "heading",
+        "width": 342.53125,
+        "x": 16.234375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      },
+      {
+        "slot": "intro.subtitle",
+        "role": "subtitle",
+        "width": 342.53125,
+        "x": 16.234375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      },
+      {
+        "slot": "product.name",
+        "role": "caption",
+        "width": 173.765625,
+        "x": 27.484375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.curtainRecommendationNoTitle",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.name",
+        "role": "caption",
+        "width": 173.765625,
+        "x": 27.484375,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(32, 32, 32)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "product.sampleStyle1",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "product.title",
+        "role": "caption",
+        "width": 200,
+        "x": 18,
+        "size": "10px",
+        "weight": "500",
+        "line": "12.5px",
+        "align": "left",
+        "color": "rgb(36, 36, 36)",
+        "overflow": false
+      },
+      {
+        "slot": "product.subtitle",
+        "role": "subtitle",
+        "width": 200,
+        "x": 18,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "tool.measurementCard",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "measurement.title",
+        "role": "heading",
+        "width": 330.65625,
+        "x": 28.109375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(37, 37, 37)",
+        "overflow": false
+      },
+      {
+        "slot": "measurement.subtitle",
+        "role": "subtitle",
+        "width": 330.65625,
+        "x": 28.109375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "key": "tool.freeMeasurementGuidance",
+    "width": 375,
+    "overflow": false,
+    "measurements": [
+      {
+        "slot": "guide.title",
+        "role": "heading",
+        "width": 350.03125,
+        "x": 12.484375,
+        "size": "18.75px",
+        "weight": "400",
+        "line": "23.75px",
+        "align": "center",
+        "color": "rgb(114, 78, 48)",
+        "overflow": false
+      },
+      {
+        "slot": "guide.subtitle",
+        "role": "subtitle",
+        "width": 350.03125,
+        "x": 12.484375,
+        "size": "11.25px",
+        "weight": "500",
+        "line": "16.875px",
+        "align": "center",
+        "color": "rgb(0, 0, 0)",
+        "overflow": false
+      }
+    ]
+  }
+]

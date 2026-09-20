@@ -12,7 +12,7 @@
 
 ## 头图
 
-四款头图都开放 `navigation.visible` 导航开关。关闭后生成 HTML 会移除导航结构与占位高度，Logo 和主体内容保持不变。导航栏统一以夏末折扣促销首图为基准：左右列 `75.5% / 24.5%`，桌面基准 `71px` 高，移动端使用 `min(71px, 11.833333vw)`；左右内边距分别为 `min(18px, 3vw)` 与 `min(10px, 1.666667vw)`。促销文案和右侧链接均使用 Montserrat Regular `18px / 24px`，并随移动宽度缩放为 `min(18px, 3vw) / min(24px, 4vw)`；右侧链接保持下划线。颜色和导航栏在组件内的位置仍各自独立。
+五款头图都开放 `navigation.visible` 导航开关。关闭后生成 HTML 会移除导航结构与占位高度，Logo 和主体内容保持不变。导航栏以各组件自身的已确认尺寸和字体为准：夏末折扣促销首图为左右列 `75.5% / 24.5%`、桌面基准 `71px` 高、Montserrat Regular `18px / 24px`；优惠券场景叠层头图为左右列 `75.5% / 24.5%`、桌面 `56px` 高、Montserrat Medium `16px / 20px` 单行显示。其余含导航头图保持各自已登记规范；颜色和导航栏在组件内的位置均独立。
 
 ### `hero.promotionalOverlay` — 促销悬浮首图
 
@@ -69,6 +69,13 @@
 - 375px 下主体按内联 `min()` 同步缩放，折扣50px；按钮保留至少44px触控高度和12px文字，整体高度允许略大于等比缩放。导航开启/关闭时总尺寸分别为桌面 `600×817px / 600×761px`、移动端约 `375×520.98px / 375×485.98px`。不进行 Shopify 导入。
 - 默认 CTA 指向罗马帘集合页，保留 `utm_source=omnisend&utm_medium=email&utm_id=cover-fs`；Logo独立指向首页。仅本地预览素材；正式导出需公开 HTTPS 图片。字体、透明度、背景和圆角在邮件客户端可能降级，不能将本地验收等同于收件箱测试。
 
+### `hero.couponSceneOverlay` — 优惠券场景叠层头图
+
+- 可编辑：顶部促销文案、右侧导航链接文字/HTTPS 链接、主标题、副标题、完整优惠券图/Alt、正方形场景图/Alt、主 CTA 文字/HTTPS 链接，以及导航开关和组件画布、导航、标题、副标题、CTA 六项颜色。
+- 固定：组件外部演示页为白色，`#F5F2ED` 只覆盖组件自身 600px / 375px 画布。默认显示的顶部导航为 56px，左右 `75.5% / 24.5%`；两栏均使用 Montserrat Medium `16px / 20px / 500`、居中、`white-space: nowrap`，右栏保留下划线。标题为 Montserrat Medium `36px / 54px / 500`，副标题为 Montserrat Medium `16px / 24px / 500`、默认 `#7C706A`。
+- 完整优惠券图和正方形场景图均以 528px 最大宽度居中；主 CTA 最大 `266×56px`，向上与场景图重叠 28px，使用 Montserrat SemiBold `20px / 24px / 600`，375px 下保留至少 44px 触摸高度。几何、间距、字体、叠层关系不开放编辑。
+- 链接边界：顶部 `SIGN UP` 仅使用 `navigation.cta.url`；只有 SHOP NOW 使用 `cta.url`，默认 `https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-fs`。默认图片仅供本地预览，正式输出必须替换为公开 HTTPS 图片；不进行 Shopify 导入或运行时请求。
+
 ## 导航组件
 
 ### `navigation.promotionCta` — 活动促销 CTA
@@ -83,6 +90,8 @@
 
 ## 活动商品
 
+文字规范以 [统一标题规范](new-component-standard.zh-CN.md) 为准：主标题 Lora 400 / 30px / 38px 居中，副标题 Montserrat 500 / 18px / 27px 居中黑色，图片下标题与商品名 Montserrat 500 / 16px / 20px 左对齐。此规则覆盖以下旧款式描述中的字体值，头图除外。
+
 ### `collection.curtainPromotionCard` — 单品窗帘促销卡（标题款）
 
 - 可编辑：顶部活动标题/说明、商品角标、主图/Alt/链接、商品名称/说明、CTA、组件底色和角标底色。
@@ -95,8 +104,8 @@
 
 ### `collection.saleGrid6` — 六宫格夏季促销
 
-- 可编辑：区域标题、说明、CTA 文案/链接、操作色和组件底色；六件商品可通过只读 Shopify 活动页、已上线 Collection URL 或后台 Collection handle 导入更新。后台 handle 导入不覆盖当前 CTA。
-- 固定：顶部居中标题使用 Lora `30px / 500（Medium） / 38px`、字间距 `0px`，顶部居中说明使用 Montserrat `18px / 500（Medium） / 150%（27px）`、字间距 `0px`；两列三行商品顺序、商品图对齐；CTA 使用 486px 上限表格和 `width:81%;max-width:486px`，600px 桌面为 486px、375px 移动端约为 304px。
+- 可编辑：区域标题、说明、六个商品名称、CTA 文案/链接、操作色和组件底色；六件商品可通过只读 Shopify 活动页、已上线 Collection URL 或后台 Collection handle 导入更新。后台 handle 导入不覆盖当前 CTA。
+- 固定：顶部居中标题使用 Lora `30px / 400（Regular） / 150%（45px）`、字间距 `0px`、`#1F1F1F`；顶部居中说明使用 Montserrat `16px / 500（Medium） / 150%（24px）`、字间距 `0px`、`#7C706A`；图片下方商品名称使用 Montserrat `18px / 400（Regular） / 22px`、字间距 `0px`、居中、下划线，单商品及整组导入自动填入名称；商品区左右内边距为 36px，并在 375px 等比缩放；六张商品卡在 600px 与 375px 均保持两列三行，采用固定布局表格的 `47.348% / 5.304% / 47.348%` 双列结构，250px 方图及其父级高度均按 62.5% 缩放；CTA 使用 528px 上限表格和 `width:88%;max-width:528px`，与商品区左右边界对齐。
 
 ### `collection.saleGrid6WithTitle` — 六宫格折扣推荐（标题款）
 
@@ -116,6 +125,13 @@
 - 默认使用匹配原稿的四张Shopify公共HTTPS原图；折扣按用户更新为左上30%、右上40%、左下35%、右下50%，商品和底部CTA跳转链接均带`utm_source=omnisend&utm_medium=email&utm_id=cover-rc`。逐格导入只覆盖该格图片/Alt/链接/折扣和商品链接文字（填入Shopify商品标题）；其他格、颜色、顶部说明和底部CTA均保留。
 - APPLY DISCOUNT 的默认链接为用户确认的`https://freshinelife.com/collections/roman-shades`并保留上述UTM；集合页链接本身不创建或自动应用优惠码。浏览器字体与Outlook VML增强不构成真实收件箱验收。
 
+### `collection.sceneSaleGrid4WithTitle` — 四宫格场景折扣（标题款）
+
+- 独立新增，不覆盖其他四宫格。可编辑顶部标题/说明、四格折扣文字/图片/Alt/链接/商品名称，以及背景、标题、说明、商品名称、折扣标签底色和标签文字六种颜色。
+- 600px 画布高约 927px，508px 内容区，两列各 246px、间距 16px。标题为 Lora `30px / 400 / 45px`，说明为 Montserrat `18px / 400 / 27px`，商品名称为 Montserrat `21px / 400 / 27px`；无底部 CTA。375px 保留两列并使用内联 `min()` 等比收缩。
+- 图片和对应商品名称共用链接。默认四个链接及导入后的商品链接均带 `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`。
+- 商品 1–4 Shopify 只读导入只更新所选格的首图、Alt、链接、商品名称与折扣文字；其他三格、顶部文案和六种颜色保持不变。
+
 ### `collection.productGrid4NoSidePadding` — 四宫格商品推荐（无左右边距）
 
 - 独立新增，不覆盖现有四宫格。可编辑顶部标题/说明、四格折扣文字/图片/Alt/链接/按钮文字，以及背景、标题、说明、折扣标签和按钮文字五种颜色。
@@ -128,6 +144,21 @@
 - 只有商品图片和下方 CTA 附带该格商品链接；商品名称、折扣标签、折扣价和划线原价均为纯文本。默认四个商品链接和逐格导入后的链接都使用 `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`。
 - 600px 画布内内容区 519px，两列各 247px、间距 25px；正方形商品图、31px 折扣标签、双行商品名、价格行和整列 CTA 复现样式XXVII详情版。375px 仍保持两列并使用内联 `min()`/`max()` 渐进缩放。
 - 逐格 Shopify 只读导入只更新当前实例的指定格：第一张图片、Alt、完整商品名、带 UTM 的链接、首个可售变体价格、有效划线价和折扣标签；CTA 文案、其他三格、顶部文案及颜色不变。无有效划线价时清空原价和标签。
+
+### `collection.saleGrid6DetailWithTitle` — 六宫格详情折扣（标题款）
+
+- 独立三行两列版本，600px/375px等比响应；保留519px内容区、247px商品图、25px列间距、商品详情及CTA。
+- 标题 Lora 30px/500/150%；副标题 Montserrat 16px/500/150%、#7C706A；均居中、字距0。
+- 六个右上圆标直径54px、上11px右12px；折扣字段仍为discountLabel，SAVE与百分比两行显示，百分比加粗；空值隐藏圆标。主题色和标签文字色沿用原设置。
+- 50个内容字段、9个颜色字段、商品1–6只读导入。更新所选卡片图片、Alt、完整名、现价、原价、折扣与带cover-rc UTM的链接；CTA文字、其他卡片及设置不变。
+- 默认前四商品沿用原样例，5–6复用1–2，制作Campaign时可分别导入替换。无有效划线价时隐藏折扣。
+
+### `collection.sceneSaleGrid6PriceWithTitle` — 六宫格场景价格（标题款）
+
+- 独立新增，不覆盖既有六宫格。按确认的方图设计保持三行两列：600px 内 552px 内容区，两列各 264px 方形场景图、24px 列间距；375px 保持两列并按 62.5% 内联 `min()` 等比缩放。
+- 顶部使用 Lora 400、30px/38px 主标题，Montserrat 500、18px/27px 黑色副标题及固定植物分隔素材；商品名使用 Montserrat 500、16px/20px。每张图左上角是可清空隐藏的矩形折扣标签。
+- 每格可编辑折扣标签、图片、Alt、链接、商品名、折扣价和划线原价。底部 CTA 独立可编辑，默认链接为 Freshine Sale 页面并保留 `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`。
+- 商品 1–6 Shopify 只读导入只更新选中卡片的首图、Alt、带 UTM 链接、完整标题、首个可售变体价格、有效 compare-at 原价和自动折扣；其他五格、标题、副标题、装饰、底部 CTA 和颜色保持不变。无有效 compare-at 价时原价和折扣标签清空。
 
 ### `collection.curtainInspirationGrid4` — 窗帘灵感四宫格
 
@@ -202,10 +233,10 @@
 
 ### `gift.showcase2` — 双赠品展示卡
 
-- 可编辑：每件赠品的照片 URL、Alt、名称、价值、卖点、CTA文字、CTA链接、赠送规则，共16项内容；另有底色、主文字色、价值/CTA底色、规则文字色4项设置。
-- 固定：上方左照片右文案，下方左文案右照片；600×677px、左右列302/298px，375px下等比约375×423.125px。FREE GIFTS徽章保留在照片内；不添加顶部标题、圆角或图片区链接。两张照片从新版参考图按各自边界精确裁出，不重绘、不拉伸。
-- 默认眼罩为 `VALUE $59.9`、`SPEND $699+`，规则为满$699赠眼罩；抱枕套为 `VALUE $89.9`、`SPEND $999+`，规则为满$999赠抱枕套。规则已按用户确认修正；门槛与说明为独立文案，修改时需同步，不会设置店铺折扣。
-- 两个CTA是独立真实链接，默认均为 `https://freshinelife.com/`。桌面CTA为221×39px，375px下138.125×24.375px；长文案自然换行并可能撑高组件，建议保持原稿字数。
+- 可编辑：每件赠品的照片 URL、Alt、名称、价值、卖点、CTA文字和CTA链接，共14项内容；另有底色、主文字色、价值/CTA底色3项设置。CTA下方不显示赠送规则。
+- 固定：600px邮件版面内使用45px左右、29px上下页边距，内层内容宽510px；上方左照片右文案，下方左文案右照片。文案区在对应图片区内垂直居中，375px下页边距和内部尺寸等比缩放。FREE GIFTS徽章保留在照片内；不添加顶部标题、圆角或图片区链接。
+- 默认眼罩为 `VALUE $59.9`、`SPEND $699+`；抱枕套为 `VALUE $89.9`、`SPEND $999+`。展示文案不会设置店铺折扣或自动赠品规则。
+- 两个CTA是独立真实链接，默认均为 `https://freshinelife.com/`。按钮与内部图文随510px内容区显示；长文案自然换行并可能撑高组件，建议保持原稿字数。
 - 本地素材为 `asset://gift-showcase-eye-mask-photo` / `asset://gift-showcase-pillow-cover-photo` / `asset://gift-showcase-shopping-bag`。购物袋图标 `cta.icon.url` 为隐藏素材字段；最终导出三张图片都需要公开HTTPS地址。Lora/Montserrat使用既有邮件字体回退栈，真实收件箱需另行验证。
 - 沿用 `gift.showcase2`，独立于原有 `gift.rewardGrid2`。既有完整快照不会自动增加新字段，升级时请重新添加组件或显式补齐新内容/设置；保留原整图素材供追溯。
 
@@ -248,8 +279,8 @@
 ### `image.benefitsAddressCard` — 权益+地址组合卡
 
 - 可编辑：整图 URL、Alt 和组件外部底色（默认 `#F8F4EE`）；底色设置不改变图片内部背景。
-- 固定：完整保留用户确认的 1200×1704px 原图，图内包含标题、六项服务权益、分割线、展厅照片、地址及预约说明；不拆分、不裁切、不重绘、不绑定链接。
-- 桌面 600×852px；375px 手机端约 375×532.5px，使用单张图片等比例缩放且不增加额外留白。
+- 固定：完整保留用户确认的 1200×1698px 原图，图内包含标题、六项服务权益、分割线、展厅照片、地址及预约说明；不拆分、不裁切、不重绘、不绑定链接。
+- 桌面 600×849px；375px 手机端约 375×530.625px，使用单张图片等比例缩放且不增加额外留白。
 - 通过独立 `asset://benefits-address-card` 接入本地素材流程，最终导出使用公开 HTTPS 图片；与权益整图和独立展厅地址卡分别选择和编辑。
 
 ### `tool.measurementCard` — 尺寸测量工具卡
@@ -283,3 +314,28 @@
 
 - 可编辑：页脚背景色、正文色和链接色。
 - 固定：600px 参考图的地址、预约说明、电话/支持邮箱、七枚社媒图标、496px `#B59B8B` 分割线、版权/品牌名与退订链接顺序；没有品牌名或顶部金色短线。七枚图标复用当前页脚的公开 HTTPS 素材与跳转，按 YouTube、Instagram、Facebook、TikTok、Pinterest、WhatsApp、Threads 顺序置于 `26 × 26px` 居中单元，图像尺寸为 `24px`、`24px`、`23px`、`24px`、`24px`、`24px`、`23px`。375px 使用内联 `min()` 缩放，HTML 编辑器不开放内容、间距、弱化文字色或图标几何。
+
+# 多类推荐V
+
+- componentKey: `collection.multiCategoryRecommendationV`；分类：活动商品组件。
+- 600px / 375px，固定两列三行；网格 534px，图片 257×322px，列距20px。全部受控尺寸以 600px 为基准等比缩放。
+- 主标题 Lora 500 30px/38px；副标题、分类标题 Montserrat 500 16px/24px。字间距0、居中；分类标题下划线。
+- 26 个内容字段：主副标题、每项图片URL/Alt/分类标题/共用跳转链接；4个独立颜色。无商品导入。
+- 六张图和六个分类标题分别可点击，单项二者共用分类URL。默认链接来自公开 Freshine 分类清单，不附加未指定的活动UTM。
+- 四张现有照片由用户参考图独立提取。电动窗帘使用 Freshine motorized-roman-shades 分类原图；透视纱帘使用 see-through-sheer-curtains 分类原图，适配参考图4:5画框。缺失图片的具体构图无法从参考中恢复，这两张为真实分类补图。
+- 默认6张本地素材通过 asset:// 和 localReferenceAssets 用于编辑器预览。最终导出通过既有确认流程上传为公开HTTPS，不能直接把本地演示HTML粘贴到Omnisend。
+- 邮件表格与inline CSS；不支持Web字体/min()的客户端使用回退。浏览器验证不代表收件箱实测。
+
+# 暖红双赠品卡IV
+
+- `gift.warmRedPairIV`，位于赠品与权益组件；独立于既有双赠品展示卡。
+- 参考：`/Users/ww/Downloads/赠品版块_暖红IV 1.png`，1200×1156。
+- 600×578px桌面；375×361.25px移动，两列等比缩放。网格547px，两张260×340px卡片，间距27px。
+- 主标题 Lora 500 34px/44px；两行条件 Montserrat 500 17px/25px。字体/行高/留白按600px基准缩放。
+- 9个可编辑内容字段：标题、两行条件、两张卡片的URL/Alt/链接。2种颜色：背景、顶部文字。
+- 两张卡片独立提取原稿，包括红色价值标签、底部名称及圆角；这些图内文字不可独立编辑，需替换整张卡片。素材左框[53,379,573,1059]，右框[627,379,1147,1059]。
+- 仅两张卡片整图可点击，均指向 `https://freshinelife.com?utm_source=omnisend&utm_medium=email&utm_id=cover-rc`；顶部文字无链接，无额外CTA。
+- 本地素材通过asset://与localReferenceAssets登记；演示页面是本地预览，正式导出使用已有确认后上传的公开HTTPS流程。
+- 仅展示赠品活动内容，不创建赠品规则，不上传、发送或排期。浏览器检查不代表Omnisend或收件箱实测。
+
+- `image.benefitsShowcase6`：赠品与权益组件 / 六权益展示卡，原图 I.jpg 完整保留；600×554 / 375×346.25，单张无链接图片，可编辑 URL、Alt 和外层底色；默认本地素材仅用于预览，导出沿用 HTTPS 素材流程。

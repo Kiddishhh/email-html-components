@@ -10,7 +10,6 @@
     "gifts[0].description": { "type": "text", "required": true, "skillPrompt": true },
     "gifts[0].cta.text": { "type": "text", "required": true, "skillPrompt": true },
     "gifts[0].cta.url": { "type": "url", "protocol": "https", "required": true, "skillPrompt": true },
-    "gifts[0].note": { "type": "text", "required": true, "skillPrompt": true },
     "gifts[1].image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
     "gifts[1].image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
     "gifts[1].title": { "type": "text", "required": true, "skillPrompt": true },
@@ -18,7 +17,6 @@
     "gifts[1].description": { "type": "text", "required": true, "skillPrompt": true },
     "gifts[1].cta.text": { "type": "text", "required": true, "skillPrompt": true },
     "gifts[1].cta.url": { "type": "url", "protocol": "https", "required": true, "skillPrompt": true },
-    "gifts[1].note": { "type": "text", "required": true, "skillPrompt": true },
     "cta.icon.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": false }
   },
   "additionalProperties": false

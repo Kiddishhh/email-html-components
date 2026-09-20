@@ -24,7 +24,7 @@
 |---|---|---|
 | `color.background` | `#F7EEDC` | 页脚区段背景；选择本组件时由 Skill 主动询问 |
 | `color.text` | `#000000` | 页脚常规文字的黑色 |
-| `color.link` | `rgba(0, 87, 184, 1)` | 联系邮箱与退订链接的默认蓝色 |
+| `color.link` | `rgba(0, 87, 184, 1)` | 联系邮箱的默认蓝色（退订文字固定为 #D4D0CA） |
 | `font.body` | `Montserrat, Arial, Helvetica, sans-serif` | 页脚文字优先使用 Montserrat，不支持时回退到 Arial |
 | `space.sectionX` | `24px` | 页脚区段左右留白 |
 | `space.sectionY` | `32px` | 页脚区段上下留白，形成紧凑而不拥挤的信息卡 |
@@ -114,3 +114,5 @@ Skill 默认只主动询问 `color.background`；其他页脚样式仍使用 V1 
 生成后以根目录 `Omnisend_HTML_组件与拼接器安全导入规范.md` 为准检查：最终产物必须是表格正文片段、关键样式均内联、无禁止标签、图片与普通网页链接均为 HTTPS，并且整封邮件只保留一个原样的 Omnisend `[[unsubscribe_link]]`。
 
 通过本地静态检查只能标记为“符合静态规范”。仍需在 Omnisend 通过导入保存、Desktop/Mobile/Dark Mode 预览以及 Gmail、Outlook、Apple Mail 测试邮件后，才能标记为可发布。
+
+- 退订文字 `Unsubscribe` 固定使用 `#D4D0CA`，不随 `color.link` 改色；`[[unsubscribe_link]]` 保持原样。

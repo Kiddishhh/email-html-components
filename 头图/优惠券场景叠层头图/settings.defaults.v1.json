@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.couponSceneOverlay",
+  "values": {
+    "navigation.visible": true,
+    "color.surface": "#F5F2ED",
+    "color.promotion": "#955A34",
+    "color.promotionText": "#FFFFFF",
+    "color.heading": "#252324",
+    "color.body": "#7C706A",
+    "color.action": "#9A5A33",
+    "color.actionText": "#FFFFFF"
+  }
+}

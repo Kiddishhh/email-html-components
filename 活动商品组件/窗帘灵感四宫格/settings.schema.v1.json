@@ -4,12 +4,47 @@
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {
-    "grid.showCaptions": { "type": "boolean", "default": false, "themeable": false, "skillPrompt": true },
-    "color.surface": { "type": "string", "default": "#FBFAF8", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.text": { "type": "string", "default": "#1F1F1F", "themeable": false, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.body": { "type": "string", "default": "#2C2C2C", "themeable": false, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": false, "skillPrompt": false, "pattern": "^[A-Za-z, -]+$" },
-    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": false, "skillPrompt": false, "pattern": "^[A-Za-z, -]+$" }
+    "grid.showCaptions": {
+      "type": "boolean",
+      "default": false,
+      "themeable": false,
+      "skillPrompt": true
+    },
+    "color.surface": {
+      "type": "string",
+      "default": "#FBFAF8",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#1F1F1F",
+      "themeable": false,
+      "skillPrompt": false,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.body": {
+      "type": "string",
+      "default": "#000000",
+      "themeable": false,
+      "skillPrompt": false,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "font.heading": {
+      "type": "string",
+      "default": "Lora, Georgia, Times New Roman, serif",
+      "themeable": false,
+      "skillPrompt": false,
+      "pattern": "^[A-Za-z, -]+$"
+    },
+    "font.body": {
+      "type": "string",
+      "default": "Montserrat, Arial, Helvetica, sans-serif",
+      "themeable": false,
+      "skillPrompt": false,
+      "pattern": "^[A-Za-z, -]+$"
+    }
   },
   "additionalProperties": false
 }

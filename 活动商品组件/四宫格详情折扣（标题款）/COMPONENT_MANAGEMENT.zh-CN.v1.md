@@ -40,3 +40,16 @@ Shopify 读取复用 `fetch-single-product.mjs` 的 query-only 链路，不修�
 模板只使用 table/tr/td、span、a 与邮件安全内联样式，不使用脚本、Flex、Grid、定位或外部 CSS。商品图提供 CSS/background 属性及 Outlook VML 降级；VML 存在不等于 Outlook 已完成收件箱验证。
 
 本地测试与 600px/375px 浏览器 QA 只证明组件和编辑器当前工作正常；不等同于 Omnisend、Gmail、Outlook 或 Apple Mail 真实收件箱验收。本组件制作不授权上传、发送、排期或发布任何 Campaign。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：promotion.title
+- subtitle：promotion.subtitle
+- caption：saleItems[0].name, saleItems[1].name, saleItems[2].name, saleItems[3].name
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

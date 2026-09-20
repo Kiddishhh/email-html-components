@@ -31,7 +31,7 @@ test('titled six-grid sale component is registered with synchronized 600px-to-37
 
   for (const source of [template, demo]) {
     assert.match(source, /font-size:30px;font-size:min\(30px,5vw\);/);
-    assert.match(source, /line-height:45px;line-height:min\(45px,7\.5vw\);/);
+    assert.match(source, /line-height:38px;line-height:min\(38px,6\.333333vw\);/);
     assert.match(source, /font-size:18px;font-size:min\(18px,3vw\);/);
   }
 

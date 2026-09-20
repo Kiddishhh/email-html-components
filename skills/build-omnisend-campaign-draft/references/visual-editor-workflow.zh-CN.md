@@ -37,6 +37,7 @@ node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 - `collection.saleGrid6WithTitle` 为逐格导入的标题款六宫格：分别使用“导入商品 1–6”输入 Freshine 商品 URL。导入只更新当前格的商品名、首图、Alt、链接和折扣，不影响其余五格、标题、副标题或 CTA。
 - `collection.curtainPromotionCard` 与 `collection.curtainPromotionCardNoTitle` 支持从 Freshine 商品 URL 只读导入一个商品。导入不会覆盖 CTA 文案、顶部活动文案或配色。
 - `collection.saleGrid4WithTitle` 的选择路径为“活动商品组件 → 四宫格折扣推荐（标题款）”。支持24项内容、5项颜色与4个逐格商品导入按钮；默认折扣依次为左上30%、右上40%、左下35%、右下50%。商品与底部CTA默认带`utm_source=omnisend&utm_medium=email&utm_id=cover-rc`，APPLY DISCOUNT指向Roman Shades集合页。逐格导入会覆盖该格的图片、Alt、折扣、商品链接和链接文字，导入后应检查UTM；不改其他卡片或底部CTA。
+- `collection.sceneSaleGrid4WithTitle` 的选择路径为“活动商品组件 → 四宫格场景折扣（标题款）”。支持22项内容、6项颜色与4个逐格商品导入按钮；无底部CTA。逐格导入更新指定卡片的图片、Alt、链接、折扣和商品名称，并自动写入cover-rc UTM；不改其他卡片、顶部文案或颜色。
 - `collection.productGrid4NoSidePadding` 的选择路径为“活动商品组件 → 四宫格商品推荐（无左右边距）”。支持22项内容、5项颜色与4个逐格商品导入按钮；600px 下四张商品图为289×361px、列间22px，375px下按比例缩放。逐格导入仅更新指定卡片的图片、Alt、链接、折扣和按钮文字，不改其他卡片、顶部文案或颜色。
 
 ## 导出 Omnisend HTML

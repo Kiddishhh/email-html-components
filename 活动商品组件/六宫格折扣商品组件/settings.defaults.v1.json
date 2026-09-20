@@ -4,6 +4,7 @@
   "values": {
     "color.surface": "#FBFAF8",
     "color.text": "#1F1F1F",
+    "color.body": "#000000",
     "color.theme": "#9D1D20",
     "color.buttonText": "#FFFFFF",
     "font.heading": "Lora, Georgia, Times New Roman, serif",

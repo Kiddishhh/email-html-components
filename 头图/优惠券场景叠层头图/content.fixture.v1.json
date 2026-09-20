@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.couponSceneOverlay",
+  "fixture": "fall-home-refresh-reference",
+  "localReferenceAssets": {
+    "coupon-scene-offer": "assets/default-coupon.png",
+    "coupon-scene-room": "assets/default-room.png"
+  },
+  "values": {
+    "navigation.message": "Unlock An Extra 15% Off Your First Order At Freshine",
+    "navigation.cta.text": "SIGN UP",
+    "navigation.cta.url": "https://freshinelife.com/",
+    "intro.title": "Fall Home Refresh",
+    "intro.subtitle": "From Warm Ivories To Deep Charcoals, Find The Neutral That Feels Right For Your Space.",
+    "offer.image.url": "asset://coupon-scene-offer",
+    "offer.image.alt": "Up to 20 percent off plus an extra 600 dollars off sitewide",
+    "hero.image.url": "asset://coupon-scene-room",
+    "hero.image.alt": "Warm living room with floor-length neutral curtains",
+    "cta.text": "SHOP NOW",
+    "cta.url": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-fs"
+  }
+}

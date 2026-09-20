@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.sceneSaleGrid6PriceWithTitle",
+  "values": {
+    "color.surface": "#FBF6EC",
+    "color.heading": "#241413",
+    "color.body": "#000000",
+    "color.product": "#101522",
+    "color.theme": "#A7191C",
+    "color.badgeText": "#FFFFFF",
+    "color.price": "#B01E20",
+    "color.compareAt": "#7B706B",
+    "color.cta": "#A7191C",
+    "color.ctaText": "#FFFFFF"
+  }
+}

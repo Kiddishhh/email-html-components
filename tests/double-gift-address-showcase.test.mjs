@@ -47,6 +47,7 @@ test('双赠品展示卡2可独立添加，且不替换现有双赠品展示卡'
   assert.equal(component.content['gifts[0].cta.url'], 'https://freshinelife.com/');
   assert.equal(component.content['gifts[1].cta.url'], 'https://freshinelife.com/');
   assert.equal(component.content['footer.note'], 'Gifts Will Be Automatically Added To Your Cart.');
+  assert.equal(component.content['footer.icon.url'], 'https://app.omnisend.com/images/6a97b53ec723a01883e3afbf');
 
   const assets = buildLocalAssetMap(document, { workspaceRoot: root });
   assert.deepEqual(Object.keys(assets).sort(), [
@@ -125,7 +126,8 @@ test('双赠品展示卡2使用两张独立图片、两个 CTA 和邮件安全�
   assert.equal((html.match(/class="freshine-double-gift-address-photo"/g) ?? []).length, 2);
   assert.match(html, /width="262"[^>]*class="freshine-double-gift-address-card"/);
   assert.match(html, /width="12"[^>]*font-size:0;line-height:0/);
-  assert.match(html, /font-size:min\(30px,5vw\)/);
+  assert.match(html, /font-family:Lora, Georgia, Times New Roman, serif;font-size:30px;font-size:min\(30px,5vw\);font-weight:400;line-height:38px;line-height:min\(38px,6\.333333vw\);letter-spacing:0;text-align:center/);
+  assert.match(html, /color:#000000;font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:18px;font-size:min\(18px,3vw\);font-weight:500;line-height:27px;line-height:min\(27px,4\.5vw\);letter-spacing:0;text-align:center/);
   assert.match(html, /background-color:#F4EFEA/);
   assert.doesNotMatch(html, /<style\b|<script\b|<iframe\b|<form\b|<svg\b|<div\b|display:\s*(?:flex|grid)|position:\s*(?:absolute|fixed)|asset:\/\/|file:\/\/|data:image|\{\{/i);
 });
@@ -140,7 +142,7 @@ test('双赠品展示卡2的效果演示使用公开的透明底部礼物图标'
   assert.match(demo, /default-silk-eye-mask-card-photo\.png/);
   assert.match(demo, /default-pillow-cover-card-photo\.png/);
   assert.equal((demo.match(/shopping-bag-white\.png/g) ?? []).length, 2);
-  assert.equal((demo.match(/https:\/\/app\.omnisend\.com\/images\/6a97926cc723a01883e3ab18/g) ?? []).length, 1);
+  assert.equal((demo.match(/https:\/\/app\.omnisend\.com\/images\/6a97b53ec723a01883e3afbf/g) ?? []).length, 1);
   assert.match(demo, /class="freshine-component freshine-double-gift-address-showcase"/);
   assert.doesNotMatch(demo, /asset:\/\/|\{\{/);
   const normalizeAssetPaths = (html) => html.replace(/src="[^"]*\/(default-silk-eye-mask-card-photo\.png|default-pillow-cover-card-photo\.png|shopping-bag-white\.png|gift-outline-source\.png)"/g, 'src="$1"');

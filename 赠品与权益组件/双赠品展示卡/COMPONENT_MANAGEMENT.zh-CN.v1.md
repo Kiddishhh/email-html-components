@@ -2,19 +2,19 @@
 
 - Component Key：`gift.showcase2`
 - 分类：赠品与权益组件；默认变体：`eye-mask-first-cta`
-- 桌面：600×677px；手机验证：375×423.125px
+- 桌面邮件版面：600px；组件内容区：510px；手机目标：375px
 - 本次更新同一组件，不替换或修改 `gift.rewardGrid2` 双赠品奖励卡。
 
 ## 已确认设计
 
-按新版参考图 `上下I.png`（1200×1354px）制作。眼罩在上、照片居左；抱枕套在下、照片居右；照片与文案各约半幅，上下无缝相接。保留照片中的 FREE GIFTS 徽章，右上和左下文案改为独立 HTML 文字，增加两个独立 CTA。无顶部标题、额外边距、圆角或照片跳转链接。
+按新版参考图 `上下I.png`（1200×1354px）制作。眼罩在上、照片居左；抱枕套在下、照片居右；照片与文案各约半幅，上下无缝相接。FREE GIFTS 徽章拆为独立 HTML 圆形标签，底色跟随 `color.accent`，位置和默认大小保持原稿，右上和左下文案改为独立 HTML 文字，增加两个独立 CTA。无顶部标题、额外边距、圆角或照片跳转链接。
 
 原稿小字的门槛和赠品名称与按钮相互矛盾，已按用户确认修正：
 
 | 赠品 | 价值文案 | CTA文字 | 赠送说明 | 默认链接 |
 |---|---|---|---|---|
-| Silk Eye Mask | VALUE $59.9 | SPEND $699+ | Spend $699 or more and receive a complimentary silk eye mask. | https://freshinelife.com/ |
-| Random Pillow Cover | VALUE $89.9 | SPEND $999+ | Spend $999 or more and receive a complimentary pillow cover. | https://freshinelife.com/ |
+| Silk Eye Mask | VALUE $59.9 | SPEND $699+ | 不显示 | https://freshinelife.com/ |
+| Random Pillow Cover | VALUE $89.9 | SPEND $999+ | 不显示 | https://freshinelife.com/ |
 
 这些是展示文案与普通链接，不会创建 Shopify 折扣、购物车规则或自动添加赠品。调整门槛时需同时修改 CTA 文字与赠送说明。
 
@@ -22,13 +22,13 @@
 
 | 素材 | 新参考图裁切范围（左/上/右/下） | 原始尺寸 | 桌面显示 | 375px显示 |
 |---|---|---|---|---|
-| `assets/silk-eye-mask-photo.png` | 0/0/604/678 | 604×678 | 302×339 | 188.75×211.875 |
-| `assets/random-pillow-cover-photo.png` | 604/678/1200/1354 | 596×676 | 298×338 | 186.25×211.25 |
+| `assets/silk-eye-mask-base.png` | 用户提供的 `组合 19.png` 原底图 | 515×578 | 302×339 | 188.75×211.875 |
+| `assets/random-pillow-cover-base.png` | 用户提供的 `组合 18.png` 原底图 | 508×578 | 298×338 | 186.25×211.25 |
 | `assets/shopping-bag-white.png` | 782/428/812/462 | 30×34 | 15×17 | 9.375×约10.625 |
 
-照片仅按参考图中的区域边界精确裁出，未重绘或拉伸；购物袋从原稿提取，去除纯红底以透明 PNG 保存。旧版 `default-silk-eye-mask.png`、`default-random-pillow-cover.png` 保留供追溯，当前 fixture 不再引用。
+当前照片直接复制用户提供的无标签 PNG 原底图，未改动图像文件；显示时填满原来的 302×339 / 298×338px 照片区域。购物袋素材保持不变。原带标签照片与旧版素材保留供追溯，当前 fixture 引用新的 `*-base.png` 文件。独立圆形标签为77×77px，眼罩左上偏移20/21px，抱枕右上偏移20/20px，文字为白色 Arial 16px/20px 粗体斜体，手机同比缩放。
 
-内层表格上限600px，左右列为302/298px。默认两行分别339/338px高；小屏保留交错结构，不改为单列。CTA为221×39px，375px下为138.125×24.375px。文字和间距均有桌面固定值及内联 `min()` 渐进缩放值。长文案不会被截断，可能自然撑高行；建议保持原稿长度与换行节奏。
+600px邮件版面四周使用29px上下、45px左右页边距，内层表格上限510px，左右列约257/253px。默认两行分别289/287px高；小屏保留交错结构，不改为单列。删除CTA下方说明后，文案表格改为在对应图片区内垂直居中。文字和间距均有桌面固定值及内联 `min()` 渐进缩放值。长文案不会被截断，可能自然撑高行；建议保持原稿长度与换行节奏。
 
 | 文字层级 | 字体 | 桌面字号 / 行高 / 字重 |
 |---|---|---|
@@ -36,11 +36,10 @@
 | 价值 | Montserrat → Arial → Helvetica → sans-serif | 18 / 24 / 500 |
 | 卖点 | 同上 | 18 / 22 / 400 |
 | CTA | 同上 | 14 / 18 / 500 |
-| 赠送说明 | 同上 | 12 / 15 / 400 |
 
 ## 可编辑字段
 
-每件赠品8项，共16项内容字段。`i=0` 为上方眼罩，`i=1` 为下方抱枕套。
+每件赠品7项，共14项内容字段。`i=0` 为上方眼罩，`i=1` 为下方抱枕套。
 
 | 字段 | 作用 |
 |---|---|
@@ -51,7 +50,6 @@
 | `gifts[i].description` | 卖点说明 |
 | `gifts[i].cta.text` | CTA按钮文字 |
 | `gifts[i].cta.url` | CTA独立HTTPS链接 |
-| `gifts[i].note` | 按钮下方赠送规则 |
 
 隐藏内容字段 `cta.icon.url` 管理两个按钮共用的购物袋素材，参与预览与导出，不显示在编辑面板中。
 
@@ -59,10 +57,9 @@
 |---|---|---|
 | `color.surface` | `#F5F1ED` | 文案区和外层底色 |
 | `color.text` | `#1F1F1F` | 商品名称及卖点 |
-| `color.accent` | `#8D1B1B` | 价值文案与CTA底色 |
-| `color.muted` | `#7C706A` | 赠送说明 |
+| `color.accent` | `#8D1B1B` | 价值文案、CTA与FREE GIFTS标签底色 |
 
-CTA文字与购物袋固定白色；照片与其内徽章不受颜色设置影响。`font.heading`、`font.body` 为隐藏完整快照设置，不在编辑器中开放。
+CTA文字、购物袋与FREE GIFTS标签文字固定白色；照片本身不受颜色设置影响。`font.heading`、`font.body` 为隐藏完整快照设置，不在编辑器中开放。
 
 ## 文件、编辑器与复现
 
@@ -80,9 +77,23 @@ node '赠品与权益组件/双赠品展示卡/render-demo.mjs'
 
 ## 安全与验证边界
 
-- 单根表格和内联关键样式；不用媒体查询、Flex/Grid、定位或脚本。照片保持比例，图片Alt有Arial 14px/18px回退。
+- 单根表格和内联关键样式；不用媒体查询、Flex/Grid、定位或脚本。照片使用背景单元格以承载独立标签，替代文本由 `role="img"` 和 `aria-label` 提供。
 - 只有两个CTA `<a>`，照片不绑定链接；内容经过转义，链接要求HTTPS，拒绝 `javascript:` 等不安全协议。
 - `效果演示.html` 是本地预览文档，不能直接当作最终 Omnisend 片段导入。正式输出的两张照片和购物袋图标都必须替换为公开HTTPS URL；`asset://`仅用于本地素材解析。
 - 本地演示可加载Lora/Montserrat，最终片段不包含外部字体导入；收件箱可能使用回退字体。`min()` 不受支持时保留桌面值，需要另行检查真实邮件客户端的小屏表现。
 - 600px与375px浏览器对照、编辑器修改检查及自动化测试见 `audit/double-gift-showcase-cta/`。旧版验收记录保留在 `audit/double-gift-showcase/`。
 - 本地验证不等于 Omnisend、Gmail、Outlook 或 Apple Mail 收件箱验证；本次不包含上传图片、写入远端草稿、发送、排期或发布。
+
+## 2026-09-07 标签拆分验证
+
+- 内容字段与设置键不变，编辑器仍通过 `color.accent` 统一调整价格、CTA与两个标签；新增组件默认加载无标签底图。
+- 已有草稿保留自己的素材快照；旧草稿若引用带标签图片，请将对应照片换为本次原底图，避免旧图片标签与HTML标签重叠。
+- 浏览器验证维持600×677 / 375×423.125px。背景图与圆角标签在传统Windows Outlook中的表现尚未实测；本地浏览器验证不代表收件箱验证。
+
+## 组件专用文字规范（2026-09-09）
+
+本组件的赠品名称属于卡片主标题，不套用活动商品组件的“图片下商品名”规则；图片、链接、FREE GIFTS 标签、价值、CTA 与赠送说明样式沿用组件原契约。
+
+- `gifts[0].title`、`gifts[1].title`：Lora，Regular 400，30px / 38px，字距 0，居中。
+- `gifts[0].description`、`gifts[1].description`：Montserrat，Regular 400，18px / 22px，字距 0，居中。
+- 两类文字均保留桌面固定值与以 600px 为基准的内联 `min()` 比例缩放，375px 下等比显示。

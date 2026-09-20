@@ -4,12 +4,39 @@
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {
-    "color.surface": { "type": "string", "default": "#F5F1ED", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.text": { "type": "string", "default": "#1F1F1F", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.accent": { "type": "string", "default": "#8D1B1B", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.muted": { "type": "string", "default": "#7C706A", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": false, "skillPrompt": false },
-    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": false, "skillPrompt": false }
+    "color.surface": {
+      "type": "string",
+      "default": "#F5F1ED",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#1F1F1F",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.accent": {
+      "type": "string",
+      "default": "#8D1B1B",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "font.heading": {
+      "type": "string",
+      "default": "Lora, Georgia, Times New Roman, serif",
+      "themeable": false,
+      "skillPrompt": false
+    },
+    "font.body": {
+      "type": "string",
+      "default": "Montserrat, Arial, Helvetica, sans-serif",
+      "themeable": false,
+      "skillPrompt": false
+    }
   },
   "additionalProperties": false
 }

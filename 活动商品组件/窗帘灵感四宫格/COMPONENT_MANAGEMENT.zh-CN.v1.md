@@ -49,3 +49,16 @@
 - 只使用 table/tr/td、img、a 与 span 的内联邮件样式；不使用脚本、iframe、表单、Flex、Grid、定位或外部 CSS。
 - 四张图片各自包裹独立 `<a>`，从而在邮件客户端中保留四个可验证的点击目标；不得回退为一张长图的单一链接。
 - 静态校验与本地预览不代表真实收件箱效果。正式发送前仍需在 Omnisend Desktop/Mobile 预览，并向 Gmail、Outlook 和 Apple Mail 发送测试邮件。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：promotion.title
+- subtitle：promotion.subtitle
+- caption：grid.image1.caption, grid.image2.caption, grid.image3.caption, grid.image4.caption
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

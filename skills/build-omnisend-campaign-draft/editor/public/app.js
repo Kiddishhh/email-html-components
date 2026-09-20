@@ -387,6 +387,14 @@ function renderInspector() {
     importButton.textContent = 'shopify商品导入';
     importButton.addEventListener('click', () => importSaleGrid(instance.instanceId));
     actions.append(importButton);
+    for (let itemIndex = 0; itemIndex < 6; itemIndex += 1) {
+      const productImportButton = document.createElement('button');
+      productImportButton.type = 'button';
+      productImportButton.className = 'button';
+      productImportButton.textContent = `导入商品 ${itemIndex + 1}`;
+      productImportButton.addEventListener('click', () => importSaleGrid6Product(instance.instanceId, itemIndex));
+      actions.append(productImportButton);
+    }
   }
   if (['collection.curtainPromotionCard', 'collection.curtainPromotionCardNoTitle'].includes(instance.componentKey)) {
     const importButton = document.createElement('button');
@@ -396,13 +404,16 @@ function renderInspector() {
     importButton.addEventListener('click', () => importCurtainPromotionProduct(instance.instanceId));
     actions.append(importButton);
   }
-  if (['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle'].includes(instance.componentKey)) {
-    for (let itemIndex = 0; itemIndex < 4; itemIndex += 1) {
+  if (['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.sceneSaleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle', 'collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle'].includes(instance.componentKey)) {
+    const isDetailSix = ['collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle'].includes(instance.componentKey);
+    for (let itemIndex = 0; itemIndex < (isDetailSix ? 6 : 4); itemIndex += 1) {
       const importButton = document.createElement('button');
       importButton.type = 'button';
       importButton.className = 'button';
       importButton.textContent = `导入商品 ${itemIndex + 1}`;
-      importButton.addEventListener('click', () => importSaleGrid4Product(instance.instanceId, itemIndex));
+      importButton.addEventListener('click', () => isDetailSix
+        ? importDetailSixProduct(instance.instanceId, itemIndex)
+        : importSaleGrid4Product(instance.instanceId, itemIndex));
       actions.append(importButton);
     }
   }
@@ -412,7 +423,7 @@ function renderInspector() {
       importButton.type = 'button';
       importButton.className = 'button';
       importButton.textContent = `导入商品 ${itemIndex + 1}`;
-      importButton.addEventListener('click', () => importSaleGrid6WithTitleProduct(instance.instanceId, itemIndex));
+      importButton.addEventListener('click', () => importSaleGrid6Product(instance.instanceId, itemIndex));
       actions.append(importButton);
     }
   }
@@ -543,6 +554,70 @@ async function importCurtainPromotionProduct(instanceId) {
   }
 }
 
+function importDetailSixProduct(instanceId, itemIndex) {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'upload-dialog';
+  dialog.setAttribute('aria-label', `导入商品 ${itemIndex + 1}`);
+  const importForm = document.createElement('form');
+  importForm.className = 'upload-dialog-form';
+  const title = document.createElement('h2');
+  title.textContent = `导入商品 ${itemIndex + 1}`;
+  const label = document.createElement('label');
+  label.textContent = 'Freshine 商品详情页链接';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.required = true;
+  input.placeholder = 'https://freshinelife.com/products/...';
+  label.append(input);
+  const status = document.createElement('p');
+  status.className = 'key-help';
+  status.setAttribute('role', 'status');
+  status.textContent = '仅更新当前商品；支持 /products/ 和 /collections/.../products/ 链接。';
+  const buttons = document.createElement('div');
+  buttons.className = 'upload-dialog-actions';
+  const cancel = document.createElement('button');
+  cancel.type = 'button';
+  cancel.className = 'button';
+  cancel.textContent = '取消';
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.className = 'button';
+  submit.textContent = '导入';
+  let importing = false;
+  cancel.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('cancel', (event) => { if (importing) event.preventDefault(); });
+  dialog.addEventListener('close', () => dialog.remove(), { once: true });
+  importForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (importing || !input.value.trim()) return;
+    importing = true;
+    submit.disabled = true;
+    cancel.disabled = true;
+    status.textContent = '正在读取 Shopify 商品…';
+    try {
+      await commitEdits();
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
+        method: 'POST', body: JSON.stringify({ shopifyUrl: input.value.trim() })
+      });
+      setDraft(result.draft);
+      queuePreview();
+      dialog.close();
+    } catch (error) {
+      status.textContent = error.message;
+    } finally {
+      importing = false;
+      submit.disabled = false;
+      cancel.disabled = false;
+    }
+  });
+  buttons.append(cancel, submit);
+  importForm.append(title, label, status, buttons);
+  dialog.append(importForm);
+  document.body.append(dialog);
+  dialog.showModal();
+  input.focus();
+}
+
 async function importSaleGrid4Product(instanceId, itemIndex) {
   const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
   if (!shopifyUrl) return;
@@ -557,7 +632,7 @@ async function importSaleGrid4Product(instanceId, itemIndex) {
   }
 }
 
-async function importSaleGrid6WithTitleProduct(instanceId, itemIndex) {
+async function importSaleGrid6Product(instanceId, itemIndex) {
   const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
   if (!shopifyUrl) return;
   try {

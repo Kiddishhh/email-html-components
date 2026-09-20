@@ -51,3 +51,16 @@
 背景图提供 `background` 属性、CSS与Outlook VML降级；VML不等于已验证Outlook。图片、图片说明和链接独立可访问。默认图片为公开HTTPS；本地上传产生的 `asset://` 仅用于预览，正式导出仍走已有HTTPS替换流程。
 
 完成本地测试和600px/375px浏览器验证后，只能确认组件与编辑器工作正常。Omnisend预览、Gmail、Outlook、Apple Mail真实收件箱需另行验证；本任务不发送、排期、发布或上传任何远程内容。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：saleCollection.title
+- subtitle：saleCollection.body
+- caption：saleItems[0].cta.text, saleItems[1].cta.text, saleItems[2].cta.text, saleItems[3].cta.text
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

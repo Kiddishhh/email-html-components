@@ -1,0 +1,214 @@
+{
+  "collection.curtainPromotionCard": {
+    "directory": "活动商品组件/单品窗帘促销卡",
+    "slots": {
+      "promotion.title": "heading",
+      "promotion.subtitle": "subtitle",
+      "product.title": "caption"
+    },
+    "defaults": {
+      "font.heading": "Lora, Georgia, Times New Roman, serif",
+      "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+      "color.body": "#000000"
+    }
+  },
+  "collection.curtainPromotionCardNoTitle": {
+    "directory": "活动商品组件/单品窗帘促销卡（无标题款）",
+    "slots": {
+      "product.title": "caption"
+    },
+    "defaults": {
+      "font.body": "Montserrat, Arial, Helvetica, sans-serif"
+    }
+  },
+  "collection.saleGrid6": {
+    "directory": "活动商品组件/六宫格折扣商品组件",
+    "slots": {
+      "saleCollection.title": "heading",
+      "saleCollection.body": "subtitle",
+      "saleItems[0].name": "caption",
+      "saleItems[1].name": "caption",
+      "saleItems[2].name": "caption",
+      "saleItems[3].name": "caption",
+      "saleItems[4].name": "caption",
+      "saleItems[5].name": "caption"
+    },
+    "defaults": {
+      "font.heading": "Lora, Georgia, Times New Roman, serif",
+      "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+      "color.body": "#000000"
+    }
+  },
+  "collection.saleGrid6WithTitle": {
+    "directory": "活动商品组件/六宫格折扣推荐（标题款）",
+    "slots": {
+      "saleCollection.title": "heading",
+      "saleCollection.body": "subtitle",
+      "saleItems[0].name": "caption",
+      "saleItems[1].name": "caption",
+      "saleItems[2].name": "caption",
+      "saleItems[3].name": "caption",
+      "saleItems[4].name": "caption",
+      "saleItems[5].name": "caption"
+    },
+    "defaults": {
+      "font.heading": "Lora, Georgia, Times New Roman, serif",
+      "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+      "color.body": "#000000"
+    }
+  },
+  "collection.saleGrid4WithTitle": {
+    "directory": "活动商品组件/四宫格折扣推荐（标题款）",
+    "slots": {
+      "saleCollection.title": "heading",
+      "saleCollection.body": "subtitle",
+      "saleItems[0].cta.text": "caption",
+      "saleItems[1].cta.text": "caption",
+      "saleItems[2].cta.text": "caption",
+      "saleItems[3].cta.text": "caption"
+    },
+    "defaults": {
+      "color.body": "#000000"
+    }
+  },
+  "collection.sceneSaleGrid4WithTitle": {
+    "directory": "活动商品组件/四宫格场景折扣（标题款）",
+    "slots": {
+      "saleCollection.title": "heading",
+      "saleCollection.body": "subtitle",
+      "saleItems[0].name": "caption",
+      "saleItems[1].name": "caption",
+      "saleItems[2].name": "caption",
+      "saleItems[3].name": "caption"
+    },
+    "defaults": {
+      "color.body": "#000000"
+    }
+  },
+  "collection.productGrid4NoSidePadding": {
+    "directory": "活动商品组件/四宫格商品推荐（无左右边距）",
+    "slots": {
+      "saleCollection.title": "heading",
+      "saleCollection.body": "subtitle",
+      "saleItems[0].cta.text": "caption",
+      "saleItems[1].cta.text": "caption",
+      "saleItems[2].cta.text": "caption",
+      "saleItems[3].cta.text": "caption"
+    },
+    "defaults": {
+      "color.body": "#000000"
+    }
+  },
+  "collection.saleGrid4DetailWithTitle": {
+    "directory": "活动商品组件/四宫格详情折扣（标题款）",
+    "slots": {
+      "promotion.title": "heading",
+      "promotion.subtitle": "subtitle",
+      "saleItems[0].name": "caption",
+      "saleItems[1].name": "caption",
+      "saleItems[2].name": "caption",
+      "saleItems[3].name": "caption"
+    },
+    "defaults": {
+      "color.body": "#000000"
+    }
+  },
+  "collection.saleGrid6DetailWithTitle": {
+    "directory": "活动商品组件/六宫格详情折扣（标题款）",
+    "slots": {
+      "promotion.title": "heading",
+      "promotion.subtitle": "subtitle",
+      "saleItems[0].name": "caption",
+      "saleItems[1].name": "caption",
+      "saleItems[2].name": "caption",
+      "saleItems[3].name": "caption",
+      "saleItems[4].name": "caption",
+      "saleItems[5].name": "caption"
+    },
+    "defaults": {
+      "color.body": "#000000"
+    }
+  },
+  "collection.sceneSaleGrid6PriceWithTitle": {
+    "directory": "活动商品组件/六宫格场景价格（标题款）",
+    "slots": {
+      "promotion.title": "heading",
+      "promotion.subtitle": "subtitle",
+      "saleItems[0].name": "caption",
+      "saleItems[1].name": "caption",
+      "saleItems[2].name": "caption",
+      "saleItems[3].name": "caption",
+      "saleItems[4].name": "caption",
+      "saleItems[5].name": "caption"
+    },
+    "defaults": {
+      "font.heading": "Lora, Georgia, Times New Roman, serif",
+      "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+      "color.body": "#000000"
+    }
+  },
+  "collection.curtainInspirationGrid4": {
+    "directory": "活动商品组件/窗帘灵感四宫格",
+    "slots": {
+      "promotion.title": "heading",
+      "promotion.subtitle": "subtitle",
+      "grid.image1.caption": "caption",
+      "grid.image2.caption": "caption",
+      "grid.image3.caption": "caption",
+      "grid.image4.caption": "caption"
+    },
+    "defaults": {
+      "font.heading": "Lora, Georgia, Times New Roman, serif",
+      "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+      "color.body": "#000000"
+    }
+  },
+  "collection.curtainEditorialMosaic4": {
+    "directory": "活动商品组件/窗帘精选拼贴四图",
+    "slots": {
+      "promotion.title": "heading",
+      "promotion.subtitle": "subtitle"
+    },
+    "defaults": {
+      "color.body": "#000000"
+    }
+  },
+  "collection.curtainEditorialTriptych": {
+    "directory": "活动商品组件/窗帘场景三图卡",
+    "slots": {
+      "pair.left.caption": "caption",
+      "pair.right.caption": "caption",
+      "intro.title": "heading",
+      "intro.subtitle": "subtitle"
+    },
+    "defaults": {
+      "font.body": "Montserrat, Arial, Helvetica, sans-serif",
+      "font.heading": "Lora, Georgia, Times New Roman, serif",
+      "color.body": "#000000"
+    }
+  },
+  "collection.romanShadeMultiRecommendation": {
+    "directory": "活动商品组件/三图推荐（CTA+标题）",
+    "slots": {
+      "intro.title": "heading",
+      "intro.subtitle": "subtitle"
+    },
+    "defaults": {}
+  },
+  "collection.multiCategoryRecommendationV": {
+    "directory": "活动商品组件/多类推荐V",
+    "slots": {
+      "intro.title": "heading",
+      "intro.subtitle": "subtitle",
+      "collections[0].title": "caption",
+      "collections[1].title": "caption",
+      "collections[2].title": "caption",
+      "collections[3].title": "caption",
+      "collections[4].title": "caption",
+      "collections[5].title": "caption"
+    },
+    "defaults": {
+      "color.body": "#000000"
+    }
+  }
+}

@@ -4,7 +4,7 @@
 
 ## 组件用途与边界
 
-本组件用于“标题与简介 + 六张促销图片 + 六个折扣标签 + 底部 CTA”的邮件促销区块。六张图片在桌面端维持两列三行；在窄屏邮件客户端中，六个 250px 包装表格按内容顺序自动换行为居中单列。
+本组件用于“标题与简介 + 六张促销图片 + 六个折扣标签 + 底部 CTA”的邮件促销区块。六张图片在 600px 桌面画布和 375px 窄屏邮件客户端中均维持两列三行，并随可用宽度等比缩小。
 
 组件是可独立拼接的 Omnisend 正文表格片段，不包含 `DOCTYPE`、`html/head/body`、`style/link`、`div`、脚本、退订链接或网页查看链接。平台级合规内容由 Omnisend 邮件布局负责。
 
@@ -44,6 +44,7 @@ Skill 还应收集标题、正文、CTA 文案与链接，以及每个格子的�
 
 每个 `saleItems[n]` 包含：
 
+- `name`：图片下方的商品名称，纯文本、居中、带下划线，链接复用 `image.clickUrl`。
 - `discountLabel`：左上角折扣标签，纯文本。
 - `image.url`：公开可访问的 HTTPS 图片地址。
 - `image.alt`：图片含义说明；背景图单元通过 `role="img"` 与 `aria-label` 保留可访问性信息。
@@ -75,7 +76,8 @@ Skill 还应收集标题、正文、CTA 文案与链接，以及每个格子的�
 |---|---|---:|---|
 | `color.surface` | `#FBFAF8` | 是 | 整个组件背景色 |
 | `color.theme` | `#9D1D20` | 是 | 六个折扣标签与 CTA 的统一主题色 |
-| `color.text` | `#1F1F1F` | 否 | 标题和正文颜色 |
+| `color.text` | `#1F1F1F` | 否 | 标题和商品名称颜色 |
+| `color.body` | `#7C706A` | 否 | 顶部副标题颜色 |
 | `color.buttonText` | `#FFFFFF` | 否 | 标签及按钮文字颜色 |
 | `font.heading` | `Lora, Georgia, Times New Roman, serif` | 否 | 标题字体栈 |
 | `font.body` | `Montserrat, Arial, Helvetica, sans-serif` | 否 | 正文字体栈 |
@@ -84,16 +86,18 @@ Skill 还应收集标题、正文、CTA 文案与链接，以及每个格子的�
 
 修改默认值时，必须同时修改 `settings.defaults.v1.json` 的 `values` 与 `settings.schema.v1.json` 中对应字段的 `default`。颜色使用六位十六进制。邮件客户端无法使用 Lora/Montserrat 时会自动回退到 Georgia/Arial。
 
-标题固定为 Lora `30px / 500（Medium） / 38px`、字间距 `0px`、居中对齐；说明固定为 Montserrat `18px / 500（Medium） / 150%（27px）`、字间距 `0px`、居中对齐。二者与双赠品奖励卡保持同一排版层级，不作为可编辑 CSS 字段。
+标题默认 Lora `30px / 400（Regular） / 150%（45px）`；副标题默认 Montserrat `16px / 500（Medium） / 150%（24px）`；商品名称默认 Montserrat `18px / 400（Regular） / 22px`，带下划线。三者字间距均为 `0px`、居中对齐，沿用组件移动端等比缩放。
+
+单商品导入优先使用 Shopify `fullTitle`，兼容 `title`；整组 Collection / 活动页导入使用每项 `title`，写入 `saleItems[n].name`。旧导入数据缺少标题时回退到图片说明，不保留上一个商品的名称。六个名称均可在编辑器单独修改。
 
 ## 图片与布局规则
 
-1. 六个图片区统一为 236×236px 视觉窗口，使用 `background-size:cover` 居中裁切；建议上传 1:1 图片，并将主体放在中间安全区。
+1. 六个图片区统一为桌面 250×250px、移动端 156.25×156.25px 视觉窗口，使用 `background-size:cover` 居中裁切；建议上传 1:1 图片，并将主体放在中间安全区。
 2. 折扣标签使用 HTML 文字叠放在图片左上角，因此可被 Skill 替换，不应烧录进图片。
 3. 图片单元使用 `<td background>` 和内联 `background-image`。提供 `bgcolor` 降级色及可访问性说明；极少数不支持背景图的客户端仍会显示标签和背景色，但可能不显示图片，因此实际发送前仍须做客户端测试。
-4. 桌面 600px 画布中保持两列；移动端 375px 目标中按混合响应式表格自然堆叠为居中单列，不使用媒体查询、Flex、Grid 或定位。
-5. 每个包装表格统一宽 250px，内部 236px 图片使用左右各 7px 的对称空间。这样两个包装表格刚好适配桌面端约 500px 的内容区，同时移动端保持居中。禁止恢复奇偶卡片的 `align="left/right"` 或不对称边距，否则移动端会再次出现左右交错。
-6. 底部 CTA 使用居中的 `486px` 上限表格（`width:81%; max-width:486px`）：600px 桌面画布维持 486px，375px 移动端约为 304px，保留恰当左右留白且不依赖固定内边距。
+4. 600px 与 375px 目标中均保持两列三行，不使用媒体查询、Flex、Grid 或定位。
+5. 商品区采用 `table-layout:fixed` 的单个三行表格，两列各 `47.348%`，中间间距 `5.304%`。600px 画布中图片为 250×250px、间距 28px；375px 下图片为 156.25×156.25px、间距 17.5px。图片内部 225px 点击单元格同时设置 inline 高度覆写，避免 HTML height 属性撑高图片。演示页直接展示居中 600px 组件，不额外叠加预览留白。禁止恢复奇偶卡片的 `align="left/right"` 或不对称边距，否则移动端会再次出现左右交错。
+6. 商品区左右内边距为 `36px`（375px 等比为 `min(36px,6vw)`）。底部 CTA 使用居中的 `528px` 上限表格（`width:88%; max-width:528px`），与商品区左右边界对齐，并在 375px 下保持等比宽度。
 7. 更换图片时只更新 `content.*`，不要把活动图片或折扣文字硬编码进模板。
 
 ## CSS 与模板维护规则
@@ -109,3 +113,16 @@ Skill 还应收集标题、正文、CTA 文案与链接，以及每个格子的�
 生成结果应按根目录 `Omnisend_HTML_组件与拼接器安全导入规范.md` 扫描：单一根表格、关键样式内联、无禁止标签、无本地图片路径、链接和图片均为 HTTPS、所有模板占位符均已解析。
 
 本地结构测试和浏览器预览通过后，只能称为“符合静态规范”。仍需在 Omnisend 中完成导入保存、Desktop/Mobile/Dark Mode 预览，以及 Gmail、Outlook、Apple Mail 测试邮件，才能判断为可发布。
+
+## 统一文字规范（2026-09-08）
+
+本节取代本文此前对以下字段的字体说明；图片、链接、折扣标签、价格和 CTA 样式沿用组件原契约。
+
+- heading：saleCollection.title
+- subtitle：saleCollection.body
+- caption：saleItems[0].name, saleItems[1].name, saleItems[2].name, saleItems[3].name, saleItems[4].name, saleItems[5].name
+
+- heading：Lora，400，30px / 38px，字距 0，居中。
+- subtitle：Montserrat，500，18px / 150%（27px），字距 0，居中，默认黑色 #000000。
+- caption：Montserrat，500，16px / 20px，字距 0，左对齐。
+- 375px 按 600px 基准等比收缩；下划线等原有装饰保留。

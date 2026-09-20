@@ -144,6 +144,7 @@ export function applySaleGridImport(document, instanceId, saleGrid) {
     content[`saleItems[${index}].image.alt`] = item.image.alt ?? '';
     content[`saleItems[${index}].image.clickUrl`] = item.linkUrl;
     content[`saleItems[${index}].discountLabel`] = item.discountLabel ?? '';
+    content[`saleItems[${index}].name`] = String(item.fullTitle || item.title || item.image.alt || '').trim();
   }
   const ctaUrl = saleGrid.ctaUrl ?? (saleGrid.collectionSource?.type === 'admin-handle' ? null : saleGrid.collection.url);
   if (ctaUrl) content['saleCollection.cta.url'] = ctaUrl;
@@ -160,19 +161,21 @@ export function applySaleGrid4ProductImport(document, instanceId, itemIndex, pro
   const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
   if (index === -1) throw new Error('component instance not found');
   const current = document.components[index];
-  const detailComponentKey = 'collection.saleGrid4DetailWithTitle';
-  if (!['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', detailComponentKey].includes(current.componentKey)) throw new Error('four-grid product import requires a four-grid component instance');
-  if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex > 3) throw new Error('four-grid product import item index is out of range');
+  const detailComponentKeys = ['collection.saleGrid4DetailWithTitle', 'collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle'];
+  const isDetail = detailComponentKeys.includes(current.componentKey);
+  const itemCount = ['collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle'].includes(current.componentKey) ? 6 : 4;
+  if (!['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.sceneSaleGrid4WithTitle', 'collection.productGrid4NoSidePadding', ...detailComponentKeys].includes(current.componentKey)) throw new Error('four-grid product import requires a four-grid component instance');
+  if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex >= itemCount) throw new Error('four-grid product import item index is out of range');
   const product = productImport?.product;
-  const detailProductIsIncomplete = current.componentKey === detailComponentKey && (
+  const detailProductIsIncomplete = isDetail && (
     typeof product?.fullTitle !== 'string' || !product.fullTitle.trim() ||
     typeof product?.price !== 'string' || !product.price.trim() ||
     typeof product?.compareAtPrice !== 'string'
   );
-  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.discountLabel !== 'string' || (['collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding'].includes(current.componentKey) && (typeof product.title !== 'string' || !product.title.trim())) || detailProductIsIncomplete) {
+  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.discountLabel !== 'string' || (['collection.saleGrid4WithTitle', 'collection.sceneSaleGrid4WithTitle', 'collection.productGrid4NoSidePadding'].includes(current.componentKey) && (typeof product.title !== 'string' || !product.title.trim())) || detailProductIsIncomplete) {
     throw new Error('four-grid product import returned incomplete product data');
   }
-  const importedLinkUrl = current.componentKey === detailComponentKey ? appendCampaignUtm(product.linkUrl) : product.linkUrl;
+  const importedLinkUrl = (isDetail || current.componentKey === 'collection.sceneSaleGrid4WithTitle') ? appendCampaignUtm(product.linkUrl) : product.linkUrl;
   const content = {
     ...current.content,
     [`saleItems[${itemIndex}].image.url`]: product.image.url,
@@ -181,11 +184,39 @@ export function applySaleGrid4ProductImport(document, instanceId, itemIndex, pro
     [`saleItems[${itemIndex}].discountLabel`]: product.discountLabel
   };
   if (['collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding'].includes(current.componentKey)) content[`saleItems[${itemIndex}].cta.text`] = product.title;
-  if (current.componentKey === detailComponentKey) {
+  if (current.componentKey === 'collection.sceneSaleGrid4WithTitle') content[`saleItems[${itemIndex}].name`] = product.title.trim();
+  if (isDetail) {
     content[`saleItems[${itemIndex}].name`] = product.fullTitle.trim();
     content[`saleItems[${itemIndex}].price.current`] = product.price;
     content[`saleItems[${itemIndex}].price.compareAt`] = product.compareAtPrice;
   }
+  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
+    ...instance,
+    content,
+    source: `shopify-product:${product.handle}:slot-${itemIndex + 1}`,
+    confirmed: false
+  } : instance);
+  return { ...clone(document), components, confirmed: false };
+}
+
+export function applySaleGrid6ProductImport(document, instanceId, itemIndex, productImport) {
+  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
+  if (index === -1) throw new Error('component instance not found');
+  const current = document.components[index];
+  if (current.componentKey !== 'collection.saleGrid6') throw new Error('summer six-grid product import requires a collection.saleGrid6 instance');
+  if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex > 5) throw new Error('summer six-grid product import item index is out of range');
+  const product = productImport?.product;
+  if (!product?.handle || !product?.image?.url || !product?.linkUrl || typeof product.discountLabel !== 'string') {
+    throw new Error('summer six-grid product import returned incomplete product data');
+  }
+  const content = {
+    ...current.content,
+    [`saleItems[${itemIndex}].name`]: String(product.fullTitle || product.title || product.image.alt || '').trim(),
+    [`saleItems[${itemIndex}].image.url`]: product.image.url,
+    [`saleItems[${itemIndex}].image.alt`]: product.image.alt ?? '',
+    [`saleItems[${itemIndex}].image.clickUrl`]: product.linkUrl,
+    [`saleItems[${itemIndex}].discountLabel`]: product.discountLabel
+  };
   const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
     ...instance,
     content,

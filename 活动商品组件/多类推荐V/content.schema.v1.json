@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.multiCategoryRecommendationV",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "intro.title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "intro.subtitle": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[0].image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "background-image-source"
+    },
+    "collections[0].image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[0].title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[0].clickUrl": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "collections[1].image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "background-image-source"
+    },
+    "collections[1].image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[1].title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[1].clickUrl": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "collections[2].image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "background-image-source"
+    },
+    "collections[2].image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[2].title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[2].clickUrl": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "collections[3].image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "background-image-source"
+    },
+    "collections[3].image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[3].title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[3].clickUrl": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "collections[4].image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "background-image-source"
+    },
+    "collections[4].image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[4].title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[4].clickUrl": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "collections[5].image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "background-image-source"
+    },
+    "collections[5].image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[5].title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "collections[5].clickUrl": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    }
+  },
+  "additionalProperties": false
+}

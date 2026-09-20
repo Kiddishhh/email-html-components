@@ -10,6 +10,7 @@ import {
   attachLocalImage,
   applyCurtainPromotionProductImport,
   applySaleGrid4ProductImport,
+  applySaleGrid6ProductImport,
   applySaleGrid6WithTitleProductImport,
   applySaleGridImport,
   buildEditorCatalog,
@@ -170,7 +171,7 @@ function importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl }) 
 }
 
 function importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl }) {
-  if (!['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle'].includes(instance.componentKey)) throw new Error('four-grid product import requires a four-grid component instance');
+  if (!['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.sceneSaleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle', 'collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle', 'collection.saleGrid6', 'collection.saleGrid6WithTitle'].includes(instance.componentKey)) throw new Error('grid product import requires a product-grid component instance');
   if (typeof shopifyUrl !== 'string' || !shopifyUrl.trim()) throw new Error('shopify product URL is required');
   const script = resolve(workspaceRoot, 'skills/build-omnisend-campaign-draft/scripts/fetch-single-product.mjs');
   const result = spawnSync(process.execPath, [script, '--shopify-url', shopifyUrl.trim()], {
@@ -689,6 +690,8 @@ export async function createCampaignEditorServer({
         const productImport = importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl });
         const updated = instance.componentKey === 'collection.saleGrid6WithTitle'
           ? applySaleGrid6WithTitleProductImport(draft, instanceId, Number(itemIndex), productImport)
+          : instance.componentKey === 'collection.saleGrid6'
+            ? applySaleGrid6ProductImport(draft, instanceId, Number(itemIndex), productImport)
           : applySaleGrid4ProductImport(draft, instanceId, Number(itemIndex), productImport);
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });

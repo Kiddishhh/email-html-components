@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>六宫格场景价格 — Reference vs Preview</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#e9e7e3;color:#222;font:14px/1.5 Arial,sans-serif}.wrap{display:grid;grid-template-columns:600px 600px;gap:24px;align-items:start;padding:24px;width:max-content}.panel{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.12)}h1{margin:0;padding:12px 16px;font-size:16px}.source{display:block;width:600px;height:auto}.preview{display:block;width:600px;height:1250px;border:0;background:#fff}.mobile{grid-column:2;width:375px;height:900px;margin:0 auto;border:0;background:#fff}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="panel"><h1>Source · square version normalized to 600px</h1><img class="source" src="reference-square.png" alt="Approved square-grid reference"></section>
+    <section class="panel"><h1>Implementation · 600px</h1><iframe class="preview" src="../../活动商品组件/六宫格场景价格（标题款）/效果演示.html" title="600px implementation"></iframe></section>
+    <section class="panel" style="grid-column:2"><h1>Implementation · 375px proportional preview</h1><iframe class="mobile" src="../../活动商品组件/六宫格场景价格（标题款）/效果演示.html" title="375px implementation"></iframe></section>
+  </main>
+</body>
+</html>

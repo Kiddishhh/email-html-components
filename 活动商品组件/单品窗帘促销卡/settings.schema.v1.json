@@ -4,17 +4,80 @@
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {
-    "color.surface": { "type": "string", "default": "#FBFAF8", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.text": { "type": "string", "default": "#242321", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.body": { "type": "string", "default": "#3B3936", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.badge": { "type": "string", "default": "#A71E22", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.badgeText": { "type": "string", "default": "#FFFFFF", "themeable": true, "skillPrompt": false, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "font.heading": { "type": "string", "default": "Lora, Georgia, Times New Roman, serif", "themeable": true, "skillPrompt": false },
-    "font.body": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
-    "font.action": { "type": "string", "default": "Montserrat, Arial, Helvetica, sans-serif", "themeable": true, "skillPrompt": false },
-    "spacing.header": { "type": "string", "default": "76px 28px 54px", "themeable": true, "skillPrompt": false, "pattern": "^[0-9]+px [0-9]+px [0-9]+px$" },
-    "spacing.content": { "type": "string", "default": "0 28px 60px", "themeable": true, "skillPrompt": false, "pattern": "^0 [0-9]+px [0-9]+px$" },
-    "radius.badge": { "type": "string", "default": "0 0 6px 0", "themeable": true, "skillPrompt": false, "pattern": "^0 0 [0-9]+px 0$" }
+    "color.surface": {
+      "type": "string",
+      "default": "#FBFAF8",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#242321",
+      "themeable": true,
+      "skillPrompt": false,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.body": {
+      "type": "string",
+      "default": "#000000",
+      "themeable": true,
+      "skillPrompt": false,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.badge": {
+      "type": "string",
+      "default": "#A71E22",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.badgeText": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "themeable": true,
+      "skillPrompt": false,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "font.heading": {
+      "type": "string",
+      "default": "Lora, Georgia, Times New Roman, serif",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.body": {
+      "type": "string",
+      "default": "Montserrat, Arial, Helvetica, sans-serif",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "font.action": {
+      "type": "string",
+      "default": "Montserrat, Arial, Helvetica, sans-serif",
+      "themeable": true,
+      "skillPrompt": false
+    },
+    "spacing.header": {
+      "type": "string",
+      "default": "76px 28px 54px",
+      "themeable": true,
+      "skillPrompt": false,
+      "pattern": "^[0-9]+px [0-9]+px [0-9]+px$"
+    },
+    "spacing.content": {
+      "type": "string",
+      "default": "0 28px 60px",
+      "themeable": true,
+      "skillPrompt": false,
+      "pattern": "^0 [0-9]+px [0-9]+px$"
+    },
+    "radius.badge": {
+      "type": "string",
+      "default": "0 0 6px 0",
+      "themeable": true,
+      "skillPrompt": false,
+      "pattern": "^0 0 [0-9]+px 0$"
+    }
   },
   "additionalProperties": false
 }

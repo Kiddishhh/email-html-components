@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.couponSceneOverlay",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "navigation.visible": { "type": "boolean", "default": true, "themeable": false, "skillPrompt": false },
+    "color.surface": { "type": "string", "default": "#F5F2ED", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": true },
+    "color.promotion": { "type": "string", "default": "#955A34", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": true },
+    "color.promotionText": { "type": "string", "default": "#FFFFFF", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": false },
+    "color.heading": { "type": "string", "default": "#252324", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": true },
+    "color.body": { "type": "string", "default": "#7C706A", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": false },
+    "color.action": { "type": "string", "default": "#9A5A33", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": true },
+    "color.actionText": { "type": "string", "default": "#FFFFFF", "pattern": "^#[0-9A-Fa-f]{6}$", "themeable": true, "skillPrompt": false }
+  },
+  "additionalProperties": false
+}

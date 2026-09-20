@@ -15,8 +15,8 @@
 
 | 区域 | 600px 桌面值 |
 |---|---|
-| 顶部标题 | Montserrat 30px / 400 / 38px，顶部空白 37px |
-| 顶部说明 | Montserrat 14px / 400 / 22px |
+| 顶部标题 | Lora 30px / 400 / 38px，顶部空白 37px |
+| 顶部说明 | Montserrat 18px / 500 / 27px，黑色 |
 | 双卡片行 | 左右各 262px，间距 12px，左右外边距各 32px |
 | 卡片图片 | 262×154px，保持 524×308px 源图比例 |
 | 赠品名称 | Montserrat 17px / 400 / 25px |
@@ -34,7 +34,7 @@
 | `default-silk-eye-mask-card-photo.png` | 64/246/588/554 | 524×308 | `gifts[0].image.url` |
 | `default-pillow-cover-card-photo.png` | 612/246/1136/554 | 524×308 | `gifts[1].image.url` |
 | `shopping-bag-white.png` | 复用双赠品展示卡的透明图标 | 30×34 | 隐藏的 `cta.icon.url` |
-| Omnisend 无底色礼物图标 | `https://app.omnisend.com/images/6a97926cc723a01883e3ab18` | 60×60（显示为 14×14） | 隐藏的 `footer.icon.url` |
+| Omnisend 无底色礼物图标 | `https://app.omnisend.com/images/6a97b53ec723a01883e3afbf` | 60×60（显示为 14×14） | 隐藏的 `footer.icon.url` |
 
 两张照片已带有设计稿中的 `FREE GIFTS` 徽章，不再叠加 HTML/CSS 图形。两张赠品照片和 CTA 购物袋图标通过 `localReferenceAssets` 与 `asset://` 用于本地预览；底部礼物图标默认直接使用已提供的公开 Omnisend HTTPS 地址。
 

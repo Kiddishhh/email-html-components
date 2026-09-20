@@ -5,7 +5,7 @@
     "color.surface": "#FFFDF9",
     "color.theme": "#8D1B1B",
     "color.heading": "#6B492C",
-    "color.body": "#7C706A",
+    "color.body": "#000000",
     "color.action": "#6B522C"
   }
 }

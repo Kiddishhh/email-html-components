@@ -13,13 +13,13 @@
 - `component.template.v1.html`：单根 presentation table、内联样式和一张无链接整图。
 - `content.schema.v1.json`、`content.fixture.v1.json`：整图 URL、Alt 和默认本地素材映射。
 - `settings.schema.v1.json`、`settings.defaults.v1.json`：组件外部背景色契约，默认 `#F8F4EE`。
-- `assets/default-benefits-address-card.png`：用户确认原图，1200×1704px，SHA-256 `5050a09a88d3ea4bc41cca50ff8c14b1af940c78863d39728e6f9ee3da0a8425`。
+- `assets/default-benefits-address-card.png`：用户本次提供的原图，1200×1698px，SHA-256 `48a8bfc0d46142b2d92864835243406c8156f607d4fc1bd0f8ef37e9f3b2198f`。
 - `render-demo.mjs`、`效果演示.html`：使用真实默认快照生成本地浏览器演示。
 
 ## 尺寸与编辑范围
 
-- 桌面最大宽度 600px，默认显示 600×852px；组件不添加边距、热区或裁切。
-- 375px 手机端默认显示 375×532.5px，使用 `width:100%;height:auto` 等比缩放。
+- 桌面最大宽度 600px，默认显示 600×849px；组件不添加边距、热区或裁切。
+- 375px 手机端默认显示 375×530.625px，使用 `width:100%;height:auto` 等比缩放。
 - 可编辑 `image.url`、`image.alt`、`color.surface`；背景色不改变图片内部底色。
 - 图内标题、六项权益、分割线、展厅照片、地址和预约说明均烧录在原图内。修改单项内容时必须替换完整整图。
 - 整图不绑定链接；如未来需要点击行为，应作为新的确认范围处理。

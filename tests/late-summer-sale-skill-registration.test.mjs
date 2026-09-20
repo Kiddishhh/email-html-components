@@ -56,7 +56,8 @@ test('Campaign editor loads the registered late-summer hero with its complete de
     'hero.circleLogoSceneOverlay',
     'hero.sceneOverlayCta',
     'hero.sceneOverlayCta2',
-    'hero.romanShadeDiscount'
+    'hero.romanShadeDiscount',
+    'hero.couponSceneOverlay'
   ]);
 
   let document = createCampaignDocument({ name: '夏末折扣促销首图注册测试' });

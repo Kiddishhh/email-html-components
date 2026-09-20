@@ -5,7 +5,7 @@
     "grid.showCaptions": false,
     "color.surface": "#FBFAF8",
     "color.text": "#1F1F1F",
-    "color.body": "#2C2C2C",
+    "color.body": "#000000",
     "font.heading": "Lora, Georgia, Times New Roman, serif",
     "font.body": "Montserrat, Arial, Helvetica, sans-serif"
   }

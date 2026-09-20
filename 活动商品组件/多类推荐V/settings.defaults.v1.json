@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "collection.multiCategoryRecommendationV",
+  "values": {
+    "color.surface": "#FBFAF8",
+    "color.heading": "#222222",
+    "color.body": "#000000",
+    "color.caption": "#222222"
+  }
+}

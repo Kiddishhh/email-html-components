@@ -351,7 +351,7 @@ test('editor server keeps Shopify import scoped to a selected sale-grid instance
   assert.match(rejected.body.error, /sale-grid import requires/);
 });
 
-for (const componentKey of ['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle']) test(`editor server accepts ${componentKey} selected card import route before validating its product URL`, async (t) => {
+for (const componentKey of ['collection.saleGrid4', 'collection.saleGrid4WithTitle', 'collection.sceneSaleGrid4WithTitle', 'collection.productGrid4NoSidePadding', 'collection.saleGrid4DetailWithTitle', 'collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle', 'collection.saleGrid6']) test(`editor server accepts ${componentKey} selected card import route before validating its product URL`, async (t) => {
   const server = await createCampaignEditorServer({
     workspaceRoot,
     sessionRoot: mkdtempSync(join(tmpdir(), 'freshine-editor-four-grid-import-'))

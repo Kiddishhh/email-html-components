@@ -180,6 +180,26 @@
     "规范版本": 1
   },
   {
+    "中文名称": "优惠券场景叠层头图",
+    "分类": "头图",
+    "componentKey": "hero.couponSceneOverlay",
+    "默认主题": "coupon-scene-overlay",
+    "默认变体": "promo-bar-centered-copy-coupon-cta-overlap-scene",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "头图/优惠券场景叠层头图/component.template.v1.html",
+      "内容契约": "头图/优惠券场景叠层头图/content.schema.v1.json",
+      "设置契约": "头图/优惠券场景叠层头图/settings.schema.v1.json",
+      "默认测试数据": "头图/优惠券场景叠层头图/content.fixture.v1.json",
+      "默认设置": "头图/优惠券场景叠层头图/settings.defaults.v1.json",
+      "中文管理说明": "头图/优惠券场景叠层头图/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "头图/优惠券场景叠层头图/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "活动促销 CTA",
     "分类": "导航组件",
     "componentKey": "navigation.promotionCta",
@@ -340,6 +360,26 @@
     "规范版本": 1
   },
   {
+    "中文名称": "四宫格场景折扣（标题款）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.sceneSaleGrid4WithTitle",
+    "默认主题": "warm-scene-product-grid",
+    "默认变体": "style-xxvii-scene-grid",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/四宫格场景折扣（标题款）/component.template.v1.html",
+      "内容契约": "活动商品组件/四宫格场景折扣（标题款）/content.schema.v1.json",
+      "设置契约": "活动商品组件/四宫格场景折扣（标题款）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/四宫格场景折扣（标题款）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/四宫格场景折扣（标题款）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/四宫格场景折扣（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/四宫格场景折扣（标题款）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "四宫格商品推荐（无左右边距）",
     "分类": "活动商品组件",
     "componentKey": "collection.productGrid4NoSidePadding",
@@ -375,6 +415,46 @@
       "默认设置": "活动商品组件/四宫格详情折扣（标题款）/settings.defaults.v1.json",
       "中文管理说明": "活动商品组件/四宫格详情折扣（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "活动商品组件/四宫格详情折扣（标题款）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "六宫格详情折扣（标题款）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.saleGrid6DetailWithTitle",
+    "默认主题": "curtain-detail-sale-grid",
+    "默认变体": "six-product-detail-circle-badges",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/六宫格详情折扣（标题款）/component.template.v1.html",
+      "内容契约": "活动商品组件/六宫格详情折扣（标题款）/content.schema.v1.json",
+      "设置契约": "活动商品组件/六宫格详情折扣（标题款）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/六宫格详情折扣（标题款）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/六宫格详情折扣（标题款）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/六宫格详情折扣（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/六宫格详情折扣（标题款）/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "六宫格场景价格（标题款）",
+    "分类": "活动商品组件",
+    "componentKey": "collection.sceneSaleGrid6PriceWithTitle",
+    "默认主题": "fall-scene-price-grid",
+    "默认变体": "square-scenes-rectangular-badges",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/六宫格场景价格（标题款）/component.template.v1.html",
+      "内容契约": "活动商品组件/六宫格场景价格（标题款）/content.schema.v1.json",
+      "设置契约": "活动商品组件/六宫格场景价格（标题款）/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/六宫格场景价格（标题款）/content.fixture.v1.json",
+      "默认设置": "活动商品组件/六宫格场景价格（标题款）/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/六宫格场景价格（标题款）/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/六宫格场景价格（标题款）/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
@@ -460,6 +540,26 @@
     "规范版本": 1
   },
   {
+    "中文名称": "多类推荐V",
+    "分类": "活动商品组件",
+    "componentKey": "collection.multiCategoryRecommendationV",
+    "默认主题": "multi-category-v",
+    "默认变体": "two-column-six-linked-collections",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "活动商品组件/多类推荐V/component.template.v1.html",
+      "内容契约": "活动商品组件/多类推荐V/content.schema.v1.json",
+      "设置契约": "活动商品组件/多类推荐V/settings.schema.v1.json",
+      "默认测试数据": "活动商品组件/多类推荐V/content.fixture.v1.json",
+      "默认设置": "活动商品组件/多类推荐V/settings.defaults.v1.json",
+      "中文管理说明": "活动商品组件/多类推荐V/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "活动商品组件/多类推荐V/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
     "中文名称": "可链接整图",
     "分类": "评论组件",
     "componentKey": "image.clickableFullWidth",
@@ -515,6 +615,26 @@
       "默认设置": "赠品与权益组件/双赠品展示卡/settings.defaults.v1.json",
       "中文管理说明": "赠品与权益组件/双赠品展示卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "赠品与权益组件/双赠品展示卡/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "暖红双赠品卡IV",
+    "分类": "赠品与权益组件",
+    "componentKey": "gift.warmRedPairIV",
+    "默认主题": "warm-red-gift-iv",
+    "默认变体": "heading-rules-two-linked-source-cards",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/暖红双赠品卡IV/component.template.v1.html",
+      "内容契约": "赠品与权益组件/暖红双赠品卡IV/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/暖红双赠品卡IV/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/暖红双赠品卡IV/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/暖红双赠品卡IV/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/暖红双赠品卡IV/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/暖红双赠品卡IV/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1
@@ -655,6 +775,26 @@
       "默认设置": "赠品与权益组件/权益+地址组合卡/settings.defaults.v1.json",
       "中文管理说明": "赠品与权益组件/权益+地址组合卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
       "组件样式": "赠品与权益组件/权益+地址组合卡/component.styles.v1.css"
+    },
+    "移动端断点": 375,
+    "规范版本": 1
+  },
+  {
+    "中文名称": "六权益展示卡",
+    "分类": "赠品与权益组件",
+    "componentKey": "image.benefitsShowcase6",
+    "默认主题": "benefits-address-card",
+    "默认变体": "non-linked-full-image",
+    "fixedTheme": false,
+    "输出宽度": 600,
+    "路径": {
+      "组件模板": "赠品与权益组件/六权益展示卡/component.template.v1.html",
+      "内容契约": "赠品与权益组件/六权益展示卡/content.schema.v1.json",
+      "设置契约": "赠品与权益组件/六权益展示卡/settings.schema.v1.json",
+      "默认测试数据": "赠品与权益组件/六权益展示卡/content.fixture.v1.json",
+      "默认设置": "赠品与权益组件/六权益展示卡/settings.defaults.v1.json",
+      "中文管理说明": "赠品与权益组件/六权益展示卡/COMPONENT_MANAGEMENT.zh-CN.v1.md",
+      "组件样式": "赠品与权益组件/六权益展示卡/component.styles.v1.css"
     },
     "移动端断点": 375,
     "规范版本": 1

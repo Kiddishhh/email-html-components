@@ -4,7 +4,7 @@
   "values": {
     "color.surface": "#FBFAF8",
     "color.text": "#242321",
-    "color.body": "#3B3936",
+    "color.body": "#000000",
     "color.badge": "#A71E22",
     "color.badgeText": "#FFFFFF",
     "font.heading": "Lora, Georgia, Times New Roman, serif",

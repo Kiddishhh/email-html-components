@@ -70,6 +70,15 @@ test('new-component standard preserves the approved design, registration, and em
   assert.match(standard, /不得发送.*排期.*发布/su);
 });
 
+test('activity-product component planning defaults to Regular headings and black subtitles', async () => {
+  const skill = await read('SKILL.md');
+  const standard = await read('references/new-component-standard.zh-CN.md');
+
+  assert.match(skill, /活动商品组件.*主标题.*Regular.*font-weight:400.*副标题.*#000000/su);
+  assert.match(standard, /活动商品组件.*主标题.*Regular.*font-weight:400.*副标题.*#000000/su);
+  assert.match(standard, /用户明确提出特殊要求/su);
+});
+
 test('new-component standard mandates the 600px-to-375px proportional inline mobile contract', async () => {
   const skill = await read('SKILL.md');
   const standard = await read('references/new-component-standard.zh-CN.md');

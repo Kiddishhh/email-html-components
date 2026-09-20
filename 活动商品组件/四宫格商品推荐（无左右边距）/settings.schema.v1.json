@@ -4,11 +4,41 @@
   "themeMode": "component-owned-styles",
   "snapshotPolicy": "full-settings-snapshot",
   "properties": {
-    "color.surface": { "type": "string", "default": "#FBFAF8", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.heading": { "type": "string", "default": "#1F1F1F", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.body": { "type": "string", "default": "#7C706A", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.theme": { "type": "string", "default": "#8D1B1B", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
-    "color.action": { "type": "string", "default": "#1F1F1F", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+    "color.surface": {
+      "type": "string",
+      "default": "#FBFAF8",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.heading": {
+      "type": "string",
+      "default": "#1F1F1F",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.body": {
+      "type": "string",
+      "default": "#000000",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.theme": {
+      "type": "string",
+      "default": "#8D1B1B",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.action": {
+      "type": "string",
+      "default": "#1F1F1F",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
   },
   "additionalProperties": false
 }

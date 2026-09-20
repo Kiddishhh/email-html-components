@@ -36,3 +36,7 @@
 - 必须保留 `[[unsubscribe_link]]`。
 
 详细操作、组件样式和安全边界见 `skills/build-omnisend-campaign-draft/` 下的当前 Skill 与 references。
+
+## 统一文字规范（2026-09-08）
+
+仅活动商品组件遵守 skills/build-omnisend-campaign-draft/references/new-component-standard.zh-CN.md：主标题 Lora 400、30/38px 居中；副标题 Montserrat 500、18/27px 居中、#000000；图片下标题/商品名 Montserrat 500、16/20px 左对齐。375px 等比缩放。头图不适用；明确特殊要求优先。

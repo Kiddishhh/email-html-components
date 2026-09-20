@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "image.benefitsShowcase6",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}
