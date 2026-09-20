@@ -4,30 +4,21 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
+import { componentContracts, componentDirectory, registeredComponent, root } from './helpers/registry.mjs';
 
-const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const componentKey = 'collection.saleGrid4DetailWithTitle';
 
-function registeredComponent() {
-  const registry = JSON.parse(readFileSync(`${root}/组件清单.json`, 'utf8'));
-  return registry.find((item) => item.componentKey === componentKey);
-}
-
 test('detail four-grid is registered with a complete editor contract', () => {
-  const entry = registeredComponent();
+  const entry = registeredComponent(componentKey);
   assert.ok(entry, 'collection.saleGrid4DetailWithTitle must be registered');
   assert.equal(entry.中文名称, '四宫格详情折扣（标题款）');
   assert.equal(entry.分类, '活动商品组件');
   assert.equal(entry.输出宽度, 600);
   assert.equal(entry.移动端断点, 375);
 
-  const directory = entry.路径.组件模板.replace('/component.template.v1.html', '');
-  const contentSchema = JSON.parse(readFileSync(`${root}/${directory}/content.schema.v1.json`, 'utf8'));
-  const fixture = JSON.parse(readFileSync(`${root}/${directory}/content.fixture.v1.json`, 'utf8'));
-  const settingsSchema = JSON.parse(readFileSync(`${root}/${directory}/settings.schema.v1.json`, 'utf8'));
-  const settingsDefaults = JSON.parse(readFileSync(`${root}/${directory}/settings.defaults.v1.json`, 'utf8'));
+  const directory = componentDirectory(entry);
+  const { contentSchema, fixture, settingsSchema, settingsDefaults } = componentContracts(directory);
   const fields = editableFieldKeys(componentKey);
 
   assert.deepEqual(fields.content, Object.keys(contentSchema.properties));
@@ -42,9 +33,9 @@ test('detail four-grid is registered with a complete editor contract', () => {
 });
 
 test('detail four-grid defaults match the approved products and UTM policy', () => {
-  const entry = registeredComponent();
+  const entry = registeredComponent(componentKey);
   assert.ok(entry, 'collection.saleGrid4DetailWithTitle must be registered');
-  const directory = entry.路径.组件模板.replace('/component.template.v1.html', '');
+  const directory = componentDirectory(entry);
   const fixture = JSON.parse(readFileSync(`${root}/${directory}/content.fixture.v1.json`, 'utf8')).values;
   const expected = [
     ['Marisol Linen Curtains Large Windows – Elegant Pleated Drapes for Living Room & Bedroom', '$46.99', '$93.98', 'SAVE 50%'],
@@ -66,9 +57,9 @@ test('detail four-grid defaults match the approved products and UTM policy', () 
 });
 
 test('detail four-grid renders only each product image and CTA as links', () => {
-  const entry = registeredComponent();
+  const entry = registeredComponent(componentKey);
   assert.ok(entry, 'collection.saleGrid4DetailWithTitle must be registered');
-  const directory = entry.路径.组件模板.replace('/component.template.v1.html', '');
+  const directory = componentDirectory(entry);
   const content = JSON.parse(readFileSync(`${root}/${directory}/content.fixture.v1.json`, 'utf8')).values;
   const settings = JSON.parse(readFileSync(`${root}/${directory}/settings.defaults.v1.json`, 'utf8')).values;
   const temporary = mkdtempSync(join(tmpdir(), 'freshine-grid4-detail-'));

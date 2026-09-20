@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
+import { componentContracts, componentDirectory, registeredComponent } from './helpers/registry.mjs';
 import {
   addComponentInstance,
   applySaleGrid4ProductImport,
@@ -16,24 +17,16 @@ import {
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'collection.sceneSaleGrid4WithTitle';
 
-function registeredComponent() {
-  const registry = JSON.parse(readFileSync(resolve(root, '组件清单.json'), 'utf8'));
-  return registry.find((item) => item.componentKey === componentKey);
-}
-
 test('scene four-grid is registered with the complete editable contract', () => {
-  const entry = registeredComponent();
+  const entry = registeredComponent(componentKey);
   assert.ok(entry, 'scene four-grid must be registered');
   assert.equal(entry.中文名称, '四宫格场景折扣（标题款）');
   assert.equal(entry.分类, '活动商品组件');
   assert.equal(entry.输出宽度, 600);
   assert.equal(entry.移动端断点, 375);
 
-  const directory = resolve(root, entry.路径.组件模板.replace('/component.template.v1.html', ''));
-  const contentSchema = JSON.parse(readFileSync(resolve(directory, 'content.schema.v1.json'), 'utf8'));
-  const fixture = JSON.parse(readFileSync(resolve(directory, 'content.fixture.v1.json'), 'utf8'));
-  const settingsSchema = JSON.parse(readFileSync(resolve(directory, 'settings.schema.v1.json'), 'utf8'));
-  const settingsDefaults = JSON.parse(readFileSync(resolve(directory, 'settings.defaults.v1.json'), 'utf8'));
+  const directory = componentDirectory(entry, { absolute: true });
+  const { contentSchema, fixture, settingsSchema, settingsDefaults } = componentContracts(directory);
   const fields = editableFieldKeys(componentKey);
 
   assert.deepEqual(fields.content, Object.keys(contentSchema.properties));
@@ -50,9 +43,9 @@ test('scene four-grid is registered with the complete editable contract', () => 
 });
 
 test('scene four-grid defaults preserve the approved design content and local source crops', () => {
-  const entry = registeredComponent();
+  const entry = registeredComponent(componentKey);
   assert.ok(entry);
-  const directory = resolve(root, entry.路径.组件模板.replace('/component.template.v1.html', ''));
+  const directory = componentDirectory(entry, { absolute: true });
   const fixture = JSON.parse(readFileSync(resolve(directory, 'content.fixture.v1.json'), 'utf8'));
   assert.equal(fixture.values['saleCollection.title'], 'Upgrade Your Home in Style');
   assert.equal(fixture.values['saleCollection.body'], 'Refresh Your Home With Our Latest Curtain Designs-Crafted To Bring A Clean, Modern Look And Effortless Comfort For The Year Ahead.');
@@ -68,9 +61,9 @@ test('scene four-grid defaults preserve the approved design content and local so
 });
 
 test('scene four-grid renders four linked images and four linked product names without a CTA or prices', () => {
-  const entry = registeredComponent();
+  const entry = registeredComponent(componentKey);
   assert.ok(entry);
-  const directory = entry.路径.组件模板.replace('/component.template.v1.html', '');
+  const directory = componentDirectory(entry);
   const fixture = JSON.parse(readFileSync(resolve(root, directory, 'content.fixture.v1.json'), 'utf8'));
   const settings = JSON.parse(readFileSync(resolve(root, directory, 'settings.defaults.v1.json'), 'utf8'));
   const temporary = mkdtempSync(join(tmpdir(), 'freshine-scene-grid4-'));
