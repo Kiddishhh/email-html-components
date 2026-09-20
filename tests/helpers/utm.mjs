@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 /** 默认投放渠道标识，见 references/shopify-data-contract.zh-CN.md 的 UTM 约定。 */
-export const DEFAULT_CAMPAIGN_UTM_ID = 'cover-rc';
+const DEFAULT_CAMPAIGN_UTM_ID = 'cover-rc';
 
 /**
  * 断言一个活动链接带了约定的 UTM 三件套。

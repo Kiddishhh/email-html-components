@@ -1,10 +1,7 @@
 import { writeFileSync } from 'node:fs';
 
-/**
- * 构建器只关心画布底色，其余四项在所有测试里都是常量。
- * 单独导出是给那些只需往 composition 里塞一段 canvas 的测试用的。
- */
-export const CANVAS_DEFAULTS = {
+/** 构建器只关心画布底色，其余四项在所有测试里都是常量。 */
+const CANVAS_DEFAULTS = {
   outerBackgroundColor: '#FFFFFF',
   contentWidth: 600,
   mobileTargetWidth: 375,

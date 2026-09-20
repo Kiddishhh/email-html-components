@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 /** 仓库根目录。测试里所有路径都相对它解析。 */
 export const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 
-export function readJson(path) {
+function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
 
