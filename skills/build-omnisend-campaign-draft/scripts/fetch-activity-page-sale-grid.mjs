@@ -76,7 +76,7 @@ function pullActivityPageTemplate({ themeId, pageTemplate, store }) {
   return snapshotPath;
 }
 
-export function loadActivityPageSaleGrid({ activityPageUrl, store = DEFAULT_SHOPIFY_STORE }) {
+function loadActivityPageSaleGrid({ activityPageUrl, store = DEFAULT_SHOPIFY_STORE }) {
   const activityPage = parseActivityPageUrl(activityPageUrl);
   const pageTemplate = resolvePageTemplate(activityPage.handle, store);
   const themeId = liveThemeId(store);
@@ -97,7 +97,7 @@ export function loadActivityPageSaleGrid({ activityPageUrl, store = DEFAULT_SHOP
   };
 }
 
-export function loadShopifyProductImport({ shopifyUrl, collectionHandle, store = DEFAULT_SHOPIFY_STORE }) {
+function loadShopifyProductImport({ shopifyUrl, collectionHandle, store = DEFAULT_SHOPIFY_STORE }) {
   if (collectionHandle !== undefined) {
     if (shopifyUrl !== undefined) throw new Error('choose either shopify URL or collection handle');
     const handle = parseCollectionHandle(collectionHandle);

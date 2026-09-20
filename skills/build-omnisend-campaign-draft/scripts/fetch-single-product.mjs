@@ -7,7 +7,7 @@ const storefrontBaseUrl = 'https://freshinelife.com';
 const DEFAULT_SHOPIFY_STORE = '0qsgrb-pe.myshopify.com';
 const productUrlHelp = 'shopify product URL must use https://freshinelife.com/products/<handle> or https://freshinelife.com/collections/<collection-handle>/products/<handle>';
 
-export function parseSingleProductArgs(argv) {
+function parseSingleProductArgs(argv) {
   const options = {};
   for (let index = 0; index < argv.length; index += 1) {
     const option = argv[index];
@@ -22,7 +22,7 @@ export function parseSingleProductArgs(argv) {
   return options;
 }
 
-export function parseShopifyProductUrl(value) {
+function parseShopifyProductUrl(value) {
   let url;
   try {
     url = new URL(value);
@@ -68,7 +68,7 @@ function hasAvailableVariant(product) {
   return product?.variants?.nodes?.some(({ availableForSale }) => availableForSale) === true;
 }
 
-export function resolveSingleProductVariants(payload, fetchProductVariantPage, handle = '<unknown>') {
+function resolveSingleProductVariants(payload, fetchProductVariantPage, handle = '<unknown>') {
   const product = graphQlRoot(payload)?.productByHandle;
   if (!product) throw new Error(`shopify product not found: ${handle}`);
   while (!hasAvailableVariant(product)) {
@@ -85,7 +85,7 @@ export function resolveSingleProductVariants(payload, fetchProductVariantPage, h
   return payload;
 }
 
-export function normalizeSingleProduct(payload, handle) {
+function normalizeSingleProduct(payload, handle) {
   const product = graphQlRoot(payload)?.productByHandle;
   if (!product || product.handle !== handle) throw new Error(`shopify product not found: ${handle}`);
   const primaryMedia = product?.media?.nodes?.[0];
@@ -115,7 +115,7 @@ export function normalizeSingleProduct(payload, handle) {
   };
 }
 
-export function singleProductGraphQlQuery() {
+function singleProductGraphQlQuery() {
   return `query SingleProduct($handle: String!) {
     productByHandle(handle: $handle) {
       id
@@ -145,7 +145,7 @@ function singleProductVariantGraphQlQuery() {
   }`;
 }
 
-export function loadSingleProductPayload(options, handle) {
+function loadSingleProductPayload(options, handle) {
   if (options.fixture) return JSON.parse(readFileSync(options.fixture, 'utf8'));
   const argv = ['shopify', 'store', 'execute', '--query', singleProductGraphQlQuery(), '--variables', JSON.stringify({ handle })];
   if (options.store) argv.push('--store', options.store);

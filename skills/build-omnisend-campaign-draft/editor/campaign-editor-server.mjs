@@ -137,7 +137,7 @@ export function formatSaleGridImportFailure(output) {
   return new Error(actionable ?? 'Shopify sale-grid import failed');
 }
 
-export function formatCurtainPromotionProductImportFailure(output) {
+function formatCurtainPromotionProductImportFailure(output) {
   const actionable = String(output).match(/Error:\s*((?:shopify product|curtain promotion product|shopify URL) [^\n\r]+)/u)?.[1];
   return new Error(actionable ?? 'Shopify curtain promotion product import failed');
 }
