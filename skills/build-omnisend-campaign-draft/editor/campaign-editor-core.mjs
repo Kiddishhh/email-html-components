@@ -129,10 +129,22 @@ export function reorderComponentInstances(document, fromIndex, toIndex) {
   return { ...clone(document), components, confirmed: false };
 }
 
-export function applySaleGridImport(document, instanceId, saleGrid) {
+function requireComponentInstance(document, instanceId) {
   const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
   if (index === -1) throw new Error('component instance not found');
-  const current = document.components[index];
+  return { index, current: document.components[index] };
+}
+
+// 统一每个 Shopify/本地素材导入共用的收尾：只替换目标实例的 content（和可选 source），并标记未确认。
+function replaceInstanceContent(document, index, current, content, source) {
+  const components = document.components.map((instance, componentIndex) => componentIndex === index
+    ? { ...current, content, ...(source === undefined ? {} : { source }), confirmed: false }
+    : instance);
+  return { ...clone(document), components, confirmed: false };
+}
+
+export function applySaleGridImport(document, instanceId, saleGrid) {
+  const { index, current } = requireComponentInstance(document, instanceId);
   if (current.componentKey !== 'collection.saleGrid6') throw new Error('sale-grid import requires a collection.saleGrid6 instance');
   if (!saleGrid?.collection?.handle || !Array.isArray(saleGrid.items) || saleGrid.items.length !== 6) {
     throw new Error('sale-grid import must contain one collection and exactly six items');
@@ -148,19 +160,12 @@ export function applySaleGridImport(document, instanceId, saleGrid) {
   }
   const ctaUrl = saleGrid.ctaUrl ?? (saleGrid.collectionSource?.type === 'admin-handle' ? null : saleGrid.collection.url);
   if (ctaUrl) content['saleCollection.cta.url'] = ctaUrl;
-  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
-    ...instance,
-    content,
-    source: saleGrid.activityPage ? `shopify-activity-page:${saleGrid.activityPage.handle}:${saleGrid.collection.handle}` : saleGrid.collectionSource?.type === 'admin-handle' ? `shopify-sale-grid-admin:${saleGrid.collection.handle}` : `shopify-sale-grid:${saleGrid.collection.handle}`,
-    confirmed: false
-  } : instance);
-  return { ...clone(document), components, confirmed: false };
+  const source = saleGrid.activityPage ? `shopify-activity-page:${saleGrid.activityPage.handle}:${saleGrid.collection.handle}` : saleGrid.collectionSource?.type === 'admin-handle' ? `shopify-sale-grid-admin:${saleGrid.collection.handle}` : `shopify-sale-grid:${saleGrid.collection.handle}`;
+  return replaceInstanceContent(document, index, current, content, source);
 }
 
 export function applySaleGrid4ProductImport(document, instanceId, itemIndex, productImport) {
-  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
-  if (index === -1) throw new Error('component instance not found');
-  const current = document.components[index];
+  const { index, current } = requireComponentInstance(document, instanceId);
   const detailComponentKeys = ['collection.saleGrid4DetailWithTitle', 'collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle'];
   const isDetail = detailComponentKeys.includes(current.componentKey);
   const itemCount = ['collection.saleGrid6DetailWithTitle', 'collection.sceneSaleGrid6PriceWithTitle'].includes(current.componentKey) ? 6 : 4;
@@ -190,19 +195,11 @@ export function applySaleGrid4ProductImport(document, instanceId, itemIndex, pro
     content[`saleItems[${itemIndex}].price.current`] = product.price;
     content[`saleItems[${itemIndex}].price.compareAt`] = product.compareAtPrice;
   }
-  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
-    ...instance,
-    content,
-    source: `shopify-product:${product.handle}:slot-${itemIndex + 1}`,
-    confirmed: false
-  } : instance);
-  return { ...clone(document), components, confirmed: false };
+  return replaceInstanceContent(document, index, current, content, `shopify-product:${product.handle}:slot-${itemIndex + 1}`);
 }
 
 export function applySaleGrid6ProductImport(document, instanceId, itemIndex, productImport) {
-  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
-  if (index === -1) throw new Error('component instance not found');
-  const current = document.components[index];
+  const { index, current } = requireComponentInstance(document, instanceId);
   if (current.componentKey !== 'collection.saleGrid6') throw new Error('summer six-grid product import requires a collection.saleGrid6 instance');
   if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex > 5) throw new Error('summer six-grid product import item index is out of range');
   const product = productImport?.product;
@@ -217,13 +214,7 @@ export function applySaleGrid6ProductImport(document, instanceId, itemIndex, pro
     [`saleItems[${itemIndex}].image.clickUrl`]: product.linkUrl,
     [`saleItems[${itemIndex}].discountLabel`]: product.discountLabel
   };
-  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
-    ...instance,
-    content,
-    source: `shopify-product:${product.handle}:slot-${itemIndex + 1}`,
-    confirmed: false
-  } : instance);
-  return { ...clone(document), components, confirmed: false };
+  return replaceInstanceContent(document, index, current, content, `shopify-product:${product.handle}:slot-${itemIndex + 1}`);
 }
 
 function compactProductName(title) {
@@ -232,9 +223,7 @@ function compactProductName(title) {
 }
 
 export function applySaleGrid6WithTitleProductImport(document, instanceId, itemIndex, productImport) {
-  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
-  if (index === -1) throw new Error('component instance not found');
-  const current = document.components[index];
+  const { index, current } = requireComponentInstance(document, instanceId);
   if (current.componentKey !== 'collection.saleGrid6WithTitle') throw new Error('six-grid title product import requires a collection.saleGrid6WithTitle instance');
   if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex > 5) throw new Error('six-grid title product import item index is out of range');
   const product = productImport?.product;
@@ -249,13 +238,7 @@ export function applySaleGrid6WithTitleProductImport(document, instanceId, itemI
     [`saleItems[${itemIndex}].image.clickUrl`]: product.linkUrl,
     [`saleItems[${itemIndex}].discountLabel`]: product.discountLabel
   };
-  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
-    ...instance,
-    content,
-    source: `shopify-product:${product.handle}:slot-${itemIndex + 1}`,
-    confirmed: false
-  } : instance);
-  return { ...clone(document), components, confirmed: false };
+  return replaceInstanceContent(document, index, current, content, `shopify-product:${product.handle}:slot-${itemIndex + 1}`);
 }
 
 function appendCampaignUtm(value) {
@@ -267,9 +250,7 @@ function appendCampaignUtm(value) {
 }
 
 export function applyCurtainPromotionProductImport(document, instanceId, productImport) {
-  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
-  if (index === -1) throw new Error('component instance not found');
-  const current = document.components[index];
+  const { index, current } = requireComponentInstance(document, instanceId);
   if (!['collection.curtainPromotionCard', 'collection.curtainPromotionCardNoTitle'].includes(current.componentKey)) {
     throw new Error('curtain promotion product import requires a curtain promotion card instance');
   }
@@ -287,33 +268,19 @@ export function applyCurtainPromotionProductImport(document, instanceId, product
     'product.description': product.description,
     'product.cta.url': product.linkUrl
   };
-  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
-    ...instance,
-    content,
-    source: `shopify-product:${product.handle}`,
-    confirmed: false
-  } : instance);
-  return { ...clone(document), components, confirmed: false };
+  return replaceInstanceContent(document, index, current, content, `shopify-product:${product.handle}`);
 }
 
 export function attachLocalImage(document, instanceId, fieldKey, asset) {
-  const index = document.components.findIndex((instance) => instance.instanceId === instanceId);
-  if (index === -1) throw new Error('component instance not found');
-  const current = document.components[index];
+  const { index, current } = requireComponentInstance(document, instanceId);
   if (!(fieldKey in current.content)) throw new Error(`unknown image field: ${fieldKey}`);
   if (!asset || !/^[a-z0-9][a-z0-9-]*$/u.test(asset.id ?? '') || typeof asset.path !== 'string' || !asset.path || typeof asset.name !== 'string' || !asset.name) {
     throw new Error('local image asset is invalid');
   }
-  const components = document.components.map((instance, componentIndex) => componentIndex === index ? {
-    ...instance,
-    content: { ...instance.content, [fieldKey]: `asset://${asset.id}` },
-    confirmed: false
-  } : instance);
+  const patched = replaceInstanceContent(document, index, current, { ...current.content, [fieldKey]: `asset://${asset.id}` });
   return {
-    ...clone(document),
-    localAssets: { ...(document.localAssets ?? {}), [asset.id]: { path: asset.path, name: asset.name } },
-    components,
-    confirmed: false
+    ...patched,
+    localAssets: { ...(document.localAssets ?? {}), [asset.id]: { path: asset.path, name: asset.name } }
   };
 }
 

@@ -1,10 +1,10 @@
 import { createServer } from 'node:http';
-import { createHash, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { runDraftUploadWithApiKey, runOmnisendHtmlExportWithApiKey } from '../scripts/upload-omnisend-draft.mjs';
+import { runDraftUploadWithApiKey, runOmnisendHtmlExportWithApiKey, sha256 } from '../scripts/upload-omnisend-draft.mjs';
 import {
   addComponentInstance,
   attachLocalImage,
@@ -70,10 +70,6 @@ function mimeType(path) {
   return 'application/octet-stream';
 }
 
-function sha256(value) {
-  return createHash('sha256').update(value).digest('hex');
-}
-
 function loadOmnisendImageCache(path) {
   if (!existsSync(path)) return { schemaVersion: 1, accounts: {} };
   try {
@@ -94,10 +90,23 @@ function imageCacheForApiKey(cache, apiKey) {
   return cache.accounts[accountKey];
 }
 
-function updateInstance(document, instanceId, patch) {
+function requireInstance(document, instanceId) {
   const index = document.components.findIndex((component) => component.instanceId === instanceId);
   if (index === -1) throw new Error('component instance not found');
-  const current = document.components[index];
+  return { index, current: document.components[index] };
+}
+
+// 路由共用的「取草稿 + 定位实例」前置；命中失败时返回可直接响应的 404 文案。
+function locateDraftInstance(drafts, draftId, instanceId) {
+  const draft = drafts.get(draftId);
+  if (!draft) return { error: 'draft not found' };
+  const instance = draft.components.find((component) => component.instanceId === instanceId);
+  if (!instance) return { error: 'component instance not found' };
+  return { draft, instance };
+}
+
+function updateInstance(document, instanceId, patch) {
+  const { index, current } = requireInstance(document, instanceId);
   for (const group of ['content', 'settings']) {
     if (patch[group] === undefined) continue;
     if (!patch[group] || typeof patch[group] !== 'object' || Array.isArray(patch[group])) throw new Error(`${group} patch must be an object`);
@@ -115,8 +124,7 @@ function updateInstance(document, instanceId, patch) {
 }
 
 function confirmInstance(document, instanceId) {
-  const index = document.components.findIndex((component) => component.instanceId === instanceId);
-  if (index === -1) throw new Error('component instance not found');
+  const { index } = requireInstance(document, instanceId);
   const components = document.components.map((component, componentIndex) => componentIndex === index ? {
     ...component,
     confirmed: true
@@ -658,10 +666,9 @@ export async function createCampaignEditorServer({
       const saleGridImportMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/import-sale-grid$/u);
       if (saleGridImportMatch && request.method === 'POST') {
         const [, draftId, instanceId] = saleGridImportMatch;
-        const draft = drafts.get(draftId);
-        if (!draft) return json(response, 404, { error: 'draft not found' });
-        const instance = draft.components.find((component) => component.instanceId === instanceId);
-        if (!instance) return json(response, 404, { error: 'component instance not found' });
+        const located = locateDraftInstance(drafts, draftId, instanceId);
+        if (located.error) return json(response, 404, { error: located.error });
+        const { draft, instance } = located;
         const body = await readBody(request);
         const updated = applySaleGridImport(draft, instanceId, importSaleGrid({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl, collectionHandle: body.collectionHandle }));
         drafts.set(draftId, updated);
@@ -670,10 +677,9 @@ export async function createCampaignEditorServer({
       const curtainPromotionProductImportMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/import-shopify-product$/u);
       if (curtainPromotionProductImportMatch && request.method === 'POST') {
         const [, draftId, instanceId] = curtainPromotionProductImportMatch;
-        const draft = drafts.get(draftId);
-        if (!draft) return json(response, 404, { error: 'draft not found' });
-        const instance = draft.components.find((component) => component.instanceId === instanceId);
-        if (!instance) return json(response, 404, { error: 'component instance not found' });
+        const located = locateDraftInstance(drafts, draftId, instanceId);
+        if (located.error) return json(response, 404, { error: located.error });
+        const { draft, instance } = located;
         const body = await readBody(request);
         const updated = applyCurtainPromotionProductImport(draft, instanceId, importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl }));
         drafts.set(draftId, updated);
@@ -682,10 +688,9 @@ export async function createCampaignEditorServer({
       const saleGrid4ProductImportMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/import-shopify-product\/([0-5])$/u);
       if (saleGrid4ProductImportMatch && request.method === 'POST') {
         const [, draftId, instanceId, itemIndex] = saleGrid4ProductImportMatch;
-        const draft = drafts.get(draftId);
-        if (!draft) return json(response, 404, { error: 'draft not found' });
-        const instance = draft.components.find((component) => component.instanceId === instanceId);
-        if (!instance) return json(response, 404, { error: 'component instance not found' });
+        const located = locateDraftInstance(drafts, draftId, instanceId);
+        if (located.error) return json(response, 404, { error: located.error });
+        const { draft, instance } = located;
         const body = await readBody(request);
         const productImport = importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl });
         const updated = instance.componentKey === 'collection.saleGrid6WithTitle'
@@ -708,10 +713,9 @@ export async function createCampaignEditorServer({
       const uploadMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/components\/([\w.-]+)\/upload-image$/u);
       if (uploadMatch && request.method === 'POST') {
         const [, draftId, instanceId] = uploadMatch;
-        const draft = drafts.get(draftId);
-        if (!draft) return json(response, 404, { error: 'draft not found' });
-        const instance = draft.components.find((component) => component.instanceId === instanceId);
-        if (!instance) return json(response, 404, { error: 'component instance not found' });
+        const located = locateDraftInstance(drafts, draftId, instanceId);
+        if (located.error) return json(response, 404, { error: located.error });
+        const { draft, instance } = located;
         const body = await readBody(request);
         const updated = uploadLocalImage({ draft, instance, fieldKey: body.fieldKey, body, workspaceRoot, catalog });
         drafts.set(draftId, updated);

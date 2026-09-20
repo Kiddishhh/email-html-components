@@ -9,7 +9,7 @@ const UNSUBSCRIBE_TOKEN = '[[unsubscribe_link]]';
 const IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
-function sha256(value) {
+export function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
 
