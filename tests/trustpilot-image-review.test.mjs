@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { addComponentInstance, buildEditorCatalog, buildLocalAssetMap, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { canvas } from './helpers/composition.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'review.trustpilotImage';
@@ -76,7 +77,7 @@ test('Trustpilot 评论卡导出为无链接的邮件安全双评论结构和指
   const input = resolve(temporary, 'composition.json');
   writeFileSync(input, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FFFFFF', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FFFFFF'),
     output,
     previewOutput,
     components: [{

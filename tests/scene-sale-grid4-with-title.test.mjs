@@ -13,6 +13,7 @@ import {
   buildEditorCatalog,
   createCampaignDocument
 } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { canvas } from './helpers/composition.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'collection.sceneSaleGrid4WithTitle';
@@ -75,7 +76,7 @@ test('scene four-grid renders four linked images and four linked product names w
   ]));
   writeFileSync(composition, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#F8F5F1', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#F8F5F1'),
     output,
     previewOutput: join(temporary, 'preview.html'),
     components: [{ name: entry.中文名称, directory, componentKey, content: httpsContent, settings: settings.values }]

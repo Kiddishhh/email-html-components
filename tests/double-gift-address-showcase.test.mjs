@@ -8,6 +8,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { addComponentInstance, buildEditorCatalog, buildLocalAssetMap, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { canvas } from './helpers/composition.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'gift.doubleGiftAddressShowcase';
@@ -92,7 +93,7 @@ test('双赠品展示卡2使用两张独立图片、两个 CTA 和邮件安全�
   };
   writeFileSync(input, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FFFFFF', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FFFFFF'),
     output,
     previewOutput: resolve(temporary, 'preview.html'),
     components: [{

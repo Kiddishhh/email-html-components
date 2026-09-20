@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { componentContracts, componentDirectory, registeredComponent, root } from './helpers/registry.mjs';
+import { canvas } from './helpers/composition.mjs';
 
 const componentKey = 'collection.saleGrid4DetailWithTitle';
 
@@ -67,7 +68,7 @@ test('detail four-grid renders only each product image and CTA as links', () => 
   const composition = join(temporary, 'composition.json');
   writeFileSync(composition, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FBFAF8', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FBFAF8'),
     output,
     previewOutput: join(temporary, 'preview.html'),
     components: [{ name: entry.中文名称, directory, componentKey, content, settings }]

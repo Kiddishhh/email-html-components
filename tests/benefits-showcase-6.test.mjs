@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { addComponentInstance, buildEditorCatalog, buildLocalAssetMap, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { canvas } from './helpers/composition.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'image.benefitsShowcase6';
@@ -59,7 +60,7 @@ test('六权益展示卡导出为单张无链接、流式缩放的邮件安全�
   const input = resolve(temporary, 'composition.json');
   writeFileSync(input, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FFFFFF', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FFFFFF'),
     output,
     previewOutput: resolve(temporary, 'preview.html'),
     components: [{

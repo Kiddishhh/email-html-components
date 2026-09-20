@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { addComponentInstance, applySaleGrid4ProductImport, buildEditorCatalog, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { componentContracts } from './helpers/registry.mjs';
+import { canvas } from './helpers/composition.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'collection.sceneSaleGrid6PriceWithTitle';
@@ -24,10 +26,7 @@ test('scene price six-grid is registered with six square cards and a complete ed
   assert.equal(component.移动端断点, 375);
 
   const directory = resolve(root, component.路径.组件模板.replace('/component.template.v1.html', ''));
-  const contentSchema = JSON.parse(readFileSync(resolve(directory, 'content.schema.v1.json'), 'utf8'));
-  const fixture = JSON.parse(readFileSync(resolve(directory, 'content.fixture.v1.json'), 'utf8'));
-  const settingsSchema = JSON.parse(readFileSync(resolve(directory, 'settings.schema.v1.json'), 'utf8'));
-  const settingsDefaults = JSON.parse(readFileSync(resolve(directory, 'settings.defaults.v1.json'), 'utf8'));
+  const { contentSchema, fixture, settingsSchema, settingsDefaults } = componentContracts(directory);
   const fields = editableFieldKeys(componentKey);
 
   assert.deepEqual(fields.content, Object.keys(contentSchema.properties));
@@ -58,7 +57,7 @@ test('scene price six-grid renders six square linked images, sale prices, crosse
   ]));
   writeFileSync(composition, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FBF6EC', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FBF6EC'),
     output,
     previewOutput: join(temporary, 'preview.html'),
     components: [{ name: component.中文名称, directory, componentKey, content: httpsContent, settings: settings.values }]

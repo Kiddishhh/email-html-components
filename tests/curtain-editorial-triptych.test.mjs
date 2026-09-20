@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { addComponentInstance, buildEditorCatalog, buildLocalAssetMap, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { componentContracts } from './helpers/registry.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const componentKey = 'collection.curtainEditorialTriptych';
@@ -50,10 +51,7 @@ test('curtain editorial triptych registers the reference-faithful three-image co
   for (const relativePath of Object.values(entry.路径)) assert.equal(existsSync(`${root}/${relativePath}`), true, `missing ${relativePath}`);
   for (const filename of ['assets/default-curtain-editorial-hero.jpg', 'assets/default-curtain-editorial-left.jpg', 'assets/default-curtain-editorial-right.jpg', '效果演示.html']) assert.equal(existsSync(`${directory}/${filename}`), true, `missing ${filename}`);
 
-  const contentSchema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
-  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
-  const settingsSchema = JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8'));
-  const settingsDefaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const { contentSchema, fixture, settingsSchema, settingsDefaults } = componentContracts(directory);
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   assert.deepEqual(Object.keys(contentSchema.properties), contentFields);
   for (const key of ['hero.image.url', 'hero.image.clickUrl', 'pair.left.url', 'pair.left.clickUrl', 'pair.right.url', 'pair.right.clickUrl']) assert.equal(contentSchema.properties[key].protocol, 'https');

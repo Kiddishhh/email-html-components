@@ -7,6 +7,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { addComponentInstance, buildEditorCatalog, buildLocalAssetMap, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { componentContracts } from './helpers/registry.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const componentKey = 'collection.curtainInspirationGrid4';
@@ -65,10 +66,7 @@ test('curtain inspiration grid registers four independently linked images in the
     assert.equal(existsSync(`${directory}/${filename}`), true, `missing ${filename}`);
   }
 
-  const contentSchema = JSON.parse(readFileSync(`${directory}/content.schema.v1.json`, 'utf8'));
-  const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
-  const settingsSchema = JSON.parse(readFileSync(`${directory}/settings.schema.v1.json`, 'utf8'));
-  const settingsDefaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
+  const { contentSchema, fixture, settingsSchema, settingsDefaults } = componentContracts(directory);
   const template = readFileSync(`${directory}/component.template.v1.html`, 'utf8');
   assert.deepEqual(Object.keys(contentSchema.properties), ['promotion.title', 'promotion.subtitle', ...imageFields]);
   for (const index of [1, 2, 3, 4]) {

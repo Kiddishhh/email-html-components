@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { editableFieldKeys } from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
 import { addComponentInstance, buildEditorCatalog, createCampaignDocument } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import { canvas } from './helpers/composition.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const componentKey = 'collection.curtainEditorialMosaic4';
@@ -65,7 +66,7 @@ test('窗帘精选拼贴四图导出为邮件安全的四图背景和 CTA 链接
   const input = resolve(temporary, 'composition.json');
   writeFileSync(input, JSON.stringify({
     schemaVersion: 1,
-    canvas: { backgroundColor: '#FFFFFF', outerBackgroundColor: '#FFFFFF', contentWidth: 600, mobileTargetWidth: 375, verticalPadding: 0 },
+    canvas: canvas('#FFFFFF'),
     output,
     previewOutput: resolve(temporary, 'preview.html'),
     components: [{ name: component.name, directory: component.directory, componentKey, content: component.content, settings: component.settings }]
