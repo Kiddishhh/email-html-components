@@ -1,6 +1,6 @@
 # 当前组件样式与编辑范围
 
-本指南只描述 `组件清单.json` 中当前登记的组件。所有组件使用 600px 邮件画布并在 375px 下验证。非头图组件的顶层居中主标题统一使用 Lora `30px / 500（Medium） / 38px`，字间距 `0px`；顶层居中副标题、说明或规则统一使用 Montserrat `18px / 500（Medium） / 150%（27px）`，字间距 `0px`。两者均居中对齐；卡片内部文字、左对齐文字、页脚、评论与头图仍保持各组件自身层级。按钮和留白不做跨组件强制同款处理。
+本清单记录已确认组件的源视觉、字段与链接边界。新建组件和编辑器当前默认字体为标题Georgia/serif、其余Verdana/sans-serif；活动商品字号/字重范围见[新组件规范](new-component-standard.zh-CN.md)，不对其他分类套用。下文Lora/Montserrat等说明属于已有源快照，不能据此批量迁移或覆盖用户显式字体。
 
 ## 共同规范
 
@@ -19,6 +19,13 @@
 - 可编辑：背景图/Alt、活动三行文案、CTA、顶部促销文案与链接、Logo 图片/Alt/链接、主题色和 Logo 徽章色。
 - 固定：600px 全宽视觉、106px 徽章与 80px Logo 的版式关系、悬浮内容区结构。
 - 默认主图参考比例为 600:722；推荐源图约 1200×1444px，375px 下允许按 `cover` 做可控裁切。
+
+### `hero.countdownSceneCard` — 倒计时场景卡片头图
+
+- 在“头图”结构中选择/搜索；注册条、静态倒计时图片、优惠前段/强调/第二行、场景图片与按钮，15个内容字段和8项颜色可编辑。
+- 三处链接独立：SIGN UP、主场景图、SHOP NOW；默认原稿HTTPS素材与Columbus_Day_Sale UTM，背景/倒计时图片不跳转。
+- 600px卡片528px、标题图380×66、场景454×405、按钮254×56；375px等比62.5%。背景裁切固定，Verdana默认字体，文案支持逐字段样式。倒计时天数需更换图片，不自动更新。
+- 不读取Shopify，不更改导出/上传流程；详见[管理说明](../../../头图/倒计时场景卡片头图/COMPONENT_MANAGEMENT.zh-CN.v1.md)。
 
 ### `hero.countdownOverlay` — 倒计时头图
 
@@ -76,7 +83,20 @@
 - 完整优惠券图和正方形场景图均以 528px 最大宽度居中；主 CTA 最大 `266×56px`，向上与场景图重叠 28px，使用 Montserrat SemiBold `20px / 24px / 600`，375px 下保留至少 44px 触摸高度。几何、间距、字体、叠层关系不开放编辑。
 - 链接边界：顶部 `SIGN UP` 仅使用 `navigation.cta.url`；只有 SHOP NOW 使用 `cta.url`，默认 `https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-fs`。默认图片仅供本地预览，正式输出必须替换为公开 HTTPS 图片；不进行 Shopify 导入或运行时请求。
 
+### `hero.minimalTitleCta` — 极简标题CTA头图
+
+- 可编辑：主标题、副标题、按钮文字、按钮 HTTPS 链接、大图/Alt/独立 HTTPS 点击链接，以及组件底色、标题色、副标题色和按钮底色。
+- 固定：奶油底 600px 画布，左右页边距统一 `47px`，上下内边距 `36px / 40px`（底部保留 40px 留白）。主标题 Lora Regular `36px / 54px`、字间距 `0px` 居中；副标题 Montserrat Medium `16px / 24px`、`0px` 居中，与标题间距 `24px`。按钮为防弹按钮：内边距 `13px 30px` 放在 `display:block` 链接上、整块红色区域可点击，`<td>` 仅保留底色与 `2px` 圆角（增强），文字 Montserrat SemiBold `16px / 20px`、字间距 `1px`、白色，与副标题间距 `24px`。大图通过 `width:100%;max-width:506px;height:auto` 流式保持比例，与文本列同宽（左右各 47px 页边距），与按钮间距 `28px`，不裁切不强制高度。
+- 链接边界：按钮仅使用 `hero.cta.url`，大图整图仅使用 `hero.image.clickUrl`，两条链接独立互不同步；默认均为 `https://freshinelife.com/`，正式使用时替换为实际活动页。375px 下全部受控尺寸按 62.5% 内联 `min()` 等比收缩；无导航、无 Logo、无 Shopify 导入。
+
 ## 导航组件
+
+### `hero.maskedPromotion` — 蒙版促销头图
+
+- 可编辑：背景图/说明、活动标题 `hero.heading`、优惠主标题 `hero.title`、补充说明、按钮文字/HTTPS 链接，以及图片降级底色、文案色、按钮底色、按钮文字色；沿用逐文案样式控件。
+- 固定：600×355px；375px 下约 375×221.875px。48% 棕色蒙版和 `multiply,normal` 混合、背景图 `100% auto` 与 `center 25.263158%` 裁切，88px 顶部与 74px 底部留白、三处16px间隔；Georgia 活动标题18/23px和优惠标题48/61px，Verdana副标题14/21px和183×40px CTA，全部等比收缩。
+- 仅按钮可点击，默认活动页完整保留 `utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale`；背景和文案无链接。公开 Omnisend 图片可直接预览，替换本地图片仍沿用原导出上传流程；无导航、Logo、Shopify 导入或外部字体。客户端可能降级渐变与混合，浏览器预览不等同收件箱测试。
+
 
 ### `navigation.promotionCta` — 活动促销 CTA
 
@@ -314,6 +334,12 @@
 
 - 可编辑：页脚背景色、正文色和链接色。
 - 固定：600px 参考图的地址、预约说明、电话/支持邮箱、七枚社媒图标、496px `#B59B8B` 分割线、版权/品牌名与退订链接顺序；没有品牌名或顶部金色短线。七枚图标复用当前页脚的公开 HTTPS 素材与跳转，按 YouTube、Instagram、Facebook、TikTok、Pinterest、WhatsApp、Threads 顺序置于 `26 × 26px` 居中单元，图像尺寸为 `24px`、`24px`、`23px`、`24px`、`24px`、`24px`、`23px`。375px 使用内联 `min()` 缩放，HTML 编辑器不开放内容、间距、弱化文字色或图标几何。
+
+### `footer.transparentSocial` — 透明社媒页脚
+
+- 可编辑：地址、预约/收件说明、版权、品牌名；七个平台各自的社媒HTTPS跳转、图标URL、Alt，共25字段；正文、预约说明、分割线、品牌和退订文字五项颜色。逐文案样式及图标本地素材沿用现有编辑流程。
+- 固定：透明底色继承邮件画布，600px参考、23/30/24px留白；309px社媒行和七个29px方形图标，依次YouTube、Instagram、Facebook、TikTok、Pinterest、WhatsApp、Threads。地址/说明12px/18px居中单行，1px暖棕分割线，版权和品牌两行，再接Unsubscribe。375px下受控尺寸按62.5%收缩，1px分割线不缩放。
+- 保留用户提供的图标、全部跳转及WhatsApp参数，不新增UTM；字体为当前默认Verdana/sans-serif。唯一`[[unsubscribe_link]]`和Unsubscribe文字固定，不开放退订目标、不对其应用UTM；没有电话或支持邮箱。已有三个页脚保持原样，浏览器预览不等同真实收件箱验证。
 
 # 多类推荐V
 

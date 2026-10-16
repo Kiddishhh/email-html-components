@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownSceneCard",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.promotion": {
+      "type": "string",
+      "default": "#8D1B1B",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.promotionText": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.surface": {
+      "type": "string",
+      "default": "#C4A573",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.card": {
+      "type": "string",
+      "default": "#F7F4EC",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#1F1F1F",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.highlight": {
+      "type": "string",
+      "default": "#8D1B1B",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.action": {
+      "type": "string",
+      "default": "#8D1B1B",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.actionText": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
+  },
+  "additionalProperties": false
+}

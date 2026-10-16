@@ -1,3 +1,4 @@
+import { tempPath } from './helpers/temp-path.mjs';
 import { assertTextRole } from './helpers/typography.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -23,9 +24,9 @@ function renderTriptych() {
   const catalog = buildEditorCatalog({ workspaceRoot: root });
   let document = createCampaignDocument({ name: 'curtain-editorial-triptych' });
   document = addComponentInstance(document, catalog, componentKey);
-  const output = '/private/tmp/curtain-editorial-triptych.html';
-  const previewOutput = '/private/tmp/curtain-editorial-triptych.preview.html';
-  const compositionPath = '/private/tmp/curtain-editorial-triptych.json';
+  const output = tempPath('curtain-editorial-triptych.html');
+  const previewOutput = tempPath('curtain-editorial-triptych.preview.html');
+  const compositionPath = tempPath('curtain-editorial-triptych.json');
   const composition = {
     schemaVersion: 1,
     canvas: document.canvas,

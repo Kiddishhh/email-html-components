@@ -1,0 +1,36 @@
+[
+  {
+    "viewport": 600,
+    "width": 600,
+    "height": 354.984375,
+    "images": [
+      {
+        "alt": "Fall Home Refresh",
+        "loaded": true,
+        "width": 278,
+        "height": 278
+      }
+    ],
+    "links": [
+      "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+      "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+    ]
+  },
+  {
+    "viewport": 375,
+    "width": 375,
+    "height": 221.859375,
+    "images": [
+      {
+        "alt": "Fall Home Refresh",
+        "loaded": true,
+        "width": 174,
+        "height": 174
+      }
+    ],
+    "links": [
+      "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+      "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-rc"
+    ]
+  }
+]

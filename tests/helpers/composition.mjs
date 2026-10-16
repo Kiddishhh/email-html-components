@@ -1,3 +1,4 @@
+import { tempPath } from './temp-path.mjs';
 import { writeFileSync } from 'node:fs';
 
 /** 构建器只关心画布底色，其余四项在所有测试里都是常量。 */
@@ -13,7 +14,7 @@ export function canvas(backgroundColor = '#FBFAF8') {
 }
 
 /**
- * 写一份 composition 到 `/private/tmp/<name>.composition.json`，返回四条常用路径。
+ * 写一份 composition 到 平台临时目录中的 `<name>.composition.json`，返回四条常用路径。
  *
  * 每个测试文件原本各写一份同构工厂（画布常量、输出路径命名、mutate 钩子、写盘格式
  * 完全一致，只有底色、素材表和组件条目不同），集中到这里避免各自漂移。
@@ -27,8 +28,8 @@ export function canvas(backgroundColor = '#FBFAF8') {
  * @returns {{ composition: object, path: string, output: string, previewOutput: string }}
  */
 export function writeComposition({ name, backgroundColor = '#FBFAF8', assets, component, mutate = () => {} }) {
-  const output = `/private/tmp/${name}.html`;
-  const previewOutput = `/private/tmp/${name}.local-preview.html`;
+  const output = tempPath(`${name}.html`);
+  const previewOutput = tempPath(`${name}.local-preview.html`);
   const composition = {
     schemaVersion: 1,
     canvas: canvas(backgroundColor),
@@ -38,7 +39,7 @@ export function writeComposition({ name, backgroundColor = '#FBFAF8', assets, co
     components: [component]
   };
   mutate(composition);
-  const path = `/private/tmp/${name}.composition.json`;
+  const path = tempPath(`${name}.composition.json`);
   writeFileSync(path, JSON.stringify(composition, null, 2));
   return { composition, path, output, previewOutput };
 }

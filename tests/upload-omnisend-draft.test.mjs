@@ -467,9 +467,9 @@ test('reports Omnisend validation details without exposing the runtime key', asy
   });
 });
 
-test('accepts normalized multi-block readback when every confirmed URL and token is preserved', async () => {
+test('accepts normalized multi-block readback when confirmed text, URLs and token are preserved', async () => {
   const { createDraftUploadTransaction } = await import(scriptUrl);
-  const html = '<table><tr><td background="asset://hero">[[unsubscribe_link]]</td></tr></table>';
+  const html = '<table><tr><td background="asset://hero"><a href="[[unsubscribe_link]]">Unsubscribe</a></td></tr></table>';
   const finalUrl = 'https://app.omnisend.com/images/image-1';
   const { transport } = createTransport(`<table><tr><td background="${finalUrl}">[[unsubscribe_link]]</td></tr></table>`);
   const transaction = createDraftUploadTransaction({

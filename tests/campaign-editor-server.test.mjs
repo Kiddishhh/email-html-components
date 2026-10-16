@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
@@ -5,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { createCampaignEditorServer, formatSaleGridImportFailure } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-server.mjs';
 
-const workspaceRoot = '/Users/ww/Desktop/邮件营销运营/邮件html组件';
+const workspaceRoot = fileURLToPath(new URL('..', import.meta.url)).slice(0, -1);
 const currentComponentCount = JSON.parse(readFileSync(`${workspaceRoot}/组件清单.json`, 'utf8')).length;
 
 async function request(baseUrl, path, options = {}) {

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownSceneCard",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "promotion.text": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "promotion.linkText": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "promotion.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "link-target",
+      "protocol": "https"
+    },
+    "hero.backgroundImage.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "background-image-source",
+      "protocol": "https"
+    },
+    "hero.backgroundImage.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "countdown.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-source",
+      "protocol": "https"
+    },
+    "countdown.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "hero.offer.lead": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.offer.highlight": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.offer.detail": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-source",
+      "protocol": "https"
+    },
+    "hero.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "hero.image.clickUrl": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-source",
+      "protocol": "https"
+    },
+    "hero.cta.text": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.cta.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "link-target",
+      "protocol": "https"
+    }
+  },
+  "additionalProperties": false
+}

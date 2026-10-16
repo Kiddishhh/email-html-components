@@ -1,0 +1,8 @@
+{
+  "target": "134:1946",
+  "file": "source/0_0.html",
+  "resourceStatus": { "fontsFound": 1, "fontsLocalized": 1, "temporaryURLsRetained": 0 },
+  "phaseA": { "pixsoNodeIds": { "found": 6, "removed": 6, "retained": 0 }, "pixsoNodeClasses": { "found": 6, "replaced": 6, "retained": 0 } },
+  "phaseB": { "classTokenChanges": 0, "inferredStateClasses": 0 },
+  "integration": { "file": "../email-nav-recolor-logo-20260914/email-omnisend.html", "leftBackground": "#A38B77", "rightBackground": "#8F7761", "logo": "https://app.omnisend.com/images/6aa7c3c3c723a01883e64f69" }
+}

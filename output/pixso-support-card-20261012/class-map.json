@@ -1,0 +1,20 @@
+{
+  "Pixso-canvas-0_1": "support-canvas",
+  "Pixso-group-295_3573": "support-card",
+  "stroke-wrapper-295_3574": "card-outline-wrapper",
+  "Pixso-rectangle-295_3574": "card-surface",
+  "stroke-295_3574": "card-outline",
+  "Pixso-frame-295_3575": "support-copy",
+  "frame-content-295_3575": "support-copy-content",
+  "Pixso-paragraph-295_3576": "support-heading",
+  "Pixso-paragraph-295_3577": "support-description",
+  "Pixso-text-295_3578": "support-contacts",
+  "Pixso-paragraph-295_3578_0": "contact-line",
+  "Pixso-span-295_3578_0_1": "contact-phone",
+  "Pixso-span-295_3578_0_2": "contact-divider-phone",
+  "Pixso-span-295_3578_0_3": "contact-email",
+  "Pixso-span-295_3578_0_4": "contact-divider-email",
+  "Pixso-span-295_3578_0_5": "contact-chat",
+  "Pixso-group-295_3579": "support-icon-wrapper",
+  "Pixso-vector-295_3580": "support-icon"
+}

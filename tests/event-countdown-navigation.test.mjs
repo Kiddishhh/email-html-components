@@ -60,7 +60,8 @@ test('event countdown navigation is selectable with complete editable defaults',
   assert.ok(component, `${componentKey} must be selectable`);
   assert.deepEqual(styleKeysForStructure(catalog, '导航组件'), [
     'navigation.promotionCta',
-    componentKey
+    componentKey,
+    'hero.maskedPromotion'
   ]);
   assert.deepEqual(editableFieldKeys(componentKey), {
     content: contentFields,

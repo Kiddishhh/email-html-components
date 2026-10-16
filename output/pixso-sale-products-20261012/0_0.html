@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+</style>
+  <style>
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9: rgba(124, 112, 106, 1);
+  --083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8: var(--accent-text);
+  --xs: 12px;
+  --3xl: 30px;
+  --base: 16px;
+  --sm: 14px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --primary-text: rgba(255, 255, 255, 1);
+  --primary: rgba(141, 27, 27, 1);
+  --background: rgba(251, 250, 248, 1);
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.collection-canvas-1 > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.collection-canvas-1,.collection-layout-2 {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.collection-canvas-1 {
+  height: 100%;
+}
+
+.collection-layout-2 {
+  height: 1058px;
+  min-width: 600px;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+.collection-group-3 {
+  width: 484px;
+  height: 984px;
+  position: absolute;
+  left: 58px;
+  top: 32px;
+}
+
+.collection-copy-4,.collection-copy-5,.collection-copy-14,.collection-copy-25,.collection-copy-15,.collection-copy-16,.collection-copy-18,.collection-copy-39,.collection-copy-26,.collection-copy-47,.collection-copy-27,.collection-copy-28,.collection-copy-35,.collection-copy-36,.collection-copy-37,.collection-copy-46,.collection-copy-48,.collection-copy-49 {
+  text-align: center;
+  letter-spacing: 0px;
+}
+
+.collection-copy-4,.collection-copy-5 {
+  font-weight: 400;
+  line-height: 150%;
+  text-decoration: none;
+  text-transform: capitalize;
+  height: auto;
+  position: absolute;
+}
+
+.collection-copy-4,.collection-copy-14,.collection-copy-25,.collection-copy-18,.collection-copy-39,.collection-copy-28,.collection-copy-35,.collection-copy-46,.collection-copy-49 {
+  width: auto;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.collection-copy-4 {
+  font-size: var(--3xl);
+  font-family: "Georgia-Regular";
+  color: var(--);
+  left: 50%;
+  top: 0px;
+  transform: translateX(calc(-50% + -0.5px));
+}
+
+.collection-copy-5,.collection-layout-6,.collection-group-10,.collection-group-21,.collection-group-31,.collection-group-42,.collection-surface-11 {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.collection-copy-5 {
+  font-size: var(--base);
+  font-family: "Verdana-Regular";
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+  width: 483px;
+  left: 0.5px;
+  right: -0.5px;
+  top: 53px;
+}
+
+.collection-layout-6,.collection-layout-7 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.collection-layout-6 {
+  width: 483px;
+  height: auto;
+  position: absolute;
+  left: -0.5px;
+  right: 0.5px;
+  top: 158px;
+}
+
+.collection-layout-7 {
+  flex-wrap: wrap;
+  gap: 40px 43px;
+  align-content: flex-start;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.collection-group-8,.collection-group-19,.collection-group-29,.collection-group-40 {
+  width: 220px;
+  height: 393px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.collection-surface-9,.collection-surface-30,.collection-surface-20,.collection-surface-41 {
+  height: 174px;
+  top: 219px;
+}
+
+.collection-surface-9,.collection-surface-30 {
+  width: 220px;
+  position: absolute;
+  left: 0px;
+  background-color: var(--background);
+}
+
+.collection-group-10,.collection-group-21,.collection-group-31,.collection-group-42 {
+  width: 220px;
+  height: 219px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+}
+
+.collection-surface-11,.collection-surface-32 {
+  top: -2px;
+  -webkit-mask-position: 2px 2px;
+  mask-position: 2px 2px;
+}
+
+.collection-surface-11,.collection-surface-22,.collection-surface-32,.collection-surface-43 {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-mask-size: 220px 219px;
+  mask-size: 220px 219px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.collection-surface-11 {
+  width: 222px;
+  height: 223px;
+  position: absolute;
+  left: -1px;
+  right: 1px;
+  background-image: url("assets/images/7ba270a03653ceb1b1561014f06a12da517714f9.jpg");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_4)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_4%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_4)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_4%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.collection-group-12,.collection-group-23,.collection-group-33,.collection-group-44,.collection-surface-13,.collection-surface-24,.collection-surface-34,.collection-surface-45 {
+  width: 94px;
+  height: 26px;
+}
+
+.collection-group-12,.collection-group-23,.collection-group-33,.collection-group-44 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.collection-surface-13,.collection-surface-24,.collection-surface-34,.collection-surface-45 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-radius: 0px 0px 6px 0px;
+  background-color: var(--primary);
+}
+
+.collection-copy-14,.collection-copy-25,.collection-copy-15,.collection-copy-16,.collection-copy-35,.collection-copy-36,.collection-copy-37 {
+  text-decoration: none;
+  height: auto;
+  position: absolute;
+}
+
+.collection-copy-14,.collection-copy-25,.collection-copy-35,.collection-copy-46 {
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  color: var(--primary-text);
+  top: 3.354839px;
+}
+
+.collection-copy-14,.collection-copy-25 {
+  font-size: var(--sm);
+  left: 11.5px;
+}
+
+.collection-copy-15 {
+  font-size: var(--sm);
+  font-family: "Georgia-Regular";
+  font-weight: 400;
+  text-transform: capitalize;
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+  width: 152px;
+  left: 34px;
+  bottom: 121px;
+}
+
+.collection-copy-16,.collection-copy-36,.collection-copy-37 {
+  width: 208px;
+  left: 6px;
+}
+
+.collection-copy-16 {
+  font-size: var(--xs);
+  font-family: "Verdana-Regular";
+  font-weight: 400;
+  line-height: 150%;
+  text-transform: capitalize;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+  top: 284px;
+}
+
+.collection-group-17,.collection-group-38 {
+  width: 80px;
+  height: 17px;
+  position: absolute;
+  left: 70px;
+  top: 350px;
+}
+
+.collection-copy-18,.collection-copy-39,.collection-copy-28,.collection-copy-49 {
+  text-decoration: underline;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.collection-copy-18,.collection-copy-39 {
+  font-size: var(--sm);
+  font-family: "Verdana-Regular";
+  font-weight: 400;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + 0px));
+}
+
+.collection-surface-20,.collection-surface-41 {
+  width: 220px;
+  position: absolute;
+  right: 0px;
+  background-color: var(--background);
+}
+
+.collection-surface-22 {
+  width: 221.781372px;
+  height: 221.670731px;
+  position: absolute;
+  left: -0.890688px;
+  top: -2.670732px;
+  background-image: url("assets/images/8bd9096b7c1cacf63082543ae75ba7634b8fbf63.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_3)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_3%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_3)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_3%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 0.890688px 2.670732px;
+  mask-position: 0.890688px 2.670732px;
+}
+
+.collection-copy-26,.collection-copy-47,.collection-copy-27,.collection-copy-28 {
+  font-weight: 400;
+  height: auto;
+  position: absolute;
+}
+
+.collection-copy-26,.collection-copy-47 {
+  font-size: var(--sm);
+  font-family: "Georgia-Regular";
+  text-decoration: none;
+  text-transform: capitalize;
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+  width: 162px;
+  left: 29px;
+  top: 240px;
+}
+
+.collection-copy-27,.collection-copy-48 {
+  width: 192px;
+  left: 14px;
+}
+
+.collection-copy-27 {
+  font-size: var(--xs);
+  font-family: "Verdana-Regular";
+  line-height: 150%;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+  top: 284px;
+}
+
+.collection-copy-28 {
+  font-size: var(--sm);
+  font-family: "Verdana-Regular";
+  left: 70px;
+  top: 350px;
+}
+
+.collection-surface-32,.collection-surface-43 {
+  width: 224px;
+  height: 224px;
+}
+
+.collection-surface-32 {
+  position: absolute;
+  left: -2px;
+  background-image: url("assets/images/e88de5d5f859b9328c6da5e29e3fddb489baa53f.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.collection-copy-35 {
+  font-size: var(--sm);
+  left: 10.5px;
+}
+
+.collection-copy-36 {
+  font-size: var(--sm);
+  font-family: "Georgia-Regular";
+  font-weight: 400;
+  text-transform: capitalize;
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+  bottom: 121px;
+}
+
+.collection-copy-37 {
+  font-size: var(--xs);
+  font-family: "Verdana-Regular";
+  font-weight: 400;
+  line-height: 150%;
+  text-transform: capitalize;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+  bottom: 55px;
+}
+
+.collection-surface-43 {
+  position: absolute;
+  left: -1px;
+  top: -3px;
+  background-image: url("assets/images/7de1384e1717ae396906743752ea4d7aff102930.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20220%20219%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22220.000000%22%20height%3D%22219.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 1px 3px;
+  mask-position: 1px 3px;
+}
+
+.collection-copy-46,.collection-copy-48,.collection-copy-49 {
+  height: auto;
+  position: absolute;
+}
+
+.collection-copy-46 {
+  font-size: var(--sm);
+  text-decoration: none;
+  left: 10px;
+}
+
+.collection-copy-48 {
+  font-size: var(--xs);
+  font-family: "Verdana-Regular";
+  font-weight: 400;
+  line-height: 150%;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+  bottom: 55px;
+}
+
+.collection-copy-49 {
+  font-size: var(--sm);
+  font-family: "Verdana-Regular";
+  font-weight: 400;
+  left: 70px;
+  bottom: 26px;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="collection-canvas-1">
+    <div class="collection-layout-2">
+      <div class="collection-group-3">
+        <p class="collection-copy-4">The Most-Loved Collection</p>
+        <p class="collection-copy-5">Explore our most-loved window treatments, thoughtfully designed to bring lasting beauty and effortless sophistication to every room.</p>
+        <div class="collection-layout-6">
+          <div class="collection-layout-7">
+            <div class="collection-group-8">
+              <div class="collection-surface-9"></div>
+              <div class="collection-group-10">
+                <div class="collection-surface-11"></div>
+              </div>
+              <div class="collection-group-12">
+                <div class="collection-surface-13"></div>
+                <p class="collection-copy-14">SAVE 35%</p>
+              </div>
+              <p class="collection-copy-15">Elara Linen Blend Curtains</p>
+              <p class="collection-copy-16">Natural linen texture with graceful draping and soft, filtered light.</p>
+              <div class="collection-group-17">
+                <p class="collection-copy-18">Shop Now</p>
+              </div>
+            </div>
+            <div class="collection-group-19">
+              <div class="collection-surface-20"></div>
+              <div class="collection-group-21">
+                <div class="collection-surface-22"></div>
+              </div>
+              <div class="collection-group-23">
+                <div class="collection-surface-24"></div>
+                <p class="collection-copy-25">SAVE 35%</p>
+              </div>
+              <p class="collection-copy-26">Elyna Motorized Roller Shades</p>
+              <p class="collection-copy-27">Effortless app and voice control with smooth, whisper-quiet operation.</p>
+              <p class="collection-copy-28">Shop Now</p>
+            </div>
+            <div class="collection-group-29">
+              <div class="collection-surface-30"></div>
+              <div class="collection-group-31">
+                <div class="collection-surface-32"></div>
+              </div>
+              <div class="collection-group-33">
+                <div class="collection-surface-34"></div>
+                <p class="collection-copy-35">SAVE 50%</p>
+              </div>
+              <p class="collection-copy-36">Amara Extra Long Linen Curtains</p>
+              <p class="collection-copy-37">Made for tall windows, with graceful draping and softly filtered daylight.</p>
+              <div class="collection-group-38">
+                <p class="collection-copy-39">Shop Now</p>
+              </div>
+            </div>
+            <div class="collection-group-40">
+              <div class="collection-surface-41"></div>
+              <div class="collection-group-42">
+                <div class="collection-surface-43"></div>
+              </div>
+              <div class="collection-group-44">
+                <div class="collection-surface-45"></div>
+                <p class="collection-copy-46">SAVE 40%</p>
+              </div>
+              <p class="collection-copy-47">Iris Blackout Linen Curtains</p>
+              <p class="collection-copy-48">Textured linen elegance with blackout coverage for better rest and privacy.</p>
+              <p class="collection-copy-49">Shop Now</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+</script>
+
+</body>
+</html>

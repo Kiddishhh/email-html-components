@@ -1,11 +1,12 @@
+import { shopifyConfig } from './shopify-config.mjs';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runReadonlyShopify } from './shopify-readonly.mjs';
 
-const storefrontBaseUrl = 'https://freshinelife.com';
-const DEFAULT_SHOPIFY_STORE = '0qsgrb-pe.myshopify.com';
-const productUrlHelp = 'shopify product URL must use https://freshinelife.com/products/<handle> or https://freshinelife.com/collections/<collection-handle>/products/<handle>';
+const storefrontBaseUrl = shopifyConfig.storefrontOrigin;
+const DEFAULT_SHOPIFY_STORE = shopifyConfig.adminStore;
+const productUrlHelp = `shopify product URL must use ${storefrontBaseUrl}/products/<handle> or ${storefrontBaseUrl}/collections/<collection-handle>/products/<handle>`;
 
 function parseSingleProductArgs(argv) {
   const options = {};

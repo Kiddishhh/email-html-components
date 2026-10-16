@@ -1,3 +1,4 @@
+import { shopifyConfig } from './shopify-config.mjs';
 import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -5,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { loadSaleGridPayload, normalizeSaleGrid } from './fetch-sale-grid.mjs';
 import { runReadonlyShopify } from './shopify-readonly.mjs';
 
-const DEFAULT_SHOPIFY_STORE = '0qsgrb-pe.myshopify.com';
-const STOREFRONT_ORIGIN = 'https://freshinelife.com';
+const DEFAULT_SHOPIFY_STORE = shopifyConfig.adminStore;
+const STOREFRONT_ORIGIN = shopifyConfig.storefrontOrigin;
 const COLLECTION_HANDLE_PATTERN = /^[a-z0-9][a-z0-9-]*$/u;
 
 function readTemplate(path) {
@@ -16,7 +17,7 @@ function readTemplate(path) {
 export function parseShopifyProductImportUrl(value) {
   let url;
   try { url = new URL(value); } catch { throw new Error('shopify URL must be a valid HTTPS URL'); }
-  if (url.protocol !== 'https:' || url.origin !== STOREFRONT_ORIGIN) throw new Error('shopify URL must use https://freshinelife.com/pages/<handle> or /collections/<handle>');
+  if (url.protocol !== 'https:' || url.origin !== STOREFRONT_ORIGIN) throw new Error(`shopify URL must use ${STOREFRONT_ORIGIN}/pages/<handle> or /collections/<handle>`);
   const match = url.pathname.match(/^\/(pages|collections)\/([a-z0-9][a-z0-9-]*)\/?$/u);
   if (!match) throw new Error('shopify URL must use /pages/<handle> or /collections/<handle>');
   return { type: match[1] === 'pages' ? 'page' : 'collection', handle: match[2], url: url.href };

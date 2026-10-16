@@ -1,3 +1,6 @@
+import { verifyReadbackNodes } from './readback-html-nodes.mjs';
+import { normalizedVisibleText } from './readback-html-tokens.mjs';
+import { assertSafeEmailHtml } from './safe-email-html.mjs';
 import { createHash } from 'node:crypto';
 import { readFile as readFileFromDisk } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
@@ -26,9 +29,6 @@ function isPublicHttps(value) {
   }
 }
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
-}
 
 function extractImage(response) {
   const image = response?.image ?? response?.data ?? response;
@@ -74,11 +74,6 @@ function normalizedReadbackContent(response) {
   return serialized;
 }
 
-function confirmedPublicUrls(html) {
-  return [...new Set([...html.matchAll(/https:\/\/[^\s"')]+/gu)]
-    .map(([url]) => url.replaceAll('&amp;', '&')))];
-}
-
 function assertDraftSafeRequest({ method, url, body }) {
   const parsed = new URL(url);
   assert(parsed.origin === API_ORIGIN, 'request origin is not allowlisted');
@@ -108,6 +103,7 @@ function preflight(projectState, html) {
   assert(typeof expectedHash === 'string' && /^[a-f0-9]{64}$/iu.test(expectedHash), 'confirmed static HTML SHA-256 is required');
   assert(sha256(html) === expectedHash, 'static HTML does not match the confirmed content hash');
   assert(html.includes(UNSUBSCRIBE_TOKEN), 'static HTML is missing the unsubscribe token');
+  assertSafeEmailHtml(html, { allowAssetReferences: true });
   const campaignID = projectState?.finalConfirmation?.campaignID;
   const contentID = projectState?.finalConfirmation?.contentID;
   assert(!contentID || campaignID, 'existing draft contentID requires a campaignID');
@@ -145,32 +141,42 @@ function validateAssetMetadata(assets, html) {
   }
 }
 
+// Only the documented layout path supplies HTML or an update target. Metadata
+// can contain HTML backups, including objects with the same property names.
+function layoutHtmlBlocks(sections) {
+  const htmlBlocks = [];
+  const blockTypeCounts = new Map();
+  const levels = ['rows', 'columns', 'blocks'];
+  const visit = (items, path, depth) => {
+    assert(Array.isArray(items), `email content has invalid ${path}`);
+    items.forEach((value, index) => {
+      const location = `${path}[${index}]`;
+      assert(value && typeof value === 'object' && !Array.isArray(value), `email content has invalid ${location}`);
+      if (depth < levels.length) {
+        const key = levels[depth];
+        visit(value[key] ?? [], `${location}.${key}`, depth + 1);
+        return;
+      }
+      if (typeof value.type === 'string') blockTypeCounts.set(value.type, (blockTypeCounts.get(value.type) ?? 0) + 1);
+      if ([undefined, 'html', 'htmlCode'].includes(value.type) && typeof value.htmlCode === 'string') {
+        htmlBlocks.push({ owner: value, key: 'htmlCode', path: `${location}.htmlCode` });
+      } else if (value.type === 'htmlCode' && typeof value.htmlCode?.body === 'string') {
+        htmlBlocks.push({ owner: value.htmlCode, key: 'body', path: `${location}.htmlCode.body` });
+      }
+    });
+  };
+  visit(sections, 'sections', 0);
+  return { htmlBlocks, blockTypeCounts };
+}
+
 function confirmedHtmlContent(response) {
   assert(response?.generalSettings && typeof response.generalSettings === 'object', 'existing email content is missing generalSettings');
   assert(Array.isArray(response?.sections), 'existing email content is missing sections');
   const body = structuredClone({ generalSettings: response.generalSettings, sections: response.sections });
-  const htmlBlocks = [];
-  const blockTypeCounts = new Map();
-  const tokenFields = [];
-  const visit = (value, path) => {
-    if (!value || typeof value !== 'object') return;
-    if (typeof value.htmlCode === 'string') htmlBlocks.push({ owner: value, key: 'htmlCode' });
-    if (value.type === 'htmlCode' && value.htmlCode && typeof value.htmlCode === 'object' && typeof value.htmlCode.body === 'string') {
-      htmlBlocks.push({ owner: value.htmlCode, key: 'body' });
-    }
-    if (/\.blocks\[\d+\]$/u.test(path) && typeof value.type === 'string') {
-      blockTypeCounts.set(value.type, (blockTypeCounts.get(value.type) ?? 0) + 1);
-    }
-    for (const [key, nested] of Object.entries(value)) {
-      const nestedPath = Array.isArray(value) ? `${path}[${key}]` : `${path}.${key}`;
-      if (typeof nested === 'string' && nested.includes(UNSUBSCRIBE_TOKEN)) tokenFields.push(nestedPath);
-      else visit(nested, nestedPath);
-    }
-  };
-  visit(body.sections, 'sections');
+  const { htmlBlocks, blockTypeCounts } = layoutHtmlBlocks(body.sections);
   const unsubscribeBlocks = htmlBlocks.filter(({ owner, key }) => owner[key].includes(UNSUBSCRIBE_TOKEN));
   const blockTypes = [...blockTypeCounts.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([type, count]) => `${type}:${count}`).join('|') || 'none';
-  const tokenFieldSummary = tokenFields.slice(0, 3).join('|') || 'none';
+  const tokenFieldSummary = unsubscribeBlocks.slice(0, 3).map(block => block.path).join('|') || 'none';
   assert(
     unsubscribeBlocks.length === 1,
     `existing email content must contain exactly one HTML block with the unsubscribe token (htmlBlocks=${htmlBlocks.length}, unsubscribeBlocks=${unsubscribeBlocks.length}, blockTypes=${blockTypes}, tokenFields=${tokenFieldSummary})`
@@ -184,57 +190,29 @@ function replaceConfirmedHtmlBlock(response, html) {
   return body;
 }
 
-function readbackContainsUrl(readbackContent, url) {
-  return readbackContent.includes(url) || readbackContent.includes(url.replaceAll('&', '&amp;'));
-}
-
-function attributeValues(html, name) {
-  return [...html.matchAll(new RegExp(`${escapeRegExp(name)}="([^"]+)"`, 'gu'))].map(([, value]) => value);
-}
-
-function omnisendImageUrls(html) {
-  return new Set(html.match(/https:\/\/app\.omnisend\.com\/images\/[A-Za-z0-9._-]+/gu) ?? []);
-}
-
-function decodeCommonHtmlEntities(value) {
-  return value
-    .replaceAll('&nbsp;', ' ')
-    .replaceAll('&amp;', '&')
-    .replaceAll('&quot;', '"')
-    .replaceAll('&#39;', "'")
-    .replaceAll('&lt;', '<')
-    .replaceAll('&gt;', '>');
-}
-
-function normalizedVisibleText(html) {
-  return decodeCommonHtmlEntities(html.replace(/<!--[\s\S]*?-->/gu, ' ').replace(/<[^>]+>/gu, ' ')).replace(/\s+/gu, ' ').trim();
+// Imported HTML may be split into multiple htmlCode blocks. Inspect only those
+// bodies in document order, never arbitrary metadata in the API response.
+function importedHtmlBody(response) {
+  // Retain the legacy flat import response, but never use it to bypass a
+  // present (empty or malformed) structured layout.
+  const blocks = response && Object.hasOwn(response, 'sections')
+    ? layoutHtmlBlocks(response.sections).htmlBlocks.map(({ owner, key }) => owner[key])
+    : typeof response?.htmlCode === 'string' ? [response.htmlCode] : [];
+  assert(blocks.length > 0, 'email content readback is missing HTML bodies');
+  return blocks.join('\n');
 }
 
 function verifyReadbackSemantics(expectedHtml, remoteHtml) {
   assert(!remoteHtml.includes('asset://'), 'email content readback still contains local asset references');
   assert(!/(?:file:|src\s*=\s*["'](?:\.\.?\/))/iu.test(remoteHtml), 'email content readback contains a local or relative asset path');
-  for (const url of confirmedPublicUrls(expectedHtml)) {
-    assert(readbackContainsUrl(remoteHtml, url), `email content readback is missing URL ${url}`);
-  }
   const expectedVisibleText = normalizedVisibleText(expectedHtml);
   const remoteVisibleText = normalizedVisibleText(remoteHtml);
   assert(
     remoteVisibleText === expectedVisibleText,
     `email content readback visible text or component order does not match (expected=${sha256(expectedVisibleText)}, actual=${sha256(remoteVisibleText)})`
   );
-  const expectedAlts = attributeValues(expectedHtml, 'alt').map(decodeCommonHtmlEntities);
-  const remoteAlts = new Set(attributeValues(remoteHtml, 'alt').map(decodeCommonHtmlEntities));
-  const missingAlts = expectedAlts.filter((alt) => !remoteAlts.has(alt));
-  assert(missingAlts.length === 0, `email content readback is missing image alt text: ${missingAlts.slice(0, 3).join(', ')}`);
-  const expectedKnownImages = omnisendImageUrls(expectedHtml);
-  const remoteImages = omnisendImageUrls(remoteHtml);
-  const replacementImages = [...remoteImages].filter((url) => !expectedKnownImages.has(url));
-  const expectedAssetCount = new Set(assetReferences(expectedHtml)).size;
-  assert(
-    replacementImages.length >= expectedAssetCount,
-    `email content readback has too few uploaded image replacements (expected=${expectedAssetCount}, actual=${replacementImages.length})`
-  );
-  return { verifiedAssetCount: expectedAssetCount, verifiedAltCount: expectedAlts.length, visibleTextSha256: sha256(remoteVisibleText) };
+  const verifiedNodes = verifyReadbackNodes(expectedHtml, remoteHtml);
+  return { ...verifiedNodes, visibleTextSha256: sha256(remoteVisibleText) };
 }
 
 function assetReferences(html) {
@@ -262,7 +240,7 @@ function assertImageExportRequest({ method, url }) {
 
 async function uploadAndReplaceLocalAssets({ html, assets, readFile, request, imageCache = {} }) {
   validateAssetMetadata(assets, html);
-  let finalHtml = html;
+  const imageUrls = new Map();
   const uploadedImageIDs = [];
   const reusedImageIDs = [];
   for (const key of new Set(assetReferences(html))) {
@@ -283,17 +261,15 @@ async function uploadAndReplaceLocalAssets({ html, assets, readFile, request, im
       imageCache[cacheKey] = image;
       uploadedImageIDs.push(image.id);
     }
-    finalHtml = finalHtml.replace(new RegExp(`asset://${escapeRegExp(key)}`, 'gu'), image.url);
+    imageUrls.set(key, image.url);
   }
+  // Resolve complete original tokens once, never prefixes or replacement strings.
+  const finalHtml = html.replace(/asset:\/\/([A-Za-z0-9._-]+)/gu, (_, key) => imageUrls.get(key));
   return { finalHtml, uploadedImageIDs, reusedImageIDs };
 }
 
 function assertExportSafeHtml(html) {
-  assert(typeof html === 'string' && html, 'static HTML is required');
-  assert(!html.includes('asset://'), 'final HTML still contains local assets');
-  assert(!/(?:file:|(?:src|background)\s*=\s*["'](?:\.\.?\/|\/))/iu.test(html), 'final HTML contains a local or relative asset path');
-  assert(!/url\(\s*["']?(?:\.\.?\/|file:)/iu.test(html), 'final HTML contains a local or relative CSS asset path');
-  assert(!/\{\{(?:content|settings)\./u.test(html), 'final HTML contains unresolved component placeholders');
+  assertSafeEmailHtml(html);
 }
 
 export function createOmnisendHtmlExportTransaction({ html, assets, readFile, transport, imageCache = {} }) {
@@ -322,6 +298,7 @@ export function createOmnisendHtmlExportTransaction({ html, assets, readFile, tr
     async run(apiKey) {
       try {
         assert(typeof apiKey === 'string' && apiKey.trim(), 'a non-empty runtime API key is required');
+        assertSafeEmailHtml(html, { allowAssetReferences: true });
         const { finalHtml, uploadedImageIDs, reusedImageIDs } = await uploadAndReplaceLocalAssets({
           html,
           assets,
@@ -426,7 +403,7 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
           readFile,
           request: (requestData) => request(apiKey, requestData)
         });
-        assert(!finalHtml.includes('asset://'), 'final HTML still contains local assets');
+        assertExportSafeHtml(finalHtml);
         assert(!/(?:file:|src\s*=\s*["'](?:\.\.?\/))/iu.test(finalHtml), 'final HTML contains a local or relative asset path');
         assert(finalHtml.includes(UNSUBSCRIBE_TOKEN), 'final HTML is missing the unsubscribe token after upload');
 
@@ -446,10 +423,9 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
           const contentReadback = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/email-content/${existingContentID}` });
           assertResponseStatus(contentReadback, 200, 'email content readback');
           const readbackContent = normalizedReadbackContent(contentReadback.json);
-          assert(readbackContent.includes(UNSUBSCRIBE_TOKEN), 'email content readback is missing the unsubscribe token');
-          for (const url of confirmedPublicUrls(finalHtml)) {
-            assert(readbackContainsUrl(readbackContent, url), `email content readback is missing URL ${url}`);
-          }
+          const { target } = confirmedHtmlContent(contentReadback.json);
+          const remoteHtml = target.owner[target.key];
+          const semanticVerification = verifyReadbackSemantics(finalHtml, remoteHtml);
           return {
             operation: 'updated',
             campaignID: existingCampaignID,
@@ -458,8 +434,10 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
             uploadedAt: now(),
             status: 'draft',
             htmlSha256: sha256(finalHtml),
+            remoteHtmlSha256: sha256(remoteHtml),
             readbackContentSha256: sha256(readbackContent),
             componentOrder: Object.keys(projectState.components ?? {}),
+            ...semanticVerification,
             readbackVerified: true
           };
         }
@@ -502,10 +480,9 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
         const contentReadback = await request(apiKey, { method: 'GET', url: `${API_ORIGIN}/api/email-content/${contentID}` });
         assertResponseStatus(contentReadback, 200, 'email content readback');
         const readbackContent = normalizedReadbackContent(contentReadback.json);
-        assert(readbackContent.includes(UNSUBSCRIBE_TOKEN), 'email content readback is missing the unsubscribe token');
-        for (const url of confirmedPublicUrls(finalHtml)) {
-          assert(readbackContainsUrl(readbackContent, url), `email content readback is missing URL ${url}`);
-        }
+        const remoteHtml = importedHtmlBody(contentReadback.json);
+        assert(remoteHtml.includes(UNSUBSCRIBE_TOKEN), 'email content readback is missing the unsubscribe token');
+        const semanticVerification = verifyReadbackSemantics(finalHtml, remoteHtml);
         return {
           operation: 'created',
           campaignID,
@@ -515,8 +492,10 @@ export function createDraftUploadTransaction({ projectState, html, readFile, tra
           uploadedAt: now(),
           status: 'draft',
           htmlSha256: sha256(finalHtml),
+          remoteHtmlSha256: sha256(remoteHtml),
           readbackContentSha256: sha256(readbackContent),
           componentOrder: Object.keys(projectState.components ?? {}),
+          ...semanticVerification,
           readbackVerified: true
         };
       } catch (error) {

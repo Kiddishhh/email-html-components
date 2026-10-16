@@ -1,4 +1,6 @@
 interface:
-  display_name: "Omnisend Campaign 草稿生成"
-  short_description: "逐组件确认并生成安全的 Omnisend 邮件草稿"
-  default_prompt: "使用 $build-omnisend-campaign-draft 逐步创建一封 Omnisend Campaign 草稿。"
+  display_name: "Freshine 邮件应用管理"
+  short_description: "打开邮件编辑器、推荐活动主题，制作注册并维护符合 Omnisend 规范的响应式组件"
+  default_prompt: "使用 $build-omnisend-campaign-draft 管理 Freshine 邮件应用：打开编辑器、推荐主题与副标题，或制作和修改可复用邮件组件。"
+policy:
+  allow_implicit_invocation: true

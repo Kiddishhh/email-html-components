@@ -1,0 +1,48 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+import { createCampaignEditorServer } from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-server.mjs';
+const workspaceRoot = resolve(import.meta.dirname, '..');
+
+test('catalog previews and link inspection use the existing email renderer without leaking editor controls', async t => {
+  const root = mkdtempSync(join(workspaceRoot, 'build/editor-round1-'));
+  const server = await createCampaignEditorServer({ workspaceRoot, sessionRoot: root, templateRoot: join(root, 'templates') });
+  const base = await server.listen();
+  t.after(async () => { await server.close(); rmSync(root, {recursive:true, force:true}); });
+  const request = async (path, body, method = body ? 'POST' : 'GET') => {
+    const response = await fetch(base + path, {method, headers:{'content-type':'application/json'}, ...(body ? {body:JSON.stringify(body)} : {})});
+    assert.equal(response.ok, true, `${path}: ${await response.clone().text()}`);
+    return response.json();
+  };
+  const catalog = (await request('/api/catalog')).components;
+  const card = catalog.find(x => x.componentKey === 'collection.saleGrid4WithTitle');
+  assert.equal(typeof card.thumbnailUrl, 'string');
+  const thumb = await fetch(base + card.thumbnailUrl);
+  assert.equal(thumb.ok, true);
+  assert.match(await thumb.text(), /组件：四宫格折扣推荐/u);
+  const {draft} = await request('/api/drafts', {name:'Round 1'});
+  const path = `/api/drafts/${draft.id}`;
+  for (const componentKey of ['collection.saleGrid4WithTitle', 'footer.warm']) await request(path + '/components', {componentKey});
+  const inspected = await request(path + '/links');
+  assert.equal(inspected.links.some(x => x.url === '[[unsubscribe_link]]' && !x.editable), true);
+  assert.equal(inspected.links.some(x => x.fieldKeys.includes('saleItems[0].image.clickUrl')), true);
+  assert.equal(inspected.links.some(x => x.url.startsWith('asset://')), false);
+  const {draft: repeatedUrls} = await request('/api/drafts', {name:'Repeated URLs'});
+  await request(`/api/drafts/${repeatedUrls.id}/components`, {componentKey:'collection.saleGrid6DetailWithTitle'});
+  const detailLinks = (await request(`/api/drafts/${repeatedUrls.id}/links`)).links;
+  const firstLink = detailLinks.find(x => x.fieldKeys.includes('saleItems[0].image.clickUrl'));
+  assert.deepEqual(firstLink.fieldKeys, ['saleItems[0].image.clickUrl']);
+  const fifthLink = detailLinks.find(x => x.fieldKeys.includes('saleItems[4].image.clickUrl'));
+  assert.equal(firstLink.url, fifthLink.url);
+  assert.deepEqual(fifthLink.fieldKeys, ['saleItems[4].image.clickUrl']);
+  const current = (await request(path)).draft;
+  const first = current.components[0];
+  await request(path + `/components/${first.instanceId}`, {content:{'saleItems[0].image.clickUrl':'https://freshinelife.com/products/test?discount=SAVE&utm_id=Fall+Sale#details'}}, 'PATCH');
+  const {previewUrl} = await request(path + '/preview', {});
+  const html = await (await fetch(base + previewUrl)).text();
+  assert.match(html, /discount=SAVE&amp;utm_id=Fall\+Sale#details/u);
+  assert.match(html, /max-width:600px/u);
+  assert.match(html, /min\(/u);
+  assert.doesNotMatch(html, /<script|<iframe|<form|editor-workflow|component-search|save-status|data-freshine-editor-link-field/iu);
+});

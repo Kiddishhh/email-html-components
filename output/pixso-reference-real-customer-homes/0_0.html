@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 600;
+	src: url(assets/fonts/Montserrat-SemiBold_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	src: url(assets/fonts/Montserrat-Regular_1.ttf) format('truetype');
+}
+
+</style>
+  <script src="js/animation.js"></script>
+  <style>
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --1253d2ecae9cba84ca37c6f7f57969e8cfeb8bf6-0-10: rgba(117, 95, 91, 1);
+  --3xl: 30px;
+  --base: 16px;
+  --lg: 18px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --primary-light: rgba(179, 41, 41, 1);
+  --primary-text: rgba(255, 255, 255, 1);
+  --primary: rgba(141, 27, 27, 1);
+  --background: rgba(251, 250, 248, 1);
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.Pixso-canvas-0_1 > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.Pixso-canvas-0_1,.customer-homes {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.Pixso-canvas-0_1 {
+  height: 100%;
+}
+
+.customer-homes,.customer-homes-content,.Pixso-frame-230_3697,.frame-content-230_3697,.Pixso-frame-230_3698,.frame-content-230_3698 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.customer-homes {
+  height: 494px;
+  min-width: 552px;
+}
+
+.customer-homes-content,.Pixso-frame-230_3697,.frame-content-230_3697,.Pixso-frame-230_3698,.frame-content-230_3698 {
+  position: relative;
+}
+
+.customer-homes-content {
+  gap: 32px;
+  width: 100%;
+}
+
+.Pixso-frame-230_3697 {
+  width: 552px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.frame-content-230_3697 {
+  gap: 24px;
+  width: 100%;
+}
+
+.Pixso-frame-230_3698 {
+  width: 502.27948px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.frame-content-230_3698 {
+  gap: 12px;
+  width: 100%;
+}
+
+.customer-homes-title,.customer-homes-subtitle,.Pixso-paragraph-230_3712,.Pixso-paragraph-230_3715,.Pixso-paragraph-230_3718 {
+  text-align: center;
+  letter-spacing: 0px;
+  text-decoration: none;
+}
+
+.customer-homes-title,.customer-homes-subtitle {
+  font-weight: 400;
+  font-feature-settings: "locl" 0;
+  width: 100%;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.customer-homes-title {
+  font-size: var(--3xl);
+  font-family: Lora, Georgia, "Times New Roman", serif;
+  color: var(--accent-text);
+}
+
+.customer-homes-subtitle,.Pixso-paragraph-230_3712,.Pixso-paragraph-230_3715 {
+  font-size: var(--base);
+  line-height: 150%;
+}
+
+.customer-homes-subtitle {
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
+  color: var(--accent-text);
+}
+
+.Pixso-group-230_3701 {
+  width: 552px;
+  height: 309px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.Pixso-group-230_3702,.Pixso-group-230_3704 {
+  width: 552px;
+  position: absolute;
+  left: 0px;
+}
+
+.Pixso-group-230_3702 {
+  height: 309px;
+  top: 0px;
+}
+
+.Pixso-group-230_3704,.Pixso-rectangle-230_3717 {
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Pixso-group-230_3704,.Pixso-group-230_3706 {
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.Pixso-group-230_3704 {
+  height: 319px;
+  top: -2px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20552%20309%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_35)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_35%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20322%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20322%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20552%20309%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_35)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_35%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20322%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20322%22%20width%3D%22552.000000%22%20height%3D%22309.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-size: 552px 309px;
+  mask-size: 552px 309px;
+  -webkit-mask-position: 0px 2px;
+  mask-position: 0px 2px;
+}
+
+.Pixso-group-230_3706,.Pixso-rectangle-230_3707,.Pixso-rectangle-230_3708 {
+  height: 378.116333px;
+  position: absolute;
+}
+
+.Pixso-group-230_3706 {
+  width: 571.788696px;
+  left: -9.373585px;
+  top: -3.116343px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20552%20319%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_34)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_34%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20105%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(231%2C230%2C230)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20105%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(231%2C230%2C230)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20552%20319%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_34)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_34%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20105%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(231%2C230%2C230)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20105%22%20width%3D%22552.000000%22%20height%3D%22319.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(231%2C230%2C230)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-size: 552px 319px;
+  mask-size: 552px 319px;
+  -webkit-mask-position: 9.373585px 3.116343px;
+  mask-position: 9.373585px 3.116343px;
+}
+
+.Pixso-rectangle-230_3707,.Pixso-rectangle-230_3708 {
+  width: 284.332062px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.Pixso-rectangle-230_3707 {
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/ae967de414f81fa45407c779c9480bfc4a989395.png");
+}
+
+.Pixso-rectangle-230_3708 {
+  left: 287.456604px;
+  top: 0px;
+  background-image: url("assets/images/abe0e6e0dc3abd75431abd107a2e57f1dc0d7194.png");
+}
+
+.Pixso-group-230_3709 {
+  width: 382.233948px;
+  height: 31.163435px;
+  position: absolute;
+  left: 94.777344px;
+  top: 242.116333px;
+}
+
+.Pixso-group-230_3710 {
+  width: 105.192451px;
+  height: 31.163435px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.Pixso-rectangle-230_3711,.stroke-230_3711,.Pixso-rectangle-230_3714 {
+  border-radius: 30px 30px 30px 30px;
+  opacity: 0.87;
+}
+
+.Pixso-rectangle-230_3711 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 0;
+  background-color: var(--background);
+}
+
+.stroke-wrapper-230_3711 {
+  position: absolute;
+  isolation: isolate;
+  left: 0px;
+  top: 0px;
+  width: 105.192451px;
+  height: 31.163435px;
+}
+
+.stroke-230_3711 {
+  position: absolute;
+  inset: 0px;
+  pointer-events: none;
+  z-index: 1;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-color: var(--primary-text);
+}
+
+.Pixso-paragraph-230_3712,.Pixso-paragraph-230_3715 {
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  text-transform: capitalize;
+  height: 24.930748px;
+  top: 3.077562px;
+}
+
+.Pixso-paragraph-230_3712 {
+  color: var(--accent-text);
+  width: 56.241508px;
+  position: absolute;
+  left: 24.475471px;
+}
+
+.Pixso-group-230_3713,.Pixso-rectangle-230_3714 {
+  width: 105.192451px;
+  height: 31.163435px;
+  position: absolute;
+  top: 0px;
+}
+
+.Pixso-group-230_3713 {
+  left: 277.041504px;
+}
+
+.Pixso-rectangle-230_3714 {
+  left: 0px;
+  background-color: var(--primary-light);
+}
+
+.Pixso-paragraph-230_3715 {
+  color: var(--primary-text);
+  width: 42.701885px;
+  position: absolute;
+  left: 31.245281px;
+}
+
+.visualizer-cta,.Pixso-rectangle-230_3717 {
+  width: 322px;
+  height: 55px;
+}
+
+.visualizer-cta {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.Pixso-rectangle-230_3717 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 4px 4px 4px 4px;
+  background-color: var(--primary);
+}
+
+.Pixso-paragraph-230_3718 {
+  font-size: var(--lg);
+  font-family: "Montserrat-SemiBold";
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--primary-text);
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + 0.5px));
+  white-space: pre;
+  flex-grow: 0;
+}
+
+
+  </style>
+</head>
+<body>
+<main class="scroll-container" aria-label="Customer home visualizer">
+  <div class="Pixso-canvas-0_1">
+    <section class="customer-homes" aria-labelledby="customer-homes-title">
+      <div class="customer-homes-content">
+        <div class="Pixso-frame-230_3697">
+          <div class="frame-content-230_3697">
+            <div class="Pixso-frame-230_3698">
+              <div class="frame-content-230_3698">
+                <h1 id="customer-homes-title" class="customer-homes-title">Real Customer Homes</h1>
+                <p class="customer-homes-subtitle">Explore real spaces and ceiling-to-floortransformations.</p>
+              </div>
+            </div>
+            <div class="Pixso-group-230_3701">
+              <div class="Pixso-group-230_3702">
+                <div class="Pixso-group-230_3704">
+                  <div class="Pixso-group-230_3706">
+                    <div class="Pixso-rectangle-230_3707"></div>
+                    <div class="Pixso-rectangle-230_3708"></div>
+                    <div class="Pixso-group-230_3709">
+                      <div class="Pixso-group-230_3710">
+                        <div class="stroke-wrapper-230_3711">
+                          <div class="Pixso-rectangle-230_3711"></div>
+                          <div class="stroke-230_3711"></div>
+                        </div>
+                        <p class="Pixso-paragraph-230_3712">Before</p>
+                      </div>
+                      <div class="Pixso-group-230_3713">
+                        <div class="Pixso-rectangle-230_3714"></div>
+                        <p class="Pixso-paragraph-230_3715">After</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="visualizer-cta" type="button" aria-label="Visualize your space">
+          <span class="Pixso-rectangle-230_3717" aria-hidden="true"></span>
+          <span class="Pixso-paragraph-230_3718">VISUALIZE YOUR SPACE</span>
+        </button>
+      </div>
+    </section>
+  </div>
+</main>
+
+
+<script>
+
+</script>
+
+</body>
+</html>

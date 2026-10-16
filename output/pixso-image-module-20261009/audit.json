@@ -1,0 +1,53 @@
+{
+  "selection": "273:768",
+  "framework": "html",
+  "files": [
+    {
+      "path": "0_0.html",
+      "status": "saved, localized, screenshot inspected, cleaned",
+      "temporaryAssets": {
+        "found": 2,
+        "replaced": 2,
+        "retained": 0
+      },
+      "numericIds": {
+        "found": 13,
+        "retained": 0
+      },
+      "numericClasses": {
+        "found": 15,
+        "retained": 0
+      },
+      "integrationRepairs": [
+        "Removed unavailable css/font.css and empty/missing animation scripts",
+        "Mapped Georgia-Bold and Verdana-Regular to installed Georgia/Verdana with original weights"
+      ]
+    },
+    {
+      "path": "component.html",
+      "status": "email-table adaptation and verified",
+      "image": "https://app.omnisend.com/images/6ac8bcb9a29dcc0ffc64ac24",
+      "nativeImageSize": [
+        1026,
+        718
+      ],
+      "temporaryUrls": 0,
+      "numericIds": 0,
+      "numericClasses": 0
+    },
+    {
+      "path": "effect-preview.html",
+      "status": "verified 600 and 375, no horizontal overflow"
+    }
+  ],
+  "knownDifferences": [
+    "HTML table and inline CSS adaptation for email; proportional mobile scaling",
+    "Raster image supplied by user replaces exported masked image",
+    "Border rounding may vary by email client; local browser tests do not prove inbox rendering"
+  ],
+  "utm": {
+    "source": "omnisend",
+    "medium": "email",
+    "id": "measurement-tool"
+  }
+}

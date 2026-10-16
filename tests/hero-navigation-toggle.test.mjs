@@ -1,3 +1,4 @@
+import { tempPath } from './helpers/temp-path.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -63,9 +64,9 @@ function renderHero(componentKey, navigationVisible, name) {
   let document = createCampaignDocument({ name });
   document = addComponentInstance(document, catalog, componentKey);
   document.components[0].settings['navigation.visible'] = navigationVisible;
-  const output = `/private/tmp/${name}.html`;
-  const previewOutput = `/private/tmp/${name}.local-preview.html`;
-  const compositionPath = `/private/tmp/${name}.composition.json`;
+  const output = tempPath(`${name}.html`);
+  const previewOutput = tempPath(`${name}.local-preview.html`);
+  const compositionPath = tempPath(`${name}.composition.json`);
   const composition = {
     schemaVersion: 1,
     canvas: document.canvas,

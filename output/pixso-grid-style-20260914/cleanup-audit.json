@@ -1,0 +1,19 @@
+{
+  "target": "119:2488",
+  "file": "source/0_0.html",
+  "resourceStatus": { "temporaryURLsFound": 0, "temporaryURLsRetained": 0 },
+  "phaseA": {
+    "pixsoNodeIds": { "found": 2, "removed": 2, "retained": 0 },
+    "pixsoNodeClasses": { "found": 2, "replaced": 2, "retained": 0 }
+  },
+  "phaseB": {
+    "classMap": { "Pixso-canvas-0_1": "document canvas removed", "Pixso-rectangle-119_2488": "product-grid-background" },
+    "classTokenChanges": 0,
+    "inferredStateClasses": 0
+  },
+  "styleReference": {
+    "parent": "119:2487",
+    "caption": "Montserrat Medium, 16px, 24px line height, #6B522C, centered, uppercase, underline",
+    "cta": "Montserrat Medium, 18px, #FFFFFF, centered, uppercase"
+  }
+}

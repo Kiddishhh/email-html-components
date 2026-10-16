@@ -1,3 +1,4 @@
+import { shopifyConfig } from './shopify-config.mjs';
 import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join, resolve } from 'node:path';
@@ -5,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { runReadonlyShopify } from './shopify-readonly.mjs';
 
 const HERO_SECTION_TYPE = 'slideshow-v2';
-const DEFAULT_SHOPIFY_STORE = '0qsgrb-pe.myshopify.com';
-const STOREFRONT_BASE_URL = 'https://freshinelife.com';
+const DEFAULT_SHOPIFY_STORE = shopifyConfig.adminStore;
+const STOREFRONT_BASE_URL = shopifyConfig.storefrontOrigin;
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8').replace(/^\/\*[\s\S]*?\*\/\s*/u, ''));

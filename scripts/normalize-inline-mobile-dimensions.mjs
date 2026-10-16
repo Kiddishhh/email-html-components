@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import process from 'node:process';
 
-const root = process.cwd();
+const root = resolve(import.meta.dirname, '..');
 const desktopWidth = 600;
 const targetWidth = 375;
 const registry = JSON.parse(readFileSync(resolve(root, '组件清单.json'), 'utf8'));

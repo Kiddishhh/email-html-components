@@ -1,0 +1,32 @@
+{
+  "selection": "278:3867",
+  "resourceAssets": 7,
+  "missingAssets": 0,
+  "referenceIdsRemoved": 19,
+  "classesReplaced": 19,
+  "numericIdsRetained": 0,
+  "numericClassesRetained": 0,
+  "temporaryUrlsRetained": 0,
+  "knownDifferences": [
+    "CSS gradients reproduce exported scrim and ellipse",
+    "Email adaptation uses layered CSS backgrounds; classic Outlook compatibility not verified",
+    "Original exported off-canvas laptop reflection is not reproduced; supplied device assets include their own transparent content"
+  ],
+  "files": [
+    "0_0.html",
+    "component.html",
+    "effect-preview.html"
+  ],
+  "verifiedViewports": [
+    {
+      "width": 600,
+      "scrollWidth": 600,
+      "height": 999
+    },
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "height": 624.75
+    }
+  ]
+}

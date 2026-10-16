@@ -1,13 +1,15 @@
+import { fileURLToPath } from 'node:url';
+import { tempPath } from './helpers/temp-path.mjs';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 
-const root = '/Users/ww/Desktop/邮件营销运营/邮件html组件';
+const root = fileURLToPath(new URL('..', import.meta.url)).slice(0, -1);
 const script = `${root}/skills/build-omnisend-campaign-draft/scripts/prepare-countdown-hero-2-image.mjs`;
 const source = `${root}/头图/促销悬浮首图/assets/default-background.reference.png`;
-const output = '/private/tmp/countdown-hero-2-centered-crop.jpg';
+const output = tempPath('countdown-hero-2-centered-crop.png');
 
 function sha256(path) {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
@@ -29,10 +31,10 @@ test('prepares a centered 1200 by 1200 derivative without overwriting the source
   assert.equal(metadata.sourcePath, source);
   assert.equal(metadata.outputPath, output);
 
-  const dimensions = spawnSync('sips', ['-g', 'pixelWidth', '-g', 'pixelHeight', output], { encoding: 'utf8' });
-  assert.equal(dimensions.status, 0, dimensions.stderr || dimensions.stdout);
-  assert.match(dimensions.stdout, /pixelWidth:\s+1200/);
-  assert.match(dimensions.stdout, /pixelHeight:\s+1200/);
+  const bytes = readFileSync(output);
+  assert.equal(bytes.subarray(1, 4).toString(), 'PNG');
+  assert.equal(bytes.readUInt32BE(16), 1200);
+  assert.equal(bytes.readUInt32BE(20), 1200);
 });
 
 test('rejects an output path that would overwrite the source image', () => {

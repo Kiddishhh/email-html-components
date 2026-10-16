@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+</style>
+
+  <style>
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --base: 16px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --primary-dark: rgba(107, 20, 20, 1);
+  --primary: rgba(141, 27, 27, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.design-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.design-canvas,.offer-nav {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.design-canvas {
+  height: 100%;
+}
+
+.offer-nav {
+  height: 56px;
+  min-width: 600px;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.offer-background,.signup-background {
+  height: 56px;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.offer-background {
+  width: 457px;
+  left: -71.5px;
+  right: 71.5px;
+  background-color: var(--primary);
+}
+
+.signup-background {
+  width: 143px;
+  left: 228.5px;
+  right: -228.5px;
+  background-color: var(--primary-dark);
+}
+
+.offer-copy,.signup-label {
+  font-size: var(--base);
+  font-family: "Montserrat";
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0px;
+  text-transform: capitalize;
+  color: rgba(255, 255, 255, 1);
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.offer-copy {
+  text-decoration: none;
+  transform: translateX(calc(-50% + -71px)) translateY(calc(-50% + 0.5px));
+}
+
+.signup-label {
+  text-decoration: underline;
+  transform: translateX(calc(-50% + 228.5px)) translateY(calc(-50% + 0.5px));
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="design-canvas">
+    <div class="offer-nav">
+      <div class="offer-background"></div>
+      <div class="signup-background"></div>
+      <p class="offer-copy">Unlock an Extra 15% Off Your First Order at Freshine</p>
+      <p class="signup-label">SIGN UP</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

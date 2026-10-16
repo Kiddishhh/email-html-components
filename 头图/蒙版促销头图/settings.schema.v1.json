@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.maskedPromotion",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": {
+      "type": "string",
+      "default": "#7A6A60",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.text": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.action": {
+      "type": "string",
+      "default": "#FFFFFF",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.actionText": {
+      "type": "string",
+      "default": "#1F1F1F",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
+  },
+  "additionalProperties": false
+}

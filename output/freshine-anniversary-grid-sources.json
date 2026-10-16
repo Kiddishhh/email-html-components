@@ -1,0 +1,41 @@
+{
+  "verifiedDate": "2026-10-15",
+  "products": [
+    {
+      "position": "top-left",
+      "title": "Elara Linen Blend Curtains for Large Windows - Extra Long Luxurious Drapes for Every Room",
+      "url": "https://freshinelife.com/collections/best-seller/products/freshine-elara-linen-blend-curtains-for-elegant-and-luxurious-drapes-in-every-room",
+      "image": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Elara-Linen-Blend-Curtains-for-Large-Windows-89850-2-8_1.webp?v=1790734807",
+      "priceUSD": 49.9,
+      "compareAtUSD": 99.8,
+      "discountPercent": 50
+    },
+    {
+      "position": "top-right",
+      "title": "Elara Linen Curtains – Elegant Drapes for Dining Room & Bedroom",
+      "url": "https://freshinelife.com/collections/best-seller/products/elara-linen-blend-curtains",
+      "image": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Elara_89850-3_scene_15.webp?v=1788333941",
+      "priceUSD": 49.9,
+      "compareAtUSD": 99.8,
+      "discountPercent": 50
+    },
+    {
+      "position": "bottom-left",
+      "title": "Arlise 100% Blackout Chenille Drapes for Better Sleep and Privacy",
+      "url": "https://freshinelife.com/collections/best-seller/products/arlise-100-blackout-chenille-drapes",
+      "image": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Arlise-100_-Blackout-Chenille-Drapes-OY12-278-5-4.webp?v=1769075754",
+      "priceUSD": 66.8,
+      "compareAtUSD": 166.99,
+      "discountPercent": 60
+    },
+    {
+      "position": "bottom-right",
+      "title": "Amara Extra Long Linen Curtains – Elegant Light-Filtering Drapes",
+      "url": "https://freshinelife.com/collections/best-seller/products/amara-extra-long-linen-curtains-elegant-light-filtering-drapes",
+      "image": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Amara_Floor-to-Ceiling_Linen_Curtains_Light_Beige_1038-1_1.webp?v=1785901819",
+      "priceUSD": 49.9,
+      "compareAtUSD": 99.8,
+      "discountPercent": 50
+    }
+  ]
+}

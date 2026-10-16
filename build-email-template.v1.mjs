@@ -1,15 +1,21 @@
+import { assertSafeEmailHtml } from './skills/build-omnisend-campaign-draft/scripts/safe-email-html.mjs';
+import { typographyRoles } from './skills/build-omnisend-campaign-draft/editor/typography-policy.mjs';
+import { applyTextStyles, applyDefaultFonts, editorFontDefaults } from './skills/build-omnisend-campaign-draft/editor/public/text-style-contract.mjs';
 import { renderDetailDiscountBadges } from './scripts/render-detail-discount-badges.mjs';
 import { renderScenePriceDiscountBadges } from './scripts/render-scene-price-discount-badges.mjs';
 import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { dirname, relative, resolve } from 'node:path';
+import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 
 const compositionPath = process.argv[2];
 if (!compositionPath) throw new Error('Composition path is required');
 const composition = readJson(compositionPath);
 const previewLocalAssets = process.argv.includes('--preview-local-assets');
 const deferLocalAssets = process.argv.includes('--defer-local-assets');
+const editorLinkMetadata = process.argv.includes('--editor-link-metadata');
+if (editorLinkMetadata && !previewLocalAssets) throw new Error('editor link metadata is restricted to local inspection previews');
 if (previewLocalAssets && deferLocalAssets) throw new Error('choose either --preview-local-assets or --defer-local-assets');
-const workspaceRoot = process.cwd();
+const workspaceRoot = import.meta.dirname;
+const localImageUrls = new Set();
 const forbiddenTags = /<\/?(?:!doctype|html|head|body|link|style|script|div|iframe|font|video|audio|object|embed|form|input|button|canvas|svg)\b/i;
 const forbiddenCss = /(?:box-shadow|display\s*:\s*(?:flex|grid)|position\s*:\s*(?:absolute|fixed|sticky)|@media|@import|@font-face|--[\w-]+\s*:)/i;
 const allowedCssProperties = new Set(['background-color', 'background-position', 'background-repeat', 'background-size', 'border', 'border-collapse', 'border-radius', 'color', 'display', 'font-family', 'font-size', 'font-weight', 'height', 'letter-spacing', 'line-height', 'margin', 'max-height', 'max-width', 'min-height', 'min-width', 'object-fit', 'outline', 'padding', 'text-align', 'text-decoration', 'vertical-align', 'white-space', 'width']);
@@ -39,9 +45,10 @@ function validateExactKeys(value, allowed, scope) {
 }
 
 function validateComposition(value) {
-  const allowedKeys = ['schemaVersion', 'canvas', 'output', 'previewOutput', 'assets', 'components'];
+  const allowedKeys = ['schemaVersion', 'canvas', 'output', 'previewOutput', 'assets', 'components', 'fontDefaults'];
   const unknown = Object.keys(value).filter((key) => !allowedKeys.includes(key));
   if (unknown.length) throw new Error(`unknown composition keys: ${unknown.join(', ')}`);
+  if (value.fontDefaults !== undefined && value.fontDefaults !== editorFontDefaults) throw new Error('unsupported composition fontDefaults');
   if (value.schemaVersion !== 1) throw new Error('composition.schemaVersion must be 1');
   if (typeof value.output !== 'string' || !value.output) throw new Error('composition.output is required');
   if (typeof value.previewOutput !== 'string' || !value.previewOutput) throw new Error('composition.previewOutput is required');
@@ -69,7 +76,7 @@ function validateComposition(value) {
 function resolveLocalAssets(values, schema, componentKey) {
   const resolvedValues = { ...values };
   const localAssetKeys = new Set();
-  const previewDirectory = dirname(resolve(workspaceRoot, previewOutput));
+  const previewDirectory = dirname(resolve(previewOutput));
   for (const [key, value] of Object.entries(resolvedValues)) {
     const match = typeof value === 'string' ? value.match(/^asset:\/\/([a-z0-9][a-z0-9-]*)$/) : null;
     if (!match) continue;
@@ -81,10 +88,11 @@ function resolveLocalAssets(values, schema, componentKey) {
     if (!previewLocalAssets && !deferLocalAssets) throw new Error(`local asset ${assetId} must be uploaded before final build`);
     const absolutePath = resolve(workspaceRoot, asset.path);
     const workspaceRelativePath = relative(workspaceRoot, absolutePath);
-    if (workspaceRelativePath.startsWith('..') || workspaceRelativePath === '' || workspaceRelativePath.startsWith('/')) throw new Error(`${componentKey}: local asset ${assetId} must be inside the workspace`);
+    if (workspaceRelativePath.startsWith('..') || workspaceRelativePath === '' || isAbsolute(workspaceRelativePath)) throw new Error(`${componentKey}: local asset ${assetId} must be inside the workspace`);
     const file = statSync(absolutePath);
     if (!file.isFile() || file.size > 5 * 1024 * 1024) throw new Error(`${componentKey}: local asset ${assetId} must be a file no larger than 5 MB`);
-    if (previewLocalAssets) resolvedValues[key] = relative(previewDirectory, absolutePath).split('/').map(encodeURIComponent).join('/');
+    if (previewLocalAssets) resolvedValues[key] = relative(previewDirectory, absolutePath).split(sep).map(encodeURIComponent).join('/');
+    if (previewLocalAssets) localImageUrls.add(resolvedValues[key]);
     localAssetKeys.add(key);
   }
   return { values: resolvedValues, localAssetKeys };
@@ -180,17 +188,25 @@ function inlineComponentCss(html, rules) {
 }
 
 function renderComponent(instance) {
-  validateExactKeys(instance, ['name', 'directory', 'componentKey', 'content', 'settings'], 'component instance');
-  const base = instance.directory;
-  const template = readFileSync(`${base}/component.template.v1.html`, 'utf8');
+  validateExactKeys(instance, ['name', 'directory', 'componentKey', 'content', 'settings', ...(Object.hasOwn(instance, 'textStyles') ? ['textStyles'] : [])], 'component instance');
+  const base = resolve(workspaceRoot, instance.directory);
+  let template = readFileSync(`${base}/component.template.v1.html`, 'utf8');
+  if (editorLinkMetadata) template = template.replace(/(<a\b[^>]*\bhref="\{\{content\.([^}]+)\}\}")/gu,
+    (_, attribute, key) => `${attribute} data-freshine-editor-link-field="${escapeAttribute(key)}"`);
   const contentSchema = readJson(`${base}/content.schema.v1.json`);
   const settingsSchema = readJson(`${base}/settings.schema.v1.json`);
   if (contentSchema.componentKey !== instance.componentKey || settingsSchema.componentKey !== instance.componentKey) throw new Error(`${instance.name}: component contract mismatch`);
   const { values: content, localAssetKeys } = resolveLocalAssets(instance.content, contentSchema, instance.componentKey);
   validateContent(content, contentSchema, instance.componentKey, localAssetKeys);
   validateSettings(instance.settings, settingsSchema, instance.componentKey);
+  const cssRules = parseSafeCss(readFileSync(`${base}/component.styles.v1.css`, 'utf8'), instance.componentKey);
+  const hasFontDefaults = composition.fontDefaults === editorFontDefaults;
+  const hasTextStyles = hasFontDefaults || Object.values(instance.textStyles ?? {}).some(style => style && Object.keys(style).length);
+  if (hasTextStyles) template = inlineComponentCss(template, cssRules);
+  if (hasFontDefaults) template = applyDefaultFonts(template, contentSchema, typographyRoles[instance.componentKey]?.slots);
+  template = applyTextStyles(template, instance.textStyles, contentSchema);
   let html = renderSettingConditionals(template, instance.settings, settingsSchema, instance.componentKey);
-  if (instance.componentKey === 'collection.saleGrid6DetailWithTitle') html = renderDetailDiscountBadges(html, content);
+  if (instance.componentKey === 'collection.saleGrid6DetailWithTitle') html = renderDetailDiscountBadges(html, content, instance.textStyles);
   if (instance.componentKey === 'collection.sceneSaleGrid6PriceWithTitle') html = renderScenePriceDiscountBadges(html, content);
   html = html.replace(/\{\{content\.([^}]+)\}\}/g, (_, key) => {
     if (!(key in content)) throw new Error(`${instance.componentKey}: unresolved content.${key}`);
@@ -204,11 +220,12 @@ function renderComponent(instance) {
     if (!(key in instance.settings)) throw new Error(`${instance.componentKey}: unresolved settings.${key}`);
     return instance.settings[key];
   });
-  html = inlineComponentCss(html, parseSafeCss(readFileSync(`${base}/component.styles.v1.css`, 'utf8'), instance.componentKey));
+  if (!hasTextStyles) html = inlineComponentCss(html, cssRules);
   for (const match of html.matchAll(/<a\b([^>]*)>/gi)) {
     if (!/\bhref="(?:(?:https:|mailto:|tel:)|\[\[unsubscribe_link\]\])/i.test(match[1])) throw new Error(`${instance.componentKey}: incomplete or unsafe link`);
   }
   if (/\{\{[^}]+\}\}/.test(html) || forbiddenTags.test(html) || forbiddenCss.test(html)) throw new Error(`${instance.componentKey}: rendered unsafe HTML`);
+  assertSafeEmailHtml(html, { allowAssetReferences: deferLocalAssets, localImageUrls });
   return `<!-- 组件：${instance.name} -->\n${html.trim()}\n<!-- /组件：${instance.name} -->`;
 }
 
@@ -219,6 +236,7 @@ const { backgroundColor, outerBackgroundColor, contentWidth, verticalPadding } =
 const output = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${outerBackgroundColor}" style="width:100%;border-collapse:collapse;background-color:${outerBackgroundColor};"><tr><td align="center" valign="top" bgcolor="${outerBackgroundColor}" style="padding:0;background-color:${outerBackgroundColor};"><table role="presentation" width="${contentWidth}" cellpadding="0" cellspacing="0" border="0" bgcolor="${backgroundColor}" style="width:100%;max-width:${contentWidth}px;border-collapse:collapse;background-color:${backgroundColor};"><tr><td align="center" valign="top" bgcolor="${backgroundColor}" style="padding:${verticalPadding}px 0;background-color:${backgroundColor};">\n${sections}\n<p style="margin:0;padding:0;font-size:0;line-height:0;"></p>\n</td></tr></table></td></tr></table>\n`;
 
 if (forbiddenTags.test(output) || forbiddenCss.test(output) || !output.trim()) throw new Error('Output failed safe-email validation');
+assertSafeEmailHtml(output, { allowAssetReferences: deferLocalAssets, localImageUrls });
 if (!previewLocalAssets) write(composition.output, output);
 const preview = `<!doctype html>
 <html lang="en">

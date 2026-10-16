@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.maskedPromotion",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "hero.backgroundImage.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "background-image-source",
+      "protocol": "https"
+    },
+    "hero.backgroundImage.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "hero.heading": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.title": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.subtitle": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.cta.text": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "hero.cta.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "role": "link-target",
+      "protocol": "https"
+    }
+  },
+  "additionalProperties": false
+}

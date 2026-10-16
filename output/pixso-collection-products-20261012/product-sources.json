@@ -1,0 +1,364 @@
+{
+  "retrievedAt": "2026-10-12",
+  "source": "Freshine public Shopify product .js endpoints",
+  "products": [
+    {
+      "handle": "celina-linen-curtains-elegant-floor-to-ceiling-drapes-for-living-room",
+      "title": "Celina Linen Curtains – Elegant Floor-to-Ceiling Drapes for Living Room",
+      "url": "https://freshinelife.com/products/celina-linen-curtains-elegant-floor-to-ceiling-drapes-for-living-room",
+      "price": 32.99,
+      "compare_at_price": 6599,
+      "discount": 50,
+      "featured_image": "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Long-Linen-Curtains-for-Large-Windows-Light_Beige8823-2-3.webp?v=1768823712",
+      "images": [
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Long-Linen-Curtains-for-Large-Windows-Light_Beige8823-2-3.webp?v=1768823712",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Wide-linen-Curtains-for-LargeWindows-main-pic-in-list.webp?v=1768823712",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Long-Linen-Curtains-for-Large-Windows-Light_Beige8823-2-6.webp?v=1768823712"
+      ],
+      "media": [
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/preview_images/b1293f447b534d6cbc1ff2a40b2d0411.thumbnail.0000000000.jpg?v=1786447006",
+          "width": 1080,
+          "height": 1080
+        },
+        {
+          "alt": "Celina extra-long linen curtains Light Beige for large windows angle 3",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Long-Linen-Curtains-for-Large-Windows-Light_Beige8823-2-3.webp?v=1768823712",
+          "width": 1496,
+          "height": 1496
+        },
+        {
+          "alt": "Celina extra-wide linen curtains for large windows main image in list view",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Wide-linen-Curtains-for-LargeWindows-main-pic-in-list.webp?v=1768823712",
+          "width": 1280,
+          "height": 1280
+        },
+        {
+          "alt": "Celina extra-long light beige linen curtains for large tall windows in living room view 6",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Long-Linen-Curtains-for-Large-Windows-Light_Beige8823-2-6.webp?v=1768823712",
+          "width": 2000,
+          "height": 2000
+        }
+      ],
+      "displayName": "Celina Linen Curtains",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina-Extra-Wide-linen-Curtains-for-LargeWindows-main-pic-in-list.webp?v=1768823712&width=1000&format=jpg",
+      "clickUrl": "https://freshinelife.com/products/celina-linen-curtains-elegant-floor-to-ceiling-drapes-for-living-room?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+      "compareAtPrice": 65.99
+    },
+    {
+      "handle": "celina-smart-motorized-linen-roman-shade",
+      "title": "Celina Smart Motorized Linen Roman Shade",
+      "url": "https://freshinelife.com/products/celina-smart-motorized-linen-roman-shade",
+      "price": 49.9,
+      "compare_at_price": 9980,
+      "discount": 50,
+      "featured_image": "//cdn.shopify.com/s/files/1/0901/6888/5527/files/celina_8823-0_moto_main_1.webp?v=1781178433",
+      "images": [
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/celina_8823-0_moto_main_1.webp?v=1781178433",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/celina_8823-0_moto_main_6.webp?v=1781258493",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_1.webp?v=1782894896",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_3.webp?v=1782894896",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_4.webp?v=1782894896",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_5.webp?v=1782894896",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_2.webp?v=1782894896",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/celina_8823-0_moto_main_2.webp?v=1781178433"
+      ],
+      "media": [
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/preview_images/a6d8c85e535c40b887f0ad574505a763.thumbnail.0000000000.jpg?v=1785913891",
+          "width": 1080,
+          "height": 1080
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/celina_8823-0_moto_main_1.webp?v=1781178433",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/celina_8823-0_moto_main_6.webp?v=1781258493",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": "A modern bedroom corner with a wooden desk, white chair, large windows with Roman shades, a dog lying on the floor, and a view of a pool outside.",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_1.webp?v=1782894896",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": "A bright, modern bedroom corner with a bed in the foreground, a wooden desk and white chair by three windows with white roller shades, and a hanging pendant light.",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_3.webp?v=1782894896",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": "Smart window blinds in a modern living room with a view of a garden.",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_4.webp?v=1782894896",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": "Modern home office with wooden desk, white chair, and large windows.",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_5.webp?v=1782894896",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": "A modern home office corner featuring a curved wooden desk, a white sculptural chair, and a clear glass pendant light. The room has light gray walls, white Roman shades, and large windows looking out to a swimming pool and grassy yard.",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_2.webp?v=1782894896",
+          "width": 1500,
+          "height": 1500
+        }
+      ],
+      "displayName": "Celina Smart Roman Shade",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Celina_8823-0_smart_inf_202_1.webp?v=1782894896&width=1000&format=jpg",
+      "clickUrl": "https://freshinelife.com/products/celina-smart-motorized-linen-roman-shade?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+      "compareAtPrice": 99.8
+    },
+    {
+      "handle": "elara-smart-motorized-linen-roman-shade",
+      "title": "Elara Smart Motorized Linen Roman Shade",
+      "url": "https://freshinelife.com/products/elara-smart-motorized-linen-roman-shade",
+      "price": 69.9,
+      "compare_at_price": 12690,
+      "discount": 45,
+      "featured_image": "//cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_1.webp?v=1781179874",
+      "images": [
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_1.webp?v=1781179874",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_2_e7fd09ee-f979-4957-b374-e6cd396e38a6.webp?v=1781263211",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_2.webp?v=1781179873",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Motorized_Roman_Shades_6.webp?v=1777444088",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850_moto_main_1.webp?v=1779093286",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Motorized_Roman_Shades_2.webp?v=1777444088",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Motorized_Roman_Shades_3.webp?v=1777444088",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Motorized_Roman_Shades_4.webp?v=1777444088"
+      ],
+      "media": [
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/preview_images/1de0a9f40d8a4203a8df2cd5f67112c2.thumbnail.0000000000.jpg?v=1785913724",
+          "width": 1080,
+          "height": 1080
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_1.webp?v=1781179874",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_2_e7fd09ee-f979-4957-b374-e6cd396e38a6.webp?v=1781263211",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_2.webp?v=1781179873",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Motorized_Roman_Shades_6.webp?v=1777444088",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850_moto_main_1.webp?v=1779093286",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": "Family in a living room with smart home devices and compatibility logos.",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Motorized_Roman_Shades_2.webp?v=1777444088",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Motorized_Roman_Shades_3.webp?v=1777444088",
+          "width": 1500,
+          "height": 1500
+        }
+      ],
+      "displayName": "Elara Smart Motorized Linen Roman Shade",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/elara_89850-10_moto_main_1.webp?v=1781179874&width=1000&format=jpg",
+      "clickUrl": "https://freshinelife.com/products/elara-smart-motorized-linen-roman-shade?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+      "compareAtPrice": 126.9
+    },
+    {
+      "handle": "ilythra-cotton-linen-roman-shades-soft-textured-elegance",
+      "title": "Ilythra Cotton Linen Roman Shades – Soft Textured Elegance",
+      "url": "https://freshinelife.com/products/ilythra-cotton-linen-roman-shades-soft-textured-elegance",
+      "price": 74.9,
+      "compare_at_price": 12490,
+      "discount": 40,
+      "featured_image": "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_3.webp?v=1774495694",
+      "images": [
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_3.webp?v=1774495694",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_5.webp?v=1774495694",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_4.webp?v=1774615554",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_1.webp?v=1774615554"
+      ],
+      "media": [
+        {
+          "alt": "Ilythra cotton linen roman shades in a dining room view 3 featuring a hand adjusting the shades",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_3.webp?v=1774495694",
+          "width": 2000,
+          "height": 2000
+        },
+        {
+          "alt": "Ilythra Cotton Linen Roman Shades – Soft Textured Elegance: Video showcases the roman shade with soft cotton linen texture, natural breathable fabric and elegant home decor effect",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/preview_images/9167e266a7834fc0af7c375920832640.thumbnail.0000000000.jpg?v=1774615525",
+          "width": 720,
+          "height": 720
+        },
+        {
+          "alt": "Ilythra cotton linen roman shades in a modern living room setting view 5",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_5.webp?v=1774495694",
+          "width": 2000,
+          "height": 2000
+        },
+        {
+          "alt": "Ilythra cotton linen roman shades detail 4 showing a close-up view of the fabric on a window",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_4.webp?v=1774615554",
+          "width": 2000,
+          "height": 2000
+        },
+        {
+          "alt": "Ilythra cotton linen roman shades in a living room corner view 1",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_1.webp?v=1774615554",
+          "width": 2000,
+          "height": 2000
+        }
+      ],
+      "displayName": "Ilythra Cotton Linen Roman Shades",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Ilythra_Cotton_Linen_Roman_Shades_3.webp?v=1774495694&width=1000&format=jpg",
+      "clickUrl": "https://freshinelife.com/products/ilythra-cotton-linen-roman-shades-soft-textured-elegance?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+      "compareAtPrice": 124.9
+    },
+    {
+      "handle": "marisol-linen-curtains-large-windows-elegant-pleated-drapes-for-living-room-bedroom",
+      "title": "Marisol Linen Curtains Large Windows – Elegant Pleated Drapes for Living Room & Bedroom",
+      "url": "https://freshinelife.com/products/marisol-linen-curtains-large-windows-elegant-pleated-drapes-for-living-room-bedroom",
+      "price": 46.99,
+      "compare_at_price": 9398,
+      "discount": 50,
+      "featured_image": "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-1.webp?v=1774528940",
+      "images": [
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-1.webp?v=1774528940",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-4_968a4788-c6b6-4420-bad2-619e253dc355.webp?v=1774528940",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-5.webp?v=1774528941"
+      ],
+      "media": [
+        {
+          "alt": "Marisol elegant pleated linen drapes for large windows K1011 showcasing the premium fabric, drape effect and light filtering feature in a stylish interior video",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/preview_images/521441aaf8034992960eeed4fe26baba.thumbnail.0000000000.jpg?v=1774332411",
+          "width": 1080,
+          "height": 1080
+        },
+        {
+          "alt": "Marisol K1011 extra-high linen curtains for a tall window in a modern living room view 4\n",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-1.webp?v=1774528940",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": "Marisol K1011 extra-high linen curtains for a tall window in a modern living room view 5\n",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-4_968a4788-c6b6-4420-bad2-619e253dc355.webp?v=1774528940",
+          "width": 2000,
+          "height": 2000
+        },
+        {
+          "alt": "Marisol K1011 extra-high linen curtains for a tall window in a modern living room view 3\n\n",
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-5.webp?v=1774528941",
+          "width": 2000,
+          "height": 2000
+        }
+      ],
+      "displayName": "Marisol Linen Curtains",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Marisol-Linen-Curtains-K1011-1-1.webp?v=1774528940&width=1000&format=jpg",
+      "clickUrl": "https://freshinelife.com/products/marisol-linen-curtains-large-windows-elegant-pleated-drapes-for-living-room-bedroom?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+      "compareAtPrice": 93.98
+    },
+    {
+      "handle": "orianne-smart-motorized-100-blackout-roller-shades",
+      "title": "Orianne Smart Motorized 100% Blackout Roller Shades",
+      "url": "https://freshinelife.com/products/orianne-smart-motorized-100-blackout-roller-shades",
+      "price": 49.9,
+      "compare_at_price": 9990,
+      "discount": 50,
+      "featured_image": "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_2.jpg?v=1778325422",
+      "images": [
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_2.jpg?v=1778325422",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_3.webp?v=1781263387",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_1.webp?v=1780977466",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/A112-1_scene_1.jpg?v=1777465132",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/SmartMotorizedRollerShadesScene_2.webp?v=1777464424",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/SmartMotorizedRollerShadesScene_5.webp?v=1777464424",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/SmartMotorizedRollerShadesScene_3.webp?v=1777464424",
+        "//cdn.shopify.com/s/files/1/0901/6888/5527/files/ExperiencetheSmartModernWay.webp?v=1777464424"
+      ],
+      "media": [
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_2.jpg?v=1778325422",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_3.webp?v=1781263387",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_1.webp?v=1780977466",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/A112-1_scene_1.jpg?v=1777465132",
+          "width": 2000,
+          "height": 2000
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/SmartMotorizedRollerShadesScene_2.webp?v=1777464424",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/SmartMotorizedRollerShadesScene_5.webp?v=1777464424",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/SmartMotorizedRollerShadesScene_3.webp?v=1777464424",
+          "width": 1500,
+          "height": 1500
+        },
+        {
+          "alt": null,
+          "src": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/ExperiencetheSmartModernWay.webp?v=1777464424",
+          "width": 1500,
+          "height": 1500
+        }
+      ],
+      "displayName": "Orianne Smart Blackout Roller Shades",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/0901/6888/5527/files/Orianne_112-1_main_2.jpg?v=1778325422&width=1000&format=jpg",
+      "clickUrl": "https://freshinelife.com/products/orianne-smart-motorized-100-blackout-roller-shades?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+      "compareAtPrice": 99.9
+    }
+  ]
+}

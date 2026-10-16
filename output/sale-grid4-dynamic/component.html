@@ -1,0 +1,248 @@
+{% assign fg_handles = 'emilia-cotton-drape-pleated-curtains-for-living-room|elara-grass-green-linen-curtains-elegant-drapes-for-living-room-bedroom|orinda-semi-sheer-curtains-for-large-windows-elegant-drapes-for-living-room|freshine-elara-off-white-roman-shades-for-elegant-linen-blend-drapes-with-superior-light-control-and-privacy|marisol-linen-curtains-large-windows-elegant-pleated-drapes-for-living-room-bedroom|amara-extra-long-linen-curtains-elegant-light-filtering-drapes|celina-linen-curtains-elegant-floor-to-ceiling-drapes-for-living-room|mira-solid-sheer-curtains-for-large-windows-light-filtering-drapes-for-living-room-and-bedroom|calista-crystal-velvet-curtains-luxurious-drapes-for-dining-room|darian-single-custom-traverse-curtain-rod|celina-floor-to-ceiling-linen-curtains|celina-linen-curtain|amara-cotton-linen-semi-sheer-curtains|freshine-nina-linen-blend-drapery-pleat-elegant-light-filtering-curtains-for-living-room-and-bedroom|freshine-mira-solid-sheer-curtains-light-filtering-drapes-for-living-room-and-bedroom|freshine-celina-linen-curtain-for-an-elegant-faux-linen-drapery-with-a-refined-look|emilia-linen-drape-pleated|elara-linen-blend-curtains-for-large-windows-extra-wide-luxurious-drapes-for-every-room|freshine-isadora-linen-look-blackout-curtains-light-blocking-drapes-for-living-room-and-bedroom|liora-velvet-blackout-curtains-for-large-windows-luxurious-custom-drapes-for-living-room-bedroom|freshine-elowen-heavyweight-polyester-cotton-blend-drapery-for-living-room-and-bedroom-privacy|celina-extra-long-linen-drapes-designed-for-spacious-sophisticated-interiors|freshine-iris-blackout-linen-curtains-elegant-light-blocking-drapes-for-living-room-and-bedroom|elara-linen-curtains-elegant-drapes-for-dining-room|collins-single-decorative-custom-curtain-rods|celina-linen-curtains-elegant-faux-linen-drapes-for-kids-room|riven-adjustable-curtain-track|liora-velvet-curtains|arlise-100-blackout-chenille-drapes|arden-adjustable-ripple-fold-curtain-track|sylviana-yellow-wildflowers-linen-textured-roman-shades|elara-linen-blend-curtains|freshine-elara-linen-blend-curtains-for-elegant-and-luxurious-drapes-in-every-room|liana-sheer-curtains-for-large-windows-sheer-light-drapes-for-living-room-bedroom-elegance|liana-sheer-curtains-for-large-windows-extra-long-sheer-light-drapes-for-living-room-bedroom-elegance|freshine-marina-soft-blackout-velvet-curtains-luxurious-light-blocking-for-serenity|freshine-marisol-linen-drapery-pleated-for-elegant-window-treatment|darian-double-custom-traverse-curtain-rod|orinda-linen-semi-sheer-curtains|elara-linen-semi-sheer-curtains-timeless-and-suitable-for-dining-or-living-rooms|freshine-luciana-linen-semi-sheer-curtains-for-elegant-embossed-white-pleated-drapes-in-a-refined-home|luciana-linen-semi-sheer-curtains|celina-extra-wide-linen-curtains-for-large-windows-elegant-faux-linen-drapes|liora-velvet-blackout-curtains-luxurious-custom-drapes-for-kids-room' | split: '|' %}
+{% assign fg_count = fg_handles.size %}
+{% assign fg_title_limit = 48 %}
+{% assign fg_time = 'now' | date: '%s' | plus: 0 %}
+{% assign fg_seed = customer.id | default: 0 | plus: fg_time %}
+{% assign fg_start = fg_seed | modulo: fg_count %}
+{% assign fg_found = 0 %}
+{% assign fg_scan_count = fg_count | at_most: 16 %}
+{% assign fg_scan_last = fg_scan_count | minus: 1 %}
+{% for fg_offset in (0..fg_scan_last) %}
+  {% assign fg_index = fg_start | plus: fg_offset | modulo: fg_count %}
+  {% assign fg_handle = fg_handles[fg_index] %}
+  {% assign fg_candidate = all_products[fg_handle] %}
+  {% if fg_candidate != blank and fg_candidate.available and fg_candidate.featured_image != blank %}
+    {% case fg_found %}
+      {% when 0 %}{% assign fg_p0 = fg_candidate %}
+      {% when 1 %}{% assign fg_p1 = fg_candidate %}
+      {% when 2 %}{% assign fg_p2 = fg_candidate %}
+      {% when 3 %}{% assign fg_p3 = fg_candidate %}
+    {% endcase %}
+    {% assign fg_found = fg_found | plus: 1 %}
+    {% if fg_found == 4 %}{% break %}{% endif %}
+  {% endif %}
+{% endfor %}
+{% if fg_found == 4 %}
+{% assign fg_v0 = fg_p0.first_available_variant %}
+{% assign fg_discount0 = 0 %}
+{% if fg_v0.compare_at_price > fg_v0.price and fg_v0.price > 0 %}
+{% assign fg_discount0 = fg_v0.compare_at_price | minus: fg_v0.price | times: 100.0 | divided_by: fg_v0.compare_at_price | round %}
+{% endif %}
+{% assign fg_img0 = fg_p0.featured_image | image_url: width: 600, height: 600, crop: 'center' %}
+{% assign fg_prefix0 = fg_img0 | slice: 0, 2 %}
+{% if fg_prefix0 == '//' %}{% assign fg_img0 = fg_img0 | prepend: 'https:' %}{% endif %}
+{% assign fg_v1 = fg_p1.first_available_variant %}
+{% assign fg_discount1 = 0 %}
+{% if fg_v1.compare_at_price > fg_v1.price and fg_v1.price > 0 %}
+{% assign fg_discount1 = fg_v1.compare_at_price | minus: fg_v1.price | times: 100.0 | divided_by: fg_v1.compare_at_price | round %}
+{% endif %}
+{% assign fg_img1 = fg_p1.featured_image | image_url: width: 600, height: 600, crop: 'center' %}
+{% assign fg_prefix1 = fg_img1 | slice: 0, 2 %}
+{% if fg_prefix1 == '//' %}{% assign fg_img1 = fg_img1 | prepend: 'https:' %}{% endif %}
+{% assign fg_v2 = fg_p2.first_available_variant %}
+{% assign fg_discount2 = 0 %}
+{% if fg_v2.compare_at_price > fg_v2.price and fg_v2.price > 0 %}
+{% assign fg_discount2 = fg_v2.compare_at_price | minus: fg_v2.price | times: 100.0 | divided_by: fg_v2.compare_at_price | round %}
+{% endif %}
+{% assign fg_img2 = fg_p2.featured_image | image_url: width: 600, height: 600, crop: 'center' %}
+{% assign fg_prefix2 = fg_img2 | slice: 0, 2 %}
+{% if fg_prefix2 == '//' %}{% assign fg_img2 = fg_img2 | prepend: 'https:' %}{% endif %}
+{% assign fg_v3 = fg_p3.first_available_variant %}
+{% assign fg_discount3 = 0 %}
+{% if fg_v3.compare_at_price > fg_v3.price and fg_v3.price > 0 %}
+{% assign fg_discount3 = fg_v3.compare_at_price | minus: fg_v3.price | times: 100.0 | divided_by: fg_v3.compare_at_price | round %}
+{% endif %}
+{% assign fg_img3 = fg_p3.featured_image | image_url: width: 600, height: 600, crop: 'center' %}
+{% assign fg_prefix3 = fg_img3 | slice: 0, 2 %}
+{% if fg_prefix3 == '//' %}{% assign fg_img3 = fg_img3 | prepend: 'https:' %}{% endif %}
+<!-- /组件：四宫格折扣推荐（标题款） -->
+<!-- /组件：四宫格折扣推荐（标题款） -->
+<!-- /组件：四宫格折扣推荐（标题款） -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width:100%;border-collapse:collapse;background-color:#FFFFFF;">
+  <tr>
+    <td align="center" valign="top" bgcolor="#FFFFFF" style="padding:0;background-color:#FFFFFF;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#F5F1ED" style="width:100%;max-width:600px;border-collapse:collapse;background-color:rgb(245, 241, 237);">
+        <tr>
+          <td align="center" valign="top" bgcolor="#F5F1ED" style="padding:0;background-color:rgb(245, 241, 237);">
+
+            <!-- 组件：四宫格折扣推荐（标题款） -->
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#F5F1ED" style="width:100%;border-collapse:collapse;background-color:rgb(245, 241, 237);">
+              <tr>
+                <td align="center" style="padding:0;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" align="center" bgcolor="#F5F1ED" style="width:100%;max-width:600px;border-collapse:collapse;margin:0 auto;background-color:rgb(245, 241, 237);">
+
+                    <tr>
+                      <td height="45" style="height:45px;height:min(45px,7.5vw);font-size:0;line-height:0;">&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                      <td align="center" style="padding:0 7.5%;">
+                        <span data-freshine-slot="saleCollection.title" style="display:block;color:#000000;font-family:Lora,Georgia,'Times New Roman',serif;font-size:30px;font-size:min(30px,5vw);font-weight:400;line-height:38px;line-height:min(38px,6.333333vw);text-align:center;letter-spacing:0;mso-line-height-rule:exactly;">
+                          You May Also Like
+                        </span>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td height="15" style="height:15px;height:min(15px,2.5vw);font-size:0;line-height:0;">&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                      <td align="center" style="padding:0 7.5%;">
+                        <span data-freshine-slot="saleCollection.body" style="display:block;color:#000000;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:18px;font-size:min(18px,3vw);font-weight:500;line-height:150%;text-align:center;letter-spacing:0;mso-line-height-rule:exactly;">
+                          Smart shades with voice control, motorized operation, and a safer cordless design.
+                        </span>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td height="31" style="height:31px;height:min(31px,5.166667vw);font-size:0;line-height:0;">&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                      <td align="center" style="padding:0;">
+                        <table role="presentation" width="510" cellspacing="0" cellpadding="0" border="0" align="center" style="width:85%;max-width:510px;border-collapse:collapse;margin:0 auto;">
+                          <tr>
+                            <td style="padding:0;">
+                              <table role="presentation" width="509" cellspacing="0" cellpadding="0" border="0" style="width:509px;width:min(509px,84.833333vw);table-layout:fixed;border-collapse:collapse;margin:0;">
+
+                                <!-- 第一行商品图片 -->
+                                <tr>
+                                  <td width="246" height="246" align="left" valign="top" role="img" aria-label="{{ fg_p0.title | escape }}" background="{{ fg_img0 | escape }}" style="width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);background-color:#E8E1D1;background-image:url('{{ fg_img0 | escape }}');background-position:center;background-size:cover;background-repeat:no-repeat;text-align:left;vertical-align:top;">
+                                    <!--[if mso]>
+                                    <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" href="https://freshinelife.com{{ fg_p0.url | escape }}?variant={{ fg_v0.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" style="width:246px;height:246px;">
+                                      <v:fill type="frame" src="{{ fg_img0 | escape }}" color="#E8E1D1"/>
+                                      <v:textbox inset="0,0,0,0">
+                                    <![endif]-->
+                                    <a href="https://freshinelife.com{{ fg_p0.url | escape }}?variant={{ fg_v0.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[0].image.clickUrl" target="_blank" style="display:block;width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);color:#000000;text-decoration:none;">{% if fg_discount0 > 0 %}<span data-freshine-slot="saleItems[0].discountLabel" style="display:inline-block;padding:4px 10px;padding:4px min(10px,1.666667vw);border-radius:0 0 6px 0;border-radius:0 0 min(6px,1vw) 0;background-color:#8D1B1B;color:#FFFFFF;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:23px;line-height:min(23px,3.833333vw);letter-spacing:0.2px;text-align:center;vertical-align:top;mso-line-height-rule:exactly;white-space:nowrap;">SAVE {{ fg_discount0 }}%</span>{% endif %}</a>
+                                    <!--[if mso]></v:textbox></v:rect><![endif]-->
+                                  </td>
+
+                                  <td width="17" style="width:17px;width:min(17px,2.833333vw);font-size:0;line-height:0;">&nbsp;</td>
+
+                                  <td width="246" height="246" align="left" valign="top" role="img" aria-label="{{ fg_p1.title | escape }}" background="{{ fg_img1 | escape }}" style="width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);background-color:#E8E1D1;background-image:url('{{ fg_img1 | escape }}');background-position:center;background-size:cover;background-repeat:no-repeat;text-align:left;vertical-align:top;">
+                                    <!--[if mso]>
+                                    <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" href="https://freshinelife.com{{ fg_p1.url | escape }}?variant={{ fg_v1.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" style="width:246px;height:246px;">
+                                      <v:fill type="frame" src="{{ fg_img1 | escape }}" color="#E8E1D1"/>
+                                      <v:textbox inset="0,0,0,0">
+                                    <![endif]-->
+                                    <a href="https://freshinelife.com{{ fg_p1.url | escape }}?variant={{ fg_v1.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[1].image.clickUrl" target="_blank" style="display:block;width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);color:#000000;text-decoration:none;">{% if fg_discount1 > 0 %}<span data-freshine-slot="saleItems[1].discountLabel" style="display:inline-block;padding:4px 10px;padding:4px min(10px,1.666667vw);border-radius:0 0 6px 0;border-radius:0 0 min(6px,1vw) 0;background-color:#8D1B1B;color:#FFFFFF;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:23px;line-height:min(23px,3.833333vw);letter-spacing:0.2px;text-align:center;vertical-align:top;mso-line-height-rule:exactly;white-space:nowrap;">SAVE {{ fg_discount1 }}%</span>{% endif %}</a>
+                                    <!--[if mso]></v:textbox></v:rect><![endif]-->
+                                  </td>
+                                </tr>
+
+                                <tr>
+                                  <td colspan="3" height="18" style="height:18px;height:min(18px,3vw);font-size:0;line-height:0;">&nbsp;</td>
+                                </tr>
+
+                                <!-- 第一行商品标题 -->
+                                <tr>
+                                  <td width="246" align="left" valign="top" style="width:246px;width:min(246px,41vw);padding:0;text-align:left;vertical-align:top;">
+                                    <a href="https://freshinelife.com{{ fg_p0.url | escape }}?variant={{ fg_v0.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[0].image.clickUrl" target="_blank" style="display:block;color:#000000;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:16px;font-size:min(16px,2.666667vw);font-weight:500;line-height:20px;line-height:min(20px,3.333333vw);text-align:left;text-decoration:none;letter-spacing:0;overflow-wrap:break-word;">
+                                      <span data-freshine-slot="saleItems[0].cta.text">{{ fg_p0.title | strip_html | truncate: fg_title_limit, '...' | escape }}</span>
+                                    </a>
+                                  </td>
+
+                                  <td width="17" style="width:17px;width:min(17px,2.833333vw);font-size:0;line-height:0;">&nbsp;</td>
+
+                                  <td width="246" align="left" valign="top" style="width:246px;width:min(246px,41vw);padding:0;text-align:left;vertical-align:top;">
+                                    <a href="https://freshinelife.com{{ fg_p1.url | escape }}?variant={{ fg_v1.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[1].image.clickUrl" target="_blank" style="display:block;color:#000000;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:16px;font-size:min(16px,2.666667vw);font-weight:500;line-height:20px;line-height:min(20px,3.333333vw);text-align:left;text-decoration:none;letter-spacing:0;overflow-wrap:break-word;">
+                                      <span data-freshine-slot="saleItems[1].cta.text">{{ fg_p1.title | strip_html | truncate: fg_title_limit, '...' | escape }}</span>
+                                    </a>
+                                  </td>
+                                </tr>
+
+                                <tr>
+                                  <td colspan="3" height="15" style="height:15px;height:min(15px,2.5vw);font-size:0;line-height:0;">&nbsp;</td>
+                                </tr>
+
+                                <!-- 第二行商品图片 -->
+                                <tr>
+                                  <td width="246" height="246" align="left" valign="top" role="img" aria-label="{{ fg_p2.title | escape }}" background="{{ fg_img2 | escape }}" style="width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);background-color:#E8E1D1;background-image:url('{{ fg_img2 | escape }}');background-position:center;background-size:cover;background-repeat:no-repeat;text-align:left;vertical-align:top;">
+                                    <!--[if mso]>
+                                    <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" href="https://freshinelife.com{{ fg_p2.url | escape }}?variant={{ fg_v2.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" style="width:246px;height:246px;">
+                                      <v:fill type="frame" src="{{ fg_img2 | escape }}" color="#E8E1D1"/>
+                                      <v:textbox inset="0,0,0,0">
+                                    <![endif]-->
+                                    <a href="https://freshinelife.com{{ fg_p2.url | escape }}?variant={{ fg_v2.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[2].image.clickUrl" target="_blank" style="display:block;width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);color:#000000;text-decoration:none;">{% if fg_discount2 > 0 %}<span data-freshine-slot="saleItems[2].discountLabel" style="display:inline-block;padding:4px 10px;padding:4px min(10px,1.666667vw);border-radius:0 0 6px 0;border-radius:0 0 min(6px,1vw) 0;background-color:#8D1B1B;color:#FFFFFF;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:23px;line-height:min(23px,3.833333vw);letter-spacing:0.2px;text-align:center;vertical-align:top;mso-line-height-rule:exactly;white-space:nowrap;">SAVE {{ fg_discount2 }}%</span>{% endif %}</a>
+                                    <!--[if mso]></v:textbox></v:rect><![endif]-->
+                                  </td>
+
+                                  <td width="17" style="width:17px;width:min(17px,2.833333vw);font-size:0;line-height:0;">&nbsp;</td>
+
+                                  <td width="246" height="246" align="left" valign="top" role="img" aria-label="{{ fg_p3.title | escape }}" background="{{ fg_img3 | escape }}" style="width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);background-color:#E8E1D1;background-image:url('{{ fg_img3 | escape }}');background-position:center;background-size:cover;background-repeat:no-repeat;text-align:left;vertical-align:top;">
+                                    <!--[if mso]>
+                                    <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" href="https://freshinelife.com{{ fg_p3.url | escape }}?variant={{ fg_v3.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" style="width:246px;height:246px;">
+                                      <v:fill type="frame" src="{{ fg_img3 | escape }}" color="#E8E1D1"/>
+                                      <v:textbox inset="0,0,0,0">
+                                    <![endif]-->
+                                    <a href="https://freshinelife.com{{ fg_p3.url | escape }}?variant={{ fg_v3.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[3].image.clickUrl" target="_blank" style="display:block;width:246px;width:min(246px,41vw);height:246px;height:min(246px,41vw);color:#000000;text-decoration:none;">{% if fg_discount3 > 0 %}<span data-freshine-slot="saleItems[3].discountLabel" style="display:inline-block;padding:4px 10px;padding:4px min(10px,1.666667vw);border-radius:0 0 6px 0;border-radius:0 0 min(6px,1vw) 0;background-color:#8D1B1B;color:#FFFFFF;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:18px;font-size:min(18px,3vw);font-weight:400;line-height:23px;line-height:min(23px,3.833333vw);letter-spacing:0.2px;text-align:center;vertical-align:top;mso-line-height-rule:exactly;white-space:nowrap;">SAVE {{ fg_discount3 }}%</span>{% endif %}</a>
+                                    <!--[if mso]></v:textbox></v:rect><![endif]-->
+                                  </td>
+                                </tr>
+
+                                <tr>
+                                  <td colspan="3" height="15" style="height:15px;height:min(15px,2.5vw);font-size:0;line-height:0;">&nbsp;</td>
+                                </tr>
+
+                                <!-- 第二行商品标题 -->
+                                <tr>
+                                  <td width="246" align="left" valign="top" style="width:246px;width:min(246px,41vw);padding:0;text-align:left;vertical-align:top;">
+                                    <a href="https://freshinelife.com{{ fg_p2.url | escape }}?variant={{ fg_v2.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[2].image.clickUrl" target="_blank" style="display:block;color:#000000;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:16px;font-size:min(16px,2.666667vw);font-weight:500;line-height:20px;line-height:min(20px,3.333333vw);text-align:left;text-decoration:none;letter-spacing:0;overflow-wrap:break-word;">
+                                      <span data-freshine-slot="saleItems[2].cta.text">{{ fg_p2.title | strip_html | truncate: fg_title_limit, '...' | escape }}</span>
+                                    </a>
+                                  </td>
+
+                                  <td width="17" style="width:17px;width:min(17px,2.833333vw);font-size:0;line-height:0;">&nbsp;</td>
+
+                                  <td width="246" align="left" valign="top" style="width:246px;width:min(246px,41vw);padding:0;text-align:left;vertical-align:top;">
+                                    <a href="https://freshinelife.com{{ fg_p3.url | escape }}?variant={{ fg_v3.id }}&amp;utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleItems[3].image.clickUrl" target="_blank" style="display:block;color:#000000;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:16px;font-size:min(16px,2.666667vw);font-weight:500;line-height:20px;line-height:min(20px,3.333333vw);text-align:left;text-decoration:none;letter-spacing:0;overflow-wrap:break-word;">
+                                      <span data-freshine-slot="saleItems[3].cta.text">{{ fg_p3.title | strip_html | truncate: fg_title_limit, '...' | escape }}</span>
+                                    </a>
+                                  </td>
+                                </tr>
+
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td height="30" style="height:30px;height:min(30px,5vw);font-size:0;line-height:0;">&nbsp;</td>
+                    </tr>
+
+                    <!-- CTA -->
+                    <tr>
+                      <td align="center" style="padding:0;">
+                        <table role="presentation" width="510" cellspacing="0" cellpadding="0" border="0" align="center" style="width:85%;max-width:510px;border:1.5px solid #000000;border-collapse:separate;margin:0 auto;">
+                          <tr>
+                            <td align="center" style="padding:0;text-align:center;">
+                              <a href="https://freshinelife.com/pages/freshine-sale?utm_source=shopify-flow&amp;utm_medium=email&amp;utm_id=cover-rc" data-freshine-href-slot="saleCollection.cta.url" target="_blank" style="display:block;color:#000000;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:18px;font-size:min(18px,4vw);font-weight:400;line-height:53px;line-height:max(44px,min(53px,8.833333vw));text-align:center;text-decoration:none;letter-spacing:0.2px;mso-line-height-rule:exactly;">
+                                <span data-freshine-slot="saleCollection.cta.text">APPLY DISCOUNT</span>
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td height="73" style="height:73px;height:min(73px,12.166667vw);font-size:0;line-height:0;">&nbsp;</td>
+                    </tr>
+
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <!-- /组件：四宫格折扣推荐（标题款） -->
+
+            <p style="margin:0;padding:0;font-size:0;line-height:0;"></p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% endif %}

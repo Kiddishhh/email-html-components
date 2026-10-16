@@ -1,3 +1,4 @@
+import { tempPath } from './helpers/temp-path.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
@@ -10,7 +11,7 @@ test('allows only the approved read-only Shopify CLI command families', () => {
   ]));
   assert.doesNotThrow(() => guard.assertReadonlyShopifyCommand(['shopify', 'theme', 'list', '--json']));
   assert.doesNotThrow(() => guard.assertReadonlyShopifyCommand([
-    'shopify', 'theme', 'pull', '--theme', '123', '--path', '/private/tmp/theme-snapshot'
+    'shopify', 'theme', 'pull', '--theme', '123', '--path', tempPath('theme-snapshot')
   ]));
 });
 

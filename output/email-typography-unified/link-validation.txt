@@ -1,0 +1,26 @@
+## Validation Summary
+
+**Overall Status:** ❌ INVALID
+**Total Files:** 1
+
+## Detailed Results
+
+### File 1
+**Artifact ID:** email-link-syntax-fix
+**Revision:** 1
+*Use same ID & increment revision when retrying on an improvement of this artifact*
+
+**Status:** ❌ FAILED
+**Details:** ERROR [line 289, col 13]: Missing height attribute on img tag
+ERROR [line 289, col 18]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 338, col 26]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 352, col 26]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 376, col 583]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 377, col 584]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 378, col 580]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 379, col 572]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 380, col 584]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 381, col 640]: Asset should be served by the Shopify CDN for better performance.
+ERROR [line 382, col 576]: Asset should be served by the Shopify CDN for better performance.
+
+

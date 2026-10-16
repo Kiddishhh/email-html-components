@@ -1,0 +1,16 @@
+{
+  "framework": "html",
+  "selectionGuid": "293:4023",
+  "pageEntries": [
+    {
+      "id": "0:0",
+      "file": "0_0.html",
+      "status": "saved-localized-cleaned-statically-verified"
+    }
+  ],
+  "component": "component.html",
+  "preview": "effect-preview.html",
+  "screenshotContext": "obtained",
+  "resourceCount": 8,
+  "source": "Freshine public product .js endpoints"
+}

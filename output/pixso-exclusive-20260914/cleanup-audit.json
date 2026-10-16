@@ -1,0 +1,58 @@
+{
+  "target": "119:2618",
+  "file": "hero-source/0_0.html",
+  "nodeIds": {
+    "found": 21,
+    "removed": 21,
+    "retained": 0
+  },
+  "nodeClasses": {
+    "found": 23,
+    "renamed": 23,
+    "retained": 0
+  },
+  "temporaryURLs": {
+    "found": 5,
+    "localized": 5,
+    "retained": 0
+  },
+  "fontRepair": "Pixso returned undefinedundefined; replaced with installed Lora-Medium.ttf",
+  "classMap": {
+    "Pixso-rectangle-119_2619": "room-background",
+    "Pixso-group-119_2626": "discount-art",
+    "stroke-wrapper-119_2628": "coupon-tab-wrapper",
+    "Pixso-rectangle-119_2628": "coupon-tab",
+    "Pixso-rectangle-119_2621": "panel-surface",
+    "Pixso-paragraph-119_2637": "off-label",
+    "Pixso-group-119_2634": "percent-off",
+    "stroke-119_2628": "coupon-tab-border",
+    "Pixso-vector-119_2627": "coupon-outline",
+    "Pixso-group-119_2622": "collection-button",
+    "Pixso-frame-119_2618": "discount-hero",
+    "Pixso-paragraph-119_2629": "sitewide-label",
+    "Pixso-paragraph-119_2635": "percent-value",
+    "Pixso-canvas-0_1": "design-canvas",
+    "Pixso-group-119_2620": "offer-panel",
+    "Pixso-paragraph-119_2632": "offer-plus",
+    "Pixso-rectangle-119_2623": "button-surface",
+    "Pixso-paragraph-119_2636": "percent-sign",
+    "Pixso-paragraph-119_2631": "extra-label",
+    "Pixso-paragraph-119_2624": "button-label",
+    "Pixso-paragraph-119_2625": "offer-heading",
+    "Pixso-paragraph-119_2630": "extra-amount",
+    "Pixso-paragraph-119_2633": "upto-label"
+  },
+  "necessaryIntegrationRepairs": [
+    "Background left corrected from -300 to -745 using Pixso node data.",
+    "Font aliases corrected to actual font-face families.",
+    "Sibling logo 119:2638 added at x=256,y=80 relative to hero."
+  ],
+  "emailAdaptation": {
+    "file": "email-omnisend.html",
+    "temporaryURLs": 0,
+    "nodeIds": 0,
+    "nodeClasses": 0,
+    "publicURLsPending": 0,
+    "publicImageURLs": 3
+  }
+}

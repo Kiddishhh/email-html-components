@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 600;
+	src: url(assets/fonts/Montserrat-SemiBold_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Lora';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/images/undefinedundefined) format('truetype');
+}
+</style>
+
+  <style>
+:root, 
+[data-collection-0-5-mode=""] {
+  /* 参数 */
+  --4: 16px;
+}
+
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --5xl: 48px;
+  --base: 16px;
+  --lg: 18px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --secondary-dark: rgba(122, 106, 96, 1);
+  --secondary: rgba(155, 133, 121, 1);
+  --primary-text: rgba(255, 255, 255, 1);
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.design-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.design-canvas,.sale-banner {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.design-canvas {
+  height: 100%;
+}
+
+.sale-banner {
+  height: 355px;
+  min-width: 600px;
+  overflow: hidden;
+  background-color: var(--secondary);
+}
+
+.room-photo,.photo-shade,.offer-block {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.room-photo {
+  width: 600px;
+  height: 450px;
+  top: -24px;
+  background-image: url("assets/images/6a641b182b64a888b79345f1d600459fd23f44e4.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.photo-shade {
+  width: 600px;
+  height: 355px;
+  top: 0px;
+  background-color: var(--secondary-dark);
+  opacity: 0.48;
+  mix-blend-mode: multiply;
+}
+
+.offer-block,.offer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.offer-block {
+  width: 324px;
+  height: auto;
+  top: 88px;
+}
+
+.offer-content {
+  gap: var(--4);
+  width: 100%;
+  position: relative;
+}
+
+.campaign-name,.main-offer,.extra-offer {
+  text-align: center;
+  letter-spacing: 0px;
+  text-decoration: none;
+  color: var(--primary-text);
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.campaign-name {
+  font-size: var(--lg);
+  font-family: "Lora-Medium";
+  font-weight: 500;
+  font-feature-settings: "locl" 0;
+  width: 100%;
+}
+
+.main-offer {
+  font-size: var(--5xl);
+  font-family: "Lora-Regular";
+  font-weight: 400;
+  text-transform: uppercase;
+  width: auto;
+  white-space: pre;
+}
+
+.extra-offer {
+  font-size: 14px;
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  line-height: 150%;
+  font-feature-settings: "locl" 0;
+  text-transform: capitalize;
+  width: 100%;
+}
+
+.shop-cta {
+  width: 183px;
+  height: 40px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cta-background {
+  width: 183px;
+  height: 40px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: var(--primary-text);
+}
+
+.cta-label {
+  font-size: var(--base);
+  font-family: "Montserrat-SemiBold";
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + -0.5px));
+  white-space: pre;
+  flex-grow: 0;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="design-canvas">
+    <div class="sale-banner">
+      <div class="room-photo"></div>
+      <div class="photo-shade"></div>
+      <div class="offer-block">
+        <div class="offer-content">
+          <p class="campaign-name">Columbus Day Sale</p>
+          <h2 class="main-offer">UP TO 65% OFF</h2>
+          <p class="extra-offer">EXTRA $600 OFF &amp; UP TO 20% OFF SITEWIDE</p>
+          <div class="shop-cta">
+            <div class="cta-background"></div>
+            <p class="cta-label">Shop Now</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

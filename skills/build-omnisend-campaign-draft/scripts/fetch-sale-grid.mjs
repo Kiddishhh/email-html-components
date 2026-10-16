@@ -1,10 +1,11 @@
+import { shopifyConfig } from './shopify-config.mjs';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runReadonlyShopify } from './shopify-readonly.mjs';
 
-const storefrontBaseUrl = 'https://freshinelife.com';
-const DEFAULT_SHOPIFY_STORE = '0qsgrb-pe.myshopify.com';
+const storefrontBaseUrl = shopifyConfig.storefrontOrigin;
+const DEFAULT_SHOPIFY_STORE = shopifyConfig.adminStore;
 
 export function parseSaleGridArgs(argv) {
   const options = {};

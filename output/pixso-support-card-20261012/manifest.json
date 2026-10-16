@@ -1,0 +1,18 @@
+{
+  "guid": "295:3573",
+  "framework": "html",
+  "generatedSource": "0_0.html",
+  "cleanedReference": "pixso-reference.html",
+  "emailComponent": "component.html",
+  "preview": "effect-preview.html",
+  "localizedResources": 3,
+  "userIconUrl": "https://app.omnisend.com/images/6acc9bd331a0ed8db8a4d529",
+  "chatOrganization": "3efb1757-ba25-4f16-8fa5-844db27ef883",
+  "chatLinkVerified": true,
+  "chatVerification": "Browser direct page exposed Kevine / Product Expert and Name + E-mail pre-chat form. No form submission or message sent.",
+  "status": "static-verified",
+  "cleanupAudit": "cleanup-audit.md",
+  "verificationScript": "verify.mjs",
+  "browserPreviewVerified": false,
+  "inboxVerified": false
+}

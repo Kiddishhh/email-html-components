@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.maskedPromotion",
+  "values": {
+    "color.surface": "#7A6A60",
+    "color.text": "#FFFFFF",
+    "color.action": "#FFFFFF",
+    "color.actionText": "#1F1F1F"
+  }
+}

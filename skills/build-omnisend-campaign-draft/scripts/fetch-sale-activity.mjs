@@ -1,3 +1,4 @@
+import { shopifyConfig } from './shopify-config.mjs';
 import { createHash } from 'node:crypto';
 import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -6,8 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { discoverHomepageActivities } from './list-sale-activities.mjs';
 import { runReadonlyShopify } from './shopify-readonly.mjs';
 
-const DEFAULT_SHOPIFY_STORE = '0qsgrb-pe.myshopify.com';
-const STOREFRONT_BASE_URL = 'https://freshinelife.com';
+const DEFAULT_SHOPIFY_STORE = shopifyConfig.adminStore;
+const STOREFRONT_BASE_URL = shopifyConfig.storefrontOrigin;
 
 function sameCandidate(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+
+</style>
+  
+  <style>
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9: rgba(124, 112, 106, 1);
+  --083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8: var(--accent-text);
+  --3xl: 30px;
+  --base: 16px;
+  --lg: 18px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --primary-text: rgba(255, 255, 255, 1);
+  --primary: rgba(141, 27, 27, 1);
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.design-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.design-canvas,.room-collage {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.design-canvas {
+  height: 100%;
+}
+
+.room-collage {
+  height: 714px;
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.room-collage-content,.collage-main,.collage-main-content,.collage-copy,.collage-copy-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.room-collage-content {
+  gap: 32px;
+  width: 100%;
+}
+
+.collage-main {
+  width: 537.000366px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.collage-main-content {
+  gap: 24px;
+  width: 100%;
+}
+
+.collage-copy {
+  width: 458px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.collage-copy-content {
+  gap: 12px;
+  width: 100%;
+}
+
+.collage-title,.collage-subtitle {
+  text-align: center;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  width: 100%;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.collage-title {
+  font-size: var(--3xl);
+  font-family: Lora, Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-feature-settings: "locl" 0;
+  text-transform: capitalize;
+  color: var(--accent-text);
+}
+
+.collage-subtitle {
+  font-size: var(--base);
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+}
+
+.collage-images {
+  width: 100%;
+  height: 497.999969px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.upper-image-frame-group,.upper-image-frame-frame,.upper-image-frame,.lower-image {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.upper-image-frame-group {
+  width: 263.369476px;
+  height: 242.732285px;
+  left: 136.815414px;
+  right: -136.815414px;
+  top: 127.63376699999998px;
+  bottom: -127.63376699999998px;
+}
+
+.upper-image-frame-frame,.upper-image-frame {
+  width: 263.369476px;
+  height: 242.732285px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.lower-image {
+  width: 263.369140625px;
+  height: 242.7322998046875px;
+  background-image: url("assets/images/image357.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  left: -3.2872766875000035px;
+  right: 3.2872766875000035px;
+  top: -13.25395959765624px;
+  bottom: 13.25395959765624px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20263.369%20242.732%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22263.369141%22%20height%3D%22242.732300%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20263.369%20242.732%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22263.369141%22%20height%3D%22242.732300%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-size: 263.369476px 242.732285px;
+  mask-size: 263.369476px 242.732285px;
+  -webkit-mask-position: 3.287109px 13.253967px;
+  mask-position: 3.287109px 13.253967px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.tall-image-group {
+  width: 262.229279px;
+  height: 497.999969px;
+  position: absolute;
+  right: 274.77108699999997px;
+  top: 0px;
+}
+
+.tall-image {
+  width: 262.2294921875px;
+  height: 498px;
+  background-image: url("assets/images/image399.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: -137.65625px;
+  top: -7.986343px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20262.229%20498%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22262.229492%22%20height%3D%22498.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22262.229279%22%20height%3D%22497.999969%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22262.229279%22%20height%3D%22497.999969%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22262.229279%22%20height%3D%22497.999969%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20262.229%20498%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22262.229492%22%20height%3D%22498.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22262.229279%22%20height%3D%22497.999969%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22262.229279%22%20height%3D%22497.999969%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22262.229279%22%20height%3D%22497.999969%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-size: 262.229279px 497.999969px;
+  mask-size: 262.229279px 497.999969px;
+  -webkit-mask-position: 137.65625px 7.986343px;
+  mask-position: 137.65625px 7.986343px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.upper-image-group,.upper-image {
+  position: absolute;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.upper-image-group {
+  width: 263.369476px;
+  height: 242.732285px;
+  left: 136.815414px;
+  right: -136.815414px;
+  margin-left: auto;
+  margin-right: auto;
+  top: -127.63384200000002px;
+  bottom: 127.63384200000002px;
+}
+
+.upper-image {
+  width: 264px;
+  height: 258px;
+  left: -1.287109px;
+  top: 7.647514500000002px;
+  bottom: -7.647514500000002px;
+  background-image: url("assets/images/76d0fa2269896364e61aa94e955048a007e665a4.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20263.369%20242.732%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22263.369141%22%20height%3D%22242.732300%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_0)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_0%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20263.369%20242.732%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22263.369141%22%20height%3D%22242.732300%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_0)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_0%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22263.369476%22%20height%3D%22242.732285%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-size: 263.369476px 242.732285px;
+  mask-size: 263.369476px 242.732285px;
+  -webkit-mask-position: 1.287109px -0.013657px;
+  mask-position: 1.287109px -0.013657px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.collage-cta {
+  width: 265px;
+  height: 55px;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 4px 4px 4px 4px;
+}
+
+.collage-cta-background {
+  width: 289px;
+  height: 55px;
+  position: absolute;
+  left: 0.34375px;
+  right: -0.34375px;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0.013671999999999842px;
+  bottom: -0.013671999999999842px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 4px 4px 4px 4px;
+  background-color: var(--primary);
+}
+
+.collage-cta-label {
+  font-size: var(--lg);
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--primary-text);
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + -0.5px));
+  white-space: pre;
+  flex-grow: 0;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="design-canvas">
+    <section class="room-collage">
+      <div class="room-collage-content">
+        <div class="collage-main">
+          <div class="collage-main-content">
+            <div class="collage-copy">
+              <div class="collage-copy-content">
+                <h2 class="collage-title">See It In Real Rooms.</h2>
+                <p class="collage-subtitle">Feel the fabric up close, then see it fill a real home — the drape, the light, the whole room.</p>
+              </div>
+            </div>
+            <div class="collage-images">
+              <div class="upper-image-frame-group">
+                <div class="upper-image-frame-frame">
+                  <div class="lower-image"></div>
+                </div>
+              </div>
+              <div class="tall-image-group">
+                <div class="tall-image"></div>
+              </div>
+              <div class="upper-image-group">
+                <div class="upper-image-frame">
+                  <div class="upper-image"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="collage-cta" href="https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&amp;utm_medium=email&amp;utm_id=cover-rc" target="_blank" style="display:block;text-decoration:none;">
+          <div class="collage-cta-background"></div>
+          <span class="collage-cta-label">ORDER YOUR CURTAINS</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

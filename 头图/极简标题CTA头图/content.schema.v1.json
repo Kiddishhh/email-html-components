@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.minimalTitleCta",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "hero.title": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.subtitle": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.text": { "type": "text", "required": true, "skillPrompt": true },
+    "hero.cta.url": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.image.url": { "type": "url", "role": "image-source", "protocol": "https", "required": true, "skillPrompt": true },
+    "hero.image.alt": { "type": "text", "role": "image-alt", "required": true, "skillPrompt": true },
+    "hero.image.clickUrl": { "type": "url", "role": "link-target", "protocol": "https", "required": true, "skillPrompt": true }
+  },
+  "additionalProperties": false
+}

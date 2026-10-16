@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 700;
+	src: url(fonts/Montserrat-Bold_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Lora';
+	font-style: normal;
+	font-weight: 500;
+	src: url(../pixso-exclusive-20260914/hero-source/fonts/Lora-Medium.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	src: url(fonts/Montserrat-Regular_1.ttf) format('truetype');
+}
+</style>
+  
+  <style>
+:root, 
+[data-collection-0-5-mode=""] {
+  /* 参数 */
+  --3: 12px;
+}
+
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --secondary-text: rgba(124, 112, 106, 1);
+  --xs: 12px;
+  --3xl: 30px;
+  --base: 16px;
+  --lg: 18px;
+  --sm: 14px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --base-text: rgba(31, 31, 31, 1);
+  --primary-text: rgba(255, 255, 255, 1);
+  --primary: rgba(141, 27, 27, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.design-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.design-canvas,.deals-grid,.sale-two,.sale-one,.sale-four,.sale-three,.original-two,.original-one,.original-four,.original-three,.badge-one,.badge-two,.badge-four,.badge-three {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.design-canvas,.deals-grid {
+  width: 100%;
+}
+
+.design-canvas {
+  height: 100%;
+}
+
+.deals-grid {
+  height: 955px;
+  min-width: 536px;
+}
+
+.image-two {
+  width: 255px;
+  height: 255px;
+  position: absolute;
+  left: 281px;
+  top: 139px;
+}
+
+.image-two-fill,.image-four-fill,.image-one-fill,.image-three-fill {
+  width: 257px;
+  height: 257px;
+  background-size: cover;
+  background-position: center;
+  -webkit-mask-size: 255px 255px;
+  mask-size: 255px 255px;
+  -webkit-mask-position: 0px 0px;
+  mask-position: 0px 0px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.image-two-fill {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/90834c0ba6d40661ec4f1becb14315c0d3984082.png");
+  background-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_9)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_9%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_9)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_9%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.name-two {
+  font-size: var(--sm);
+  font-family: "Montserrat";
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: var(--base-text);
+  width: 255px;
+  height: auto;
+  position: absolute;
+  left: 281px;
+  top: 406px;
+}
+
+.prices-two,.prices-one,.prices-four,.prices-three,.badge-one-inset,.badge-two-inset,.badge-four-inset,.badge-three-inset {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.prices-two {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 281px;
+  top: 460px;
+  gap: 12px;
+}
+
+.sale-two,.sale-one,.sale-four,.sale-three,.original-two {
+  font-size: var(--base);
+  text-align: left;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-transform: capitalize;
+  width: auto;
+  height: auto;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.sale-two,.sale-one,.sale-four,.sale-three {
+  font-family: "Montserrat";
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--base-text);
+}
+
+.original-two,.original-one,.original-four,.original-three {
+  font-family: "Montserrat";
+  font-weight: 400;
+  text-decoration: line-through;
+}
+
+.original-two {
+  color: #7C706A;
+}
+
+.button-two {
+  width: 255px;
+  height: 36px;
+  position: absolute;
+  left: 281px;
+  top: 496px;
+}
+
+.button-two-fill,.button-one-fill,.button-four-fill,.button-three-fill,.image-one,.image-one-mask {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button-two-fill,.button-one-fill,.button-four-fill,.button-three-fill {
+  width: 255px;
+  height: 36px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: var(--primary);
+}
+
+.button-two-label,.button-one-label,.button-four-label,.button-three-label,.name-one {
+  font-size: var(--sm);
+  font-family: "Montserrat";
+  font-weight: 500;
+  letter-spacing: 0px;
+  text-decoration: none;
+  height: auto;
+  position: absolute;
+}
+
+.button-two-label,.button-one-label,.button-four-label,.button-three-label {
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--primary-text);
+  width: auto;
+  left: 50%;
+  top: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + 0px));
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.name-one {
+  text-align: left;
+  line-height: 150%;
+  text-transform: capitalize;
+  color: var(--base-text);
+  width: 255px;
+  left: 0px;
+  top: 406px;
+}
+
+.prices-one {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 0px;
+  top: 460px;
+  gap: 12px;
+}
+
+.original-one,.original-four,.original-three {
+  font-size: var(--base);
+  text-align: left;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-transform: capitalize;
+  color: var(--secondary-text);
+  width: auto;
+  height: auto;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.button-one {
+  width: 255px;
+  height: 36px;
+  position: absolute;
+  left: 0px;
+  top: 496px;
+}
+
+.image-four {
+  width: 255px;
+  height: 255px;
+  position: absolute;
+  left: 281px;
+  top: 562px;
+}
+
+.image-four-mask,.image-three-mask {
+  width: 255px;
+  height: 255px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.image-four-fill {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/7d69f5479c7e32fbf4d5000890316d67939e114e.png");
+  background-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_8)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_8%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_8)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_8%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.name-four,.name-three {
+  font-size: var(--sm);
+  font-family: "Montserrat";
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: var(--base-text);
+  width: 255px;
+  height: auto;
+  position: absolute;
+  top: 829px;
+}
+
+.name-four,.prices-four {
+  left: 281px;
+}
+
+.name-three,.prices-three {
+  left: 0px;
+}
+
+.prices-four,.prices-three {
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 883px;
+  gap: 12px;
+}
+
+.button-four,.button-three,.image-one,.image-one-mask {
+  width: 255px;
+  position: absolute;
+}
+
+.button-four {
+  height: 36px;
+  left: 281px;
+  top: 919px;
+}
+
+.button-three {
+  height: 36px;
+  left: 0px;
+  top: 919px;
+}
+
+.image-one {
+  height: 255px;
+  left: -140.5px;
+  right: 140.5px;
+  top: 139px;
+}
+
+.image-one-mask {
+  height: 255px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+}
+
+.image-one-fill {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/7de1384e1717ae396906743752ea4d7aff102930.png");
+  background-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_7)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_7%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_7)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_7%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.image-three {
+  width: 255px;
+  height: 255px;
+  position: absolute;
+  left: 0px;
+  top: 562px;
+}
+
+.image-three-fill {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/efb7aacf088b90479e341d2f58d761de76a7bcca.png");
+  background-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_6)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_6%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20255%20255%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_6)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_6%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22255.000000%22%20height%3D%22255.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.heading,.subtitle {
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  height: auto;
+  position: absolute;
+}
+
+.heading {
+  font-size: var(--3xl);
+  font-family: "Lora";
+  font-feature-settings: "locl" 0;
+  color: var(--base-text);
+  width: 482px;
+  left: 26px;
+  top: 0px;
+  white-space: pre;
+}
+
+.subtitle {
+  font-size: var(--base);
+  font-family: "Montserrat";
+  text-transform: capitalize;
+  color: var(--secondary-text);
+  width: 534px;
+  left: 0px;
+  top: 57px;
+}
+
+.badge-one-inset,.badge-two-inset,.badge-four-inset,.badge-three-inset {
+  gap: 10px;
+  padding: var(--3) var(--3) 0px 0px;
+}
+
+.badge-one-inset {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 188px;
+  top: 139px;
+}
+
+.badge-one,.badge-two,.badge-four,.badge-three,.badge-one-circle,.badge-two-circle,.badge-four-circle,.badge-three-circle {
+  width: 55px;
+  height: 55px;
+}
+
+.badge-one-circle {
+  background-image: url("assets/images/Ellipse_243_3643.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.badge-one-percent,.badge-two-percent,.badge-one-prefix,.badge-two-prefix,.badge-four-prefix,.badge-three-prefix {
+  text-align: center;
+  letter-spacing: 0px;
+  text-decoration: none;
+  color: var(--primary-text);
+  width: auto;
+  height: auto;
+  position: absolute;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.badge-one-percent,.badge-two-percent,.badge-four-percent,.badge-three-percent {
+  font-size: var(--lg);
+  font-family: "Montserrat";
+  font-weight: 700;
+  top: 25px;
+}
+
+.badge-one-percent,.badge-two-percent {
+  left: 8px;
+}
+
+.badge-one-prefix,.badge-two-prefix,.badge-four-prefix,.badge-three-prefix {
+  font-size: var(--xs);
+  font-family: "Montserrat";
+  font-weight: 500;
+  left: 11px;
+  top: 11px;
+}
+
+.badge-two-inset {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 469px;
+  top: 139px;
+}
+
+.badge-two-circle {
+  background-image: url("assets/images/Ellipse_243_3648.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.badge-four-inset {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 469px;
+  top: 562px;
+}
+
+.badge-four-circle {
+  background-image: url("assets/images/Ellipse_243_3653.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.badge-four-percent {
+  text-align: center;
+  letter-spacing: 0px;
+  text-decoration: none;
+  color: var(--primary-text);
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 8.5px;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.badge-three-inset {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 188px;
+  top: 562px;
+}
+
+.badge-three-circle {
+  background-image: url("assets/images/Ellipse_243_3658.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.badge-three-percent {
+  text-align: center;
+  letter-spacing: 0px;
+  text-decoration: none;
+  color: var(--primary-text);
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 9px;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="design-canvas">
+    <div class="deals-grid">
+      <div class="image-two">
+        <div class="image-two-fill"></div>
+      </div>
+      <p class="name-two">Freshine Elara Roman Shades for Elegant Linen-Blend Drapes with...</p>
+      <div class="prices-two">
+        <p class="sale-two">$39.99</p>
+        <p class="original-two">$69.99</p>
+      </div>
+      <div class="button-two">
+        <div class="button-two-fill"></div>
+        <p class="button-two-label">Shop now</p>
+      </div>
+      <p class="name-one">Iris Blackout Linen Curtains – Elegant Light-Blocking Drapes fo...</p>
+      <div class="prices-one">
+        <p class="sale-one">$53.90</p>
+        <p class="original-one">$89.90</p>
+      </div>
+      <div class="button-one">
+        <div class="button-one-fill"></div>
+        <p class="button-one-label">Shop now</p>
+      </div>
+      <div class="image-four">
+        <div class="image-four-mask">
+          <div class="image-four-fill"></div>
+        </div>
+      </div>
+      <p class="name-four">Arlise 100% Blackout Chenille Drapes for Better Sleep and Priv...</p>
+      <p class="name-three">Amara Extra Long Linen Curtains – Elegant Light-Filtering Drapes</p>
+      <div class="prices-four">
+        <p class="sale-four">$66.80</p>
+        <p class="original-four">$166.99</p>
+      </div>
+      <div class="prices-three">
+        <p class="sale-three">$49.90</p>
+        <p class="original-three">$99.80</p>
+      </div>
+      <div class="button-four">
+        <div class="button-four-fill"></div>
+        <p class="button-four-label">Shop now</p>
+      </div>
+      <div class="button-three">
+        <div class="button-three-fill"></div>
+        <p class="button-three-label">Shop now</p>
+      </div>
+      <div class="image-one">
+        <div class="image-one-mask">
+          <div class="image-one-fill"></div>
+        </div>
+      </div>
+      <div class="image-three">
+        <div class="image-three-mask">
+          <div class="image-three-fill"></div>
+        </div>
+      </div>
+      <p class="heading"> Limited-Time Window Deals</p>
+      <p class="subtitle">Thoughtfully Designed Curtains &amp; Shades for Comfort, Beauty, and Everyday Living</p>
+      <div class="badge-one-inset">
+        <div class="badge-one">
+          <div class="badge-one-circle"></div>
+          <p class="badge-one-percent">40%</p>
+          <p class="badge-one-prefix">SAVE</p>
+        </div>
+      </div>
+      <div class="badge-two-inset">
+        <div class="badge-two">
+          <div class="badge-two-circle"></div>
+          <p class="badge-two-percent">43%</p>
+          <p class="badge-two-prefix">SAVE</p>
+        </div>
+      </div>
+      <div class="badge-four-inset">
+        <div class="badge-four">
+          <div class="badge-four-circle"></div>
+          <p class="badge-four-percent">60%</p>
+          <p class="badge-four-prefix">SAVE</p>
+        </div>
+      </div>
+      <div class="badge-three-inset">
+        <div class="badge-three">
+          <div class="badge-three-circle"></div>
+          <p class="badge-three-percent">50%</p>
+          <p class="badge-three-prefix">SAVE</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "target": "119:2482",
+  "file": "navbar-source/0_0.html",
+  "framework": "html",
+  "resourceStatus": {
+    "fontAssetsFound": 1,
+    "fontAssetsLocalized": 1,
+    "temporaryURLsRetained": 0
+  },
+  "phaseA": {
+    "temporaryURLs": { "found": 1, "localized": 1, "retained": 0 },
+    "pixsoNodeIds": { "found": 6, "removed": 6, "retained": 0 },
+    "pixsoNodeClasses": { "found": 6, "replaced": 6, "retained": 0 }
+  },
+  "phaseB": {
+    "classMap": {
+      "Pixso-canvas-0_1": "document canvas removed",
+      "Pixso-instance-119_2482": "site-nav",
+      "Pixso-rectangle-125_1": "offer-message",
+      "Pixso-rectangle-125_2": "signup-link",
+      "Pixso-paragraph-125_3": "offer-message text",
+      "Pixso-paragraph-125_4": "signup-link text"
+    },
+    "classTokenChanges": 0,
+    "inferredStateClasses": 0
+  },
+  "integration": {
+    "file": "email-omnisend.html",
+    "adaptation": "Rebuilt as an email-safe table row above the existing 600px hero; kept 56px height, 76.166667% / 23.833333% split, colors, text, and underline.",
+    "homeUrl": "https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=cover-fs",
+    "temporaryURLs": 0,
+    "pixsoNodeIds": 0,
+    "pixsoNodeClasses": 0
+  }
+}

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	src: url(fonts/Montserrat-Regular_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+</style>
+  <style>
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9: rgba(124, 112, 106, 1);
+  --083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8: var(--accent-text);
+  --3xl: 30px;
+  --base: 16px;
+  --lg: 18px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --muted: rgba(245, 241, 237, 1);
+  --primary-text: rgba(255, 255, 255, 1);
+  --primary: rgba(141, 27, 27, 1);
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.collection-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.collection-canvas,.collection-section {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.collection-canvas {
+  height: 100%;
+}
+
+.collection-section {
+  height: 1217px;
+  min-width: 600px;
+  overflow: hidden;
+  background-color: var(--muted);
+}
+
+.collection-content {
+  width: 534px;
+  height: 1134px;
+  position: absolute;
+  left: 33px;
+  top: 32px;
+}
+
+.collection-title,.collection-description,.celina-roman-name,.ilythra-name,.celina-curtain-name,.elara-name,.orianne-name,.marisol-name {
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+.collection-title,.collection-description,.celina-roman-discount,.celina-curtain-discount,.elara-discount,.orianne-discount,.marisol-discount,.celina-roman-name,.ilythra-discount,.ilythra-name,.celina-curtain-name,.elara-name,.orianne-name,.collection-cta-label,.marisol-name {
+  text-align: center;
+  letter-spacing: 0px;
+  height: auto;
+}
+
+.collection-title,.collection-description {
+  line-height: 150%;
+  text-decoration: none;
+  position: absolute;
+  white-space: pre;
+}
+
+.collection-title,.celina-roman-discount,.celina-curtain-discount,.elara-discount,.orianne-discount,.marisol-discount,.ilythra-discount {
+  width: auto;
+  flex-grow: 0;
+}
+
+.collection-title {
+  font-size: var(--3xl);
+  font-family: "Georgia-Regular";
+  color: var(--);
+  left: 50%;
+  top: 0px;
+  transform: translateX(calc(-50% + -0.5px));
+}
+
+.collection-description,.celina-roman-clip,.celina-curtain-clip,.orianne-clip,.marisol-clip,.ilythra-clip,.elara-clip,.celina-curtain-photo,.collection-cta-fill,.collection-cta-label {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.collection-description {
+  font-size: var(--base);
+  font-family: "Verdana-Regular";
+  font-feature-settings: "locl" 0;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+  width: 534px;
+  left: 0px;
+  right: 0px;
+  top: 53px;
+}
+
+.celina-roman-card {
+  width: 247px;
+  height: 246px;
+  position: absolute;
+  left: 275px;
+  top: 101px;
+}
+
+.celina-roman-clip,.celina-curtain-clip,.orianne-clip,.marisol-clip {
+  width: 247px;
+  height: 246px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+}
+
+.celina-roman-photo,.ilythra-photo,.celina-curtain-photo,.elara-photo,.orianne-photo,.marisol-photo {
+  background-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.celina-roman-photo,.celina-curtain-photo,.orianne-photo,.marisol-photo {
+  -webkit-mask-size: 247px 246px;
+  mask-size: 247px 246px;
+}
+
+.celina-roman-photo {
+  width: 247px;
+  height: 246px;
+  background-image: url("assets/images/Rectangle_295_3570.png");
+  background-size: 100% 100%;
+  position: absolute;
+  left: -23px;
+  top: -19px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_5)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_5%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_5)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_5%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 23px 19px;
+  mask-position: 23px 19px;
+}
+
+.celina-roman-badge,.celina-roman-badge-fill,.ilythra-badge-fill,.celina-curtain-badge-fill,.elara-badge-fill,.orianne-badge-fill,.marisol-badge-fill,.ilythra-badge,.celina-curtain-badge,.elara-badge,.orianne-badge,.marisol-badge {
+  width: 111px;
+  height: 31px;
+}
+
+.celina-roman-badge {
+  position: absolute;
+  left: 275px;
+  top: 101px;
+}
+
+.celina-roman-badge-fill,.ilythra-badge-fill,.celina-curtain-badge-fill,.elara-badge-fill,.orianne-badge-fill,.marisol-badge-fill {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-radius: 0px 0px 6px 0px;
+  background-color: var(--primary);
+}
+
+.celina-roman-discount,.celina-curtain-discount,.elara-discount,.orianne-discount,.marisol-discount,.ilythra-discount {
+  font-size: 18px;
+  top: 4px;
+}
+
+.celina-roman-discount,.celina-curtain-discount,.elara-discount,.orianne-discount,.marisol-discount,.ilythra-discount,.collection-cta-label {
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  color: var(--primary-text);
+}
+
+.celina-roman-discount,.celina-curtain-discount,.elara-discount,.orianne-discount,.marisol-discount {
+  text-decoration: none;
+  position: absolute;
+  left: 10px;
+  white-space: pre;
+}
+
+.celina-roman-name,.ilythra-name,.celina-curtain-name,.elara-name,.orianne-name,.marisol-name {
+  font-family: "Montserrat-Regular";
+  text-decoration: underline;
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+}
+
+.celina-roman-name {
+  font-size: var(--lg);
+  width: 247px;
+  position: absolute;
+  left: 275px;
+  top: 359px;
+}
+
+.ilythra-card {
+  width: 247px;
+  height: 247px;
+  position: absolute;
+  left: 275px;
+  top: 425px;
+}
+
+.ilythra-clip,.elara-clip {
+  width: 247px;
+  height: 247px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+}
+
+.ilythra-photo,.celina-curtain-photo,.elara-photo,.orianne-photo,.marisol-photo {
+  background-size: cover;
+  background-position: center;
+}
+
+.ilythra-photo,.elara-photo {
+  -webkit-mask-size: 247px 247px;
+  mask-size: 247px 247px;
+}
+
+.ilythra-photo {
+  width: 250.012238px;
+  height: 250.012207px;
+  position: absolute;
+  left: -2.007812px;
+  top: -1.003906px;
+  background-image: url("assets/images/7b9d290fcfab4549e678fad8c426e6de30e8fdcd.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_4)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_4%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_4)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_4%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 2.007812px 1.003906px;
+  mask-position: 2.007812px 1.003906px;
+}
+
+.ilythra-badge {
+  position: absolute;
+  left: 275px;
+  top: 425px;
+}
+
+.ilythra-discount,.ilythra-name {
+  position: absolute;
+}
+
+.ilythra-discount {
+  text-decoration: none;
+  left: 9px;
+  white-space: pre;
+}
+
+.ilythra-name {
+  font-size: var(--lg);
+  width: 247px;
+  left: 275px;
+  top: 684px;
+}
+
+.celina-curtain-card {
+  width: 247px;
+  height: 246px;
+  position: absolute;
+  left: 12px;
+  top: 101px;
+}
+
+.celina-curtain-photo {
+  width: 484px;
+  height: 249px;
+  position: absolute;
+  left: 116.5px;
+  right: -116.5px;
+  top: -2px;
+  background-image: url("assets/images/88110ae98060616096091b8a6fdbbbc1bc0fb7b9.jpg");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_3)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_3%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_3)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_3%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 2px 2px;
+  mask-position: 2px 2px;
+}
+
+.celina-curtain-badge {
+  position: absolute;
+  left: 12px;
+  top: 101px;
+}
+
+.celina-curtain-name {
+  font-size: var(--lg);
+  font-feature-settings: "locl" 0;
+  width: 247px;
+  position: absolute;
+  left: 12px;
+  top: 359px;
+  white-space: pre;
+}
+
+.elara-card,.elara-photo {
+  width: 247px;
+  height: 247px;
+  position: absolute;
+}
+
+.elara-card {
+  left: 12px;
+  top: 425px;
+}
+
+.elara-photo,.orianne-photo,.marisol-photo {
+  -webkit-mask-position: 0px 0px;
+  mask-position: 0px 0px;
+}
+
+.elara-photo {
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/03bc3c15bfeaa34f58164fa6d52f40ece75df33c.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.elara-badge {
+  position: absolute;
+  left: 12px;
+  top: 425px;
+}
+
+.elara-name {
+  font-size: var(--lg);
+  width: 247px;
+  position: absolute;
+  left: 12px;
+  top: 684px;
+}
+
+.orianne-card {
+  width: 247px;
+  height: 246px;
+  position: absolute;
+  left: 276px;
+  top: 752px;
+}
+
+.orianne-photo {
+  width: 247px;
+  height: 247px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/67d418fac27c34a1d4834d93f6052d3a0d43185a.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.orianne-badge {
+  position: absolute;
+  left: 276px;
+  top: 752px;
+}
+
+.orianne-name {
+  font-size: var(--lg);
+  width: 247px;
+  position: absolute;
+  left: 276px;
+  top: 1010px;
+}
+
+.collection-cta,.collection-cta-fill {
+  width: 507px;
+  height: 55px;
+  position: absolute;
+}
+
+.collection-cta {
+  left: 12px;
+  top: 1079px;
+}
+
+.collection-cta-fill {
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 4px 4px 4px 4px;
+  background-color: var(--primary);
+}
+
+.collection-cta-label {
+  font-size: var(--lg);
+  font-feature-settings: "locl" 0;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 264px;
+  position: absolute;
+  left: -0.5px;
+  right: 0.5px;
+  top: 50%;
+  transform: translateY(calc(-50% + -0.5px));
+  white-space: pre;
+}
+
+.marisol-card,.marisol-photo {
+  width: 247px;
+  height: 246px;
+  position: absolute;
+}
+
+.marisol-card {
+  left: 12px;
+  top: 752px;
+}
+
+.marisol-photo {
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/546b0745c7d90184d72313977cd223fe803c8715.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_0)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_0%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_0)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_0%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.marisol-badge {
+  position: absolute;
+  left: 12px;
+  top: 752px;
+}
+
+.marisol-name {
+  font-size: var(--lg);
+  font-feature-settings: "locl" 0;
+  width: 247px;
+  position: absolute;
+  left: 12px;
+  top: 1010px;
+  white-space: pre;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="collection-canvas">
+    <section class="collection-section">
+      <div class="collection-content">
+        <h2 class="collection-title">Find your perfect fit</h2>        <p class="collection-description">Designed around your windows, your style, your home.</p>        <div class="celina-roman-card">
+          <div class="celina-roman-clip">
+            <div class="celina-roman-photo"></div>
+          </div>
+        </div>        <div class="celina-roman-badge">
+          <div class="celina-roman-badge-fill"></div>
+          <p class="celina-roman-discount">SAVE 50%</p>
+        </div>        <p class="celina-roman-name">Celina Smart Roman Shade</p>        <div class="ilythra-card">
+          <div class="ilythra-clip">
+            <div class="ilythra-photo"></div>
+          </div>
+        </div>        <div class="ilythra-badge">
+          <div class="ilythra-badge-fill"></div>
+          <p class="ilythra-discount">SAVE 40%</p>
+        </div><a href="https://freshinelife.com/collections/all-shades-blinds/products/ilythra-cotton-linen-roman-shades-soft-textured-elegance" target="_blank" class="ilythra-name">Ilythra Cotton Linen Roman Shades</a>        <div class="celina-curtain-card">
+          <div class="celina-curtain-clip">
+            <div class="celina-curtain-photo"></div>
+          </div>
+        </div>        <div class="celina-curtain-badge">
+          <div class="celina-curtain-badge-fill"></div>
+          <p class="celina-curtain-discount">SAVE 50%</p>
+        </div>        <p class="celina-curtain-name">Celina Linen Curtains</p>        <div class="elara-card">
+          <div class="elara-clip">
+            <div class="elara-photo"></div>
+          </div>
+        </div>        <div class="elara-badge">
+          <div class="elara-badge-fill"></div>
+          <p class="elara-discount">SAVE 45%</p>
+        </div>        <p class="elara-name">Elara Smart Motorized Linen Roman Shade</p>        <div class="orianne-card">
+          <div class="orianne-clip">
+            <div class="orianne-photo"></div>
+          </div>
+        </div>        <div class="orianne-badge">
+          <div class="orianne-badge-fill"></div>
+          <p class="orianne-discount">SAVE 50%</p>
+        </div>        <p class="orianne-name">Orianne Smart Blackout Roller Shades</p>        <div class="collection-cta">
+          <div class="collection-cta-fill"></div>
+          <p class="collection-cta-label">REFRESH YOUR HOME</p>
+        </div>        <div class="marisol-card">
+          <div class="marisol-clip">
+            <div class="marisol-photo"></div>
+          </div>
+        </div>        <div class="marisol-badge">
+          <div class="marisol-badge-fill"></div>
+          <p class="marisol-discount">SAVE 50%</p>
+        </div><a href="https://freshinelife.com/collections/custom-curtains/products/marisol-linen-curtains-large-windows-elegant-pleated-drapes-for-living-room-bedroom" target="_blank" class="marisol-name">Marisol Linen Curtains </a></div>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>

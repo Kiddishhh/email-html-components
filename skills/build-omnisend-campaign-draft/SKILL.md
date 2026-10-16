@@ -1,98 +1,77 @@
 ---
 name: build-omnisend-campaign-draft
-description: Use when creating, editing, previewing, exporting, or uploading a Freshine component-based Omnisend Campaign draft in the local HTML editor.
+description: Use when 用户要制作邮件、编辑营销邮件、打开邮件编辑器、推荐活动邮件主题或副标题，或把参考图/HTML制作注册为可复用组件、修改现有邮件组件；适用于 Freshine/Omnisend HTML 邮件及600px桌面、375px移动适配。 Also use for creating, editing, previewing or exporting Freshine Omnisend campaigns and reusable email components.
 ---
 
-# Build Omnisend Campaign Draft
+# Freshine 邮件应用管理
 
-## Current editor entry
+管理当前组件式邮件应用。用户手动在编辑器操作；AI在对话内建议文案、制作和维护组件，并按实际授权执行输出。保留现有应用、注册表和导出上传流程。
 
-Run:
+## 请求分流
+
+| 用户意图 | 执行方式 | 需要读取的资料 |
+| --- | --- | --- |
+| 制作/编辑邮件、打开编辑器 | 找到或启动本机编辑器并打开；让用户手动操作 | [编辑器工作流](references/visual-editor-workflow.zh-CN.md) |
+| 给定活动名推荐主题/副标题 | 在对话内给 Subject/Preheader 备选，不自动写进邮件 | [文案风格](references/email-copy-style.zh-CN.md) |
+| 上传参考图或粘贴HTML，制作可复用组件并注册 | 保留设计与数据，生成完整组件并登记到编辑器 | [新组件规范](references/new-component-standard.zh-CN.md) |
+| 修改已注册组件或当前实例 | 先确定修改对象，实施最小范围改动，保留规范 | [组件维护](references/component-maintenance.zh-CN.md) |
+| 导出HTML或上传Omnisend草稿 | 等待保存、逐组件确认，沿用已有输出流程 | [输出与安全](references/workflow-and-safety.zh-CN.md) |
+
+“只给主题建议”时只回复文案；“制作邮件，我自己操作”时打开编辑器并提供建议，不代替用户添加组件、修改内容或确认。组合请求可以先打开编辑器，再在对话中推荐文案。
+
+## 打开编辑器
+
+1. 通过当前SKILL文件的真实路径定位包根目录；项目根目录是包根的`../..`。即使skill通过用户目录符号链接加载，也在真实项目根执行命令，不按聊天的任意工作目录寻找另一份组件库。
+2. 优先复用当前窗口提到的本机编辑器。运行只读定位脚本（有当前URL时追加`--url`）：
+
+```bash
+node skills/build-omnisend-campaign-draft/scripts/resolve-campaign-editor.mjs
+```
+
+脚本检查4173–4205回环端口，并比对当前项目的完整组件目录/默认值。`ready`返回可用URL；`staleUrls`表示同项目旧服务，保留它们及其草稿。
+3. 返回`ready`时，用`open_in_codex`打开该URL供用户操作；工具不可用时返回可点击链接。打开已获用户“制作/编辑邮件”请求授权，无需再次确认。
+4. 返回`start-required`时，用结果中的`startPort`运行现有启动脚本并保持进程；等待`status: ready`后打开返回URL。4173为空闲时的命令为：
 
 ```bash
 node skills/build-omnisend-campaign-draft/scripts/start-campaign-editor.mjs 4173
 ```
 
-Open `http://127.0.0.1:4173`. The editor reads every component from `组件清单.json`; do not maintain a separate selectable-component list. Before changing registration or assembling a Campaign, run:
+若`startPort`为空，明确报告没有确认到可用端口；不终止旧服务、不覆盖旧草稿。服务启动报`EPERM`时按环境权限流程处理，不把启动失败描述为页面已打开。
+5. 普通草稿和图片缓存只存在当前服务运行期；需要跨重启保留时提醒使用“保存当前为模板”。仅打开编辑器不创建Omnisend Campaign、不上传图片、不发送邮件。
+
+## 活动文案建议
+
+- 默认先读`references/email-copy-style.zh-CN.md`，按需要查[一次性样本](references/omnisend-copy-samples.v1.json)。日常执行不读取Omnisend历史；只有用户明确要求更新风格总结才重新查询。
+- “邮件主题”指Subject，“副标题”默认指Preheader；若上下文明显在说头图内文字，就按主标题/正文副标题处理并标注。Campaign内部名称单独保留。
+- 默认提供3组英文Subject/Preheader和简短中文说明，标记推荐项；用户指定数量、语言或内容时按其要求。建议只在对话展示，用户选定并明确要求填入时才修改对应字段。
+- 只给活动名时可以先给不含具体优惠或截止日的版本；需要强调优惠/倒计时时，仅询问尚缺的关键事实。历史样本中的65%、20%、$600和“3 Days Left”均不是新活动默认值。
+- 不承诺打开率、转化或品牌历史表现；风格总结来自实际文案样本，未做效果归因。
+
+## 组件制作与修改
+
+- `组件清单.json`是注册路径与分类的单一事实来源，`editor/public/editor-ui-contract.mjs`是可编辑字段入口。按需查[组件交互清单](references/component-interactions.zh-CN.md)和目标组件管理说明，不在skill维护另一份组件选择表。
+- 用户给出的参考图或HTML并要求制作/注册，已授权该范围内的本地实现。命名、componentKey、文件结构等常规选择按现有惯例完成；只为确实缺失且影响设计、链接或素材的信息询问。不得将完整源码要求再次转成同一范围的审批。
+- 创建时同步模板、组件CSS、内容/设置Schema、fixture/defaults、管理说明、`效果演示.html`、注册表、编辑器字段、索引与相关文档。修改时保留非目标文案、图片、链接/UTM、样式、字段和导出契约。
+- 默认标题Georgia/serif，其余文案Verdana/sans-serif；逐字段显式字体优先。活动商品组件的尺寸/字重保留主标题Regular（font-weight:400）、30/38px，副标题18/27px、#000000，商品标题16/20px；已有源快照字体和特殊设计不批量迁移，详见新组件规范与[已有行为契约](references/editor-and-component-contracts.md)。
+- 文案实例样式用[文字样式控件](references/text-style-controls.zh-CN.md)。Shopify导入仅在用户需要商品数据时读取[只读数据契约](references/shopify-data-contract.zh-CN.md)。
+
+## 邮件格式与移动端等比制造规范
+
+600px桌面、375px移动目标，受控尺寸按62.5%等比缩放；桌面px声明后跟inline `min()`，负尺寸使用`max()`。保持确认的列数、图片比例和点击边界。1px分割线、0、百分比和流式图片按现有例外规则处理。
+
+邮件用表格与内联CSS；不依赖JavaScript、iframe、表单、Flex/Grid或外部字体完成布局。最终图片为公开HTTPS，保留唯一有效退订令牌`[[unsubscribe_link]]`与现有Omnisend Email Content结构。普通单个非页脚组件无需自行插入退订；完整邮件的退订由实际页脚/输出流程保留。
+
+组件新增、注册或版式修改后运行：
 
 ```bash
 node skills/build-omnisend-campaign-draft/scripts/validate-campaign-contracts.mjs
+node scripts/normalize-inline-mobile-dimensions.mjs --check
+node --test tests/mobile-proportional-contract.test.mjs
+node --test tests/*.test.mjs
 ```
 
-A valid result means the registry paths, component Schemas, default snapshots, demos, and editor field contracts agree for all current components.
+读取测试结果，再在实际编辑器添加/选择目标组件，检查600px/375px、素材、字段和控制台。旧服务缓存目录，使用定位脚本选择匹配版本，保留旧会话。局部非版式改动按维护参考运行与改动相称的检查。浏览器预览不等同Omnisend或真实收件箱实测。
 
-## Workflow
+## 输出边界
 
-1. Create or resume a local draft. Campaign name is for internal identification; Subject is the inbox title; Preheader is the inbox preview summary.
-2. Add any registered component, including repeated instances, and arrange the instances in the required order. No component is required to occupy a particular position.
-3. Edit only the fields exposed by the selected component's editor contract. Each edit clears that instance's confirmation and refreshes the preview.
-4. Check the generated email at the fixed 600px desktop canvas and the 375px mobile target. Selecting a structure item moves that instance to the top of the preview and briefly outlines it.
-5. Confirm each component, then confirm the complete HTML. Final confirmation is bound to the HTML content hash; any edit invalidates it.
-6. Choose one output:
-   - `导出 Omnisend HTML`: upload unresolved local images, replace `asset://` references with public HTTPS URLs, and copy the complete HTML. This does not create or update a Campaign.
-   - `上传 Omnisend 草稿`: update the most recently updated exact-name Draft, or create a Draft only when no match exists. Never send, schedule, or publish.
-
-## Current editor capabilities
-
-- Free composition from all registered components: add, repeat, drag-sort, select, edit, confirm, and delete.
-- Named local templates: save the current complete snapshot only after confirmation, select a template to create a new editable draft, overwrite only after confirmation, and delete the template together with its dedicated local-image copies.
-- Local image upload and preview exist only for the current editor run. Saving a template copies its selected local images into that template's dedicated asset directory; component-directory assets are never copied or deleted.
-- Desktop/mobile preview switching and selected-component positioning.
-- `navigation.visible` toggle for the four navigation-capable head-image styles. When disabled, the navigation markup and its height are removed from generated HTML while the saved copy, URL, and colors remain available for re-enabling.
-- Shopify read-only import for the six-product grid, registered four-product grid styles (one selected product per card), and the two single-curtain promotion cards. The navigation promotion CTA is text, color, divider-image, and CTA-link only.
-- `collection.productGrid4NoSidePadding` is the independent full-width four-product layout: 600px with 289×361px cards and a 22px gutter. Its four Shopify imports update only the selected card, including its CTA text.
-- Runtime-only Omnisend API Key dialogs with show/hide support. Keys are cleared after success, failure, or cancellation and are never written to drafts, files, parameters, environment variables, logs, or chat.
-
-## Component and style rules
-
-- 仅“活动商品组件”分类中的组件，必须默认采用统一文字规范：主标题 Lora Regular（font-weight:400），30px/38px、字距 0、居中；副标题 Montserrat Medium（500），18px/150%（27px）、字距 0、居中、黑色 #000000；图片下标题/商品名 Montserrat Medium（500），16px/20px、字距 0、左对齐。用户明确提出特殊要求时才覆盖。头图及其他分类组件完全排除。此规则已应用于现有相关组件，优先于下文旧款式的字体描述。详见 [新组件规范](references/new-component-standard.zh-CN.md) 和 [字段层级清单](references/typography-roles.v1.json)。
-
-- `review.sceneComparison` is the independent “场景对比评论卡” under “评论组件”. Preserve its VIII.jpg checkerboard layout (600×677px, two columns at 375px), 17 editable content fields, three scoped colors, and four exact source crops via `localReferenceAssets`. Only the lower-left CTA links to the supplied Marisol product with `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`. Default assets are local preview inputs; use the existing confirmed export flow to upload and resolve them. Do not replace the scene imagery or reviewer with generated assets.
-- `gift.doubleGiftAddressShowcase` is the independent “双赠品展示卡2” under “赠品与权益组件”. Preserve its approved 600px side-by-side tiered layout, 262px cards, 12px gap, exact crops from `容器 117.png`, two CTA-only links, and proportional 375px rendering. Its four local assets are preview inputs; only the red `SPEND` bars link, and the component does not create Shopify gift rules. Keep `gift.showcase2` and `gift.rewardGrid2` unchanged.
-- `image.benefitsAddressCard` is the independent “权益+地址组合卡” under “赠品与权益组件”. Preserve the approved 1200×1698px source as one unlinked image: 600×849px desktop and 375×530.625px mobile. Expose only image URL, Alt and outer surface color; do not split, crop, redraw, add hotspots, or replace the showroom/address content with HTML fields.
-
-- `组件清单.json` is the single source of truth for component paths and order in the catalog.
-- A registered component must include its template, content/settings Schema, fixture/defaults, management guide, component CSS, and `效果演示.html`, and must have an explicit field contract in `editor/public/editor-ui-contract.mjs`.
-- Preserve each component's confirmed visual design. The shared baseline is a 600px email canvas, 375px mobile verification, proportional images, email-safe table markup and inline CSS, usable link/CTA areas, and no cross-component CSS leakage.
-- Default `asset://` images are local-preview inputs. Final Omnisend HTML must contain public HTTPS images.
-- `collection.saleGrid4WithTitle` is the independent “四宫格折扣推荐（标题款）” style under “活动商品组件”. It exposes 24 content fields, five scoped colors, and four selected-card Shopify import buttons. Preserve its confirmed Montserrat typography, 600×933px desktop layout and two-column 375px layout. Current default discounts are 30% / 40% / 35% / 50% in top-left, top-right, bottom-left, bottom-right order. All four product destinations and the separate APPLY DISCOUNT CTA include `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`; the CTA uses the user-confirmed `https://freshinelife.com/collections/roman-shades`. Product import replaces only the selected card, including its link and caption; reapply required UTM after importing. See the component management guide and interaction reference.
-- `collection.sceneSaleGrid4WithTitle` is the independent “四宫格场景折扣（标题款）” style under “活动商品组件”. Preserve its 600×927px warm scene layout, Lora 30px title, Montserrat 18px subtitle, two rows of 246px square images, 16px column gap, linked 21px product names and top-left discount tags; it has no bottom CTA. It exposes 22 content fields and six scoped colors. Four selected-card Shopify imports replace only image, Alt, link, product name and discount, and must apply `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`.
-- `collection.saleGrid6DetailWithTitle` is the independent “六宫格详情折扣（标题款）”: three rows of two 247px product cards in the existing 519px detail grid, proportional 600px/375px layout, Lora 30px/500/150% title and Montserrat 16px/500/150% subtitle (#7C706A). Six scoped Shopify imports preserve CTA copy, other cards, top content and colors. The existing discountLabel field renders a theme-colored 54px top-right circular badge with a small prefix and bold percentage; empty labels remove the badge. Preserve 50 content fields, nine colors and cover-rc UTM policy.
-- `collection.sceneSaleGrid6PriceWithTitle` is the independent “六宫格场景价格（标题款）”: three rows of two 264px square scene cards in a 552px grid, 24px column gap, rectangular top-left discount labels, product names, sale prices plus crossed-out compare-at prices, and one botanical bottom CTA. It follows the activity-product typography contract and proportional 600px/375px rules. Six scoped Shopify imports update only the selected card and preserve top copy, ornaments, CTA, other cards and colors; all imported links use `cover-rc` UTM.
-- `collection.saleGrid4DetailWithTitle` is the independent “四宫格详情折扣（标题款）” style. Preserve its 600px / responsive 375px two-column layout, 519px content table, 247px square images and price-detail cards. Product names, discount labels and prices are plain text; only each image and its SHOP NOW CTA link to the same product URL. Four selected-card Shopify imports update only the chosen card's first image, Alt, full title, tracked URL, first available variant price, valid compare-at price and discount label; they do not change CTA copy, other cards, top copy or colors. Every default and imported product destination must contain `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`.
-- `hero.romanShadeDiscount` is a separate 600px / responsive 375px hero with an editable circular logo, translucent panel, two-line discount and tracked CTA. Its `navigation.visible` toggle defaults to `true`; the removable top navigation is 56px high on desktop and 35px at 375px, with fixed copy/link and left/right/text colors `#604211` / `#6B492C` / `#FFFFFF`, without new color inputs. Navigation uses Montserrat 16px / 500 / 20px on desktop and 11.25px / 500 / 15px at 375px. The default CTA text is `Decorate your home now`. Preserve the original 600×761px scene, reference crop, local assets and CTA UTM. With navigation enabled/disabled, total size is 600×817px / 600×761px on desktop and about 375×520.98px / 375×485.98px on mobile; see its management guide and interaction reference for fixed navigation copy, text geometry and the compensated tag offset that aligns its visible top edge to the eyebrow border.
-- `hero.gradientScenePromotion` is the independent “渐变场景活动头图”. Preserve its 600×761px full-click canvas, 375px proportional contraction, fixed `50.310559% top` square-scene crop, bottom `#FBFAF8` gradient, 97px circular logo, and three confirmed text layers. Expose the background/Alt, one whole-hero HTTPS link, logo/Alt, the three copy fields, fallback surface, and text color; do not add navigation, a separate CTA, Shopify import, or geometry controls. Keep its supplied Omnisend images as local preview assets only and preserve the full late-summer UTM link.
-- `hero.circleLogoSceneOverlay` is the independent “圆标场景叠字头图”. Preserve its 600×761px full-click canvas, 375px proportional contraction, centered `cover` crop of the supplied 1216×1522 scene, 120px top circular Logo, and three white lower text layers. Expose the background/Alt, one whole-hero HTTPS link, Logo/Alt, activity name, main offer, one naturally wrapping subtitle field, fallback surface, and text color; do not add a gradient, navigation, separate CTA, Shopify import, or geometry controls. Keep its local scene and Logo assets preview-only. The default whole-hero link uses `utm_source=omnisend&utm_medium=email&utm_id=cover-fc`.
-- `collection.romanShadeMultiRecommendation` is the independent “三图推荐（CTA+标题）” product component. It has an editable title/description, three independently linked source images and discount labels, a separate CTA, and four scoped colors. It preserves the approved 600px geometry: a 536×595 main scene, 256px square pair with a 20px gap, then a 536px outlined CTA; at 375px all geometry contracts proportionally through inline `min()` rules and preserves two product columns. Its supplied default links use `utm_source=omnisend&utm_medium=email&utm_id=cover-rc`; it has no Shopify import behavior.
-- The head-image variants (including the centered 600px / responsive 375px scene-overlay hero), promotion-card variants, product recommendation cards, reviews, benefits, address, gift, measurement, and footer styles are documented in [component-interactions.zh-CN.md](references/component-interactions.zh-CN.md).
-
-## New component creation from an approved design
-
-When the request is to create a reusable component from a design, read [new-component-standard.zh-CN.md](references/new-component-standard.zh-CN.md) before deciding its name, fields, assets, or implementation scope. It defines the required confirmation boundary, email-safe layout contract, registration and documentation set, and evidence required before reporting the component as complete.
-
-## 600px → 375px 移动端等比制造规范
-
-Every new component and every approved visual-layout change must follow the 600px-to-375px proportional inline-CSS contract in [new-component-standard.zh-CN.md](references/new-component-standard.zh-CN.md). Keep the 600px desktop declaration first, then add its `min()` proportional override to every relevant nonzero visual size in both `component.template.v1.html` and `效果演示.html`; do not mix scaled images with fixed typography, spacing, or CTA geometry. Before delivery, run `node scripts/normalize-inline-mobile-dimensions.mjs --check` and `node --test tests/mobile-proportional-contract.test.mjs` in addition to the normal component-contract checks.
-
-## References
-
-- Read [visual-editor-workflow.zh-CN.md](references/visual-editor-workflow.zh-CN.md) for editor controls, templates, focus behavior, previews, export, and Draft upload.
-- Read [component-interactions.zh-CN.md](references/component-interactions.zh-CN.md) when choosing or editing a component style.
-- Read [new-component-standard.zh-CN.md](references/new-component-standard.zh-CN.md) when creating a new reusable component from a design or reference image.
-- Read [workflow-and-safety.zh-CN.md](references/workflow-and-safety.zh-CN.md) before exporting HTML or writing an Omnisend Draft.
-- Read [shopify-data-contract.zh-CN.md](references/shopify-data-contract.zh-CN.md) only when importing Shopify activity, Collection, or product data.
-
-## Safety gates
-
-- Never send, schedule, publish, or call an endpoint that moves a Campaign out of `draft`.
-- Shopify access is query-only and Theme pull-only; never mutate Shopify data or themes.
-- Do not upload images or write Omnisend data before final confirmation.
-- Email HTML must not contain JavaScript, iframe, forms, local paths, relative image paths, or runtime Shopify requests.
-- Preserve `[[unsubscribe_link]]` and the complete Omnisend Email Content structure when updating an existing Draft.
-- Treat normal editor drafts, previews, image caches, and export intermediates as transient: remove them when the editor closes. Persist only user-confirmed templates and their dedicated local images; never delete component-directory assets.
-
-- `collection.multiCategoryRecommendationV` is 多类推荐V: two columns / three rows; six local images, paired image/title links, 26 content fields and four colors. Preserve Lora 30/38 and Montserrat 16/24 at 600px; scale proportionally at 375px.
-
-- `gift.warmRedPairIV` is 暖红双赠品卡IV: preserve two original full-card crops, editable heading/two rules and exactly two image links using cover-rc UTM; 600×578 / 375×361.25 proportional layout. Nine content fields, two colors. Card labels remain in source images.
-
-- `image.benefitsShowcase6`：赠品与权益组件 / 六权益展示卡，原图 I.jpg 完整保留；600×554 / 375×346.25，单张无链接图片，可编辑 URL、Alt 和外层底色；默认本地素材仅用于预览，导出沿用 HTTPS 素材流程。
+上传前保存成功、逐组件确认，完整HTML哈希绑定确认。导出可解析/上传本地素材但不创建Campaign；上传仅创建/更新Draft并回读。新建/维护组件和主题建议不授权外部写入；不得发送、排期或发布。API Key只用于现有请求/内存流程，不写进文件或日志。用户手动修改后按实际状态重新确认，AI不代点确认。

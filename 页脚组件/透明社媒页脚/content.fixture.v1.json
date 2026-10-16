@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "footer.transparentSocial",
+  "fixture": "transparent-social-footer-pasted-html",
+  "values": {
+    "footer.address": "43 Corporate Park Irvine, CA 92606 United States",
+    "footer.address.disclaimer": "(Appointment Only. No Mail, Packages, Or Deliveries Accepted.)",
+    "footer.copyright": "@2026 Freshine. All Rights Reserved.",
+    "footer.legalBrand": "Freshine",
+    "footer.social.youtube.url": "https://www.youtube.com/@freshinecurtains/shorts",
+    "footer.social.youtube.image.url": "https://preview.soundestlink.com/dynamicImage/social/youtube/48/24/default?raw=true",
+    "footer.social.youtube.image.alt": "YouTube",
+    "footer.social.instagram.url": "https://www.instagram.com/freshinecurtains/",
+    "footer.social.instagram.image.url": "https://preview.soundestlink.com/dynamicImage/social/instagram/48/24/default?raw=true",
+    "footer.social.instagram.image.alt": "Instagram",
+    "footer.social.facebook.url": "https://www.facebook.com/freshinecurtains/",
+    "footer.social.facebook.image.url": "https://app.omnisend.com/images/6a7eaee2c5aa8a2a0174add2",
+    "footer.social.facebook.image.alt": "Facebook",
+    "footer.social.tiktok.url": "https://www.tiktok.com/@freshinecurtains",
+    "footer.social.tiktok.image.url": "https://preview.soundestlink.com/dynamicImage/social/tiktok/48/24/default?raw=true",
+    "footer.social.tiktok.image.alt": "TikTok",
+    "footer.social.pinterest.url": "https://www.pinterest.com/freshinecurtains/",
+    "footer.social.pinterest.image.url": "https://preview.soundestlink.com/dynamicImage/social/pinterest/48/24/default?raw=true",
+    "footer.social.pinterest.image.alt": "Pinterest",
+    "footer.social.whatsapp.url": "https://api.whatsapp.com/send/?phone=19496916598&text=Hello&type=phone_number&app_absent=0",
+    "footer.social.whatsapp.image.url": "https://app.omnisend.com/images/6a7eaf1f16138ccc242a59cd",
+    "footer.social.whatsapp.image.alt": "WhatsApp",
+    "footer.social.threads.url": "https://www.threads.com/@freshinecurtains",
+    "footer.social.threads.image.url": "https://app.omnisend.com/images/6a7eaeede618327746e9a03f",
+    "footer.social.threads.image.alt": "Threads"
+  }
+}

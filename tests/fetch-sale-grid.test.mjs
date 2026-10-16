@@ -1,10 +1,11 @@
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { normalizeSaleGrid, parseSaleGridArgs, resolveSaleGridVariants, saleGridGraphQlQuery } from '../skills/build-omnisend-campaign-draft/scripts/fetch-sale-grid.mjs';
 
-const root = '/Users/ww/Desktop/邮件营销运营/邮件html组件';
+const root = fileURLToPath(new URL('..', import.meta.url)).slice(0, -1);
 const script = `${root}/skills/build-omnisend-campaign-draft/scripts/fetch-sale-grid.mjs`;
 const fixture = `${root}/tests/fixtures/shopify-graphql/collection-products.json`;
 

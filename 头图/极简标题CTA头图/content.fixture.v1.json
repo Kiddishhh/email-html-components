@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.minimalTitleCta",
+  "fixture": "minimal-title-cta-reference",
+  "values": {
+    "hero.title": "IRIS",
+    "hero.subtitle": "Rich linen texture with powerful light control, creating a cozy, peaceful retreat for restful days and quiet nights.",
+    "hero.cta.text": "SHOP NOW",
+    "hero.cta.url": "https://freshinelife.com/",
+    "hero.image.url": "https://freshinelife.com/cdn/shop/files/Arlise-100_-Blackout-Chenille-Drapes-OY12-278-5-2.webp?v=1769075754&width=1600",
+    "hero.image.alt": "Arlise 100% blackout chenille drapes in a cozy living room",
+    "hero.image.clickUrl": "https://freshinelife.com/"
+  }
+}

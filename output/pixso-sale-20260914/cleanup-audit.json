@@ -1,0 +1,31 @@
+{
+  "target": "119:2672",
+  "file": "source/0_0.html",
+  "framework": "html",
+  "resourceStatus": {
+    "imagesFound": 1,
+    "imagesLocalized": 1,
+    "fontsFound": 3,
+    "fontsLocalized": 2,
+    "fontsRetained": 1,
+    "retainedReason": "Pixso returned an invalid Lora URL (undefinedundefined); the source and final HTML use the Lora/Georgia fallback stack."
+  },
+  "phaseA": {
+    "temporaryURLs": { "found": 4, "localized": 3, "removed": 1, "retained": 0 },
+    "pixsoNodeIds": { "found": 13, "removed": 13, "retained": 0 },
+    "pixsoNodeClasses": { "found": 17, "replaced": 17, "retained": 0 }
+  },
+  "phaseB": {
+    "semanticClasses": ["promotion", "promotion-content", "promotion-copy", "eyebrow", "offer-title", "offer-description", "primary-cta", "promotion-image"],
+    "classTokenChanges": 0,
+    "inferredStateClasses": 0
+  },
+  "emailIntegration": {
+    "file": "email-omnisend.html",
+    "rightImage": "https://app.omnisend.com/images/6aa782812423b18ee8ebdf9d",
+    "cta": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=cover-rc",
+    "temporaryURLs": 0,
+    "pixsoNodeIds": 0,
+    "pixsoNodeClasses": 0
+  }
+}

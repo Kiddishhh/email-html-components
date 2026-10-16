@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Lora';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/images/undefinedundefined) format('truetype');
+}
+</style>
+
+  <style>
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9: rgba(124, 112, 106, 1);
+  --083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8: var(--accent-text);
+  --xs: 12px;
+  --3xl: 30px;
+  --base: 16px;
+  --lg: 18px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.design-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.design-canvas,.recommendations {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.design-canvas {
+  height: 100%;
+}
+
+.recommendations {
+  height: 1071px;
+  min-width: 600px;
+  overflow: hidden;
+  background-color: rgba(251, 250, 248, 1);
+}
+
+.recommendation-content {
+  width: 527px;
+  height: 873px;
+  position: absolute;
+  left: 37px;
+  top: 63px;
+}
+
+.product-grid,.product-grid-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.product-grid {
+  width: 527px;
+  height: auto;
+  position: absolute;
+  left: 0px;
+  top: 135px;
+}
+
+.product-grid-content {
+  gap: 32px;
+  width: 100%;
+  position: relative;
+}
+
+.first-row,.second-row {
+  width: auto;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.miravel-card,.iris-card {
+  width: 254px;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.miravel-card-content,.iris-card-content,.celina-card-content,.emilia-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.miravel-photo-wrap,.iris-photo-wrap,.celina-photo-wrap,.emilia-photo-wrap {
+  width: 100%;
+  height: 317px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.miravel-photo,.iris-photo,.emilia-photo,.collection-cta-wrap,.collection-label {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.miravel-photo,.iris-photo,.emilia-photo,.badge-image {
+  background-size: cover;
+  background-position: center;
+}
+
+.miravel-photo,.iris-photo {
+  -webkit-mask-size: 254px 317px;
+  mask-size: 254px 317px;
+}
+
+.miravel-photo,.iris-photo,.celina-photo,.emilia-photo,.installation-badge,.badge-background,.badge-image,.badge-caption {
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.miravel-photo {
+  width: 254px;
+  height: 450.473694px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: -40.393372px;
+  background-image: url("assets/images/1b16b23ffd514bb1b168b5cedc19f87ea0a1cab3.png");
+  background-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20254%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_4)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_4%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20254%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_4)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_4%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 0px 40.393372px;
+  mask-position: 0px 40.393372px;
+}
+
+.miravel-caption,.iris-caption,.celina-caption,.emilia-caption,.section-copy {
+  font-size: var(--base);
+  line-height: 150%;
+}
+
+.miravel-caption,.iris-caption,.celina-caption,.emilia-caption,.badge-caption,.section-title,.section-copy,.collection-label {
+  font-weight: 500;
+  letter-spacing: 0px;
+  text-decoration: none;
+}
+
+.miravel-caption,.iris-caption,.celina-caption,.emilia-caption,.collection-label {
+  font-feature-settings: "locl" 0;
+  text-transform: uppercase;
+}
+
+.miravel-caption {
+  font-family: "Montserrat-Medium";
+  text-align: center;
+  color: var(--);
+  width: 100%;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.iris-photo {
+  width: 319.038055px;
+  height: 318.756256px;
+  position: absolute;
+  left: -0.0005035000000219725px;
+  right: 0.0005035000000219725px;
+  top: 0px;
+  background-image: url("assets/images/7de1384e1717ae396906743752ea4d7aff102930.png");
+  background-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20254%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_3)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_3%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20254%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_3)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_3%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22254.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 32.519531px 0px;
+  mask-position: 32.519531px 0px;
+}
+
+.iris-caption,.celina-caption,.emilia-caption {
+  font-family: "Montserrat-Medium";
+  text-align: center;
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+  width: 100%;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.celina-card,.emilia-card {
+  width: 253px;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.celina-photo,.emilia-photo,.installation-badge,.badge-background,.badge-image,.badge-caption {
+  position: absolute;
+}
+
+.celina-photo,.emilia-photo,.installation-badge {
+  -webkit-mask-size: 253px 317px;
+  mask-size: 253px 317px;
+}
+
+.celina-photo {
+  width: 253px;
+  height: 316px;
+  background-image: url("assets/images/image399.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  left: -32px;
+  top: 1px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20253%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20253%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_2)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_2%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 32px -1px;
+  mask-position: 32px -1px;
+}
+
+.emilia-photo,.installation-badge {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20253%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20253%20317%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_1)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_1%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%20272%22%20width%3D%22253.000000%22%20height%3D%22317.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.emilia-photo,.badge-background {
+  -webkit-mask-position: 0px 0px;
+  mask-position: 0px 0px;
+}
+
+.emilia-photo {
+  width: 253px;
+  height: 317px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  background-image: url("assets/images/9eb5d6051b455050bd481ff4829b7be8a625073a.png");
+  background-repeat: no-repeat;
+}
+
+.installation-badge,.badge-background {
+  width: 82px;
+  height: 82px;
+}
+
+.installation-badge,.badge-background,.badge-image,.collection-cta-wrap {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.installation-badge {
+  left: 161px;
+  top: 89.5px;
+  bottom: -89.5px;
+  -webkit-mask-position: -161px -207px;
+  mask-position: -161px -207px;
+}
+
+.badge-background,.badge-image,.badge-caption {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2082%2082%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2282.000000%22%20height%3D%2282.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_0%22%20width%3D%2282.000000%22%20height%3D%2282.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Ccircle%20id%3D%22%E6%A4%AD%E5%9C%86%209%22%20cx%3D%2241%22%20cy%3D%2241%22%20r%3D%2241%22%20fill%3D%22rgb(255%2C255%2C255)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%09%3Cg%20mask%3D%22url(%23mask_0)%22%20%2F%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Ccircle%20id%3D%22%E6%A4%AD%E5%9C%86%209%22%20cx%3D%2241%22%20cy%3D%2241%22%20r%3D%2241%22%20fill%3D%22rgb(255%2C255%2C255)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2082%2082%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2282.000000%22%20height%3D%2282.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_0%22%20width%3D%2282.000000%22%20height%3D%2282.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Ccircle%20id%3D%22%E6%A4%AD%E5%9C%86%209%22%20cx%3D%2241%22%20cy%3D%2241%22%20r%3D%2241%22%20fill%3D%22rgb(255%2C255%2C255)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%09%3Cg%20mask%3D%22url(%23mask_0)%22%20%2F%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Ccircle%20id%3D%22%E6%A4%AD%E5%9C%86%209%22%20cx%3D%2241%22%20cy%3D%2241%22%20r%3D%2241%22%20fill%3D%22rgb(255%2C255%2C255)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-size: 82px 82px;
+  mask-size: 82px 82px;
+}
+
+.badge-background {
+  background-image: url("assets/images/Ellipse_243_3436.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.badge-image {
+  width: 85.685394px;
+  height: 86.60675px;
+  left: 1.505728px;
+  top: -6.194603999999998px;
+  bottom: 6.194603999999998px;
+  filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.05));
+  background-image: url("assets/images/028f64a8be6ff35e5e98ec92ad428a7f7ade918e.png");
+  background-repeat: no-repeat;
+  -webkit-mask-position: -1.505728px 8.497979px;
+  mask-position: -1.505728px 8.497979px;
+}
+
+.badge-caption {
+  font-size: var(--xs);
+  font-family: "Montserrat-Medium";
+  text-align: left;
+  color: rgba(0, 0, 0, 1);
+  width: auto;
+  height: auto;
+  left: 20px;
+  top: 50%;
+  transform: translateY(calc(-50% + 24.902954px));
+  white-space: pre;
+  flex-grow: 0;
+  text-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
+  -webkit-mask-position: -20px -58.402954px;
+  mask-position: -20px -58.402954px;
+}
+
+.section-title,.section-copy {
+  text-align: center;
+  height: auto;
+  position: absolute;
+}
+
+.section-title {
+  font-size: var(--3xl);
+  font-family: "Lora-Medium";
+  color: var(--accent-text);
+  width: auto;
+  left: 63.5px;
+  top: 0px;
+  white-space: pre;
+  flex-grow: 0;
+}
+
+.section-copy {
+  font-family: "Montserrat-Medium";
+  text-transform: capitalize;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+  width: 510px;
+  left: 8px;
+  top: 53px;
+}
+
+.collection-cta {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 4px 4px 4px 4px;
+  z-index: 0;
+}
+
+.collection-cta-wrap {
+  position: absolute;
+  isolation: isolate;
+  left: 0.5px;
+  top: 462px;
+  right: -0.5px;
+  bottom: -462px;
+  width: 527px;
+  height: 55px;
+}
+
+.collection-cta-border {
+  position: absolute;
+  inset: -0.5px -0.5px -0.5px -0.5px;
+  border-radius: 4px 4px 4px 4px;
+  pointer-events: none;
+  z-index: 1;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-color: var(--accent-text);
+}
+
+.collection-label {
+  font-size: var(--lg);
+  font-family: "Montserrat-Medium";
+  text-align: center;
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+  width: 264px;
+  height: auto;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 50%;
+  transform: translateY(calc(-50% + 461.5px));
+  white-space: pre;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="design-canvas">
+    <div class="recommendations">
+      <div class="recommendation-content">
+        <div class="product-grid">
+          <div class="product-grid-content">
+            <div class="first-row">
+              <div class="miravel-card">
+                <div class="miravel-card-content">
+                  <div class="miravel-photo-wrap">
+                    <div class="miravel-photo"></div>
+                  </div>
+                  <p class="miravel-caption">Shop Miravel &gt;&gt;</p>
+                </div>
+              </div>
+              <div class="iris-card">
+                <div class="iris-card-content">
+                  <div class="iris-photo-wrap">
+                    <div class="iris-photo"></div>
+                  </div>
+                  <p class="iris-caption">Shop Iris &gt;&gt;</p>
+                </div>
+              </div>
+            </div>
+            <div class="second-row">
+              <div class="celina-card">
+                <div class="celina-card-content">
+                  <div class="celina-photo-wrap">
+                    <div class="celina-photo"></div>
+                  </div>
+                  <p class="celina-caption">shop Celina &gt;&gt;</p>
+                </div>
+              </div>
+              <div class="emilia-card">
+                <div class="emilia-card-content">
+                  <div class="emilia-photo-wrap">
+                    <div class="emilia-photo"></div>
+                    <div class="installation-badge">
+                      <div class="badge-background"></div>
+                      <div class="badge-image"></div>
+                      <p class="badge-caption">No-drill</p>
+                    </div>
+                  </div>
+                  <p class="emilia-caption">shop Emilia &gt;&gt;</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="section-title" style="font-weight:500;">Upgrade Your Home in Style</h2>
+        <p class="section-copy">Make your space feel new with thoughtfully designed curtains made for comfort, beauty, and everyday living.</p>
+      </div>
+      <div class="collection-cta-wrap">
+        <div class="collection-cta"></div>
+        <div class="collection-cta-border"></div>
+      </div>
+      <p class="collection-label">EXPLORE CURTAINS</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "footer.transparentSocial",
+  "injectionMode": "full-component-rerender",
+  "properties": {
+    "footer.address": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "footer.address.disclaimer": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "footer.copyright": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "footer.legalBrand": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true
+    },
+    "footer.social.youtube.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "footer.social.youtube.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "image-source"
+    },
+    "footer.social.youtube.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "footer.social.instagram.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "footer.social.instagram.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "image-source"
+    },
+    "footer.social.instagram.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "footer.social.facebook.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "footer.social.facebook.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "image-source"
+    },
+    "footer.social.facebook.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "footer.social.tiktok.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "footer.social.tiktok.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "image-source"
+    },
+    "footer.social.tiktok.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "footer.social.pinterest.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "footer.social.pinterest.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "image-source"
+    },
+    "footer.social.pinterest.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "footer.social.whatsapp.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "footer.social.whatsapp.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "image-source"
+    },
+    "footer.social.whatsapp.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    },
+    "footer.social.threads.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "link-target"
+    },
+    "footer.social.threads.image.url": {
+      "type": "url",
+      "required": true,
+      "skillPrompt": true,
+      "protocol": "https",
+      "role": "image-source"
+    },
+    "footer.social.threads.image.alt": {
+      "type": "text",
+      "required": true,
+      "skillPrompt": true,
+      "role": "image-alt"
+    }
+  },
+  "additionalProperties": false
+}

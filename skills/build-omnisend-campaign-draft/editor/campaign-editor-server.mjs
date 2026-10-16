@@ -1,10 +1,14 @@
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
-import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, relative, resolve } from 'node:path';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname, extname, relative, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { runDraftUploadWithApiKey, runOmnisendHtmlExportWithApiKey, sha256 } from '../scripts/upload-omnisend-draft.mjs';
+import { editableFieldKeys } from './public/editor-ui-contract.mjs';
+import { validateTextStyles, editorFontDefaults } from './public/text-style-contract.mjs';
+import { linkInventory } from './public/editor-workflow.mjs';
+import { withTemplateStoreLock } from './template-store-lock.mjs';
 import {
   addComponentInstance,
   attachLocalImage,
@@ -39,6 +43,7 @@ function readBody(request) {
       try { return resolveBody(JSON.parse(body)); } catch { return reject(new Error('request body must be JSON')); }
     });
     request.on('error', reject);
+    request.on('aborted', () => reject(new Error('request body was aborted')));
   });
 }
 
@@ -105,7 +110,7 @@ function locateDraftInstance(drafts, draftId, instanceId) {
   return { draft, instance };
 }
 
-function updateInstance(document, instanceId, patch) {
+function updateInstance(document, instanceId, patch, catalog) {
   const { index, current } = requireInstance(document, instanceId);
   for (const group of ['content', 'settings']) {
     if (patch[group] === undefined) continue;
@@ -114,8 +119,10 @@ function updateInstance(document, instanceId, patch) {
       if (!(key in current[group])) throw new Error(`unknown ${group} field: ${key}`);
     }
   }
+  validateTextStyles(patch.textStyles, catalog.find(x => x.componentKey === current.componentKey).textFields);
   const components = document.components.map((component, componentIndex) => componentIndex === index ? {
     ...component,
+    ...(patch.textStyles ? { textStyles: { ...component.textStyles, ...patch.textStyles } } : {}),
     content: { ...component.content, ...(patch.content ?? {}) },
     settings: { ...component.settings, ...(patch.settings ?? {}) },
     confirmed: false
@@ -214,11 +221,12 @@ function compositionFor(document, workspaceRoot) {
   return {
     schemaVersion: 1,
     canvas: normalizedDocument.canvas,
+    fontDefaults: normalizedDocument.fontDefaults ?? editorFontDefaults,
     output: normalizedDocument.outputPath,
     previewOutput: normalizedDocument.previewPath,
     assets: buildLocalAssetMap(normalizedDocument, { workspaceRoot }),
-    components: normalizedDocument.components.map(({ name, directory, componentKey, content, settings }) => ({
-      name, directory, componentKey, content, settings
+    components: normalizedDocument.components.map(({ name, directory, componentKey, content, settings, textStyles }) => ({
+      name, directory, componentKey, content, settings, ...(textStyles ? {textStyles} : {})
     }))
   };
 }
@@ -258,8 +266,8 @@ async function defaultDraftUploader({ projectPath, htmlPath, apiKey }) {
   return runDraftUploadWithApiKey({ projectPath, htmlPath, apiKey });
 }
 
-async function defaultHtmlExporter({ html, assets, apiKey }) {
-  return runOmnisendHtmlExportWithApiKey({ html, assets, apiKey });
+async function defaultHtmlExporter({ html, assets, apiKey, imageCache }) {
+  return runOmnisendHtmlExportWithApiKey({ html, assets, apiKey, imageCache });
 }
 
 export async function createCampaignEditorServer({
@@ -271,6 +279,8 @@ export async function createCampaignEditorServer({
 }) {
   const catalog = buildEditorCatalog({ workspaceRoot });
   const drafts = new Map();
+  const draftOperations = new Map();
+  const catalogPreviews = new Map();
   const builderPath = resolve(workspaceRoot, 'build-email-template.v1.mjs');
   const publicRoot = resolve(dirname(fileURLToPath(import.meta.url)), 'public');
   const omnisendImageCachePath = resolve(sessionRoot, 'omnisend-image-cache.v1.json');
@@ -289,11 +299,21 @@ export async function createCampaignEditorServer({
     return store.templates;
   }
 
-  let savedTemplates = loadSavedTemplates();
-
-  function writeSavedTemplates() {
+  function writeSavedTemplates(savedTemplates) {
     mkdirSync(templateRoot, { recursive: true });
-    writeFileSync(savedTemplatesPath, JSON.stringify({ schemaVersion: 1, templates: savedTemplates }, null, 2));
+    const temporaryPath = resolve(templateRoot, `.templates-${randomUUID()}.tmp`);
+    try {
+      writeFileSync(temporaryPath, JSON.stringify({ schemaVersion: 1, templates: savedTemplates }, null, 2));
+      renameSync(temporaryPath, savedTemplatesPath);
+    } finally {
+      removeTemplateGarbage(temporaryPath);
+    }
+  }
+
+  async function templateOperation(operation) {
+    const warnings = [];
+    const result = await withTemplateStoreLock(templateRoot, operation, { onReleaseWarning: warning => warnings.push(warning) });
+    return { result, warnings };
   }
 
   function templateSummary(template) {
@@ -307,7 +327,7 @@ export async function createCampaignEditorServer({
   }
 
   function templateSummaries() {
-    return savedTemplates.map(templateSummary).sort((left, right) => left.name.localeCompare(right.name, 'zh-CN'));
+    return loadSavedTemplates().map(templateSummary).sort((left, right) => left.name.localeCompare(right.name, 'zh-CN'));
   }
 
   function normalizedTemplateName(value) {
@@ -321,7 +341,7 @@ export async function createCampaignEditorServer({
   }
 
   function templateSnapshot(draft, templateId) {
-    const assetDirectory = templateAssetDirectory(templateId);
+    const assetDirectory = resolve(templateAssetDirectory(templateId), `.revision-${randomUUID()}`);
     const stagingDirectory = resolve(templateAssetsRoot, `.staging-${randomUUID()}`);
     const localAssets = {};
     mkdirSync(stagingDirectory, { recursive: true });
@@ -342,8 +362,10 @@ export async function createCampaignEditorServer({
       return {
         snapshot: {
           canvas: clone(draft.canvas),
+          fontDefaults: draft.fontDefaults ?? editorFontDefaults,
           localAssets,
-          components: draft.components.map(({ name, directory, componentKey, content, settings }) => ({
+          components: draft.components.map(({ name, directory, componentKey, content, settings, textStyles }) => ({
+            ...(textStyles ? {textStyles: clone(textStyles)} : {}),
             name,
             directory,
             componentKey,
@@ -355,17 +377,43 @@ export async function createCampaignEditorServer({
         assetDirectory
       };
     } catch (error) {
-      rmSync(stagingDirectory, { recursive: true, force: true });
+      removeTemplateGarbage(stagingDirectory);
       throw error;
     }
   }
 
-  function replaceTemplateAssets({ stagingDirectory, assetDirectory }) {
-    rmSync(assetDirectory, { recursive: true, force: true });
-    if (existsSync(stagingDirectory)) renameSync(stagingDirectory, assetDirectory);
+  // Unreferenced files never determine whether a committed save succeeded.
+  // Retry cleanup under the store lock on the next mutation after an I/O failure.
+  function removeTemplateGarbage(path) {
+    try { rmSync(path, { recursive: true, force: true }); } catch { /* retry later */ }
+  }
+
+  function cleanTemplateGarbage(savedTemplates) {
+    try {
+      for (const name of readdirSync(templateRoot)) {
+        if (/^\.templates-.+\.tmp$/u.test(name)) removeTemplateGarbage(resolve(templateRoot, name));
+      }
+      if (!existsSync(templateAssetsRoot)) return;
+      const current = new Map(savedTemplates.map(template => [template.id, template]));
+      for (const entry of readdirSync(templateAssetsRoot, { withFileTypes: true })) {
+        const directory = resolve(templateAssetsRoot, entry.name);
+        if (entry.name.startsWith('.staging-')) { removeTemplateGarbage(directory); continue; }
+        if (!entry.isDirectory() || !/^[0-9a-f-]+$/u.test(entry.name)) continue;
+        const template = current.get(entry.name);
+        if (!template) { removeTemplateGarbage(directory); continue; }
+        const paths = Object.values(template.snapshot.localAssets ?? {}).map(asset => resolve(workspaceRoot, asset.path));
+        for (const version of readdirSync(directory, { withFileTypes: true })) {
+          if (!version.isDirectory() || !version.name.startsWith('.revision-')) continue;
+          const versionPath = resolve(directory, version.name);
+          if (!paths.some(path => { const child = relative(versionPath, path); return child && !child.startsWith('..'); })) removeTemplateGarbage(versionPath);
+        }
+      }
+    } catch { /* committed templates remain usable; retry cleanup later */ }
   }
 
   function saveTemplate({ name: rawName, draftId, overwrite = false }) {
+    // Called under the cross-process lock; conflict checks always use fresh data.
+    const savedTemplates = loadSavedTemplates();
     const name = normalizedTemplateName(rawName);
     const draft = drafts.get(draftId);
     if (!draft) throw new Error('draft not found');
@@ -374,6 +422,7 @@ export async function createCampaignEditorServer({
     const now = new Date().toISOString();
     const existing = existingIndex === -1 ? null : savedTemplates[existingIndex];
     const templateId = existing?.id ?? randomUUID();
+    cleanTemplateGarbage(savedTemplates);
     const snapshot = templateSnapshot(draft, templateId);
     const template = {
       schemaVersion: 1,
@@ -386,14 +435,18 @@ export async function createCampaignEditorServer({
     try {
       if (existingIndex === -1) savedTemplates.push(template);
       else savedTemplates[existingIndex] = template;
-      writeSavedTemplates();
-      replaceTemplateAssets(snapshot);
+      // Publish immutable assets first. The atomic index rename is the commit.
+      mkdirSync(templateAssetDirectory(templateId), { recursive: true });
+      renameSync(snapshot.stagingDirectory, snapshot.assetDirectory);
+      writeSavedTemplates(savedTemplates);
     } catch (error) {
       if (existingIndex === -1) savedTemplates.pop();
       else savedTemplates[existingIndex] = existing;
-      rmSync(snapshot.stagingDirectory, { recursive: true, force: true });
+      removeTemplateGarbage(snapshot.stagingDirectory);
+      removeTemplateGarbage(snapshot.assetDirectory);
       throw error;
     }
+    cleanTemplateGarbage(savedTemplates);
     return { template, overwritten: existingIndex !== -1 };
   }
 
@@ -402,6 +455,7 @@ export async function createCampaignEditorServer({
       id: draft.id,
       name: draft.name,
       canvas: draft.canvas,
+      fontDefaults: draft.fontDefaults ?? editorFontDefaults,
       components: draft.components,
       confirmed: draft.confirmed
     };
@@ -426,7 +480,8 @@ export async function createCampaignEditorServer({
       const source = resolve(workspaceRoot, asset.path);
       const sourceRelative = relative(workspaceRoot, source);
       if (!sourceRelative || sourceRelative.startsWith('..') || !existsSync(source)) throw new Error(`template local asset is missing: ${asset.name}`);
-      const filename = `${assetId}-${asset.name}`;
+      // Keep copies stable even when loading a legacy name with repeated prefixes.
+      const filename = `${assetId}${extname(asset.name)}`;
       const target = resolve(uploadDirectory, filename);
       mkdirSync(uploadDirectory, { recursive: true });
       copyFileSync(source, target);
@@ -439,6 +494,7 @@ export async function createCampaignEditorServer({
     const document = createDraft(template.name);
     const counts = new Map();
     document.canvas = clone(template.snapshot.canvas);
+    document.fontDefaults = template.snapshot.fontDefaults ?? editorFontDefaults;
     document.localAssets = copyTemplateAssetsToDraft(template, document);
     document.components = template.snapshot.components.map((component) => {
       const count = (counts.get(component.componentKey) ?? 0) + 1;
@@ -455,10 +511,12 @@ export async function createCampaignEditorServer({
     return document;
   }
 
-  function savePreview(draft) {
+  function savePreview(draft, { inspectLinks = false } = {}) {
     const compositionPath = resolve(dirname(draft.previewPath), 'composition.v1.json');
-    writeFileSync(compositionPath, JSON.stringify(compositionFor(draft, workspaceRoot), null, 2));
-    const result = spawnSync(process.execPath, [builderPath, compositionPath, '--preview-local-assets'], {
+    const composition = compositionFor(draft, workspaceRoot);
+    if (inspectLinks) composition.previewOutput = resolve(dirname(draft.previewPath), 'links-inspection.html');
+    writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
+    const result = spawnSync(process.execPath, [builderPath, compositionPath, '--preview-local-assets', ...(inspectLinks ? ['--editor-link-metadata'] : [])], {
       cwd: workspaceRoot,
       encoding: 'utf8'
     });
@@ -540,10 +598,7 @@ export async function createCampaignEditorServer({
     }
   }
 
-  const server = createServer(async (request, response) => {
-    try {
-      const url = new URL(request.url, 'http://127.0.0.1');
-      const path = url.pathname;
+  async function handleRequest(request, response, path, body) {
       if (request.method === 'GET' && path === '/') {
         response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
         return response.end(readFileSync(resolve(publicRoot, 'index.html')));
@@ -554,34 +609,61 @@ export async function createCampaignEditorServer({
         response.writeHead(200, { 'content-type': mimeType(file), 'cache-control': 'no-store' });
         return response.end(readFileSync(file));
       }
-      if (request.method === 'GET' && path === '/api/catalog') return json(response, 200, { components: catalog });
+      if (request.method === 'GET' && path === '/api/catalog') return json(response, 200, { components: catalog.map(component => ({ ...component, thumbnailUrl: `/catalog-previews/${encodeURIComponent(component.componentKey)}/` })) });
+      const catalogPreviewMatch = path.match(/^\/catalog-previews\/([\w.-]+)\/?$/u);
+      if (request.method === 'GET' && catalogPreviewMatch) {
+        const key = catalogPreviewMatch[1];
+        if (!catalog.some(component => component.componentKey === key)) return json(response, 404, { error: 'component not found' });
+        if (!catalogPreviews.has(key)) {
+          const document = createDraft(`组件缩略图 ${key}`);
+          Object.assign(document, addComponentInstance(document, catalog, key));
+          catalogPreviews.set(key, savePreview(document));
+        }
+        response.writeHead(302, { location: catalogPreviews.get(key), 'cache-control': 'no-store' });
+        return response.end();
+      }
+      const linksMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/links$/u);
+      if (request.method === 'GET' && linksMatch) {
+        const draft = drafts.get(linksMatch[1]);
+        if (!draft) return json(response, 404, { error: 'draft not found' });
+        savePreview(draft, { inspectLinks: true });
+        const inspectionPath = resolve(dirname(draft.previewPath), 'links-inspection.html');
+        return json(response, 200, { links: linkInventory(draft, catalog, readFileSync(inspectionPath, 'utf8'), editableFieldKeys) });
+      }
       if (request.method === 'GET' && path === '/api/templates') return json(response, 200, { templates: templateSummaries() });
       if (request.method === 'POST' && path === '/api/templates') {
-        const saved = saveTemplate(await readBody(request));
+        const { result: saved, warnings } = await templateOperation(() => saveTemplate(body));
         if (saved.conflict) return json(response, 409, {
           error: `template name already exists: ${saved.conflict.name}`,
           code: 'template-name-conflict',
           template: templateSummary(saved.conflict)
         });
-        return json(response, saved.overwritten ? 200 : 201, { template: templateSummary(saved.template), templates: templateSummaries() });
+        return json(response, saved.overwritten ? 200 : 201, { template: templateSummary(saved.template), templates: templateSummaries(), warnings });
       }
       const templateDraftMatch = path.match(/^\/api\/templates\/([0-9a-f-]+)\/drafts$/u);
       if (templateDraftMatch && request.method === 'POST') {
-        const template = savedTemplates.find(({ id }) => id === templateDraftMatch[1]);
-        if (!template) return json(response, 404, { error: 'template not found' });
-        return json(response, 201, { draft: draftSummary(createDraftFromTemplate(template)) });
+        const { result: draft, warnings } = await templateOperation(() => {
+          const template = loadSavedTemplates().find(({ id }) => id === templateDraftMatch[1]);
+          return template ? draftSummary(createDraftFromTemplate(template)) : null;
+        });
+        if (!draft) return json(response, 404, { error: 'template not found' });
+        return json(response, 201, { draft, warnings });
       }
       const templateMatch = path.match(/^\/api\/templates\/([0-9a-f-]+)$/u);
       if (templateMatch && request.method === 'DELETE') {
-        const index = savedTemplates.findIndex(({ id }) => id === templateMatch[1]);
-        if (index === -1) return json(response, 404, { error: 'template not found' });
-        const [deleted] = savedTemplates.splice(index, 1);
-        writeSavedTemplates();
-        rmSync(templateAssetDirectory(deleted.id), { recursive: true, force: true });
-        return json(response, 200, { deleted: templateSummary(deleted), templates: templateSummaries() });
+        const { result: deleted, warnings } = await templateOperation(() => {
+          const savedTemplates = loadSavedTemplates();
+          const index = savedTemplates.findIndex(({ id }) => id === templateMatch[1]);
+          if (index === -1) return null;
+          const [template] = savedTemplates.splice(index, 1);
+          writeSavedTemplates(savedTemplates);
+          cleanTemplateGarbage(savedTemplates);
+          return template;
+        });
+        if (!deleted) return json(response, 404, { error: 'template not found' });
+        return json(response, 200, { deleted: templateSummary(deleted), templates: templateSummaries(), warnings });
       }
       if (request.method === 'POST' && path === '/api/drafts') {
-        const body = await readBody(request);
         return json(response, 201, { draft: draftSummary(createDraft(body.name)) });
       }
       const draftMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)(?:\/(components|preview))?$/u);
@@ -591,7 +673,6 @@ export async function createCampaignEditorServer({
         if (!draft) return json(response, 404, { error: 'draft not found' });
         if (request.method === 'GET' && !action) return json(response, 200, { draft: draftSummary(draft) });
         if (request.method === 'POST' && action === 'components') {
-          const body = await readBody(request);
           const updated = addComponentInstance(draft, catalog, body.componentKey);
           updated.id = draft.id;
           updated.outputPath = draft.outputPath;
@@ -607,14 +688,12 @@ export async function createCampaignEditorServer({
       if (prepareUploadMatch && request.method === 'POST') {
         const draft = drafts.get(prepareUploadMatch[1]);
         if (!draft) return json(response, 404, { error: 'draft not found' });
-        const body = await readBody(request);
         return json(response, 200, prepareOmnisendDraft(draft, body.campaign));
       }
       const uploadDraftMatch = path.match(/^\/api\/drafts\/([0-9a-f-]+)\/upload-omnisend-draft$/u);
       if (uploadDraftMatch && request.method === 'POST') {
         const draft = drafts.get(uploadDraftMatch[1]);
         if (!draft) return json(response, 404, { error: 'draft not found' });
-        const body = await readBody(request);
         let apiKey = body.apiKey;
         try {
           return json(response, 200, { receipt: await uploadOmnisendDraft(draft, apiKey) });
@@ -627,7 +706,6 @@ export async function createCampaignEditorServer({
       if (exportHtmlMatch && request.method === 'POST') {
         const draft = drafts.get(exportHtmlMatch[1]);
         if (!draft) return json(response, 404, { error: 'draft not found' });
-        const body = await readBody(request);
         let apiKey = body.apiKey;
         try {
           return json(response, 200, await exportOmnisendHtml(draft, apiKey));
@@ -641,7 +719,7 @@ export async function createCampaignEditorServer({
         const [, draftId, instanceId] = instanceMatch;
         const draft = drafts.get(draftId);
         if (!draft) return json(response, 404, { error: 'draft not found' });
-        const updated = updateInstance(draft, instanceId, await readBody(request));
+        const updated = updateInstance(draft, instanceId, body, catalog);
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
       }
@@ -650,7 +728,8 @@ export async function createCampaignEditorServer({
         const draft = drafts.get(draftId);
         if (!draft) return json(response, 404, { error: 'draft not found' });
         if (!draft.components.some((component) => component.instanceId === instanceId)) return json(response, 404, { error: 'component instance not found' });
-        const updated = { ...draft, components: draft.components.filter((component) => component.instanceId !== instanceId), confirmed: false };
+        const updated = { ...draft, components: draft.components.filter((component) => component.instanceId !== instanceId)
+          .map(component => ({ ...component, confirmed: false })), confirmed: false };
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
       }
@@ -669,7 +748,6 @@ export async function createCampaignEditorServer({
         const located = locateDraftInstance(drafts, draftId, instanceId);
         if (located.error) return json(response, 404, { error: located.error });
         const { draft, instance } = located;
-        const body = await readBody(request);
         const updated = applySaleGridImport(draft, instanceId, importSaleGrid({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl, collectionHandle: body.collectionHandle }));
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
@@ -680,7 +758,6 @@ export async function createCampaignEditorServer({
         const located = locateDraftInstance(drafts, draftId, instanceId);
         if (located.error) return json(response, 404, { error: located.error });
         const { draft, instance } = located;
-        const body = await readBody(request);
         const updated = applyCurtainPromotionProductImport(draft, instanceId, importCurtainPromotionProduct({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl }));
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
@@ -691,7 +768,6 @@ export async function createCampaignEditorServer({
         const located = locateDraftInstance(drafts, draftId, instanceId);
         if (located.error) return json(response, 404, { error: located.error });
         const { draft, instance } = located;
-        const body = await readBody(request);
         const productImport = importSaleGrid4Product({ workspaceRoot, instance, shopifyUrl: body.shopifyUrl });
         const updated = instance.componentKey === 'collection.saleGrid6WithTitle'
           ? applySaleGrid6WithTitleProductImport(draft, instanceId, Number(itemIndex), productImport)
@@ -705,7 +781,7 @@ export async function createCampaignEditorServer({
       if (reorderMatch && request.method === 'POST') {
         const draft = drafts.get(reorderMatch[1]);
         if (!draft) return json(response, 404, { error: 'draft not found' });
-        const { fromIndex, toIndex } = await readBody(request);
+        const { fromIndex, toIndex } = body;
         const updated = reorderComponentInstances(draft, fromIndex, toIndex);
         drafts.set(draft.id, updated);
         return json(response, 200, { draft: draftSummary(updated) });
@@ -716,7 +792,6 @@ export async function createCampaignEditorServer({
         const located = locateDraftInstance(drafts, draftId, instanceId);
         if (located.error) return json(response, 404, { error: located.error });
         const { draft, instance } = located;
-        const body = await readBody(request);
         const updated = uploadLocalImage({ draft, instance, fieldKey: body.fieldKey, body, workspaceRoot, catalog });
         drafts.set(draftId, updated);
         return json(response, 200, { draft: draftSummary(updated) });
@@ -744,8 +819,29 @@ export async function createCampaignEditorServer({
         }
       }
       return json(response, 404, { error: 'not found' });
+  }
+
+  const server = createServer(async (request, response) => {
+    let release;
+    let pending;
+    let draftId;
+    try {
+      const path = new URL(request.url, 'http://127.0.0.1').pathname;
+      const body = ['POST', 'PATCH', 'DELETE'].includes(request.method) ? await readBody(request) : {};
+      draftId = path.match(/^\/api\/drafts\/([0-9a-f-]+)(?:\/|$)/u)?.[1]
+        ?? (path === '/api/templates' && request.method === 'POST' ? body.draftId : undefined);
+      if (draftId) {
+        const previous = draftOperations.get(draftId);
+        pending = new Promise(resolveOperation => { release = resolveOperation; });
+        draftOperations.set(draftId, pending);
+        await previous;
+      }
+      await handleRequest(request, response, path, body);
     } catch (error) {
       return json(response, 400, { error: error instanceof Error ? error.message : String(error) });
+    } finally {
+      release?.();
+      if (pending && draftOperations.get(draftId) === pending) draftOperations.delete(draftId);
     }
   });
 

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownSceneCard",
+  "values": {
+    "color.promotion": "#8D1B1B",
+    "color.promotionText": "#FFFFFF",
+    "color.surface": "#C4A573",
+    "color.card": "#F7F4EC",
+    "color.text": "#1F1F1F",
+    "color.highlight": "#8D1B1B",
+    "color.action": "#8D1B1B",
+    "color.actionText": "#FFFFFF"
+  }
+}

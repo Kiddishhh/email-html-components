@@ -1,6 +1,10 @@
 const structureOrder = ['头图', '导航组件', '活动商品组件', '通用图片组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件'];
 
 const editableByComponent = {
+  'hero.countdownSceneCard': {
+    content: ['promotion.text', 'promotion.linkText', 'promotion.url', 'hero.backgroundImage.url', 'hero.backgroundImage.alt', 'countdown.image.url', 'countdown.image.alt', 'hero.offer.lead', 'hero.offer.highlight', 'hero.offer.detail', 'hero.image.url', 'hero.image.alt', 'hero.image.clickUrl', 'hero.cta.text', 'hero.cta.url'],
+    settings: ['color.promotion', 'color.promotionText', 'color.surface', 'color.card', 'color.text', 'color.highlight', 'color.action', 'color.actionText']
+  },
   'review.sceneComparison': {
     content: ["scene.before.url","scene.before.alt","scene.after.url","scene.after.alt","review.avatar.url","review.avatar.alt","review.stars.url","review.stars.alt","review.author","review.body","product.title","product.color","product.header","product.lining","product.memory","cta.text","cta.url"],
     settings: ["color.surface","color.text","color.action"]
@@ -44,6 +48,14 @@ const editableByComponent = {
   'hero.couponSceneOverlay': {
     content: ['navigation.message', 'navigation.cta.text', 'navigation.cta.url', 'intro.title', 'intro.subtitle', 'offer.image.url', 'offer.image.alt', 'hero.image.url', 'hero.image.alt', 'cta.text', 'cta.url'],
     settings: ['navigation.visible', 'color.surface', 'color.promotion', 'color.heading', 'color.body', 'color.action']
+  },
+  'hero.minimalTitleCta': {
+    content: ['hero.title', 'hero.subtitle', 'hero.cta.text', 'hero.cta.url', 'hero.image.url', 'hero.image.alt', 'hero.image.clickUrl'],
+    settings: ['color.surface', 'color.title', 'color.body', 'color.action']
+  },
+  'hero.maskedPromotion': {
+    content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.heading', 'hero.title', 'hero.subtitle', 'hero.cta.text', 'hero.cta.url'],
+    settings: ['color.surface', 'color.text', 'color.action', 'color.actionText']
   },
   'navigation.promotionCta': {
     content: ['promotion.title', 'promotion.divider.url', 'promotion.divider.alt', 'promotion.offer', 'promotion.body', 'promotion.cta.text', 'promotion.cta.url'],
@@ -230,6 +242,42 @@ const editableByComponent = {
   'footer.warm': { content: [], settings: ['color.background', 'color.text', 'color.link'] },
   'footer.doubleDivider': { content: [], settings: ['color.canvas', 'color.background', 'color.text', 'color.link'] },
   'footer.minimalContact': { content: [], settings: ['color.background', 'color.text', 'color.link'] },
+  'footer.transparentSocial': {
+    "content": [
+      "footer.address",
+      "footer.address.disclaimer",
+      "footer.copyright",
+      "footer.legalBrand",
+      "footer.social.youtube.url",
+      "footer.social.youtube.image.url",
+      "footer.social.youtube.image.alt",
+      "footer.social.instagram.url",
+      "footer.social.instagram.image.url",
+      "footer.social.instagram.image.alt",
+      "footer.social.facebook.url",
+      "footer.social.facebook.image.url",
+      "footer.social.facebook.image.alt",
+      "footer.social.tiktok.url",
+      "footer.social.tiktok.image.url",
+      "footer.social.tiktok.image.alt",
+      "footer.social.pinterest.url",
+      "footer.social.pinterest.image.url",
+      "footer.social.pinterest.image.alt",
+      "footer.social.whatsapp.url",
+      "footer.social.whatsapp.image.url",
+      "footer.social.whatsapp.image.alt",
+      "footer.social.threads.url",
+      "footer.social.threads.image.url",
+      "footer.social.threads.image.alt"
+    ],
+    "settings": [
+      "color.text",
+      "color.muted",
+      "color.divider",
+      "color.brand",
+      "color.link"
+    ]
+  },
   'image.benefitsStrip3': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
   'image.benefitsStrip4': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
   'image.benefitsStrip4TwoRows': { content: ['image.url', 'image.alt'], settings: ['color.surface'] },
@@ -424,6 +472,166 @@ const copyByField = {
 };
 
 const copyByComponentField = {
+  'hero.countdownSceneCard': {
+    'content.promotion.text': ['顶部注册优惠', '保留单行；建议保持短句并检查375px预览。'],
+    'content.promotion.linkText': ['注册链接文字', '默认 SIGN UP，下划线保留。'],
+    'content.promotion.url': ['注册链接', '独立跳转，默认首页及原稿UTM。'],
+    'content.hero.backgroundImage.url': ['场景背景图', '保留原稿裁切和缩放；使用公开HTTPS图片或已有本地素材流程。'],
+    'content.hero.backgroundImage.alt': ['背景图说明', '简短描述背景场景。'],
+    'content.countdown.image.url': ['倒计时标题图片', '默认380×66；文字在图片内，更新天数需要替换图片。'],
+    'content.countdown.image.alt': ['倒计时图片说明', '默认 Only 3 Days!，应与图片内实际文字一致。'],
+    'content.hero.offer.lead': ['优惠第一行前段', '默认 EXTRA $600 OFF & UP TO；末尾保留空格，与强调文字相接。'],
+    'content.hero.offer.highlight': ['优惠强调文字', '默认20%，可单独设置强调颜色或文字样式。'],
+    'content.hero.offer.detail': ['优惠第二行', '默认 OFF SITEWIDE；固定在下一行。'],
+    'content.hero.image.url': ['主场景图片', '默认454×405；流式等比显示，建议保持原比例。'],
+    'content.hero.image.alt': ['主场景图片说明', '描述图片内容，供图片未加载和辅助工具使用。'],
+    'content.hero.image.clickUrl': ['主场景图片链接', '独立于按钮链接，默认活动页及原稿UTM。'],
+    'content.hero.cta.text': ['按钮文字', '默认 SHOP NOW，254×56px按钮。'],
+    'content.hero.cta.url': ['按钮链接', '默认活动页，保留原稿UTM。'],
+    'settings.color.promotion': ['注册条背景色', '默认#8D1B1B，仅影响顶部注册条。'],
+    'settings.color.promotionText': ['注册条文字色', '默认白色，包含注册文案和链接。'],
+    'settings.color.surface': ['背景降级底色', '背景图片屏蔽时显示，默认#C4A573。'],
+    'settings.color.card': ['内容卡片背景色', '默认#F7F4EC。'],
+    'settings.color.text': ['优惠正文颜色', '默认#1F1F1F，不覆盖独立强调文字。'],
+    'settings.color.highlight': ['优惠强调颜色', '默认#8D1B1B，仅影响强调文字。'],
+    'settings.color.action': ['按钮背景色', '默认#8D1B1B，独立于注册条。'],
+    'settings.color.actionText': ['按钮文字色', '默认白色。']
+  },
+  'footer.transparentSocial': {
+    "content.footer.address": [
+      "地址",
+      "默认原稿完整展厅地址，居中单行；修改后检查375px预览。"
+    ],
+    "content.footer.address.disclaimer": [
+      "预约与收件说明",
+      "默认原稿预约限制；保留单行，长文案需检查移动预览。"
+    ],
+    "content.footer.copyright": [
+      "版权文字",
+      "保留原稿@2026 Freshine. All Rights Reserved.；可按实际年份更新。"
+    ],
+    "content.footer.legalBrand": [
+      "品牌名",
+      "显示在版权下方，默认Freshine。"
+    ],
+    "settings.color.text": [
+      "正文颜色",
+      "地址与版权文字的颜色，默认#1F1F1F。"
+    ],
+    "settings.color.muted": [
+      "预约说明颜色",
+      "仅影响预约与收件说明，默认#7C706A。"
+    ],
+    "settings.color.divider": [
+      "分割线颜色",
+      "仅影响1px分割线，默认#B59B8B。"
+    ],
+    "settings.color.brand": [
+      "品牌名颜色",
+      "仅影响版权下的Freshine，默认#8F8681。"
+    ],
+    "settings.color.link": [
+      "退订文字颜色",
+      "仅改变Unsubscribe文字色，退订令牌保持固定。"
+    ],
+    "content.footer.social.youtube.url": [
+      "YouTube链接",
+      "该平台的独立公开HTTPS跳转，其他社媒与退订链接保持独立。"
+    ],
+    "content.footer.social.youtube.image.url": [
+      "YouTube图标",
+      "默认原稿HTTPS素材；按29px方形显示，移动端等比缩小。"
+    ],
+    "content.footer.social.youtube.image.alt": [
+      "YouTube图标说明",
+      "图片未加载时显示的简短平台名称。"
+    ],
+    "content.footer.social.instagram.url": [
+      "Instagram链接",
+      "该平台的独立公开HTTPS跳转，其他社媒与退订链接保持独立。"
+    ],
+    "content.footer.social.instagram.image.url": [
+      "Instagram图标",
+      "默认原稿HTTPS素材；按29px方形显示，移动端等比缩小。"
+    ],
+    "content.footer.social.instagram.image.alt": [
+      "Instagram图标说明",
+      "图片未加载时显示的简短平台名称。"
+    ],
+    "content.footer.social.facebook.url": [
+      "Facebook链接",
+      "该平台的独立公开HTTPS跳转，其他社媒与退订链接保持独立。"
+    ],
+    "content.footer.social.facebook.image.url": [
+      "Facebook图标",
+      "默认原稿HTTPS素材；按29px方形显示，移动端等比缩小。"
+    ],
+    "content.footer.social.facebook.image.alt": [
+      "Facebook图标说明",
+      "图片未加载时显示的简短平台名称。"
+    ],
+    "content.footer.social.tiktok.url": [
+      "TikTok链接",
+      "该平台的独立公开HTTPS跳转，其他社媒与退订链接保持独立。"
+    ],
+    "content.footer.social.tiktok.image.url": [
+      "TikTok图标",
+      "默认原稿HTTPS素材；按29px方形显示，移动端等比缩小。"
+    ],
+    "content.footer.social.tiktok.image.alt": [
+      "TikTok图标说明",
+      "图片未加载时显示的简短平台名称。"
+    ],
+    "content.footer.social.pinterest.url": [
+      "Pinterest链接",
+      "该平台的独立公开HTTPS跳转，其他社媒与退订链接保持独立。"
+    ],
+    "content.footer.social.pinterest.image.url": [
+      "Pinterest图标",
+      "默认原稿HTTPS素材；按29px方形显示，移动端等比缩小。"
+    ],
+    "content.footer.social.pinterest.image.alt": [
+      "Pinterest图标说明",
+      "图片未加载时显示的简短平台名称。"
+    ],
+    "content.footer.social.whatsapp.url": [
+      "WhatsApp链接",
+      "该平台的独立公开HTTPS跳转，其他社媒与退订链接保持独立。"
+    ],
+    "content.footer.social.whatsapp.image.url": [
+      "WhatsApp图标",
+      "默认原稿HTTPS素材；按29px方形显示，移动端等比缩小。"
+    ],
+    "content.footer.social.whatsapp.image.alt": [
+      "WhatsApp图标说明",
+      "图片未加载时显示的简短平台名称。"
+    ],
+    "content.footer.social.threads.url": [
+      "Threads链接",
+      "该平台的独立公开HTTPS跳转，其他社媒与退订链接保持独立。"
+    ],
+    "content.footer.social.threads.image.url": [
+      "Threads图标",
+      "默认原稿HTTPS素材；按29px方形显示，移动端等比缩小。"
+    ],
+    "content.footer.social.threads.image.alt": [
+      "Threads图标说明",
+      "图片未加载时显示的简短平台名称。"
+    ]
+  },
+  'hero.maskedPromotion': {
+    'content.hero.backgroundImage.url': ['场景背景图', '保留原稿蒙版与裁切；填写公开 HTTPS 图片地址，或使用本地图片上传。'],
+    'content.hero.backgroundImage.alt': ['背景图说明', '描述当前背景场景，供辅助工具识别。'],
+    'content.hero.heading': ['活动标题', 'Georgia 500 18px/23px，默认 Columbus Day Sale。'],
+    'content.hero.title': ['优惠主标题', 'Georgia 400 48px/61px，保留单行；修改后检查 375px 预览。'],
+    'content.hero.subtitle': ['优惠补充说明', 'Verdana 500 14px/21px，保留单行；建议保持短句。'],
+    'content.hero.cta.text': ['按钮文字', 'Verdana 600 16px，默认 SHOP NOW；仅按钮区域可点击。'],
+    'content.hero.cta.url': ['按钮链接', '默认活动页，保留 utm_source=omnisend、utm_medium=email 和 utm_id=Columbus_Day_Sale。'],
+    'settings.color.surface': ['图片降级底色', '图片屏蔽时使用；固定蒙版颜色与透明度保持原稿。'],
+    'settings.color.text': ['活动文案颜色', '统一修改三段活动文案颜色。'],
+    'settings.color.action': ['按钮背景色', '仅影响当前按钮，默认白色。'],
+    'settings.color.actionText': ['按钮文字色', '仅影响按钮文字，默认 #1F1F1F。']
+  },
   'review.sceneComparison': {
     "content.scene.before.url": [
       "左上场景图",
@@ -807,6 +1015,19 @@ const copyByComponentField = {
     'settings.color.navigationText': ['导航文字色', '统一修改顶部促销文案与导航链接颜色。'],
     'settings.color.surface': ['图片降级底色', '默认 #3C2D25；用于背景图无法显示时的降级显示。'],
     'settings.color.text': ['叠加文字颜色', '统一修改 Logo 下方的三层活动文案。']
+  },
+  'hero.minimalTitleCta': {
+    'content.hero.title': ['主标题', 'Lora 400 36px 居中衬线标题；建议保持一行短文案。'],
+    'content.hero.subtitle': ['副标题', 'Montserrat 500 16px 居中，按画布宽度自动换行。'],
+    'content.hero.cta.text': ['按钮文字', '实底按钮内的文字，默认 SHOP NOW；按钮文字保持白色。'],
+    'content.hero.cta.url': ['按钮链接', '点击按钮后打开的公开 HTTPS 页面地址。'],
+    'content.hero.image.url': ['产品大图', '替换下方大图；填写公开 HTTPS 图片地址。'],
+    'content.hero.image.alt': ['大图说明', '图片无法显示时供读屏工具识别的简短说明。'],
+    'content.hero.image.clickUrl': ['大图点击链接', '点击整张大图后打开的公开 HTTPS 页面地址；独立于按钮链接。'],
+    'settings.color.surface': ['组件背景色', '默认 #F7ECDE 奶油色；仅修改当前组件底色，不影响邮件整体背景。'],
+    'settings.color.title': ['标题文字色', '仅修改主标题颜色，默认 #1F1F1F。'],
+    'settings.color.body': ['副标题文字色', '仅修改副标题颜色，默认 #5F5F5F。'],
+    'settings.color.action': ['按钮背景色', '仅修改按钮底色，默认 #9C1C23；按钮文字保持白色。']
   },
   'navigation.promotionCta': {
     'content.promotion.title': ['活动名称', '显示在促销 CTA 区块顶部的居中文字。']

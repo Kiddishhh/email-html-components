@@ -1,3 +1,4 @@
+import { tempPath } from './helpers/temp-path.mjs';
 import { assertTextRole } from './helpers/typography.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -24,9 +25,9 @@ function renderGrid(showCaptions) {
   let document = createCampaignDocument({ name: `curtain-grid-captions-${showCaptions}` });
   document = addComponentInstance(document, catalog, componentKey);
   document.components[0].settings['grid.showCaptions'] = showCaptions;
-  const output = `/private/tmp/curtain-grid-captions-${showCaptions}.html`;
-  const previewOutput = `/private/tmp/curtain-grid-captions-${showCaptions}.preview.html`;
-  const compositionPath = `/private/tmp/curtain-grid-captions-${showCaptions}.json`;
+  const output = tempPath(`curtain-grid-captions-${showCaptions}.html`);
+  const previewOutput = tempPath(`curtain-grid-captions-${showCaptions}.preview.html`);
+  const compositionPath = tempPath(`curtain-grid-captions-${showCaptions}.json`);
   const composition = {
     schemaVersion: 1,
     canvas: document.canvas,

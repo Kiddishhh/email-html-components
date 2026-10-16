@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {existsSync,mkdtempSync,readFileSync,writeFileSync,rmSync} from 'node:fs';
+import {resolve,join} from 'node:path';
+import {tmpdir} from 'node:os';
+import {spawnSync} from 'node:child_process';
+import {buildEditorCatalog,createCampaignDocument,addComponentInstance} from '../skills/build-omnisend-campaign-draft/editor/campaign-editor-core.mjs';
+import {editableFieldKeys,editorFieldCopy,styleKeysForStructure} from '../skills/build-omnisend-campaign-draft/editor/public/editor-ui-contract.mjs';
+const root=resolve(import.meta.dirname,'..'),key='hero.countdownSceneCard',directory='头图/倒计时场景卡片头图';
+const sale='https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale';
+const signup='https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale';
+const fields=['promotion.text','promotion.linkText','promotion.url','hero.backgroundImage.url','hero.backgroundImage.alt','countdown.image.url','countdown.image.alt','hero.offer.lead','hero.offer.highlight','hero.offer.detail','hero.image.url','hero.image.alt','hero.image.clickUrl','hero.cta.text','hero.cta.url'];
+const colors=['color.promotion','color.promotionText','color.surface','color.card','color.text','color.highlight','color.action','color.actionText'];
+test('countdown scene card is registered under hero with reusable independent fields',()=>{
+ const catalog=buildEditorCatalog({workspaceRoot:root}),card=catalog.find(c=>c.componentKey===key);assert.ok(card,'new hero must appear in catalog');
+ const entry=JSON.parse(readFileSync(resolve(root,'组件清单.json'))).find(c=>c.componentKey===key);assert.equal(entry.分类,'头图');assert.equal(entry.输出宽度,600);assert.equal(entry.移动端断点,375);assert.ok(styleKeysForStructure(catalog,'头图').includes(key));
+ for(const path of Object.values(entry.路径))assert.ok(existsSync(resolve(root,path)),path);assert.ok(existsSync(resolve(root,directory,'效果演示.html')));
+ assert.deepEqual(editableFieldKeys(key),{content:fields,settings:colors});
+ assert.equal(card.defaultContent.values['promotion.url'],signup);assert.equal(card.defaultContent.values['hero.image.clickUrl'],sale);assert.equal(card.defaultContent.values['hero.cta.url'],sale);
+ assert.equal(card.defaultContent.values['countdown.image.url'],'https://app.omnisend.com/images/6acc86a5a29dcc0ffc64fc9a');assert.equal(card.defaultContent.values['hero.offer.highlight'],'20%');
+ assert.equal(card.textFields['hero.offer.lead'].defaults.fontFamily,'Verdana');assert.equal(editorFieldCopy(key,'content','countdown.image.alt').label,'倒计时图片说明');
+});
+test('countdown scene card exports safe responsive tables, separate links and text overrides',t=>{
+ const catalog=buildEditorCatalog({workspaceRoot:root}),doc=addComponentInstance(createCampaignDocument(),catalog,key);
+ assert.equal(doc.components.length,1);
+ const temp=mkdtempSync(join(tmpdir(),'countdown-scene-card-'));t.after(()=>rmSync(temp,{recursive:true,force:true}));const output=join(temp,'email.html'),input=join(temp,'composition.json');
+ const composition={schemaVersion:1,fontDefaults:doc.fontDefaults,canvas:doc.canvas,output,previewOutput:join(temp,'preview.html'),components:doc.components.map(({name,directory,componentKey,content,settings})=>({name,directory,componentKey,content,settings}))};
+ const render=()=>{writeFileSync(input,JSON.stringify(composition));const r=spawnSync(process.execPath,['build-email-template.v1.mjs',input],{cwd:root,encoding:'utf8'});assert.equal(r.status,0,r.stderr);return readFileSync(output,'utf8');};
+ const html=render();assert.equal((html.match(/<a\b/g)||[]).length,3);assert.equal((html.match(/<img\b/g)||[]).length,2);assert.ok(html.includes(signup.replaceAll('&','&amp;')));assert.equal(html.split(sale.replaceAll('&','&amp;')).length-1,2);
+ assert.match(html,/background-size:257\.5% 100\.932401%;background-position:31\.957672% 50%/);assert.match(html,/height:56px;height:min\(56px,9\.333333vw\)/);assert.match(html,/border-radius:2px;border-radius:min\(2px,0\.333333vw\)/);assert.match(html,/font-family:Verdana,sans-serif/);assert.match(html,/EXTRA \$600 OFF &amp; UP TO /);
+ assert.doesNotMatch(html,/<link\b|<script\b|<iframe\b|<form\b|fonts\.google|asset:\/\/|\{\{/);
+ composition.components[0].content['hero.offer.highlight']='25%';composition.components[0].content['hero.image.clickUrl']='https://freshinelife.com/collections/curtains';composition.components[0].settings['color.card']='#ABCDEF';composition.components[0].textStyles={'hero.offer.highlight':{fontFamily:'Georgia',color:'#123456'}};
+ const changed=render();assert.ok(changed.includes('25%'));assert.ok(changed.includes('background-color:#ABCDEF'));assert.ok(changed.includes('font-family:Georgia,serif'));assert.ok(changed.includes('color:#123456'));assert.ok(changed.includes(sale.replaceAll('&','&amp;')));assert.ok(changed.includes('https://freshinelife.com/collections/curtains'));
+ const footer=catalog.find(c=>c.componentKey==='footer.minimalContact');composition.components.push({name:footer.name,directory:footer.directory,componentKey:footer.componentKey,content:footer.defaultContent.values,settings:footer.defaultSettings.values});assert.match(render(),/\[\[unsubscribe_link\]\]/);
+ const demo=readFileSync(resolve(root,directory,'效果演示.html'),'utf8');assert.doesNotMatch(demo,/<link\b|fonts\.google|\{\{/);assert.match(demo,/border-radius:min\(2px,0\.333333vw\)/);
+});

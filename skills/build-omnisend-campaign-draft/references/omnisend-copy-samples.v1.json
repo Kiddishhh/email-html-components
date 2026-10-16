@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-12",
+  "brand": {
+    "name": "Freshine",
+    "brandID": "675ce4b321df797907e90ba9",
+    "website": "https://freshinelife.com"
+  },
+  "source": {
+    "provider": "Omnisend connector",
+    "fields": [
+      "content.email.subject",
+      "content.email.preheader"
+    ],
+    "selection": "10 newest-created email campaigns from a 12-campaign summary listing",
+    "primarySample": "9 sent campaigns",
+    "secondarySample": "1 draft, labeled separately",
+    "refreshPolicy": "Only refresh when the user explicitly asks; no routine Omnisend reads"
+  },
+  "samples": [
+    {
+      "campaignId": "6acc49153c8c79ac8a6ca70a",
+      "campaignName": "Columbus Day, Tailored to You—3 Days Left, Up to 65% Off",
+      "status": "draft",
+      "createdAt": "2026-10-12T02:42:29.68Z",
+      "sentAt": null,
+      "subject": "Columbus Day, Tailored to You—3 Days Left, Up to 65% Off",
+      "preheader": "Find the fabrics, colors, and custom fit that feel like home—plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/campaign/email/6acc49153c8c79ac8a6ca70a/settings"
+    },
+    {
+      "campaignId": "6ac85de57bfbfc4d9dd8567d",
+      "campaignName": "New Curtains Start with the Right Fit",
+      "status": "sent",
+      "createdAt": "2026-10-09T03:22:13.516Z",
+      "sentAt": "2026-10-10T12:00:00Z",
+      "subject": "New Curtains Start with the Right Fit",
+      "preheader": "Use our measuring tool to get started, then find the fabric and style you love with free design help.",
+      "url": "https://app.omnisend.com/reports/campaigns/6ac85de57bfbfc4d9dd8567d/email/overview"
+    },
+    {
+      "campaignId": "6abb91166142a7936171a9c9",
+      "campaignName": "Columbus Day Sale: Fall into Comfort—Up to $600 Extra Off",
+      "status": "sent",
+      "createdAt": "2026-09-29T10:21:10.357Z",
+      "sentAt": "2026-10-05T12:00:00Z",
+      "subject": "Columbus Day Sale: Fall into Comfort—Up to $600 Extra Off",
+      "preheader": "Layer your home with soft textures and custom style—up to 65% off, plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/reports/campaigns/6abb91166142a7936171a9c9/email/overview"
+    },
+    {
+      "campaignId": "6abb56f9c091a6d2f91258c6",
+      "campaignName": "Cozy Fall Living: Three More Days, a Little Extra Savings",
+      "status": "sent",
+      "createdAt": "2026-09-29T06:13:12.961Z",
+      "sentAt": "2026-10-02T12:00:00Z",
+      "subject": "Cozy Fall Living: Three More Days, a Little Extra Savings",
+      "preheader": "Make your favorite spaces even more inviting—enjoy up to 65% off, plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/reports/campaigns/6abb56f9c091a6d2f91258c6/email/overview"
+    },
+    {
+      "campaignId": "6aaf7f035d1a710686cebd2d",
+      "campaignName": "Fall Comfort, Beautifully Tailored—Up to $600 Extra Off",
+      "status": "sent",
+      "createdAt": "2026-09-20T06:36:51.962Z",
+      "sentAt": "2026-09-21T12:00:00Z",
+      "subject": "Fall Comfort, Beautifully Tailored—Up to $600 Extra Off",
+      "preheader": "Create a warmer, more inviting home while enjoying up to 65% off and up to 20% off sitewide.",
+      "url": "https://app.omnisend.com/reports/campaigns/6aaf7f035d1a710686cebd2d/email/overview"
+    },
+    {
+      "campaignId": "6aad170a3e4812082c1689ea",
+      "campaignName": "Fall Home Refresh: Three More Days to Make It Yours",
+      "status": "sent",
+      "createdAt": "2026-09-18T10:48:42.879Z",
+      "sentAt": "2026-09-18T12:00:00Z",
+      "subject": "Fall Home Refresh: Three More Days to Make It Yours",
+      "preheader": "Bring warmth, texture, and beautifully tailored style home—enjoy up to 65% off, plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/reports/campaigns/6aad170a3e4812082c1689ea/email/overview"
+    },
+    {
+      "campaignId": "6aa769dcb44a500a8c327995",
+      "campaignName": "Elevate Every Window with Custom Roman Shades – Up to 65% Off",
+      "status": "sent",
+      "createdAt": "2026-09-14T03:28:28.579Z",
+      "sentAt": "2026-09-14T12:00:00Z",
+      "subject": "Elevate Every Window with Custom Roman Shades – Up to 65% Off",
+      "preheader": "Discover beautifully tailored styles in hundreds of fabrics and colors—save up to 65%, plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/reports/campaigns/6aa769dcb44a500a8c327995/email/overview"
+    },
+    {
+      "campaignId": "6aa2228ea0b298e094d3e96f",
+      "campaignName": "Design Your Dream Windows for Free—and Save Up to $600 Sitewide",
+      "status": "sent",
+      "createdAt": "2026-09-10T03:22:54.43Z",
+      "sentAt": "2026-09-12T12:00:00Z",
+      "subject": "Design Your Dream Windows for Free—and Save Up to $600 Sitewide",
+      "preheader": "Shop custom curtains and shades up to 65% off, plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/reports/campaigns/6aa2228ea0b298e094d3e96f/email/overview"
+    },
+    {
+      "campaignId": "6a9e7a6dfb0d6adb3461e548",
+      "campaignName": "Labor Day Sale: Just 1 Day Left—Up to 65% Off",
+      "status": "sent",
+      "createdAt": "2026-09-07T08:48:45.342Z",
+      "sentAt": "2026-09-07T10:34:11.603Z",
+      "subject": "Labor Day Sale: Just 1 Day Left—Up to 65% Off",
+      "preheader": "Only one day remains to shop our Labor Day event—enjoy up to 65% off, plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/reports/campaigns/6a9e7a6dfb0d6adb3461e548/email/overview"
+    },
+    {
+      "campaignId": "6a9a3b406aa4733a3b9425cb",
+      "campaignName": "Fall Home Refresh: Custom Style Up to 65% Off",
+      "status": "sent",
+      "createdAt": "2026-09-04T03:30:08.737Z",
+      "sentAt": "2026-09-08T12:30:00Z",
+      "subject": "Fall Home Refresh: Custom Style Up to 65% Off",
+      "preheader": "Refresh every room with made-to-measure curtains and shades—plus up to 20% off sitewide and up to $600 extra off.",
+      "url": "https://app.omnisend.com/reports/campaigns/6a9a3b406aa4733a3b9425cb/email/overview"
+    }
+  ]
+}

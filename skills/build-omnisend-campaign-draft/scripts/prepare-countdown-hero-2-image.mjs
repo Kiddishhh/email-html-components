@@ -2,8 +2,8 @@
 
 import { existsSync, mkdirSync, mkdtempSync, realpathSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, extname, join, resolve } from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { dirname, join, resolve } from 'node:path';
+import { createImageProcessor } from './image-processing.mjs';
 
 const OUTPUT_WIDTH = 1200;
 const OUTPUT_HEIGHT = 1200;
@@ -18,28 +18,14 @@ function readArguments(argv) {
   for (let index = 0; index < argv.length; index += 2) {
     const flag = argv[index];
     const value = argv[index + 1];
-    if (!['--input', '--output'].includes(flag) || !value) fail('usage: prepare-countdown-hero-2-image.mjs --input <path> --output <path>');
+    if (!['--input', '--output', '--backend'].includes(flag) || !value) fail('usage: prepare-countdown-hero-2-image.mjs --input <path> --output <path>');
     values[flag.slice(2)] = value;
   }
   if (!values.input || !values.output) fail('usage: prepare-countdown-hero-2-image.mjs --input <path> --output <path>');
   return values;
 }
 
-function runSips(argumentsList) {
-  const result = spawnSync('sips', argumentsList, { encoding: 'utf8' });
-  if (result.status !== 0) fail(result.stderr.trim() || result.stdout.trim() || 'sips image processing failed');
-  return result.stdout;
-}
-
-function readDimensions(path) {
-  const output = runSips(['-g', 'pixelWidth', '-g', 'pixelHeight', path]);
-  const width = Number(output.match(/pixelWidth:\s+(\d+)/u)?.[1]);
-  const height = Number(output.match(/pixelHeight:\s+(\d+)/u)?.[1]);
-  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1) fail('unable to read input image dimensions');
-  return { width, height };
-}
-
-const { input, output } = readArguments(process.argv.slice(2));
+const { input, output, backend } = readArguments(process.argv.slice(2));
 const sourcePath = resolve(input);
 const outputPath = resolve(output);
 
@@ -48,7 +34,12 @@ if (sourcePath === outputPath || (existsSync(outputPath) && realpathSync(sourceP
   fail('output must not overwrite input');
 }
 
-const sourceSize = readDimensions(sourcePath);
+let processor;
+let sourceSize;
+try {
+  processor = createImageProcessor({ backend });
+  sourceSize = processor.dimensions(sourcePath);
+} catch (error) { fail(error.message); }
 const targetRatio = OUTPUT_WIDTH / OUTPUT_HEIGHT;
 let cropWidth = sourceSize.width;
 let cropHeight = sourceSize.height;
@@ -68,24 +59,16 @@ const temporaryDirectory = mkdtempSync(join(tmpdir(), 'freshine-countdown-hero-2
 const croppedPath = join(temporaryDirectory, 'centered-crop.png');
 
 try {
-  runSips([
-    '--cropToHeightWidth', String(cropHeight), String(cropWidth),
-    '--cropOffset', String(offsetY), String(offsetX),
-    sourcePath,
-    '--out', croppedPath
-  ]);
-  const extension = extname(outputPath).toLowerCase();
-  const formatArguments = extension === '.jpg' || extension === '.jpeg'
-    ? ['--setProperty', 'format', 'jpeg', '--setProperty', 'formatOptions', '88']
-    : extension === '.png'
-      ? ['--setProperty', 'format', 'png']
-      : [];
-  runSips([...formatArguments, '--resampleHeightWidth', String(OUTPUT_HEIGHT), String(OUTPUT_WIDTH), croppedPath, '--out', outputPath]);
+  processor.render({source: sourcePath, cropped: croppedPath, output: outputPath, crop: {width: cropWidth, height: cropHeight, offsetX, offsetY}, width: OUTPUT_WIDTH, height: OUTPUT_HEIGHT});
+} catch (error) {
+  process.stderr.write(`${error.message}\n`);
+  process.exitCode = 1;
 } finally {
   rmSync(temporaryDirectory, { recursive: true, force: true });
 }
 
-process.stdout.write(`${JSON.stringify({
+if (!process.exitCode) process.stdout.write(`${JSON.stringify({
+  backend: processor.backend,
   sourcePath,
   outputPath,
   sourceSize,

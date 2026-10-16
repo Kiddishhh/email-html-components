@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRIS 头图组件 - 效果预览</title>
+<!-- 预览页专用：仅用于在浏览器中还原 Lora / Montserrat 字体效果，正式组件不含此引用 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; padding:32px 16px; background:#EDEDED; font-family:Arial, Helvetica, sans-serif; }
+  .preview-label { text-align:center; color:#888888; font-size:13px; margin:0 0 12px 0; }
+  .preview-canvas { width:600px; max-width:100%; margin:0 auto; }
+</style>
+</head>
+<body>
+
+<p class="preview-label">600px 邮件画布预览 · IRIS 头图组件</p>
+
+<div class="preview-canvas">
+<!-- ======== 组件片段开始（正式组件仅含以下内容，无 DOCTYPE/head/style） ======== -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;border-collapse:collapse;margin:0 auto;background-color:#F7ECDE;">
+  <tr>
+    <td align="center" valign="top" bgcolor="#F7ECDE" style="padding:36px 47px 40px 47px;padding:min(36px,6vw) min(47px,7.833333vw) min(40px,6.666667vw) min(47px,7.833333vw);background-color:#F7ECDE;text-align:center;vertical-align:top;">
+
+      <!-- 标题：Lora Regular 400 / 36px / 150% / 居中 -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+        <tr>
+          <td align="center" style="padding:0;text-align:center;color:#1F1F1F;font-family:Lora,Georgia,'Times New Roman',serif;font-size:36px;font-size:min(36px,6vw);font-weight:400;line-height:54px;line-height:min(54px,9vw);letter-spacing:0px;">
+            IRIS
+          </td>
+        </tr>
+
+        <!-- 副标题：Montserrat Medium 500 / 16px / 150% / 居中 -->
+        <tr>
+          <td align="center" style="padding:24px 0 0 0;padding:min(24px,4vw) 0 0 0;text-align:center;color:#5F5F5F;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:16px;font-size:min(16px,2.666667vw);font-weight:500;line-height:24px;line-height:min(24px,4vw);letter-spacing:0px;">
+            Rich Linen Texture With Powerful Light Control, Creating A Cozy, Peaceful Retreat For Restful Days And Quiet Nights.
+          </td>
+        </tr>
+
+        <!-- CTA 按钮：暗红底白字 -->
+        <tr>
+          <td align="center" style="padding:24px 0 0 0;padding:min(24px,4vw) 0 0 0;text-align:center;">
+            <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;margin:0 auto;">
+              <tr>
+                <td align="center" valign="middle" bgcolor="#9C1C23" style="background-color:#9C1C23;border-radius:2px;padding:13px 30px;padding:min(13px,2.166667vw) min(30px,5vw);text-align:center;vertical-align:middle;">
+                  <a href="https://freshinelife.com/" target="_blank" style="display:block;color:#FFFFFF;font-family:Montserrat,Arial,Helvetica,sans-serif;font-size:16px;font-size:min(16px,2.666667vw);font-weight:600;line-height:20px;line-height:min(20px,3.333333vw);letter-spacing:1px;text-align:center;text-decoration:none;">
+                    SHOP NOW
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- 大图 -->
+        <tr>
+          <td align="center" style="padding:28px 0 0 0;padding:min(28px,4.666667vw) 0 0 0;text-align:center;">
+            <a href="https://freshinelife.com/" target="_blank" style="display:block;text-decoration:none;">
+              <img src="https://freshinelife.com/cdn/shop/files/Arlise-100_-Blackout-Chenille-Drapes-OY12-278-5-2.webp?v=1769075754&amp;width=1600" alt="Arlise 100% Blackout Chenille Drapes in a cozy living room" width="506" style="display:block;width:100%;max-width:506px;height:auto;border:0;outline:none;text-decoration:none;">
+            </a>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin:0;padding:0;font-size:0;line-height:0;"></p>
+    </td>
+  </tr>
+</table>
+<!-- ======== 组件片段结束 ======== -->
+</div>
+
+<p class="preview-label" style="margin-top:20px;">参考：Lora 仅在支持 Web 字体的客户端生效，回退 Georgia/serif；Montserrat 回退 Arial。</p>
+
+</body>
+</html>

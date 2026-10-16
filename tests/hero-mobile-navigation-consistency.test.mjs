@@ -1,3 +1,4 @@
+import { tempPath } from './helpers/temp-path.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -41,9 +42,9 @@ function renderHero(componentKey) {
   let document = createCampaignDocument({ name: `${componentKey}-mobile-navigation` });
   document = addComponentInstance(document, catalog, componentKey);
   const safeName = componentKey.replaceAll('.', '-');
-  const output = `/private/tmp/${safeName}-mobile-navigation.html`;
-  const previewOutput = `/private/tmp/${safeName}-mobile-navigation.local-preview.html`;
-  const compositionPath = `/private/tmp/${safeName}-mobile-navigation.composition.json`;
+  const output = tempPath(`${safeName}-mobile-navigation.html`);
+  const previewOutput = tempPath(`${safeName}-mobile-navigation.local-preview.html`);
+  const compositionPath = tempPath(`${safeName}-mobile-navigation.composition.json`);
   const composition = {
     schemaVersion: 1,
     canvas: document.canvas,

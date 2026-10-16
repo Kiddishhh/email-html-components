@@ -1,3 +1,4 @@
+import { tempPath } from './helpers/temp-path.mjs';
 import { assertTextRole } from './helpers/typography.mjs';
 import { canvas, writeComposition } from './helpers/composition.mjs';
 import test from 'node:test';
@@ -416,8 +417,8 @@ test('renders a linked curtain promotion card with its instance background color
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FBFAF8'),
-    output: '/private/tmp/curtain-promotion-card.html',
-    previewOutput: '/private/tmp/curtain-promotion-card.local-preview.html',
+    output: tempPath('curtain-promotion-card.html'),
+    previewOutput: tempPath('curtain-promotion-card.local-preview.html'),
     components: [{
       name: '单品窗帘促销卡',
       directory,
@@ -449,7 +450,7 @@ test('renders a linked curtain promotion card with its instance background color
       }
     }]
   };
-  const path = '/private/tmp/curtain-promotion-card.composition.json';
+  const path = tempPath('curtain-promotion-card.composition.json');
   writeFileSync(path, JSON.stringify(composition, null, 2));
 
   const result = run(path);
@@ -471,8 +472,8 @@ test('uses the curtain card local default image only in its local preview', () =
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FBFAF8'),
-    output: '/private/tmp/curtain-promotion-card-default.html',
-    previewOutput: '/private/tmp/curtain-promotion-card-default.local-preview.html',
+    output: tempPath('curtain-promotion-card-default.html'),
+    previewOutput: tempPath('curtain-promotion-card-default.local-preview.html'),
     assets: {
       'curtain-promotion-default': {
         path: '活动商品组件/单品窗帘促销卡/assets/default-celina-linen-curtains-clean.png',
@@ -487,7 +488,7 @@ test('uses the curtain card local default image only in its local preview', () =
       settings: defaults.values
     }]
   };
-  const path = '/private/tmp/curtain-promotion-card-default.composition.json';
+  const path = tempPath('curtain-promotion-card-default.composition.json');
   writeFileSync(path, JSON.stringify(composition, null, 2));
 
   const localResult = run(path, '--preview-local-assets');
@@ -504,8 +505,8 @@ test('renders the no-title curtain promotion card without top copy fields', () =
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FBFAF8'),
-    output: '/private/tmp/curtain-promotion-card-no-title.html',
-    previewOutput: '/private/tmp/curtain-promotion-card-no-title.local-preview.html',
+    output: tempPath('curtain-promotion-card-no-title.html'),
+    previewOutput: tempPath('curtain-promotion-card-no-title.local-preview.html'),
     components: [{
       name: '单品窗帘促销卡（无标题款）',
       directory,
@@ -533,7 +534,7 @@ test('renders the no-title curtain promotion card without top copy fields', () =
       }
     }]
   };
-  const path = '/private/tmp/curtain-promotion-card-no-title.composition.json';
+  const path = tempPath('curtain-promotion-card-no-title.composition.json');
   writeFileSync(path, JSON.stringify(composition, null, 2));
 
   const result = run(path);
@@ -556,8 +557,8 @@ test('renders the countdown hero with a mobile-scaled content panel', () => {
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FBFAF8'),
-    output: '/private/tmp/countdown-hero-css.html',
-    previewOutput: '/private/tmp/countdown-hero-css.local-preview.html',
+    output: tempPath('countdown-hero-css.html'),
+    previewOutput: tempPath('countdown-hero-css.local-preview.html'),
     assets: Object.fromEntries(Object.entries(content.localReferenceAssets).map(([id, relativePath]) => [id, {
       path: `头图/倒计时头图/${relativePath}`,
       name: relativePath.split('/').at(-1)
@@ -570,7 +571,7 @@ test('renders the countdown hero with a mobile-scaled content panel', () => {
       settings: settings.values
     }]
   };
-  const path = '/private/tmp/countdown-hero-css.composition.json';
+  const path = tempPath('countdown-hero-css.composition.json');
   writeFileSync(path, JSON.stringify(composition, null, 2));
 
   const result = run(path, '--preview-local-assets');
@@ -597,8 +598,8 @@ test('renders the benefits strip without its deprecated optional link field', ()
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FBFAF8'),
-    output: '/private/tmp/benefits-strip-optional-link.html',
-    previewOutput: '/private/tmp/benefits-strip-optional-link.local-preview.html',
+    output: tempPath('benefits-strip-optional-link.html'),
+    previewOutput: tempPath('benefits-strip-optional-link.local-preview.html'),
     assets: {
       'benefits-strip-3': {
         path: '赠品与权益组件/三项权益整图/assets/default-benefits-strip-rights-2.jpg',
@@ -613,7 +614,7 @@ test('renders the benefits strip without its deprecated optional link field', ()
       settings: settings.values
     }]
   };
-  const path = '/private/tmp/benefits-strip-optional-link.composition.json';
+  const path = tempPath('benefits-strip-optional-link.composition.json');
   writeFileSync(path, JSON.stringify(composition, null, 2));
 
   const result = run(path, '--preview-local-assets');
@@ -673,7 +674,7 @@ test('resolves registered local image assets only in local preview mode', () => 
 
 test('resolves a local preview asset relative to a nested preview HTML file', () => {
   const { composition, path } = makeComposition('email-builder-nested-local-preview', (value) => {
-    value.previewOutput = '/private/tmp/freshine-preview-test/nested/email.local-preview.html';
+    value.previewOutput = tempPath('freshine-preview-test/nested/email.local-preview.html');
     value.assets = {
       'review-collage': {
         path: '评论组件/可链接整图/assets/default-review-collage.png',
@@ -989,13 +990,13 @@ test('the rendered footer normalizes seven social logos inside equal visual cell
   const directory = `${root}/页脚组件/品牌信息页脚`;
   const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
-  const output = '/private/tmp/footer-social-visual-normalization.html';
-  const compositionPath = '/private/tmp/footer-social-visual-normalization.composition.json';
+  const output = tempPath('footer-social-visual-normalization.html');
+  const compositionPath = tempPath('footer-social-visual-normalization.composition.json');
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#652A0D'),
     output,
-    previewOutput: '/private/tmp/footer-social-visual-normalization.local-preview.html',
+    previewOutput: tempPath('footer-social-visual-normalization.local-preview.html'),
     components: [{
       name: '品牌信息页脚',
       directory,
@@ -1073,13 +1074,13 @@ test('double divider footer renders two 508px dividers and calibrated social log
   const directory = `${root}/页脚组件/双分割线页脚`;
   const fixture = JSON.parse(readFileSync(`${directory}/content.fixture.v1.json`, 'utf8'));
   const defaults = JSON.parse(readFileSync(`${directory}/settings.defaults.v1.json`, 'utf8'));
-  const output = '/private/tmp/double-divider-footer.html';
-  const compositionPath = '/private/tmp/double-divider-footer.composition.json';
+  const output = tempPath('double-divider-footer.html');
+  const compositionPath = tempPath('double-divider-footer.composition.json');
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FFFFFF'),
     output,
-    previewOutput: '/private/tmp/double-divider-footer.local-preview.html',
+    previewOutput: tempPath('double-divider-footer.local-preview.html'),
     components: [{
       name: '双分割线页脚',
       directory,
@@ -1468,7 +1469,7 @@ for (const [label, value] of [
   });
 }
 
-test('URL fields without a protocol declaration retain the existing https, mailto, and tel behavior', () => {
+test('image URLs require HTTPS even if the schema omits the protocol declaration', () => {
   const tempRoot = mkdtempSync(join(tmpdir(), 'freshine-review-no-protocol-'));
   const tempDirectory = join(tempRoot, '双条文字评论');
   cpSync(textReviewDirectory, tempDirectory, { recursive: true });
@@ -1487,7 +1488,8 @@ test('URL fields without a protocol declaration retain the existing https, mailt
       content: { 'star.image.url': value }
     });
     const result = run(path);
-    assert.equal(result.status, 0, `${label}: ${result.stderr || result.stdout}`);
+    if (label === 'https') assert.equal(result.status, 0, result.stderr);
+    else { assert.notEqual(result.status, 0); assert.match(result.stderr, /unsafe src URL protocol/); }
   }
 });
 
@@ -1549,8 +1551,8 @@ test('the left sample product recommendation card is registered with its two-ima
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FAF9F7'),
-    output: '/private/tmp/sample-product-recommendation.static-safe.html',
-    previewOutput: '/private/tmp/sample-product-recommendation.local-preview.html',
+    output: tempPath('sample-product-recommendation.static-safe.html'),
+    previewOutput: tempPath('sample-product-recommendation.local-preview.html'),
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
       path: `小样-产品/小样产品推荐卡（左）/${path}`,
       name: path.split('/').at(-1)
@@ -1563,7 +1565,7 @@ test('the left sample product recommendation card is registered with its two-ima
       settings: settings.values
     }]
   };
-  const compositionPath = '/private/tmp/sample-product-recommendation.composition.json';
+  const compositionPath = tempPath('sample-product-recommendation.composition.json');
   writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
   const renderResult = run(compositionPath, '--preview-local-assets');
   const preview = readFileSync(composition.previewOutput, 'utf8');
@@ -1682,8 +1684,8 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FAF9F7'),
-    output: '/private/tmp/curtain-recommendation-overlay.static-safe.html',
-    previewOutput: '/private/tmp/curtain-recommendation-overlay.local-preview.html',
+    output: tempPath('curtain-recommendation-overlay.static-safe.html'),
+    previewOutput: tempPath('curtain-recommendation-overlay.local-preview.html'),
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, {
       path: `小样-产品/窗帘产品推荐卡II/${path}`,
       name: path.split('/').at(-1)
@@ -1696,7 +1698,7 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
       settings: settings.values
     }]
   };
-  const compositionPath = '/private/tmp/curtain-recommendation-overlay.composition.json';
+  const compositionPath = tempPath('curtain-recommendation-overlay.composition.json');
   writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
   const renderResult = run(compositionPath, '--preview-local-assets');
   const preview = renderResult.status === 0 ? readFileSync(composition.previewOutput, 'utf8') : '';
@@ -1757,15 +1759,15 @@ test('the curtain recommendation overlay card reproduces the 600px editorial pro
   assert.match(preview, /border:1px solid #D8D0C5/);
   assert.ok(preview.includes('%E5%B0%8F%E6%A0%B7-%E4%BA%A7%E5%93%81/%E7%AA%97%E5%B8%98%E4%BA%A7%E5%93%81%E6%8E%A8%E8%8D%90%E5%8D%A1II/assets/default-celina-bedroom.png'));
   const finalComposition = structuredClone(composition);
-  finalComposition.output = '/private/tmp/curtain-recommendation-overlay.final.html';
-  finalComposition.previewOutput = '/private/tmp/curtain-recommendation-overlay.final-preview.html';
+  finalComposition.output = tempPath('curtain-recommendation-overlay.final.html');
+  finalComposition.previewOutput = tempPath('curtain-recommendation-overlay.final-preview.html');
   delete finalComposition.assets;
   finalComposition.components[0].content = {
     ...fixture.values,
     'product.images.scene.url': 'https://cdn.example.com/celina-bedroom.png',
     'product.images.detail.url': 'https://cdn.example.com/celina-detail.png'
   };
-  const finalPath = '/private/tmp/curtain-recommendation-overlay.final.composition.json';
+  const finalPath = tempPath('curtain-recommendation-overlay.final.composition.json');
   writeFileSync(finalPath, JSON.stringify(finalComposition, null, 2));
   const finalResult = run(finalPath);
   assert.equal(finalResult.status, 0, finalResult.stderr || finalResult.stdout);
@@ -1808,12 +1810,12 @@ test('the no-title curtain recommendation card keeps the editorial product layou
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#FAF9F7'),
-    output: '/private/tmp/curtain-recommendation-no-title.static-safe.html',
-    previewOutput: '/private/tmp/curtain-recommendation-no-title.local-preview.html',
+    output: tempPath('curtain-recommendation-no-title.static-safe.html'),
+    previewOutput: tempPath('curtain-recommendation-no-title.local-preview.html'),
     assets: Object.fromEntries(Object.entries(fixture.localReferenceAssets).map(([id, path]) => [id, { path: `小样-产品/窗帘产品推荐卡II（无标题版）/${path}`, name: path.split('/').at(-1) }])),
     components: [{ name: '窗帘产品推荐卡II（无标题版）', directory, componentKey: 'product.curtainRecommendationNoTitle', content: fixture.values, settings: settings.values }]
   };
-  const compositionPath = '/private/tmp/curtain-recommendation-no-title.composition.json';
+  const compositionPath = tempPath('curtain-recommendation-no-title.composition.json');
   writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
   const renderResult = run(compositionPath, '--preview-local-assets');
 
@@ -1878,12 +1880,12 @@ test('the measurement tool card is a registered 600px editable component with it
   const composition = {
     schemaVersion: 1,
     canvas: canvas('#F7F5F1'),
-    output: '/private/tmp/measurement-tool-card.static-safe.html',
-    previewOutput: '/private/tmp/measurement-tool-card.local-preview.html',
+    output: tempPath('measurement-tool-card.static-safe.html'),
+    previewOutput: tempPath('measurement-tool-card.local-preview.html'),
     assets: { 'measurement-tool': { path: '赠品与权益组件/尺寸测量工具卡/assets/default-measurement-tool.jpg', name: 'default-measurement-tool.jpg' } },
     components: [{ name: '尺寸测量工具卡', directory, componentKey: 'tool.measurementCard', content: fixture.values, settings: settings.values }]
   };
-  const compositionPath = '/private/tmp/measurement-tool-card.composition.json';
+  const compositionPath = tempPath('measurement-tool-card.composition.json');
   writeFileSync(compositionPath, JSON.stringify(composition, null, 2));
   const renderResult = run(compositionPath, '--preview-local-assets');
 

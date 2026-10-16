@@ -1,6 +1,9 @@
-import { appendPendingEdit, consumePendingEdits, editableFieldKeys, editorFieldCopy, editorInputDisplay, normalizeHexColor, previewComponentIndex, previewStageScrollTop, previewTargetIsCurrent, structuresForCatalog, styleKeysForStructure } from './editor-ui-contract.mjs';
+import { createTextStyleControl } from './editor-text-styles.mjs';
+import { createSaveQueue, groupEditorFields, searchCatalog } from './editor-workflow.mjs';
+import { setupLinkInspector } from './editor-links.mjs';
+import { editableFieldKeys, editorFieldCopy, editorInputDisplay, normalizeHexColor, previewComponentIndex, previewStageScrollTop, previewTargetIsCurrent, structuresForCatalog, styleKeysForStructure } from './editor-ui-contract.mjs';
 
-const state = { catalog: [], templates: [], draft: null, selectedId: null, selectedTemplateId: '', selectedStructure: '', width: 600, previewTimer: null, saveTimer: null, previewFocusTimer: null, highlightTimer: null, pending: { instanceId: null, content: {}, settings: {} } };
+const state = { catalog: [], templates: [], draft: null, selectedId: null, selectedTemplateId: '', selectedStructure: '', width: 600, previewTimer: null, saveTimer: null, previewFocusTimer: null, highlightTimer: null, catalogLimit: 6, openGroups: new Map() };
 
 const $ = (selector) => document.querySelector(selector);
 const structureElement = $('#structure');
@@ -44,7 +47,7 @@ let resolveOmnisendUpload = null;
 let resolveOmnisendHtmlExport = null;
 let resolveTemplateName = null;
 
-async function api(path, options = {}) {
+async function fetchApi(path, options = {}) {
   const response = await fetch(path, {
     ...options,
     headers: { 'content-type': 'application/json', ...(options.headers ?? {}) }
@@ -60,6 +63,57 @@ async function api(path, options = {}) {
   return body;
 }
 
+let mutationTail = Promise.resolve();
+let editorLocked = false;
+function api(path, options = {}) {
+  if (!options.method || options.method === 'GET') return fetchApi(path, options);
+  const request = mutationTail.then(() => fetchApi(path, options));
+  mutationTail = request.catch(() => {});
+  return request;
+}
+
+const saveQueue = createSaveQueue({
+  send: (instanceId, patch, draftId) => api(`/api/drafts/${draftId}/components/${instanceId}`, { method: 'PATCH', body: JSON.stringify(patch) }),
+  onSaved: (result) => {
+    if (result.draft.id !== state.draft?.id) return;
+    const fieldFocus = captureFieldFocus();
+    setDraft(result.draft, { fieldFocus });
+    queuePreview();
+  },
+  onStatus: (status, error) => {
+    $('#save-status').textContent = status === 'error' ? `保存失败，修改已保留：${error.message}` : status === 'saving' ? '正在保存…' : status === 'pending' ? '有待保存的修改…' : '已保存到当前会话';
+    $('#save-status').dataset.state = status;
+    $('#retry-save').hidden = status !== 'error';
+    updateOutputControls();
+  }
+});
+
+function updateOutputControls() {
+  const waiting = editorLocked || saveQueue.hasPending() || saveQueue.isSaving();
+  exportOmnisendHtmlButton.disabled = waiting || !state.draft?.confirmed;
+  uploadOmnisendDraftButton.disabled = waiting || !state.draft?.confirmed;
+}
+
+async function withEditorLock(action) {
+  if (editorLocked) return;
+  editorLocked = true;
+  $('.workspace').inert = true;
+  $('#editor-operation').textContent = '正在处理操作，请稍候…';
+  for (const button of [$('#new-campaign'), $('#inspect-links'), useTemplateButton, saveTemplateButton, deleteTemplateButton]) button.disabled = true;
+  updateOutputControls();
+  try { return await action(); }
+  finally {
+    editorLocked = false;
+    $('.workspace').inert = false;
+    $('#editor-operation').textContent = '';
+    $('#new-campaign').disabled = false;
+    $('#inspect-links').disabled = false;
+    saveTemplateButton.disabled = !state.draft?.components.length;
+    renderTemplateOptions();
+    updateOutputControls();
+  }
+}
+
 function selectedInstance() {
   return state.draft?.components.find(({ instanceId }) => instanceId === state.selectedId) ?? null;
 }
@@ -70,10 +124,12 @@ function catalogItem(componentKey) {
 
 function captureFieldFocus() {
   const input = document.activeElement;
-  if (!(input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) || !form.contains(input) || !input.dataset.group || !input.dataset.key) return null;
+  if (!(input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement) || !form.contains(input) || !input.dataset.group || !input.dataset.key) return null;
   return {
     group: input.dataset.group,
     key: input.dataset.key,
+    styleProperty: input.dataset.styleProperty,
+    editingValue: input.dataset.styleProperty ? input.value : undefined,
     selectionStart: input.selectionStart,
     selectionEnd: input.selectionEnd
   };
@@ -81,8 +137,12 @@ function captureFieldFocus() {
 
 function restoreFieldFocus(focus) {
   if (!focus) return;
-  const input = [...form.querySelectorAll('input, textarea')].find((candidate) => candidate.dataset.group === focus.group && candidate.dataset.key === focus.key);
+  const input = [...form.querySelectorAll('input, textarea, select')].find((candidate) => candidate.dataset.group === focus.group && candidate.dataset.key === focus.key && candidate.dataset.styleProperty === focus.styleProperty);
   if (!input) return;
+  if (focus.editingValue !== undefined) {
+    input.value = focus.editingValue;
+    input.classList.toggle('invalid', !input.validity.valid);
+  }
   input.focus();
   if (typeof focus.selectionStart !== 'number' || typeof focus.selectionEnd !== 'number') return;
   try {
@@ -93,12 +153,14 @@ function restoreFieldFocus(focus) {
 }
 
 function setDraft(draft, { fieldFocus = null } = {}) {
+  draft = saveQueue.overlay(draft);
   state.draft = draft;
   if (state.selectedId && !draft.components.some(({ instanceId }) => instanceId === state.selectedId)) state.selectedId = null;
   saveTemplateButton.disabled = draft.components.length === 0;
   renderStructure();
   renderInspector();
   restoreFieldFocus(fieldFocus);
+  updateOutputControls();
 }
 
 function addOption(select, { value, label }) {
@@ -139,32 +201,58 @@ function setTemplates(templates, selectedTemplateId = state.selectedTemplateId) 
 
 function renderStructureOptions() {
   structureSelect.replaceChildren();
-  addOption(structureSelect, { value: '', label: '选择结构' });
+  addOption(structureSelect, { value: '', label: '全部分类' });
   for (const category of structuresForCatalog(state.catalog)) addOption(structureSelect, { value: category, label: category });
   structureSelect.value = state.selectedStructure;
   renderStyleOptions();
 }
 
 function renderStyleOptions() {
+  const previouslySelected = styleSelect.value;
   styleSelect.replaceChildren();
-  if (!state.selectedStructure) {
-    addOption(styleSelect, { value: '', label: '先选择结构' });
-    styleSelect.disabled = true;
-    addSelectedComponent.disabled = true;
-    return;
-  }
   addOption(styleSelect, { value: '', label: '选择样式' });
-  for (const componentKey of styleKeysForStructure(state.catalog, state.selectedStructure)) {
-    const component = catalogItem(componentKey);
-    addOption(styleSelect, { value: componentKey, label: `${component.name} · ${component.variant}` });
-  }
-  styleSelect.disabled = false;
+  const matches = searchCatalog(state.catalog, state.selectedStructure, $('#component-search').value);
+  for (const component of matches) addOption(styleSelect, { value: component.componentKey, label: `${component.name} · ${component.variant}` });
+  if (matches.some(component => component.componentKey === previouslySelected)) styleSelect.value = previouslySelected;
+  styleSelect.disabled = matches.length === 0;
   addSelectedComponent.disabled = !styleSelect.value;
+  renderCatalogCards(matches);
+}
+
+function renderCatalogCards(matches) {
+  const cards = $('#catalog-cards');
+  cards.replaceChildren();
+  if (!matches.length) { setTextMessage(cards, '没有匹配组件，试试其他关键词。'); }
+  for (const component of matches.slice(0, state.catalogLimit)) {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'catalog-card';
+    button.dataset.componentKey = component.componentKey;
+    button.classList.toggle('selected', styleSelect.value === component.componentKey);
+    button.setAttribute('aria-label', `选择组件 ${component.name}`);
+    const thumbnail = document.createElement('div'); thumbnail.className = 'catalog-thumbnail';
+    const frame = document.createElement('iframe');
+    frame.src = component.thumbnailUrl;
+    frame.title = `${component.name} 默认缩略图`;
+    frame.loading = 'lazy'; frame.tabIndex = -1;
+    frame.setAttribute('sandbox', '');
+    thumbnail.append(frame);
+    const name = document.createElement('strong'); name.textContent = component.name;
+    const category = document.createElement('small'); category.textContent = component.category;
+    button.append(thumbnail, name, category);
+    button.addEventListener('click', () => {
+      styleSelect.value = component.componentKey;
+      addSelectedComponent.disabled = false;
+      cards.querySelectorAll('.catalog-card').forEach(card => card.classList.toggle('selected', card === button));
+    });
+    cards.append(button);
+  }
+  $('#catalog-more').hidden = matches.length <= state.catalogLimit;
+  $('#catalog-more').textContent = `显示更多（${Math.min(state.catalogLimit, matches.length)} / ${matches.length}）`;
 }
 
 async function selectComponent(instanceId) {
   window.clearTimeout(state.saveTimer);
-  await commitEdits();
+  if (!await commitEdits()) return;
   state.selectedId = instanceId;
   renderStructure();
   renderInspector();
@@ -262,7 +350,7 @@ function renderStructure() {
   });
 }
 
-function editableFields(componentKey, values, schema, groupName, groupKey, allowedKeys) {
+function editableFieldset(componentKey, values, schema, groupName, groupKey, allowedKeys) {
   const visibleKeys = allowedKeys.filter((key) => key in values && schema.properties?.[key]?.editable !== false);
   if (!visibleKeys.length) return null;
   const fieldset = document.createElement('fieldset');
@@ -281,7 +369,8 @@ function editableFields(componentKey, values, schema, groupName, groupKey, allow
     title.textContent = copy.label;
     const help = document.createElement('small');
     help.className = 'field-help';
-    help.textContent = copy.help;
+    const fieldFont = catalogItem(componentKey).textFields?.[key]?.defaults.fontFamily;
+    help.textContent = groupKey === 'content' && fieldFont ? copy.help.replace(/Lora|Montserrat|Noto Sans SC|Arial/gu, fieldFont) : copy.help;
     label.append(title, help);
     const display = editorInputDisplay(value, metadata);
     if (display.control === 'checkbox') {
@@ -290,7 +379,7 @@ function editableFields(componentKey, values, schema, groupName, groupKey, allow
       const input = document.createElement('input');
       input.type = 'checkbox';
       input.checked = display.checked;
-      input.dataset.group = groupName === '内容' ? 'content' : 'settings';
+      input.dataset.group = groupKey;
       input.dataset.key = key;
       input.setAttribute('aria-label', copy.label);
       const status = document.createElement('span');
@@ -320,7 +409,7 @@ function editableFields(componentKey, values, schema, groupName, groupKey, allow
       hexInput.pattern = '#[0-9A-Fa-f]{6}';
       hexInput.value = color;
       hexInput.placeholder = '#RRGGBB';
-      hexInput.dataset.group = groupName === '内容' ? 'content' : 'settings';
+      hexInput.dataset.group = groupKey;
       hexInput.dataset.key = key;
       hexInput.addEventListener('input', () => setHexInputValidity(hexInput));
       hexInput.addEventListener('blur', () => applyHexInput(hexInput, picker));
@@ -344,7 +433,7 @@ function editableFields(componentKey, values, schema, groupName, groupKey, allow
         if (!multiline) input.type = 'text';
         input.value = display.value;
         input.placeholder = display.placeholder;
-        input.dataset.group = groupName === '内容' ? 'content' : 'settings';
+        input.dataset.group = groupKey;
         input.dataset.key = key;
         input.addEventListener('input', onFieldInput);
         wrapper.append(label, input);
@@ -361,9 +450,46 @@ function editableFields(componentKey, values, schema, groupName, groupKey, allow
       uploadLabel.append(upload);
       wrapper.append(uploadLabel);
     }
+    const instance = selectedInstance();
+    const textMetadata = catalogItem(componentKey).textFields?.[key];
+    if (groupKey === 'content' && textMetadata) wrapper.append(createTextStyleControl({
+      instanceId: instance.instanceId, fieldKey: key, fieldLabel: copy.label, metadata: textMetadata, settings: instance.settings,
+      getValue: () => state.draft.components.find(item => item.instanceId === instance.instanceId)?.textStyles?.[key] ?? {},
+      onChange: value => {
+        enqueueEdit(instance.instanceId, 'textStyles', key, value);
+        window.clearTimeout(state.saveTimer);
+        if (!saveQueue.hasFailed()) state.saveTimer = window.setTimeout(() => { void commitEdits(); }, 320);
+        if (!Object.keys(value).length) renderInspector();
+      }
+    }));
     fieldset.append(wrapper);
   }
   return fieldset;
+}
+
+function editableFields(componentKey, values, schema, groupName, groupKey, allowedKeys) {
+  if (groupKey !== 'content' || !allowedKeys.some(key => /^saleItems\[|^products\[|^items\[/u.test(key))) return editableFieldset(componentKey, values, schema, groupName, groupKey, allowedKeys);
+  const container = document.createElement('div');
+  container.className = 'product-field-groups';
+  const instanceId = selectedInstance().instanceId;
+  const expanded = state.openGroups.get(instanceId) ?? new Set(['intro', 'product-0']);
+  state.openGroups.set(instanceId, expanded);
+  for (const group of groupEditorFields(allowedKeys, groupKey)) {
+    const details = document.createElement('details');
+    details.className = 'product-field-group'; details.dataset.groupId = group.id;
+    details.open = expanded.has(group.id);
+    details.addEventListener('toggle', () => { if (details.open) expanded.add(group.id); else expanded.delete(group.id); });
+    const summary = document.createElement('summary');
+    const productName = group.itemIndex === undefined ? '' : values[`saleItems[${group.itemIndex}].name`] ?? '';
+    summary.textContent = productName ? `${group.label} · ${productName}` : group.label;
+    details.append(summary);
+    const importButton = actions.querySelector(`[data-item-index="${group.itemIndex}"]`);
+    if (importButton) details.append(importButton);
+    const fields = editableFieldset(componentKey, values, schema, group.label, groupKey, group.keys);
+    if (fields) details.append(fields);
+    container.append(details);
+  }
+  return container;
 }
 
 function renderInspector() {
@@ -411,6 +537,7 @@ function renderInspector() {
       importButton.type = 'button';
       importButton.className = 'button';
       importButton.textContent = `导入商品 ${itemIndex + 1}`;
+      importButton.dataset.itemIndex = String(itemIndex);
       importButton.addEventListener('click', () => isDetailSix
         ? importDetailSixProduct(instance.instanceId, itemIndex)
         : importSaleGrid4Product(instance.instanceId, itemIndex));
@@ -423,13 +550,14 @@ function renderInspector() {
       importButton.type = 'button';
       importButton.className = 'button';
       importButton.textContent = `导入商品 ${itemIndex + 1}`;
+      importButton.dataset.itemIndex = String(itemIndex);
       importButton.addEventListener('click', () => importSaleGrid6Product(instance.instanceId, itemIndex));
       actions.append(importButton);
     }
   }
   confirmState.hidden = false;
   confirmState.className = `confirm-state${instance.confirmed ? ' ready' : ''}`;
-  confirmState.textContent = instance.confirmed ? '已锁定' : '待确认';
+  confirmState.textContent = instance.confirmed ? '已确认' : '待确认';
   const contentFields = editableFields(instance.componentKey, instance.content, component.contentSchema, '内容', 'content', fields.content);
   const settingsFields = editableFields(instance.componentKey, instance.settings, component.settingsSchema, '样式设置', 'settings', fields.settings);
   form.replaceChildren(...[contentFields, settingsFields].filter(Boolean));
@@ -461,97 +589,117 @@ function applyHexInput(input, picker) {
   queueFieldEdit(input, color);
 }
 
+function enqueueEdit(instanceId, group, key, value) {
+  const instance = state.draft?.components.find(component => component.instanceId === instanceId);
+  if (!instance) return;
+  instance[group] ??= {};
+  instance[group][key] = value;
+  instance.confirmed = false;
+  state.draft.confirmed = false;
+  saveQueue.enqueue(instanceId, group, key, value, state.draft.id);
+  confirmState.textContent = '待确认';
+  confirmState.className = 'confirm-state';
+  const confirmButton = actions.querySelector('button');
+  if (confirmButton) { confirmButton.disabled = false; confirmButton.textContent = '确认此组件'; }
+  renderStructure();
+  updateOutputControls();
+}
+
 function queueFieldEdit(input, value) {
   const instance = selectedInstance();
-  if (!instance) return;
-  const group = input.dataset.group;
-  if (instance[group][input.dataset.key] === value && state.pending.instanceId !== instance.instanceId) return;
-  instance[group][input.dataset.key] = value;
-  state.pending = appendPendingEdit(state.pending, { instanceId: instance.instanceId, group, key: input.dataset.key, value });
+  if (!instance || instance[input.dataset.group][input.dataset.key] === value) return;
+  enqueueEdit(instance.instanceId, input.dataset.group, input.dataset.key, value);
   window.clearTimeout(state.saveTimer);
-  state.saveTimer = window.setTimeout(commitEdits, 320);
+  if (!saveQueue.hasFailed()) state.saveTimer = window.setTimeout(() => { void commitEdits(); }, 320);
 }
 
 async function commitEdits() {
   window.clearTimeout(state.saveTimer);
-  const { instanceId, patch, next } = consumePendingEdits(state.pending);
-  state.pending = next;
-  if (!instanceId) return;
-  const instance = state.draft?.components.find((component) => component.instanceId === instanceId);
-  if (!instance) return;
-  if (!Object.keys(patch.content).length && !Object.keys(patch.settings).length) return;
-  const fieldFocus = state.selectedId === instanceId ? captureFieldFocus() : null;
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}`, { method: 'PATCH', body: JSON.stringify(patch) });
-    setDraft(result.draft, { fieldFocus });
-    queuePreview();
-  } catch (error) { window.alert(error.message); }
+  try { await saveQueue.flush(); return true; }
+  catch { return false; }
 }
 
 async function addComponent(componentKey) {
-  if (!state.draft) await createDraft();
-  await commitEdits();
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components`, { method: 'POST', body: JSON.stringify({ componentKey }) });
-    state.selectedId = result.draft.components.at(-1).instanceId;
-    setDraft(result.draft);
-    queuePreview();
-  } catch (error) { window.alert(error.message); }
+  return withEditorLock(async () => {
+    if (!state.draft) await createDraft();
+    if (!await commitEdits()) return;
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components`, { method: 'POST', body: JSON.stringify({ componentKey }) });
+      state.selectedId = result.draft.components.at(-1).instanceId;
+      setDraft(result.draft);
+      queuePreview();
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 async function reorder(fromIndex, toIndex) {
-  if (!state.draft || toIndex < 0 || toIndex >= state.draft.components.length || fromIndex === toIndex) return;
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/reorder`, { method: 'POST', body: JSON.stringify({ fromIndex, toIndex }) });
-    setDraft(result.draft); queuePreview();
-  } catch (error) { window.alert(error.message); }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    if (!state.draft || toIndex < 0 || toIndex >= state.draft.components.length || fromIndex === toIndex) return;
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/reorder`, { method: 'POST', body: JSON.stringify({ fromIndex, toIndex }) });
+      setDraft(result.draft); queuePreview();
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 async function removeComponent(instanceId) {
-  if (!state.draft) return;
-  if (!window.confirm('删除此组件？')) return;
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}`, { method: 'DELETE' });
-    setDraft(result.draft); queuePreview();
-  } catch (error) { window.alert(error.message); }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    if (!state.draft) return;
+    if (!window.confirm('删除此组件？')) return;
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}`, { method: 'DELETE' });
+      setDraft(result.draft); queuePreview();
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 async function confirmComponent(instanceId) {
-  if (!state.draft) return;
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/confirm`, { method: 'POST', body: '{}' });
-    setDraft(result.draft);
-  } catch (error) { window.alert(error.message); }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    if (!state.draft) return;
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/confirm`, { method: 'POST', body: '{}' });
+      setDraft(result.draft);
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 async function importSaleGrid(instanceId) {
-  const source = window.prompt('输入 Freshine 活动页/Collection 链接，或直接输入 Shopify 后台 Collection handle');
-  if (!source) return;
-  const value = source.trim();
-  const body = /^https:\/\//i.test(value) ? { shopifyUrl: value } : { collectionHandle: value };
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-sale-grid`, {
-      method: 'POST', body: JSON.stringify(body)
-    });
-    setDraft(result.draft);
-    queuePreview();
-  } catch (error) {
-    window.alert(error.message);
-  }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    const source = window.prompt('输入 Freshine 活动页/Collection 链接，或直接输入 Shopify 后台 Collection handle');
+    if (!source) return;
+    const value = source.trim();
+    const body = /^https:\/\//i.test(value) ? { shopifyUrl: value } : { collectionHandle: value };
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-sale-grid`, {
+        method: 'POST', body: JSON.stringify(body)
+      });
+      setDraft(result.draft);
+      queuePreview();
+    } catch (error) {
+      window.alert(error.message);
+    }
+  });
 }
 
 async function importCurtainPromotionProduct(instanceId) {
-  const shopifyUrl = window.prompt('输入 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）');
-  if (!shopifyUrl) return;
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product`, {
-      method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
-    });
-    setDraft(result.draft);
-    queuePreview();
-  } catch (error) {
-    window.alert(error.message);
-  }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    const shopifyUrl = window.prompt('输入 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）');
+    if (!shopifyUrl) return;
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product`, {
+        method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
+      });
+      setDraft(result.draft);
+      queuePreview();
+    } catch (error) {
+      window.alert(error.message);
+    }
+  });
 }
 
 function importDetailSixProduct(instanceId, itemIndex) {
@@ -595,13 +743,15 @@ function importDetailSixProduct(instanceId, itemIndex) {
     cancel.disabled = true;
     status.textContent = '正在读取 Shopify 商品…';
     try {
-      await commitEdits();
-      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
-        method: 'POST', body: JSON.stringify({ shopifyUrl: input.value.trim() })
+      if (!await commitEdits()) return;
+      await withEditorLock(async () => {
+        const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
+          method: 'POST', body: JSON.stringify({ shopifyUrl: input.value.trim() })
+        });
+        setDraft(result.draft);
+        queuePreview();
+        dialog.close();
       });
-      setDraft(result.draft);
-      queuePreview();
-      dialog.close();
     } catch (error) {
       status.textContent = error.message;
     } finally {
@@ -619,31 +769,37 @@ function importDetailSixProduct(instanceId, itemIndex) {
 }
 
 async function importSaleGrid4Product(instanceId, itemIndex) {
-  const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
-  if (!shopifyUrl) return;
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
-      method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
-    });
-    setDraft(result.draft);
-    queuePreview();
-  } catch (error) {
-    window.alert(error.message);
-  }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
+    if (!shopifyUrl) return;
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
+        method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
+      });
+      setDraft(result.draft);
+      queuePreview();
+    } catch (error) {
+      window.alert(error.message);
+    }
+  });
 }
 
 async function importSaleGrid6Product(instanceId, itemIndex) {
-  const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
-  if (!shopifyUrl) return;
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
-      method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
-    });
-    setDraft(result.draft);
-    queuePreview();
-  } catch (error) {
-    window.alert(error.message);
-  }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    const shopifyUrl = window.prompt(`输入第 ${itemIndex + 1} 款 Freshine 商品详情页链接（支持 /products/<handle> 或 /collections/<collection-handle>/products/<handle>）`);
+    if (!shopifyUrl) return;
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/import-shopify-product/${itemIndex}`, {
+        method: 'POST', body: JSON.stringify({ shopifyUrl: shopifyUrl.trim() })
+      });
+      setDraft(result.draft);
+      queuePreview();
+    } catch (error) {
+      window.alert(error.message);
+    }
+  });
 }
 
 function dataUrlForFile(file) {
@@ -656,18 +812,21 @@ function dataUrlForFile(file) {
 }
 
 async function uploadLocalImage(instanceId, fieldKey, file) {
-  if (!state.draft || !instanceId || !file) return;
-  if (!/^image\/(?:png|jpeg|webp|gif)$/u.test(file.type) || file.size > 5 * 1024 * 1024) {
-    window.alert('请选择不超过 5 MB 的 PNG、JPEG、WEBP 或 GIF 图片。');
-    return;
-  }
-  try {
-    const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/upload-image`, {
-      method: 'POST', body: JSON.stringify({ fieldKey, filename: file.name, dataUrl: await dataUrlForFile(file) })
-    });
-    setDraft(result.draft);
-    queuePreview();
-  } catch (error) { window.alert(error.message); }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    if (!state.draft || !instanceId || !file) return;
+    if (!/^image\/(?:png|jpeg|webp|gif)$/u.test(file.type) || file.size > 5 * 1024 * 1024) {
+      window.alert('请选择不超过 5 MB 的 PNG、JPEG、WEBP 或 GIF 图片。');
+      return;
+    }
+    try {
+      const result = await api(`/api/drafts/${state.draft.id}/components/${instanceId}/upload-image`, {
+        method: 'POST', body: JSON.stringify({ fieldKey, filename: file.name, dataUrl: await dataUrlForFile(file) })
+      });
+      setDraft(result.draft);
+      queuePreview();
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 function queuePreview() {
@@ -691,11 +850,14 @@ async function renderPreview() {
 }
 
 async function createDraft() {
-  const result = await api('/api/drafts', { method: 'POST', body: JSON.stringify({ name: $('#campaign-name').value }) });
-  state.selectedId = null;
-  setDraft(result.draft);
-  setTextMessage(previewStage, '从左侧添加组件后，预览会自动生成。');
-  $('.workspace').hidden = false;
+  return withEditorLock(async () => {
+    if (state.draft && !await commitEdits()) return;
+    const result = await api('/api/drafts', { method: 'POST', body: JSON.stringify({ name: $('#campaign-name').value }) });
+    state.selectedId = null;
+    setDraft(result.draft);
+    setTextMessage(previewStage, '从左侧添加组件后，预览会自动生成。');
+    $('.workspace').hidden = false;
+  });
 }
 
 function finishTemplateName(value) {
@@ -715,53 +877,60 @@ function requestTemplateName() {
 }
 
 async function saveCurrentTemplate() {
-  if (!state.draft?.components.length) return;
-  window.clearTimeout(state.saveTimer);
-  await commitEdits();
-  const name = (await requestTemplateName())?.trim();
-  if (!name) return;
-  let overwrite = false;
-  while (true) {
-    try {
-      const result = await api('/api/templates', {
-        method: 'POST', body: JSON.stringify({ name, draftId: state.draft.id, overwrite })
-      });
-      setTemplates(result.templates, result.template.id);
-      templateStatus.textContent = overwrite ? `已更新模板：${result.template.name}` : `已保存模板：${result.template.name}`;
-      return;
-    } catch (error) {
-      if (error.code !== 'template-name-conflict' || overwrite || !window.confirm(`模板“${name}”已存在，是否覆盖？`)) {
-        if (error.code !== 'template-name-conflict') window.alert(error.message);
+  return withEditorLock(async () => {
+    if (!state.draft?.components.length) return;
+    window.clearTimeout(state.saveTimer);
+    if (!await commitEdits()) return;
+    const name = (await requestTemplateName())?.trim();
+    if (!name) return;
+    let overwrite = false;
+    while (true) {
+      try {
+        const result = await api('/api/templates', {
+          method: 'POST', body: JSON.stringify({ name, draftId: state.draft.id, overwrite })
+        });
+        setTemplates(result.templates, result.template.id);
+        templateStatus.textContent = [overwrite ? `已更新模板：${result.template.name}` : `已保存模板：${result.template.name}`, ...(result.warnings ?? []).map(w => w.message)].join(' ');
         return;
+      } catch (error) {
+        if (error.code !== 'template-name-conflict' || overwrite || !window.confirm(`模板“${name}”已存在，是否覆盖？`)) {
+          if (error.code !== 'template-name-conflict') window.alert(error.message);
+          return;
+        }
+        overwrite = true;
       }
-      overwrite = true;
     }
-  }
+  });
 }
 
 async function useSelectedTemplate() {
-  const template = selectedTemplate();
-  if (!template) return;
-  if (state.draft?.components.length && !window.confirm(`将基于模板“${template.name}”新建草稿，当前草稿仍保留在本地会话中。是否继续？`)) return;
-  try {
-    const result = await api(`/api/templates/${template.id}/drafts`, { method: 'POST', body: '{}' });
-    state.selectedId = result.draft.components[0]?.instanceId ?? null;
-    $('#campaign-name').value = result.draft.name;
-    setDraft(result.draft);
-    $('.workspace').hidden = false;
-    templateStatus.textContent = `已从模板新建草稿：${template.name}`;
-    await renderPreview();
-  } catch (error) { window.alert(error.message); }
+  return withEditorLock(async () => {
+    if (!await commitEdits()) return;
+    const template = selectedTemplate();
+    if (!template) return;
+    if (state.draft?.components.length && !window.confirm(`将基于模板“${template.name}”新建草稿，当前草稿仍保留在本地会话中。是否继续？`)) return;
+    try {
+      const result = await api(`/api/templates/${template.id}/drafts`, { method: 'POST', body: '{}' });
+      state.selectedId = result.draft.components[0]?.instanceId ?? null;
+      $('#campaign-name').value = result.draft.name;
+      setDraft(result.draft);
+      $('.workspace').hidden = false;
+      templateStatus.textContent = [`已从模板新建草稿：${template.name}`, ...(result.warnings ?? []).map(w => w.message)].join(' ');
+      await renderPreview();
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 async function deleteSelectedTemplate() {
-  const template = selectedTemplate();
-  if (!template || !window.confirm(`确定删除模板“${template.name}”？已由该模板创建的草稿和本地图片不会删除。`)) return;
-  try {
-    const result = await api(`/api/templates/${template.id}`, { method: 'DELETE' });
-    setTemplates(result.templates, '');
-    templateStatus.textContent = `已删除模板：${result.deleted.name}`;
-  } catch (error) { window.alert(error.message); }
+  return withEditorLock(async () => {
+    const template = selectedTemplate();
+    if (!template || !window.confirm(`确定删除模板“${template.name}”？已由该模板创建的草稿和本地图片不会删除。`)) return;
+    try {
+      const result = await api(`/api/templates/${template.id}`, { method: 'DELETE' });
+      setTemplates(result.templates, '');
+      templateStatus.textContent = [`已删除模板：${result.deleted.name}`, ...(result.warnings ?? []).map(w => w.message)].join(' ');
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 function finishOmnisendUpload(value) {
@@ -790,26 +959,28 @@ function requestOmnisendUpload() {
 }
 
 async function uploadOmnisendDraft() {
-  if (!state.draft) return;
-  window.clearTimeout(state.saveTimer);
-  await commitEdits();
-  const upload = await requestOmnisendUpload();
-  if (!upload) return;
-  try {
-    const prepared = await api(`/api/drafts/${state.draft.id}/prepare-omnisend-draft`, {
-      method: 'POST', body: JSON.stringify({ campaign: upload.campaign })
-    });
-    if (!prepared.ready) throw new Error('静态安全 HTML 准备失败');
+  return withEditorLock(async () => {
+    if (!state.draft) return;
+    window.clearTimeout(state.saveTimer);
+    if (!await commitEdits()) return;
+    const upload = await requestOmnisendUpload();
+    if (!upload) return;
     try {
-      const uploaded = await api(`/api/drafts/${state.draft.id}/upload-omnisend-draft`, {
-        method: 'POST', body: JSON.stringify({ apiKey: upload.apiKey })
+      const prepared = await api(`/api/drafts/${state.draft.id}/prepare-omnisend-draft`, {
+        method: 'POST', body: JSON.stringify({ campaign: upload.campaign })
       });
-      window.alert(`已${uploaded.receipt.operation === 'updated' ? '更新' : '创建'} Omnisend Draft：${uploaded.receipt.campaignID}`);
-    } finally {
-      upload.apiKey = '';
-      omnisendApiKeyInput.value = '';
-    }
-  } catch (error) { window.alert(error.message); }
+      if (!prepared.ready) throw new Error('静态安全 HTML 准备失败');
+      try {
+        const uploaded = await api(`/api/drafts/${state.draft.id}/upload-omnisend-draft`, {
+          method: 'POST', body: JSON.stringify({ apiKey: upload.apiKey })
+        });
+        window.alert(`已${uploaded.receipt.operation === 'updated' ? '更新' : '创建'} Omnisend Draft：${uploaded.receipt.campaignID}`);
+      } finally {
+        upload.apiKey = '';
+        omnisendApiKeyInput.value = '';
+      }
+    } catch (error) { window.alert(error.message); }
+  });
 }
 
 function finishOmnisendHtmlExport(value) {
@@ -844,31 +1015,33 @@ function closeHtmlCopyFallback() {
 }
 
 async function exportOmnisendHtml() {
-  if (!state.draft) return;
-  window.clearTimeout(state.saveTimer);
-  await commitEdits();
-  let apiKey = await requestOmnisendHtmlExport();
-  if (!apiKey) return;
-  let exported;
-  try {
-    exported = await api(`/api/drafts/${state.draft.id}/export-omnisend-html`, {
-      method: 'POST', body: JSON.stringify({ apiKey })
-    });
-    await navigator.clipboard.writeText(exported.html);
-    window.alert(`已上传 ${exported.uploadedImageIDs.length} 张本地图片，并将完整 Omnisend HTML 复制到剪切板。`);
-  } catch (error) {
-    if (exported?.html) {
-      showHtmlCopyFallback(exported.html);
-      return;
+  return withEditorLock(async () => {
+    if (!state.draft) return;
+    window.clearTimeout(state.saveTimer);
+    if (!await commitEdits()) return;
+    let apiKey = await requestOmnisendHtmlExport();
+    if (!apiKey) return;
+    let exported;
+    try {
+      exported = await api(`/api/drafts/${state.draft.id}/export-omnisend-html`, {
+        method: 'POST', body: JSON.stringify({ apiKey })
+      });
+      await navigator.clipboard.writeText(exported.html);
+      window.alert(`已上传 ${exported.uploadedImageIDs.length} 张本地图片，并将完整 Omnisend HTML 复制到剪切板。`);
+    } catch (error) {
+      if (exported?.html) {
+        showHtmlCopyFallback(exported.html);
+        return;
+      }
+      window.alert(error.message);
+    } finally {
+      apiKey = '';
+      omnisendExportApiKeyInput.value = '';
     }
-    window.alert(error.message);
-  } finally {
-    apiKey = '';
-    omnisendExportApiKeyInput.value = '';
-  }
+  });
 }
 
-$('#new-campaign').addEventListener('click', createDraft);
+$('#new-campaign').addEventListener('click', () => { void createDraft().catch(error => window.alert(error.message)); });
 templateSelect.addEventListener('change', () => {
   state.selectedTemplateId = templateSelect.value;
   renderTemplateOptions();
@@ -926,8 +1099,18 @@ closeOmnisendHtmlCopy.addEventListener('click', closeHtmlCopyFallback);
 omnisendHtmlCopyFallback.addEventListener('close', () => { omnisendHtmlCopyText.value = ''; });
 structureSelect.addEventListener('change', () => {
   state.selectedStructure = structureSelect.value;
+  state.catalogLimit = 6;
   renderStyleOptions();
 });
+$('#component-search').addEventListener('input', () => { state.catalogLimit = 6; renderStyleOptions(); });
+$('#catalog-more').addEventListener('click', () => { state.catalogLimit += 6; renderStyleOptions(); });
+$('#retry-save').addEventListener('click', () => { void commitEdits(); });
+window.addEventListener('beforeunload', event => { if (saveQueue.hasPending()) { event.preventDefault(); event.returnValue = ''; } });
+setupLinkInspector({ api, getDraft: () => state.draft, commitEdits, enqueue: enqueueEdit, focusField: async (instanceId, key) => {
+  await selectComponent(instanceId);
+  const input = [...form.querySelectorAll('input, textarea, select')].find(field => field.dataset.key === key);
+  if (input) { const group = input.closest('details'); if (group) group.open = true; input.focus(); input.scrollIntoView({ block: 'center' }); }
+} });
 styleSelect.addEventListener('change', () => { addSelectedComponent.disabled = !styleSelect.value; });
 addSelectedComponent.addEventListener('click', () => addComponent(styleSelect.value));
 document.querySelectorAll('.device').forEach((button) => button.addEventListener('click', () => {

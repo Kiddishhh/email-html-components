@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.minimalTitleCta",
+  "values": {
+    "color.surface": "#F7ECDE",
+    "color.title": "#1F1F1F",
+    "color.body": "#5F5F5F",
+    "color.action": "#9C1C23"
+  }
+}

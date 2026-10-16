@@ -1,0 +1,46 @@
+[
+  {
+    "viewport": 600,
+    "width": 600,
+    "height": 557.984375,
+    "images": [
+      {
+        "alt": "Freshine",
+        "loaded": true,
+        "width": 87,
+        "height": 87
+      },
+      {
+        "alt": "EXTRA $600 + UP TO 20% OFF — SITEWIDE",
+        "loaded": true,
+        "width": 385,
+        "height": 158
+      }
+    ],
+    "links": [
+      "https://freshinelife.com/collections/roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-fs"
+    ]
+  },
+  {
+    "viewport": 375,
+    "width": 375,
+    "height": 348.734375,
+    "images": [
+      {
+        "alt": "Freshine",
+        "loaded": true,
+        "width": 54,
+        "height": 54
+      },
+      {
+        "alt": "EXTRA $600 + UP TO 20% OFF — SITEWIDE",
+        "loaded": true,
+        "width": 241,
+        "height": 99
+      }
+    ],
+    "links": [
+      "https://freshinelife.com/collections/roman-shades?utm_source=omnisend&utm_medium=email&utm_id=cover-fs"
+    ]
+  }
+]

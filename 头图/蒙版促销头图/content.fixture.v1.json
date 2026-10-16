@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.maskedPromotion",
+  "fixture": "columbus-day-sale-reference",
+  "values": {
+    "hero.backgroundImage.url": "https://app.omnisend.com/images/6abc74d50f4a0b5559b79943",
+    "hero.backgroundImage.alt": "Columbus Day Sale promotional scene",
+    "hero.heading": "Columbus Day Sale",
+    "hero.title": "UP TO 65% OFF",
+    "hero.subtitle": "EXTRA $600 OFF & UP TO 20% OFF SITEWIDE",
+    "hero.cta.text": "SHOP NOW",
+    "hero.cta.url": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale"
+  }
+}

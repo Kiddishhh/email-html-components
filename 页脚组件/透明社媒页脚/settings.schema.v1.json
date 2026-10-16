@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "footer.transparentSocial",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.text": {
+      "type": "string",
+      "default": "#1F1F1F",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.muted": {
+      "type": "string",
+      "default": "#7C706A",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.divider": {
+      "type": "string",
+      "default": "#B59B8B",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.brand": {
+      "type": "string",
+      "default": "#8F8681",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "color.link": {
+      "type": "string",
+      "default": "#D4D0CA",
+      "themeable": true,
+      "skillPrompt": true,
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
+  },
+  "additionalProperties": false
+}

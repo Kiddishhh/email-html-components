@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.minimalTitleCta",
+  "themeMode": "component-owned-styles",
+  "snapshotPolicy": "full-settings-snapshot",
+  "properties": {
+    "color.surface": { "type": "string", "default": "#F7ECDE", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.title": { "type": "string", "default": "#1F1F1F", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.body": { "type": "string", "default": "#5F5F5F", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "color.action": { "type": "string", "default": "#9C1C23", "themeable": true, "skillPrompt": true, "pattern": "^#[0-9A-Fa-f]{6}$" }
+  },
+  "additionalProperties": false
+}

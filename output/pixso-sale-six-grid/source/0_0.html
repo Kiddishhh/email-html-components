@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Lora';
+	font-style: normal;
+	font-weight: 500;
+	src: url(assets/images/undefinedundefined) format('truetype');
+}
+</style>
+  <script src="js/animation.js"></script>
+  <style>
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9: rgba(124, 112, 106, 1);
+  --083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8: var(--accent-text);
+  --3xl: 30px;
+  --base: 16px;
+  --lg: 18px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --base-text: rgba(31, 31, 31, 1);
+  --primary-text: rgba(255, 255, 255, 1);
+  --primary: rgba(141, 27, 27, 1);
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.design-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.design-canvas,.product-section {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.design-canvas {
+  height: 100%;
+}
+
+.product-section {
+  height: 1101px;
+  min-width: 534px;
+}
+
+.section-title,.section-subtitle,.product-copy-1,.product-copy-2,.product-copy-3,.product-copy-4,.product-copy-5,.product-copy-6,.product-copy-7,.product-copy-8,.product-copy-9,.product-copy-10,.product-copy-11,.product-copy-12,.cta-label {
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0px;
+}
+
+.section-title,.section-subtitle,.product-copy-1,.product-copy-2,.product-copy-6,.product-copy-7,.product-copy-11,.product-copy-12,.cta-label {
+  text-decoration: none;
+  white-space: pre;
+}
+
+.section-title,.section-subtitle {
+  line-height: 150%;
+  height: auto;
+  position: absolute;
+}
+
+.section-title {
+  font-size: var(--3xl);
+  font-family: "Lora-Medium";
+  color: var(--base-text);
+  width: auto;
+  left: 50%;
+  top: 0px;
+  transform: translateX(calc(-50% + -0.5px));
+  flex-grow: 0;
+}
+
+.section-subtitle,.product-layer-13,.product-layer-14,.product-layer-15,.product-layer-16,.product-art-17,.product-art-18,.product-art-19,.product-layer-20,.product-layer-21,.product-art-22,.product-art-23,.product-art-24,.product-art-25,.cta-background,.cta-label {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-subtitle {
+  font-size: var(--base);
+  font-family: "Montserrat-Medium";
+  font-feature-settings: "locl" 0;
+  text-transform: capitalize;
+  color: var(--);
+  width: 534px;
+  left: 0px;
+  right: 0px;
+  top: 53px;
+}
+
+.first-product-row,.second-product-row,.third-product-row {
+  flex-direction: row;
+  gap: 16px;
+}
+
+.first-product-row {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 12px;
+  top: 101px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.product-layer-26,.product-layer-27,.product-layer-28,.product-layer-29 {
+  width: 247px;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-content-30,.card-content-31,.card-content-32,.card-content-33 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.product-layer-34,.product-layer-35,.product-layer-36,.product-layer-37 {
+  width: 100%;
+  height: 246px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.product-layer-13,.product-layer-14,.product-layer-15,.product-layer-16 {
+  width: 247px;
+  height: 246px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+}
+
+.product-art-17,.product-art-38,.product-art-39,.product-art-40,.product-art-41,.product-art-42 {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.product-art-17,.product-art-38,.product-art-41,.product-art-42 {
+  -webkit-mask-size: 247px 246px;
+  mask-size: 247px 246px;
+}
+
+.product-art-17 {
+  width: 252.020309px;
+  height: 250.999985px;
+  position: absolute;
+  left: 0.5020245000000016px;
+  right: -0.5020245000000016px;
+  top: -2px;
+  background-image: url("assets/images/cbbeefd5c1af0b40c044aba47ea4333bc2eac2d8.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_10)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_10%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_10)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_10%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 2.00813px 2px;
+  mask-position: 2.00813px 2px;
+}
+
+.product-layer-43,.product-layer-44 {
+  width: 247px;
+  height: 28px;
+  position: absolute;
+  left: 0px;
+  top: 218px;
+}
+
+.product-art-18,.product-art-19,.product-art-22,.product-art-23,.product-art-24,.product-art-25,.cta-background {
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: var(--primary);
+}
+
+.product-art-18,.product-art-19 {
+  width: 247px;
+  height: 28px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.product-copy-1,.product-copy-2,.product-copy-3,.product-copy-4,.product-copy-5,.product-copy-6,.product-copy-7,.product-copy-8,.product-copy-9,.product-copy-10 {
+  font-family: "Montserrat-Medium";
+  text-transform: capitalize;
+  height: auto;
+  flex-grow: 0;
+}
+
+.product-copy-1,.product-copy-2,.product-copy-6,.product-copy-7,.product-copy-11,.product-copy-12,.cta-label {
+  color: var(--primary-text);
+  top: 50%;
+}
+
+.product-copy-1,.product-copy-2 {
+  font-size: var(--base);
+  width: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + -0.5px));
+}
+
+.product-copy-3,.product-copy-4,.product-copy-5,.product-copy-8,.product-copy-9,.product-copy-10 {
+  text-decoration: underline;
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+}
+
+.product-copy-3,.product-copy-4,.product-copy-5 {
+  font-size: var(--lg);
+  font-feature-settings: "locl" 0;
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.product-art-38 {
+  width: 250.012177px;
+  height: 248.999969px;
+  position: absolute;
+  left: -1.004065px;
+  top: -3px;
+  background-image: url("assets/images/81eeb11eab25763a3085c571afdf53db1c24b15a.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_9)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_9%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_9)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_9%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2062%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 1.004065px 3px;
+  mask-position: 1.004065px 3px;
+}
+
+.second-product-row {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 12px;
+  top: 401px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.product-layer-45,.product-layer-46 {
+  width: 100%;
+  height: 247px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.product-layer-20,.product-layer-21,.product-art-39 {
+  width: 247px;
+  height: 247px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.product-layer-20,.product-layer-21 {
+  right: 0px;
+}
+
+.product-art-39,.product-art-40 {
+  -webkit-mask-size: 247px 247px;
+  mask-size: 247px 247px;
+}
+
+.product-art-39,.product-art-41,.product-art-42 {
+  -webkit-mask-position: 0px 0px;
+  mask-position: 0px 0px;
+}
+
+.product-art-39 {
+  background-image: url("assets/images/0a614b2b5761f8b49106722096357b8e8b21b9a3.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_8)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_8%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_8)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_8%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.product-art-22,.product-art-23,.product-art-24,.product-art-25 {
+  top: 109px;
+  bottom: -109px;
+}
+
+.product-art-22,.product-art-23 {
+  width: 247px;
+  height: 29px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+}
+
+.product-copy-6,.product-copy-7 {
+  font-size: var(--base);
+  width: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + 109px));
+}
+
+.product-copy-8,.product-copy-9,.product-copy-10 {
+  font-size: var(--lg);
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.product-layer-47,.product-layer-48 {
+  width: 247px;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card-content-49,.card-content-50 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+}
+
+.product-art-40 {
+  width: 250.012177px;
+  height: 250.012177px;
+  position: absolute;
+  left: -2.00813px;
+  top: -1.004065px;
+  background-image: url("assets/images/7b9d290fcfab4549e678fad8c426e6de30e8fdcd.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_7)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_7%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20247%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_7)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_7%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22247.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  -webkit-mask-position: 2.00813px 1.004065px;
+  mask-position: 2.00813px 1.004065px;
+}
+
+.third-product-row {
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 12px;
+  top: 724px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.product-art-41 {
+  width: 247px;
+  height: 247px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/9866c6496f3e2db2fa848a0b16c6e923191e3e7e.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_6)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_6%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_6)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_6%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.product-art-24,.product-art-25 {
+  width: 247px;
+  height: 28px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+}
+
+.product-copy-11,.product-copy-12 {
+  font-size: var(--base);
+  font-family: "Montserrat-Medium";
+  text-transform: capitalize;
+  width: auto;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(calc(-50% + 0px)) translateY(calc(-50% + 108.5px));
+  flex-grow: 0;
+}
+
+.product-art-42 {
+  width: 247px;
+  height: 246px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-image: url("assets/images/546b0745c7d90184d72313977cd223fe803c8715.png");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_5)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_5%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20246%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20fill%3D%22none%22%20customFrame%3D%22%23000000%22%20mask%3D%22url(%23mask_5)%22%3E%0A%09%3Cdefs%3E%0A%09%09%3Cfilter%20id%3D%22pixso_custom_mask_type_alpha%22%3E%0A%09%09%09%3CfeColorMatrix%20type%3D%22matrix%22%20values%3D%220%200%200%200%201%200%200%200%200%201%200%200%200%200%201%200%200%200%201%200%20%22%20%2F%3E%0A%09%09%3C%2Ffilter%3E%0A%09%3C%2Fdefs%3E%0A%09%3Cmask%20id%3D%22mask_5%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20maskUnits%3D%22userSpaceOnUse%22%3E%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fmask%3E%0A%0A%09%09%3Cg%20filter%3D%22url(%23pixso_custom_mask_type_alpha)%22%3E%0A%09%09%09%3Crect%20id%3D%22%E7%9F%A9%E5%BD%A2%2063%22%20width%3D%22247.000000%22%20height%3D%22246.000000%22%20x%3D%220.000000%22%20y%3D%220.000000%22%20fill%3D%22rgb(196%2C196%2C196)%22%20%2F%3E%0A%09%09%3C%2Fg%3E%0A%09%3C%2Fsvg%3E");
+}
+
+.cta-group,.cta-background {
+  width: 507px;
+  height: 55px;
+  position: absolute;
+}
+
+.cta-group {
+  left: 12px;
+  top: 1046px;
+}
+
+.cta-background {
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  border-radius: 4px 4px 4px 4px;
+}
+
+.cta-label {
+  font-size: var(--lg);
+  font-family: "Montserrat-Medium";
+  font-feature-settings: "locl" 0;
+  text-transform: uppercase;
+  width: 264px;
+  height: auto;
+  position: absolute;
+  left: -0.5px;
+  right: 0.5px;
+  transform: translateY(calc(-50% + -0.5px));
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="design-canvas">
+    <div class="product-section">
+      <p class="section-title">Find your perfect fit</p>
+      <p class="section-subtitle">Designed around your windows, your style, your home.</p>
+      <div class="first-product-row">
+        <div class="product-layer-26">
+          <div class="card-content-30">
+            <div class="product-layer-34">
+              <div class="product-layer-13">
+                <div class="product-art-17"></div>
+              </div>
+              <div class="product-layer-43">
+                <div class="product-art-18"></div>
+                <p class="product-copy-1">SAVE 50%</p>
+              </div>
+            </div><a href="https://freshinelife.com/collections/best-seller/products/freshine-elara-linen-blend-curtains-for-elegant-and-luxurious-drapes-in-every-room" target="_blank" class="product-copy-3">Elara Linen Blend Curtains</a></div>
+        </div>
+        <div class="product-layer-27">
+          <div class="card-content-31">
+            <div class="product-layer-35">
+              <div class="product-layer-14">
+                <div class="product-art-38"></div>
+              </div>
+              <div class="product-layer-44">
+                <div class="product-art-19"></div>
+                <p class="product-copy-2">SAVE 18%</p>
+              </div>
+            </div><a href="https://freshinelife.com/collections/see-through-sheer-curtains/products/liana-sheer-curtains-for-large-windows-sheer-light-drapes-for-living-room-bedroom-elegance" target="_blank" class="product-copy-4">Liana Sheer Curtains</a></div>
+        </div>
+      </div>
+      <div class="second-product-row">
+        <div class="product-layer-28">
+          <div class="card-content-32">
+            <div class="product-layer-45">
+              <div class="product-layer-20">
+                <div class="product-art-39"></div>
+              </div>
+              <div class="product-art-22"></div>
+              <p class="product-copy-6">SAVE 40%</p>
+            </div><a href="https://freshinelife.com/collections/linen-curtains/products/ilythra-soft-textured-drapes-elegant-and-flowing-design-for-modern-interiors" target="_blank" class="product-copy-8">Ilythra Cotton-Linen Floor to Ceiling Curtains</a></div>
+        </div>
+        <div class="product-layer-47">
+          <div class="card-content-49">
+            <div class="product-layer-46">
+              <div class="product-layer-21">
+                <div class="product-art-40"></div>
+              </div>
+              <div class="product-art-23"></div>
+              <p class="product-copy-7">SAVE 40%</p>
+            </div>
+            <p class="product-copy-9">Ilythra Cotton Linen Roman Shades</p>
+          </div>
+        </div>
+      </div>
+      <div class="third-product-row">
+        <div class="product-layer-29">
+          <div class="card-content-33">
+            <div class="product-layer-36">
+              <div class="product-layer-15">
+                <div class="product-art-41"></div>
+              </div>
+              <div class="product-art-24"></div>
+              <p class="product-copy-11">SAVE 35%</p>
+            </div>
+            <p class="product-copy-10">Elyna Smart Motorized Shades</p>
+          </div>
+        </div>
+        <div class="product-layer-48">
+          <div class="card-content-50">
+            <div class="product-layer-37">
+              <div class="product-layer-16">
+                <div class="product-art-42"></div>
+              </div>
+              <div class="product-art-25"></div>
+              <p class="product-copy-12">SAVE 50%</p>
+            </div>
+            <p class="product-copy-5">Marisol Linen Curtains</p>
+          </div>
+        </div>
+      </div>
+      <div class="cta-group">
+        <div class="cta-background"></div>
+        <p class="cta-label">REFRESH YOUR HOME</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+</script>
+
+</body>
+</html>

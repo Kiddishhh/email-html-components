@@ -1,0 +1,16 @@
+HTTP/2 200 
+date: Tue, 08 Sep 2026 08:52:09 GMT
+content-type: image/webp
+content-length: 946
+cache-control: max-age=2592000, public
+server: cloudflare
+expires: Thu, 08 Oct 2026 08:52:09 GMT
+last-modified: Tue, 08 Sep 2026 08:52:09 GMT
+x-envoy-upstream-service-time: 0
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=rtfaaaclD2DDDgH13Ms2Koban1F2xzyuRMViLMuMfsA-1788857529.6968796-1.0.1.1-Qkyf8TuQOaq6rBbEDi29qTxdC8TNpqg76RYMAP45BDvWEYCDH.Wz.G_1TYgdVTEQbPab9Bv_HHZg_k6UIzT79QrxPjK5.GmSBxRws8qlfGKeqc5GFUTZPyTJnYj6TcGo; HttpOnly; SameSite=None; Secure; Path=/; Domain=omnisend.com; Expires=Tue, 08 Sep 2026 09:22:09 GMT
+strict-transport-security: max-age=15552000
+x-content-type-options: nosniff
+cf-ray: a37cb7289d67f79b-LAX
+alt-svc: h3=":443"; ma=86400
+

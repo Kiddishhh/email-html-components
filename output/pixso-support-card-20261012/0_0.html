@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	src: url(fonts/Montserrat-Regular_1.ttf) format('truetype');
+}
+</style>
+  <script src="js/animation.js"></script>
+  <style>
+:root, 
+[data-collection-0-2-mode=""] {
+  /* 参数 */
+  --base: rgba(227, 224, 222, 1);
+}
+
+:root, 
+[data-collection-0-5-mode=""] {
+  /* 参数 */
+  --2: 8px;
+}
+
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9: rgba(124, 112, 106, 1);
+  --083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8: var(--accent-text);
+  --xs: 12px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.Pixso-canvas-0_1 > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.Pixso-canvas-0_1,.Pixso-group-295_3573 {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.Pixso-canvas-0_1 {
+  height: 100%;
+}
+
+.Pixso-group-295_3573 {
+  height: 135px;
+  min-width: 542px;
+}
+
+.Pixso-rectangle-295_3574 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px 8px 8px 8px;
+  z-index: 0;
+}
+
+.stroke-wrapper-295_3574 {
+  position: absolute;
+  isolation: isolate;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  width: 542px;
+  height: 135px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stroke-295_3574 {
+  position: absolute;
+  inset: -0.5px -0.5px -0.5px -0.5px;
+  border-radius: 8px 8px 8px 8px;
+  pointer-events: none;
+  z-index: 1;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-color: var(--base);
+}
+
+.Pixso-frame-295_3575,.frame-content-295_3575 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.Pixso-frame-295_3575 {
+  width: 356px;
+  height: auto;
+  position: absolute;
+  left: 57px;
+  right: -57px;
+  margin-left: auto;
+  margin-right: auto;
+  top: 16px;
+}
+
+.frame-content-295_3575 {
+  gap: var(--2);
+  width: 100%;
+  position: relative;
+}
+
+.Pixso-paragraph-295_3576,.Pixso-paragraph-295_3577 {
+  text-align: left;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  width: 100%;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.Pixso-paragraph-295_3576 {
+  font-size: 18px;
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  font-feature-settings: "locl" 0;
+  text-transform: capitalize;
+  color: var(--);
+}
+
+.Pixso-paragraph-295_3577 {
+  font-size: var(--xs);
+  font-family: "Montserrat-Regular";
+  font-weight: 400;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+}
+
+.Pixso-text-295_3578 {
+  font-size: var(--xs);
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  color: rgba(0, 87, 184, 1);
+  width: 464.725464px;
+  height: auto;
+  position: absolute;
+  left: 2.362731999999994px;
+  right: -2.362731999999994px;
+  margin-left: auto;
+  margin-right: auto;
+  top: 101px;
+}
+
+.Pixso-paragraph-295_3578_0,.Pixso-span-295_3578_0_1,.Pixso-span-295_3578_0_2,.Pixso-span-295_3578_0_3,.Pixso-span-295_3578_0_4,.Pixso-span-295_3578_0_5 {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.Pixso-paragraph-295_3578_0 {
+  line-height: 18px;
+}
+
+.Pixso-span-295_3578_0_1,.Pixso-span-295_3578_0_2,.Pixso-span-295_3578_0_3,.Pixso-span-295_3578_0_4,.Pixso-span-295_3578_0_5 {
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.Pixso-span-295_3578_0_1,.Pixso-span-295_3578_0_3,.Pixso-span-295_3578_0_5 {
+  white-space: pre-wrap;
+}
+
+.Pixso-span-295_3578_0_2,.Pixso-span-295_3578_0_4 {
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+}
+
+.Pixso-group-295_3579,.Pixso-vector-295_3580 {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Pixso-group-295_3579 {
+  width: 72.000282px;
+  height: 65px;
+  left: -186.99985900000001px;
+  right: 186.99985900000001px;
+  top: 21px;
+}
+
+.Pixso-vector-295_3580 {
+  width: 72.5px;
+  height: 66px;
+  background-image: url("assets/images/Group_295_3580.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  left: 0.24985900000000072px;
+  right: -0.24985900000000072px;
+  top: 0.5px;
+  bottom: -0.5px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div id="0_1" class="Pixso-canvas-0_1">
+    <div id="295_3573" class="Pixso-group-295_3573">
+      <div id="295_3574" class="stroke-wrapper-295_3574">
+        <div class="Pixso-rectangle-295_3574"></div>
+        <div class="stroke-295_3574"></div>
+      </div>
+      <div id="295_3575" class="Pixso-frame-295_3575">
+        <div class="frame-content-295_3575">
+          <p id="295_3576" class="Pixso-paragraph-295_3576">Questions Before You Decide?</p>
+          <p id="295_3577" class="Pixso-paragraph-295_3577">Whether you need help with sizing, fabric, light control, or placing your order, our design team is here to help.</p>
+        </div>
+      </div>
+      <div id="295_3578" class="Pixso-text-295_3578">
+        <p id="295_3578_0" class="Pixso-paragraph-295_3578_0">
+<span id="295_3578_0_1" class="Pixso-span-295_3578_0_1">+1 (949)691-6598   </span><span id="295_3578_0_2" class="Pixso-span-295_3578_0_2">|</span><span id="295_3578_0_3" class="Pixso-span-295_3578_0_3">   support@freshinelife.com    </span><span id="295_3578_0_4" class="Pixso-span-295_3578_0_4">|</span><span id="295_3578_0_5" class="Pixso-span-295_3578_0_5">    Chat online</span></p>
+      </div>
+      <div id="295_3579" class="Pixso-group-295_3579">
+        <div id="295_3580" class="Pixso-vector-295_3580"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+</script>
+
+</body>
+</html>

@@ -1,5 +1,7 @@
+import { typographyRoles } from './typography-policy.mjs';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { basename, dirname, resolve } from 'node:path';
+import { describeTextFields, defaultFontForField, editorFontDefaults } from './public/text-style-contract.mjs';
+import { basename, dirname, relative, resolve } from 'node:path';
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
@@ -75,9 +77,13 @@ export function buildEditorCatalog({ workspaceRoot }) {
       category: entry.分类,
       role: componentRole(entry.分类),
       variant: entry.默认变体,
-      directory: directory.slice(workspaceRoot.length + 1),
+      directory: relative(workspaceRoot, directory),
       demoPath,
       contentSchema,
+      textFields: Object.fromEntries(Object.entries(describeTextFields(readFileSync(resolve(directory, 'component.template.v1.html'), 'utf8'), contentSchema, defaultSettings.values, readFileSync(resolve(directory, 'component.styles.v1.css'), 'utf8'))).map(([key,field]) => {
+        const {fontFamily: _fontBinding, ...bindings} = field.bindings;
+        return [key, {...field, bindings, defaults:{...field.defaults,fontFamily:defaultFontForField(key, typographyRoles[entry.componentKey]?.slots[key])}}];
+      })),
       settingsSchema,
       defaultContent,
       defaultSettings
@@ -88,6 +94,7 @@ export function buildEditorCatalog({ workspaceRoot }) {
 export function createCampaignDocument({ name = '未命名 Campaign' } = {}) {
   return {
     schemaVersion: 1,
+    fontDefaults: editorFontDefaults,
     name,
     canvas: {
       backgroundColor: '#FBFAF8',
@@ -105,7 +112,11 @@ export function createCampaignDocument({ name = '未命名 Campaign' } = {}) {
 export function addComponentInstance(document, catalog, componentKey) {
   const component = catalog.find((candidate) => candidate.componentKey === componentKey);
   if (!component) throw new Error(`unknown selectable component: ${componentKey}`);
-  const count = document.components.filter((instance) => instance.componentKey === componentKey).length + 1;
+  // Counters survive deletion; old drafts without counters derive the maximum live suffix.
+  const previous = Math.max(document.instanceCounters?.[componentKey] ?? 0, ...document.components
+    .filter((instance) => instance.componentKey === componentKey)
+    .map((instance) => Number(instance.instanceId.slice(componentKey.length + 1)) || 0));
+  const count = previous + 1;
   const instance = {
     instanceId: `${componentKey}-${count}`,
     name: component.name,
@@ -116,7 +127,7 @@ export function addComponentInstance(document, catalog, componentKey) {
     source: 'component-defaults',
     confirmed: false
   };
-  return { ...clone(document), components: [...document.components, instance], confirmed: false };
+  return { ...clone(document), instanceCounters: { ...document.instanceCounters, [componentKey]: count }, components: [...document.components, instance], confirmed: false };
 }
 
 export function reorderComponentInstances(document, fromIndex, toIndex) {
@@ -126,7 +137,7 @@ export function reorderComponentInstances(document, fromIndex, toIndex) {
   const components = clone(document.components);
   const [instance] = components.splice(fromIndex, 1);
   components.splice(toIndex, 0, instance);
-  return { ...clone(document), components, confirmed: false };
+  return { ...clone(document), components: components.map(component => ({ ...component, confirmed: false })), confirmed: false };
 }
 
 function requireComponentInstance(document, instanceId) {

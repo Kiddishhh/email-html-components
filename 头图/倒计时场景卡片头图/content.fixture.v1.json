@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "componentKey": "hero.countdownSceneCard",
+  "fixture": "columbus-day-sale-reference",
+  "values": {
+    "promotion.text": "UNLOCK AN EXTRA 15% OFF YOUR FIRST ORDER AT FRESHINE",
+    "promotion.linkText": "SIGN UP",
+    "promotion.url": "https://freshinelife.com/?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+    "hero.backgroundImage.url": "https://app.omnisend.com/images/6acc7b3031a0ed8db8a4d026",
+    "hero.backgroundImage.alt": "Warm gold curtain scene behind a cream promotional card",
+    "countdown.image.url": "https://app.omnisend.com/images/6acc86a5a29dcc0ffc64fc9a",
+    "countdown.image.alt": "Only 3 Days!",
+    "hero.offer.lead": "EXTRA $600 OFF & UP TO ",
+    "hero.offer.highlight": "20%",
+    "hero.offer.detail": "OFF SITEWIDE",
+    "hero.image.url": "https://app.omnisend.com/images/6acc830731a0ed8db8a4d152",
+    "hero.image.alt": "Light-filtering curtains in a bright living room",
+    "hero.image.clickUrl": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale",
+    "hero.cta.text": "SHOP NOW",
+    "hero.cta.url": "https://freshinelife.com/pages/freshine-sale?utm_source=omnisend&utm_medium=email&utm_id=Columbus_Day_Sale"
+  }
+}

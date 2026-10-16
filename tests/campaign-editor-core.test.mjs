@@ -39,12 +39,12 @@ test('editor groups styles by structure before selection and exposes only Skill-
   const catalog = buildEditorCatalog({ workspaceRoot });
 
   assert.deepEqual(structuresForCatalog(catalog), ['头图', '导航组件', '活动商品组件', '评论组件', '小样-产品', '赠品与权益组件', '地址组件', '页脚组件']);
-  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2', 'hero.lateSummerSale', 'hero.gradientScenePromotion', 'hero.circleLogoSceneOverlay', 'hero.sceneOverlayCta', 'hero.sceneOverlayCta2', 'hero.romanShadeDiscount', 'hero.couponSceneOverlay']);
+  assert.deepEqual(styleKeysForStructure(catalog, '头图'), ['hero.promotionalOverlay', 'hero.countdownOverlay', 'hero.countdownOverlay2', 'hero.lateSummerSale', 'hero.gradientScenePromotion', 'hero.circleLogoSceneOverlay', 'hero.sceneOverlayCta', 'hero.sceneOverlayCta2', 'hero.romanShadeDiscount', 'hero.couponSceneOverlay', 'hero.minimalTitleCta', 'hero.countdownSceneCard']);
   assert.deepEqual(editableFieldKeys('hero.sceneOverlayCta'), {
     content: ['hero.backgroundImage.url', 'hero.backgroundImage.alt', 'hero.title', 'hero.subtitle.line1', 'hero.subtitle.line2', 'hero.cta.text', 'hero.cta.url'],
     settings: ['navigation.visible', 'color.text', 'color.action']
   });
-  assert.deepEqual(styleKeysForStructure(catalog, '导航组件'), ['navigation.promotionCta', 'navigation.eventCountdown']);
+  assert.deepEqual(styleKeysForStructure(catalog, '导航组件'), ['navigation.promotionCta', 'navigation.eventCountdown', 'hero.maskedPromotion']);
   assert.deepEqual(styleKeysForStructure(catalog, '评论组件'), ['image.clickableFullWidth', 'review.trustpilotImage', 'review.textList2', 'review.sceneComparison']);
   assert.deepEqual(editableFieldKeys('review.trustpilotImage'), {
     content: ['reviews[0].author', 'reviews[0].title', 'reviews[0].body', 'reviews[0].date', 'reviews[1].author', 'reviews[1].title', 'reviews[1].body', 'reviews[1].date'],
@@ -63,7 +63,7 @@ test('editor groups styles by structure before selection and exposes only Skill-
   ]);
   assert.deepEqual(styleKeysForStructure(catalog, '赠品与权益组件'), ['gift.rewardGrid2', 'gift.showcase2', 'gift.warmRedPairIV', 'gift.doubleGiftAddressShowcase', 'gift.verticalImagePair', 'image.benefitsStrip3', 'image.benefitsStrip4', 'image.benefitsStrip4TwoRows', 'image.benefitsAddressCard', 'image.benefitsShowcase6', 'tool.measurementCard', 'tool.freeMeasurementGuidance']);
   assert.deepEqual(styleKeysForStructure(catalog, '地址组件'), ['location.showroomCard']);
-  assert.deepEqual(styleKeysForStructure(catalog, '页脚组件'), ['footer.warm', 'footer.doubleDivider', 'footer.minimalContact']);
+  assert.deepEqual(styleKeysForStructure(catalog, '页脚组件'), ['footer.warm', 'footer.doubleDivider', 'footer.minimalContact', 'footer.transparentSocial']);
   assert.deepEqual(editableFieldKeys('footer.warm'), { content: [], settings: ['color.background', 'color.text', 'color.link'] });
   assert.deepEqual(editableFieldKeys('footer.doubleDivider'), {
     content: [],

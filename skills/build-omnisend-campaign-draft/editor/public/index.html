@@ -13,7 +13,9 @@
     <button id="new-campaign" class="button primary">新建草稿</button>
     <button id="export-omnisend-html" class="button">导出 Omnisend HTML</button>
     <button id="upload-omnisend-draft" class="button">上传 Omnisend 草稿</button>
+    <button id="inspect-links" class="button">链接 / UTM</button>
   </header>
+  <div class="savebar"><span id="save-status" role="status" aria-live="polite">已保存到当前会话</span><button id="retry-save" class="button" hidden>重试保存</button><span id="editor-operation" role="status" aria-live="polite"></span><small>普通草稿在关闭服务后清理；需要保留请保存模板。</small></div>
   <section class="templatebar" aria-label="邮件模板">
     <strong>邮件模板</strong>
     <label><span>选择模板</span><select id="template-select"><option value="">选择已保存模板</option></select></label>
@@ -24,7 +26,7 @@
   </section>
   <main class="workspace" hidden>
     <aside class="sidebar">
-      <section class="component-picker"><h2>添加组件</h2><p>先选结构，再选择该结构下的样式；可重复添加。</p><label>结构<select id="structure-select"><option value="">选择结构</option></select></label><label>样式<select id="style-select" disabled><option value="">先选择结构</option></select></label><button id="add-selected-component" class="button primary" disabled>添加此组件</button></section>
+      <section class="component-picker"><h2>添加组件</h2><p>按分类或关键词查找，缩略图展示组件默认版式。</p><label>搜索组件<input id="component-search" type="search" placeholder="名称、分类或 componentKey"></label><label>结构<select id="structure-select"><option value="">全部分类</option></select></label><label>样式<select id="style-select" disabled><option value="">先选择结构</option></select></label><div id="catalog-cards" class="catalog-cards"></div><button id="catalog-more" class="button" hidden>显示更多组件</button><button id="add-selected-component" class="button primary" disabled>添加此组件</button></section>
       <section><h2>当前结构</h2><div id="structure" class="structure"></div></section>
     </aside>
     <section class="preview-pane">
@@ -37,6 +39,14 @@
       <form id="field-form" hidden></form>
     </aside>
   </main>
+  <dialog id="links-dialog" class="links-dialog" aria-labelledby="links-title">
+    <div class="links-heading"><h2 id="links-title">链接与 UTM 清单</h2><button id="close-links" class="button">关闭</button></div>
+    <p>清单来自实际生成的邮件；固定链接仅供检查。只对勾选的可编辑 HTTPS 链接应用 UTM。</p>
+    <div id="utm-fields" class="utm-fields"></div>
+    <div class="links-actions"><button id="select-utm-links" class="button">勾选可编辑 HTTPS 链接</button><button id="preview-utm" class="button">预览 UTM 修改</button><button id="apply-utm" class="button primary" disabled>应用已预览修改</button></div>
+    <p id="links-status" role="status" aria-live="polite"></p><div id="utm-diff" class="utm-diff" hidden></div>
+    <div class="links-table-wrap"><table class="links-table"><thead><tr><th>选择</th><th>组件 / 链接</th><th>地址与参数</th><th>操作</th></tr></thead><tbody id="links-rows"></tbody></table></div>
+  </dialog>
   <dialog id="template-save-dialog" class="upload-dialog" aria-labelledby="template-save-title">
     <form method="dialog" class="upload-dialog-form">
       <h2 id="template-save-title">保存当前为模板</h2>

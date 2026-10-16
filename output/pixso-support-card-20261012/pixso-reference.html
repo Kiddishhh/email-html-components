@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixso HTML</title>
+  <style>
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	src: url(fonts/Montserrat-Medium_1.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	src: url(fonts/Montserrat-Regular_1.ttf) format('truetype');
+}
+</style>
+  <script src="js/animation.js"></script>
+  <style>
+:root, 
+[data-collection-0-2-mode=""] {
+  /* 参数 */
+  --base: rgba(227, 224, 222, 1);
+}
+
+:root, 
+[data-collection-0-5-mode=""] {
+  /* 参数 */
+  --2: 8px;
+}
+
+:root, 
+[data-collection-0-3-mode=""] {
+  /* 参数 */
+  --4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9: rgba(124, 112, 106, 1);
+  --083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8: var(--accent-text);
+  --xs: 12px;
+}
+
+:root, 
+[data-collection-0-7-mode=""] {
+  /* 参数 */
+  --accent-text: rgba(31, 31, 31, 1);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ol,ul,menu {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+ol li::marker, ul li::before {
+  letter-spacing: 0;
+}
+
+.scroll-container > div {
+  width: 100%;
+}
+
+.container > div {
+  width: 100%;
+}
+
+.support-canvas > div {
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: white;
+}
+    
+span {
+  word-break: break-word;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.support-canvas,.support-card {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.support-canvas {
+  height: 100%;
+}
+
+.support-card {
+  height: 135px;
+  min-width: 542px;
+}
+
+.card-surface {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px 8px 8px 8px;
+  z-index: 0;
+}
+
+.card-outline-wrapper {
+  position: absolute;
+  isolation: isolate;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  width: 542px;
+  height: 135px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-outline {
+  position: absolute;
+  inset: -0.5px -0.5px -0.5px -0.5px;
+  border-radius: 8px 8px 8px 8px;
+  pointer-events: none;
+  z-index: 1;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-color: var(--base);
+}
+
+.support-copy,.support-copy-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.support-copy {
+  width: 356px;
+  height: auto;
+  position: absolute;
+  left: 57px;
+  right: -57px;
+  margin-left: auto;
+  margin-right: auto;
+  top: 16px;
+}
+
+.support-copy-content {
+  gap: var(--2);
+  width: 100%;
+  position: relative;
+}
+
+.support-heading,.support-description {
+  text-align: left;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  width: 100%;
+  height: auto;
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.support-heading {
+  font-size: 18px;
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  font-feature-settings: "locl" 0;
+  text-transform: capitalize;
+  color: var(--);
+}
+
+.support-description {
+  font-size: var(--xs);
+  font-family: "Montserrat-Regular";
+  font-weight: 400;
+  color: var(--4a2ce41f4be22bbbff6f8b92e7e4cf410b52b52a-0-9);
+}
+
+.support-contacts {
+  font-size: var(--xs);
+  font-family: "Montserrat-Medium";
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0px;
+  line-height: 150%;
+  text-decoration: none;
+  color: rgba(0, 87, 184, 1);
+  width: 464.725464px;
+  height: auto;
+  position: absolute;
+  left: 2.362731999999994px;
+  right: -2.362731999999994px;
+  margin-left: auto;
+  margin-right: auto;
+  top: 101px;
+}
+
+.contact-line,.contact-phone,.contact-divider-phone,.contact-email,.contact-divider-email,.contact-chat {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.contact-line {
+  line-height: 18px;
+}
+
+.contact-phone,.contact-divider-phone,.contact-email,.contact-divider-email,.contact-chat {
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.contact-phone,.contact-email,.contact-chat {
+  white-space: pre-wrap;
+}
+
+.contact-divider-phone,.contact-divider-email {
+  color: var(--083bc4e20221ed04fc683b21be7b30652d7cf3c4-0-8);
+}
+
+.support-icon-wrapper,.support-icon {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.support-icon-wrapper {
+  width: 72.000282px;
+  height: 65px;
+  left: -186.99985900000001px;
+  right: 186.99985900000001px;
+  top: 21px;
+}
+
+.support-icon {
+  width: 72.5px;
+  height: 66px;
+  background-image: url("assets/images/Group_295_3580.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  left: 0.24985900000000072px;
+  right: -0.24985900000000072px;
+  top: 0.5px;
+  bottom: -0.5px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="scroll-container">
+  <div class="support-canvas">
+    <div class="support-card">
+      <div class="card-outline-wrapper">
+        <div class="card-surface"></div>
+        <div class="card-outline"></div>
+      </div>
+      <div class="support-copy">
+        <div class="support-copy-content">
+          <p class="support-heading">Questions Before You Decide?</p>
+          <p class="support-description">Whether you need help with sizing, fabric, light control, or placing your order, our design team is here to help.</p>
+        </div>
+      </div>
+      <div class="support-contacts">
+        <p class="contact-line">
+<span class="contact-phone">+1 (949)691-6598   </span><span class="contact-divider-phone">|</span><span class="contact-email">   support@freshinelife.com    </span><span class="contact-divider-email">|</span><span class="contact-chat">    Chat online</span></p>
+      </div>
+      <div class="support-icon-wrapper">
+        <div class="support-icon"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+</script>
+
+</body>
+</html>
